@@ -24,6 +24,6 @@
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/foundry-vtt-mythras",
   "manifest": "https://gitlab.com/tpaoloni/foundry-vtt-mythras/raw/master/system.json",
-  "download": "https://gitlab.com/tpaoloni/foundry-vtt-mythras/-/archive/Initial-Release/foundry-vtt-mythras-Initial-Release.zip",
+  "download": "https://gitlab.com/tpaoloni/foundry-vtt-mythras/-/archive/master/foundry-vtt-mythras-master.zip",
   "license": "LICENSE.txt"
 }
