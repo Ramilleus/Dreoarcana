@@ -1,0 +1,29 @@
+{
+  "name": "mythras",
+  "title": "Mythras",
+  "description": "The Mythras system for FoundryVTT!",
+  "version": "1.0.0",
+  "minimumCoreVersion": "0.5.5",
+  "compatibleCoreVersion": "0.5.5",
+  "templateVersion": 2,
+  "author": "John Doe",
+  "esmodules": ["module/mythras.js"],
+  "styles": ["css/mythras.css"],
+  "scripts": [],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "gridDistance": 5,
+  "gridUnits": "m",
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "power",
+  "url": "https://gitlab.com/paoloni-osu/foundry-vtt-mythras",
+  "manifest": "https://gitlab.com/paoloni-osu/foundry-vtt-mythras/raw/master/system.json",
+  "download": "",
+  "license": "LICENSE.txt"
+}
