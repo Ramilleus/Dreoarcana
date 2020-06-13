@@ -7,7 +7,7 @@
   "compatibleCoreVersion": "0.6.2",
   "templateVersion": 2,
   "author": "John Doe",
-  "esmodules": ["module/mythras.js"],
+  "esmodules": ["mythras.js"],
   "styles": ["css/mythras.css"],
   "scripts": [],
   "packs": [],

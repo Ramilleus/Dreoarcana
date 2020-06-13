@@ -1,13 +1,13 @@
 // Import Modules
-import { MythrasActor } from "./actor/actor.js";
-import { MythrasActorSheet } from "./actor/actor-sheet.js";
-import { MythrasItem } from "./item/item.js";
-import { MythrasItemSheet } from "./item/item-sheet.js";
+import { registerActors } from './module/register-actors.js'
+import { MythrasItem } from "./module/item/item.js";
+import { ActorMythras } from './module/actor/actor.js';
+import { MythrasItemSheet } from "./module/item/item-sheet.js";
 
 Hooks.once('init', async function() {
 
   game.mythras = {
-    MythrasActor,
+    ActorMythras,
     MythrasItem,
     rollItemMacro
   };
@@ -17,17 +17,15 @@ Hooks.once('init', async function() {
    * @type {String}
    */
   CONFIG.Combat.initiative = {
-    formula: "1d20 + @abilities.dex.mod",
+    formula: "1d10",
     decimals: 2
   };
 
   // Define custom Entity classes
-  CONFIG.Actor.entityClass = MythrasActor;
+  CONFIG.Actor.entityClass = ActorMythras;
   CONFIG.Item.entityClass = MythrasItem;
 
   // Register sheet application classes
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("mythras", MythrasActorSheet, { makeDefault: true });
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("mythras", MythrasItemSheet, { makeDefault: true });
 
@@ -45,6 +43,9 @@ Hooks.once('init', async function() {
   Handlebars.registerHelper('toLowerCase', function(str) {
     return str.toLowerCase();
   });
+
+  registerActors();
+
 });
 
 Hooks.once("ready", async function() {

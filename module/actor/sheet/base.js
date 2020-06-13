@@ -2,17 +2,11 @@
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class MythrasActorSheet extends ActorSheet {
+export class ActorSheetMythras extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: ["mythras", "sheet", "actor"],
-      template: "systems/mythras/templates/actor/actor-sheet.html",
-      width: 600,
-      height: 600,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
-    });
+    return super.defaultOptions;
   }
 
   /* -------------------------------------------- */
@@ -20,15 +14,15 @@ export class MythrasActorSheet extends ActorSheet {
   /** @override */
   getData() {
     const data = super.getData();
-    data.dtypes = ["String", "Number", "Boolean"];
-    for (let attr of Object.values(data.data.attributes)) {
-      attr.isCheckbox = attr.dtype === "Boolean";
-    }
+    //data.dtypes = ["String", "Number", "Boolean"];
+    //for (let attr of Object.values(data.data.attributes)) {
+    //  attr.isCheckbox = attr.dtype === "Boolean";
+    //}
 
     // Prepare items.
-    if (this.actor.data.type == 'character') {
-      this._prepareCharacterItems(data);
-    }
+    //if (this.actor.data.type == 'character') {
+    //  this._prepareCharacterItems(data);
+    //}
 
     return data;
   }
