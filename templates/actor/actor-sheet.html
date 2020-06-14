@@ -1,139 +1,74 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
-    {{!-- Sheet Header --}}
-    <header class="char-header">
-        <div class="header-personal">
-          <img class="token-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
-          <div class="names">
-            <input class="char-name" name="charName" type="text" value="{{actor.name}}" placeholder=""/>
-            <p class="input-label">CHARACTER NAME</p>
-            <input class="player-name" name="playerName" type="text" value="" placeholder=""/>
-            <p class="input-label">PLAYER NAME</p>
+  {{!-- Sheet Header --}}
+  <header class="sheet-header">
+    <div class="header-personal">
+      <img class="token-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+      <div class="names">
+        <input class="char-name" name="charName" type="text" value="{{actor.name}}" placeholder=""/>
+        <p class="input-label">CHARACTER NAME</p>
+        <input class="player-name" name="playerName" type="text" value="" placeholder=""/>
+        <p class="input-label">PLAYER NAME</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stats-container">
+        <div class="number-input-container">
+          <input class="luck-points" name="luckPoints" type="text" value="{{data.attributes.luckPoints}}" placeholder=""/>
+          <div class="plus-minus-buttons">
+            <a>+</a>
+            <a>-</a>
           </div>
         </div>
-        <div class="header-stats">
-          <div class="stats-container">
-            <div class="number-input-container">
-              <input class="luck-points" name="luckPoints" type="text" value="{{data.attributes.luckPoints}}" placeholder=""/>
-              <div class="plus-minus-buttons">
-                <a>+</a>
-                <a>-</a>
-              </div>
-            </div>
-            <p class="input-label">LUCK POINTS</p>
-          </div>
-          <div class="stats-container">
-            <div class="number-input-container">
-              <input class="experience-rolls" name="experienceRolls" type="text" value="{{data.experienceRolls}}" placeholder=""/>
-              <div class="plus-minus-buttons">
-                <a>+</a>
-                <a>-</a>
-              </div>
-            </div>
-            <p class="input-label">EXPERIENCE ROLLS</p>
+        <p class="input-label">LUCK POINTS</p>
+      </div>
+      <div class="stats-container">
+        <div class="number-input-container">
+          <input class="experience-rolls" name="experienceRolls" type="text" value="{{data.experienceRolls}}" placeholder=""/>
+          <div class="plus-minus-buttons">
+            <a>+</a>
+            <a>-</a>
           </div>
         </div>
-    </header>
-    {{> systems/mythras/templates/global/mythras-symbols.html}}
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="char-tabs tabs" data-group="primary">
-        <a class="item" data-tab=""><div>Core</div></a>
-        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-        <a class="item" data-tab=""><div>Skills</div></a>
-        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-        <a class="item" data-tab=""><div>Combat</div></a>
-        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-        <a class="item" data-tab=""><div>Abilities</div></a>
-        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-        <a class="item" data-tab=""><div>Equipment</div></a>
-        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-        <a class="item" data-tab=""><div>Notes</div></a>
-    </nav>
+        <p class="input-label">EXPERIENCE ROLLS</p>
+      </div>
+    </div>
+  </header>
 
-    {{!-- Sheet Body --}}
-    <section class="char-body">
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
 
-        {{!-- Biography Tab --}}
-        <div class="tab biography" data-group="primary" data-tab="description">
-            {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
-        </div>
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+      <a class="item active" data-tab="core"><div>Core</div></a>
+      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+      <a class="item" data-tab="skills"><div>Skills</div></a>
+      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+      <a class="item" data-tab="combat"><div>Combat</div></a>
+      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+      <a class="item" data-tab="abilities"><div>Abilities</div></a>
+      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+      <a class="item" data-tab="equipment"><div>Equipment</div></a>
+      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+      <a class="item" data-tab="notes"><div>Notes</div></a>
+  </nav>
 
-        {{!-- Owned Items Tab --}}
-        <div class="tab items" data-group="primary" data-tab="items">
-            <ol class="items-list">
-                <li class="item flexrow item-header">
-                  <div class="item-image"></div>
-                  <div class="item-name">Name</div>
-                  <div class="item-controls">
-                    <a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add item</a>
-                  </div>
-                </li>
-            {{#each actor.gear as |item id|}}
-                <li class="item flexrow" data-item-id="{{item._id}}">
-                    <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                    <h4 class="item-name">{{item.name}}</h4>
-                    <div class="item-controls">
-                        <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                        <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                    </div>
-                </li>
-            {{/each}}
-            </ol>
-        </div>
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    {{> systems/mythras/templates/actor/tabs/actor-core.html}}
 
-        {{!-- Owned Features Tab --}}
-        <div class="tab features" data-group="primary" data-tab="features">
-            <ol class="items-list">
-                <li class="item flexrow item-header">
-                  <div class="item-image"></div>
-                  <div class="item-name">Name</div>
-                  <div class="item-controls">
-                    <a class="item-control item-create" title="Create item" data-type="feature"><i class="fas fa-plus"></i> Add item</a>
-                  </div>
-                </li>
-            {{#each actor.features as |item id|}}
-                <li class="item flexrow" data-item-id="{{item._id}}">
-                    <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                    <h4 class="item-name">{{item.name}}</h4>
-                    <div class="item-controls">
-                        <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                        <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                    </div>
-                </li>
-            {{/each}}
-            </ol>
-        </div>
+    {{> systems/mythras/templates/actor/tabs/actor-skills.html}}
 
-        {{!-- Owned Spells Tab --}}
-        <div class="tab spells" data-group="primary" data-tab="spells">
-            <ol class="items-list">
-                <li class="item flexrow item-header">
-                  <div class="item-image"></div>
-                  <div class="item-name">Name</div>
-                  <div class="item-controls"></div>
-                </li>
-                {{#each actor.spells as |spells spellLevel|}}
-                    <li class="item flexrow item-header">
-                      <div class="item-name">Level {{spellLevel}} Spells</div>
-                      <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="spell" data-spell-level="{{spellLevel}}"><i class="fas fa-plus"></i> Add LVL {{spellLevel}}</a>
-                      </div>
-                    </li>
-                    {{#each spells as |item id|}}
-                        <li class="item flexrow" data-item-id="{{item._id}}">
-                            <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                            <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-controls">
-                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                            </div>
-                        </li>
-                    {{/each}}
-                {{/each}}
-            </ol>
-        </div>
+    {{> systems/mythras/templates/actor/tabs/actor-combat.html}}
 
-    </section>
-    {{> systems/mythras/templates/global/mythras-symbols.html}}
+    {{> systems/mythras/templates/actor/tabs/actor-abilities.html}}
+
+    {{> systems/mythras/templates/actor/tabs/actor-equipment.html}}
+
+    {{> systems/mythras/templates/actor/tabs/actor-notes.html}}
+  </section>
+
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
 </form>
 
