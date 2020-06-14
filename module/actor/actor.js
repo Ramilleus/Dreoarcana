@@ -25,12 +25,42 @@ export class ActorMythras extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
 
-    // Make modifications to data here. For example:
-    // Loop through ability scores, and add their modifiers to our sheet output.
-    //for (let [key, ability] of Object.entries(data.abilities)) {
-      // Calculate the modifier using d20 rules.
-    //  ability.mod = Math.floor((ability.value - 10) / 2);
-    //}
+    data.attributes.actionPoints = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/12);    
+    
+    data.attributes.damageMod = 0;
+    
+    data.attributes.experienceMod = Math.ceil(data.characteristics.cha.value/6);
+    
+    data.attributes.healingRate = Math.ceil(data.characteristics.con.value/6);
+    
+    data.attributes.hitPointMod = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/5);
+    
+    data.attributes.initiativeBonus = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/2);
+    
+    data.attributes.luckPoints = Math.ceil(data.characteristics.pow.value/6);
+    
+    data.attributes.magicPoints = data.characteristics.pow.value;
+
+  }
+  damageModCalc(strSize) {
+    let damageSteps = ["-1d8", "-1d6", "-1d4", "-1d2", "0", "1d2", "1d4", "1d6","1d8","1d10", "1d12", "2d6", "1d8+1d6", "2d8", "1d10+1d8", "2d10"];
+
+    let damMod = "";
+
+    let damInfinite = damageSteps.slice(5);
+
+    if(strSize < 51){
+      damMod = damageSteps[Math.ceil(strSize/5)-1];
+    }else if(strSize < 111){
+      damMod = damageSteps[9+Math.ceil((strSize-50)/10)]
+    }else{
+      let excess = Math.floor(strSize/110);
+
+      damMod = excess*2+"d10";
+
+      damMod = damMod + damInfinite[(strSize-110*excess)/10-1];
+    }
+    return damMod;
   }
 
 }
