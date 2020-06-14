@@ -9,12 +9,33 @@
   src: url("../fonts/Suravaram/Suravaram-Regular.ttf");
 }
 
+@font-face {
+  font-family: 'Mythras';
+  src: url("../fonts/Mythras/Mythras.otf");
+}
+
 /* Styles limited to mythras sheets */
 .mythras .window-content {
   padding: 0px;
+  background: url("../assets/sheet/sheet-background.jpg");
+  background-repeat: repeat;
 }
 
-.mythras header.sheet-header {
+.mythras .mythras-symbols {
+  font-family: 'Mythras';
+  font-size: 2.0em;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 38px;
+  flex: 0 0 38px;
+  overflow: hidden;
+  word-wrap: break-word;
+  padding: 5px;
+}
+
+.mythras header.char-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   -webkit-box-flex: 0;
@@ -31,25 +52,25 @@
   box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
 }
 
-.mythras header.sheet-header input {
+.mythras header.char-header input {
   border: 0;
 }
 
-.mythras header.sheet-header input:focus {
+.mythras header.char-header input:focus {
   outline: none;
   outline-style: none;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-.mythras header.sheet-header .input-label {
+.mythras header.char-header .input-label {
   padding: 0px;
   margin: 0px;
   font-size: 0.8em;
   text-shadow: 0px 0px 6px black;
 }
 
-.mythras header.sheet-header .header-personal {
+.mythras header.char-header .header-personal {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -58,7 +79,7 @@
   flex: 0 0 300px;
 }
 
-.mythras header.sheet-header .header-personal .names input {
+.mythras header.char-header .header-personal .names input {
   color: white;
   border-bottom: solid white 1px;
   border-radius: 0;
@@ -67,24 +88,27 @@
   text-shadow: 0px 0px 6px black;
 }
 
-.mythras header.sheet-header .header-personal .names .char-name {
+.mythras header.char-header .header-personal .names .char-name {
   font-size: 2.0em;
   height: 35px;
 }
 
-.mythras header.sheet-header .header-personal .names .player-name {
+.mythras header.char-header .header-personal .names .player-name {
   margin-top: 13px;
 }
 
-.mythras header.sheet-header .header-personal .token-img {
+.mythras header.char-header .header-personal .token-img {
   border-radius: 0;
   width: 100px;
   height: 100px;
   background-color: rgba(255, 255, 255, 0.1);
   border: 0;
+  -webkit-box-shadow: 0px 0px 6px 2px rgba(53, 40, 40, 0.4);
+  box-shadow: 0px 0px 6px 2px rgba(53, 40, 40, 0.4);
+  margin-right: 10px;
 }
 
-.mythras header.sheet-header .header-stats {
+.mythras header.char-header .header-stats {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -96,7 +120,7 @@
   justify-content: space-between;
 }
 
-.mythras header.sheet-header .header-stats input {
+.mythras header.char-header .header-stats input {
   background-color: white;
   width: 55px;
   height: 55px;
@@ -109,13 +133,13 @@
   box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.5);
 }
 
-.mythras header.sheet-header .header-stats .input-label {
+.mythras header.char-header .header-stats .input-label {
   width: 70px;
   text-align: center;
   height: 28px;
 }
 
-.mythras header.sheet-header .header-stats .stats-container {
+.mythras header.char-header .header-stats .stats-container {
   height: 100px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -132,13 +156,13 @@
   justify-content: center;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container {
+.mythras header.char-header .header-stats .stats-container .number-input-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons {
+.mythras header.char-header .header-stats .stats-container .number-input-container .plus-minus-buttons {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -152,18 +176,40 @@
   font-size: 1.2em;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:hover {
+.mythras header.char-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:hover {
   text-shadow: 0px 0px 5px white;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:active {
+.mythras header.char-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:active {
   color: #DDD;
 }
 
-.mythras .tabs {
-  height: 50px;
+.mythras .tabs > * {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
 }
 
-.mythras .sheet-body {
-  height: 800px;
+.mythras nav.char-tabs {
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 30px;
+  flex: 0 0 30px;
+}
+
+.mythras nav.char-tabs div {
+  display: inline-block;
+  width: 80px;
+}
+
+.mythras nav.char-tabs .dividing-diamond {
+  width: 7px;
+  height: 7px;
+  border: 0;
 }

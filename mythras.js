@@ -1,8 +1,9 @@
 // Import Modules
 import { registerActors } from './module/register-actors.js'
-import { MythrasItem } from "./module/item/item.js";
+import { MythrasItem } from './module/item/item.js';
 import { ActorMythras } from './module/actor/actor.js';
-import { MythrasItemSheet } from "./module/item/item-sheet.js";
+import { MythrasItemSheet } from './module/item/item-sheet.js';
+import loadTemplates from './module/templates.js';
 
 Hooks.once('init', async function() {
 
@@ -45,7 +46,7 @@ Hooks.once('init', async function() {
   });
 
   registerActors();
-
+  loadTemplates();
 });
 
 Hooks.once("ready", async function() {

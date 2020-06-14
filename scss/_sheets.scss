@@ -1,3 +1,14 @@
 .window-content {
     padding: 0px;
+    background: url('../assets/sheet/sheet-background.jpg');
+    background-repeat: repeat;
+}
+
+.mythras-symbols {
+    font-family: 'Mythras';
+    font-size: 2.0em;
+    flex: 0 0 38px;
+    overflow: hidden;
+    word-wrap: break-word;
+    padding: 5px;
 }

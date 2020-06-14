@@ -1,7 +1,7 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
     {{!-- Sheet Header --}}
-    <header class="sheet-header">
+    <header class="char-header">
         <div class="header-personal">
           <img class="token-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
           <div class="names">
@@ -34,17 +34,24 @@
           </div>
         </div>
     </header>
-
+    {{> systems/mythras/templates/global/mythras-symbols.html}}
     {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="items">Items</a>
-        <a class="item" data-tab="features">Features</a>
-        <a class="item" data-tab="spells">Spells</a>
+    <nav class="char-tabs tabs" data-group="primary">
+        <a class="item" data-tab=""><div>Core</div></a>
+        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+        <a class="item" data-tab=""><div>Skills</div></a>
+        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+        <a class="item" data-tab=""><div>Combat</div></a>
+        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+        <a class="item" data-tab=""><div>Abilities</div></a>
+        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+        <a class="item" data-tab=""><div>Equipment</div></a>
+        <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
+        <a class="item" data-tab=""><div>Notes</div></a>
     </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
+    <section class="char-body">
 
         {{!-- Biography Tab --}}
         <div class="tab biography" data-group="primary" data-tab="description">
@@ -127,5 +134,6 @@
         </div>
 
     </section>
+    {{> systems/mythras/templates/global/mythras-symbols.html}}
 </form>
 

@@ -14,7 +14,8 @@
 /* Styles limited to mythras sheets */
 .mythras {
   @import 'sheets';
-  @import 'actor/header';
+  @import 'actor/character/header';
+  @import 'actor/character/body';
   //@import 'components/forms';
   //@import 'components/resource';
   //@import 'components/tabs';

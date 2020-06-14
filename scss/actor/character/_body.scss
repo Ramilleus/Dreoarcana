@@ -1,0 +1,25 @@
+.tabs > * {
+    flex: 0;
+}
+
+nav.char-tabs {
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    flex: 0 0 30px;
+
+    div {
+        display: inline-block;
+        width: 80px;
+    }
+
+    .dividing-diamond {
+        width: 7px;
+        height: 7px;
+        border: 0;
+    }
+}
+
+section.char-body {
+    
+}

@@ -1,4 +1,5 @@
-header.sheet-header {
+header.char-header {
+    display: flex;
     flex-wrap:wrap;
     flex: 0 0 100px;
     justify-content: space-between;
@@ -53,6 +54,8 @@ header.sheet-header {
             height: 100px;
             background-color: rgba(255, 255, 255, 0.1);
             border: 0;
+            box-shadow: 0px 0px 6px 2px rgba(53, 40, 40, 0.4);
+            margin-right: 10px;
         }
     }
 
@@ -102,12 +105,4 @@ header.sheet-header {
             justify-content: center;
         }
     }
-}
-
-.tabs {
-    height: 50px;
-}
-
-.sheet-body {
-    height: 800px;
 }
