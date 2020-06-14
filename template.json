@@ -51,11 +51,16 @@
     }
   },
   "Item": {
-    "types": ["item", "feature", "spell"],
+    "types": ["skill", "item", "feature", "spell"],
     "templates": {
       "base": {
         "description": ""
       }
+    },
+    "skill":{
+      "templates": ["base"],
+      "primaryChar": "str",
+      "secondaryChar": "str"
     },
     "item": {
       "templates": ["base"],

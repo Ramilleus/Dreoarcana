@@ -59,8 +59,7 @@ export class ActorMythras extends Actor {
       let excess = Math.floor(strSize/110);
 
       damMod = excess*2+"d10";
-
-      damMod = damMod + damInfinite[(strSize-110*excess)/10-1];
+      if(strSize % 110 != 0) damMod = damMod + "+" + damInfinite[Math.floor((strSize-110*excess)/10)];
     }
     return damMod;
   }
