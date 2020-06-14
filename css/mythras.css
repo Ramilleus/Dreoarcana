@@ -1,248 +1,169 @@
-@import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Roboto:wght@300;400;500&display=swap");
 /* Global styles */
-.window-app {
-  font-family: "Roboto", sans-serif;
+@font-face {
+  font-family: 'Fanwood';
+  src: url("../fonts/Fanwood/FanwoodText-Regular.ttf");
 }
 
-.rollable:hover, .rollable:focus {
-  color: #000;
-  text-shadow: 0 0 10px red;
-  cursor: pointer;
+@font-face {
+  font-family: 'Suravaram';
+  src: url("../fonts/Suravaram/Suravaram-Regular.ttf");
 }
 
-.grid,
-.grid-2col {
-  display: grid;
-  grid-column: span 2 / span 2;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0;
-  padding: 0;
+/* Styles limited to mythras sheets */
+.mythras .window-content {
+  padding: 0px;
 }
 
-.grid-3col {
-  grid-column: span 3 / span 3;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.mythras header.sheet-header {
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100px;
+  flex: 0 0 100px;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  background: url("../assets/sheet/header-background.jpg");
+  background-repeat: repeat;
+  color: white;
+  padding: 10px;
+  -webkit-box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
 }
 
-.grid-4col {
-  grid-column: span 4 / span 4;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.mythras header.sheet-header input {
+  border: 0;
 }
 
-.grid-5col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+.mythras header.sheet-header input:focus {
+  outline: none;
+  outline-style: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
-.grid-6col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+.mythras header.sheet-header .input-label {
+  padding: 0px;
+  margin: 0px;
+  font-size: 0.8em;
+  text-shadow: 0px 0px 6px black;
 }
 
-.grid-7col {
-  grid-column: span 7 / span 7;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+.mythras header.sheet-header .header-personal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 300px;
+  flex: 0 0 300px;
 }
 
-.grid-8col {
-  grid-column: span 8 / span 8;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+.mythras header.sheet-header .header-personal .names input {
+  color: white;
+  border-bottom: solid white 1px;
+  border-radius: 0;
+  font-family: 'Fanwood';
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0px 0px 6px black;
 }
 
-.grid-9col {
-  grid-column: span 9 / span 9;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
+.mythras header.sheet-header .header-personal .names .char-name {
+  font-size: 2.0em;
+  height: 35px;
 }
 
-.grid-10col {
-  grid-column: span 10 / span 10;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
+.mythras header.sheet-header .header-personal .names .player-name {
+  margin-top: 13px;
 }
 
-.grid-11col {
-  grid-column: span 11 / span 11;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
+.mythras header.sheet-header .header-personal .token-img {
+  border-radius: 0;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 0;
 }
 
-.grid-12col {
-  grid-column: span 12 / span 12;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-.flex-group-center,
-.flex-group-left,
-.flex-group-right {
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-  padding: 5px;
-  border: 1px solid #999;
-}
-
-.flex-group-left {
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.flex-group-right {
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.flex-center {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.flex-between {
+.mythras header.sheet-header .header-stats {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 150px;
+  flex: 0 0 150px;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
-/* Styles limited to mythras sheets */
-.mythras .item-form {
-  font-family: "Roboto", sans-serif;
+.mythras header.sheet-header .header-stats input {
+  background-color: white;
+  width: 55px;
+  height: 55px;
+  text-align: center;
+  font-size: 2.3em;
+  font-family: 'Suravaram';
+  border-radius: 30px;
+  margin-bottom: 5px;
+  -webkit-box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.5);
 }
 
-.mythras .sheet-header {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 210px;
-  flex: 0 0 210px;
-  overflow: hidden;
+.mythras header.sheet-header .header-stats .input-label {
+  width: 70px;
+  text-align: center;
+  height: 28px;
+}
+
+.mythras header.sheet-header .header-stats .stats-container {
+  height: 100px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  margin-bottom: 10px;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
-.mythras .sheet-header .profile-img {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 100px;
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 10px;
+.mythras header.sheet-header .header-stats .stats-container .number-input-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-.mythras .sheet-header .header-fields {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  font-size: 1.2em;
 }
 
-.mythras .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
+.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:hover {
+  text-shadow: 0px 0px 5px white;
 }
 
-.mythras .sheet-header h1.charname input {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
-.mythras .sheet-tabs {
-  -webkit-box-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-}
-
-.mythras .sheet-body,
-.mythras .sheet-body .tab,
-.mythras .sheet-body .tab .editor {
-  height: 100%;
-}
-
-.mythras .tox .tox-editor-container {
-  background: #fff;
-}
-
-.mythras .tox .tox-edit-area {
-  padding: 0 8px;
-}
-
-.mythras .resource-label {
-  font-weight: bold;
-  text-transform: uppercase;
+.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:active {
+  color: #DDD;
 }
 
 .mythras .tabs {
-  height: 40px;
-  border-top: 1px solid #AAA;
-  border-bottom: 1px solid #AAA;
+  height: 50px;
 }
 
-.mythras .tabs .item {
-  line-height: 40px;
-  font-weight: bold;
-}
-
-.mythras .tabs .item.active {
-  text-decoration: underline;
-  text-shadow: none;
-}
-
-.mythras .items-list {
-  list-style: none;
-  margin: 7px 0;
-  padding: 0;
-  overflow-y: auto;
-}
-
-.mythras .items-list .item-header {
-  font-weight: bold;
-}
-
-.mythras .items-list .item {
-  height: 30px;
-  line-height: 24px;
-  padding: 3px 0;
-  border-bottom: 1px solid #BBB;
-}
-
-.mythras .items-list .item .item-image {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 24px;
-  flex: 0 0 24px;
-  margin-right: 5px;
-}
-
-.mythras .items-list .item img {
-  display: block;
-}
-
-.mythras .items-list .item-name {
-  margin: 0;
-}
-
-.mythras .items-list .item-controls {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 86px;
-  flex: 0 0 86px;
-  text-align: right;
+.mythras .sheet-body {
+  height: 800px;
 }

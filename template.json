@@ -3,6 +3,7 @@
     "types": ["character", "npc", "creature"],
     "templates": {
       "common": {
+        "name": "",
         "characteristics": {
           "str": {
             "value": 10

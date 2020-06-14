@@ -27,7 +27,7 @@ export class ActorMythras extends Actor {
 
     data.attributes.actionPoints = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/12);    
     
-    data.attributes.damageMod = damageModCalc(data.characteristics.str.value+data.characteristics.siz.value);
+    data.attributes.damageMod = this.damageModCalc(data.characteristics.str.value+data.characteristics.siz.value);
     
     data.attributes.experienceMod = Math.ceil(data.characteristics.cha.value/6);
     
@@ -41,6 +41,8 @@ export class ActorMythras extends Actor {
     
     data.attributes.magicPoints = data.characteristics.pow.value;
 
+    console.log(data.characteristics);
+    console.log(data.attributes);
   }
   damageModCalc(strSize) {
     let damageSteps = ["-1d8", "-1d6", "-1d4", "-1d2", "0", "1d2", "1d4", "1d6","1d8","1d10", "1d12", "2d6", "1d8+1d6", "2d8", "1d10+1d8", "2d10"];
