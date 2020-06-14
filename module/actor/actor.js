@@ -27,7 +27,7 @@ export class ActorMythras extends Actor {
 
     data.attributes.actionPoints = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/12);    
     
-    data.attributes.damageMod = 0;
+    data.attributes.damageMod = damageModCalc(data.characteristics.str.value+data.characteristics.siz.value);
     
     data.attributes.experienceMod = Math.ceil(data.characteristics.cha.value/6);
     
