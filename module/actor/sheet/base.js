@@ -14,15 +14,12 @@ export class ActorSheetMythras extends ActorSheet {
   /** @override */
   getData() {
     const data = super.getData();
-    //data.dtypes = ["String", "Number", "Boolean"];
-    //for (let attr of Object.values(data.data.attributes)) {
-    //  attr.isCheckbox = attr.dtype === "Boolean";
-    //}
+    data.dtypes = ["String", "Number", "Boolean"];
 
-    // Prepare items.
-    //if (this.actor.data.type == 'character') {
-    //  this._prepareCharacterItems(data);
-    //}
+    //Prepare items.
+    if (this.actor.data.type == 'character') {
+     this._prepareCharacterItems(data);
+    }
 
     return data;
   }
@@ -39,6 +36,7 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Initialize containers.
     const gear = [];
+    const skills = [];
     const features = [];
     const spells = {
       0: [],
