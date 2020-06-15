@@ -17,13 +17,12 @@
 div.window-app section.window-content {
   background: url("../assets/sheet/sheet-background.jpg");
   background-repeat: repeat;
+  background-attachment: local;
 }
 
 /* Styles limited to mythras sheets */
 .mythras .window-content {
   padding: 0px;
-  background: url("../assets/sheet/sheet-background.jpg");
-  background-repeat: repeat;
 }
 
 .mythras .mythras-symbols {
@@ -35,6 +34,19 @@ div.window-app section.window-content {
   overflow: hidden;
   word-wrap: break-word;
   padding: 5px;
+}
+
+.mythras ::-webkit-scrollbar {
+  background: #490200;
+  width: 8px;
+  border-radius: 0px;
+  border: none;
+}
+
+.mythras ::-webkit-scrollbar-thumb {
+  border: none;
+  background: #6c0300;
+  border-radius: 0px;
 }
 
 .mythras header.actor-sheet-header {
@@ -258,4 +270,88 @@ div.window-app section.window-content {
 
 .mythras section.sheet-body {
   padding: 10px;
+}
+
+.mythras div.core {
+  width: 100%;
+}
+
+.mythras div.core .core-top-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.mythras div.core .core-top-flex h2 {
+  margin: 0;
+}
+
+.mythras div.core .core-top-flex .input-label {
+  font-size: 0.7em;
+  margin: 0;
+  margin-top: 8px;
+}
+
+.mythras div.core .core-top-flex .core-personal-info {
+  padding-right: 10px;
+  -webkit-box-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+.mythras div.core .core-top-flex .core-personal-info .core-personal-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.mythras div.core .core-top-flex .core-personal-info .core-personal-flex .core-personal-left-info {
+  padding-right: 3px;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.mythras div.core .core-top-flex .core-personal-info .core-personal-flex .core-personal-right-info {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.mythras div.core .core-top-flex .core-personal-info .core-personal-flex .core-personal-right-info .age-height-weight-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.mythras div.core .core-top-flex .core-personal-info .core-personal-flex .core-personal-right-info .age-height-weight-flex .age {
+  -webkit-box-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+}
+
+.mythras div.core .core-top-flex .core-personal-info .core-personal-flex .core-personal-right-info .age-height-weight-flex .height {
+  -webkit-box-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+}
+
+.mythras div.core .core-top-flex .core-personal-info .core-personal-flex .core-personal-right-info .age-height-weight-flex .weight {
+  -webkit-box-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+}
+
+.mythras div.core .core-top-flex .core-characteristics-attributes-contianer {
+  -webkit-box-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+}
+
+.mythras div.core .core-skills {
+  height: 400px;
+}
+
+.mythras div.core .core-skills h2 {
+  margin-top: 10px;
 }

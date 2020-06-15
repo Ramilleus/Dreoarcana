@@ -1,0 +1,57 @@
+div.core {
+    width: 100%;
+    .core-top-flex{
+        display: flex;
+
+        h2 {
+            margin: 0;
+        }
+
+        .input-label {
+            font-size: 0.7em;
+            margin: 0;
+            margin-top: 8px;
+        }
+
+        .core-personal-info {
+            padding-right: 10px;
+            flex: 2;
+            .core-personal-flex {
+                .core-personal-left-info {
+                    padding-right: 3px;
+                    flex: 1;
+                }
+                .core-personal-right-info {
+                    flex: 1;
+                    .age-height-weight-flex {
+                        display: flex;
+
+                        .age {
+                            flex: 3;
+                        }
+
+                        .height {
+                            flex: 4;
+                        }
+
+                        .weight {
+                            flex: 4;
+                        }
+                    }
+                }
+                display: flex;
+
+                
+            }
+        }
+        .core-characteristics-attributes-contianer {
+            flex: 3;
+        }
+    }
+    .core-skills {
+        height: 400px;
+        h2 {
+            margin-top: 10px;
+        }
+    }
+}

@@ -1,7 +1,5 @@
 .window-content {
     padding: 0px;
-    background: url('../assets/sheet/sheet-background.jpg');
-    background-repeat: repeat;
 }
 
 .mythras-symbols {
@@ -11,4 +9,17 @@
     overflow: hidden;
     word-wrap: break-word;
     padding: 5px;
+}
+
+::-webkit-scrollbar {
+    background: #490200;
+    width: 8px;
+    border-radius: 0px;
+    border: none;
+}
+
+::-webkit-scrollbar-thumb {
+    border: none;
+    background: #6c0300;
+    border-radius: 0px;
 }
