@@ -1,20 +1,20 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
   {{!-- Sheet Header --}}
-  <header class="sheet-header">
+  <header class="sheet-header actor-sheet-header">
     <div class="header-personal">
       <img class="token-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
       <div class="names">
-        <input class="char-name" name="charName" type="text" value="{{actor.name}}" placeholder=""/>
+        <input class="char-name" name="name" type="text" value="{{actor.name}}" placeholder=""/>
         <p class="input-label">CHARACTER NAME</p>
-        <input class="player-name" name="playerName" type="text" value="" placeholder=""/>
+        <input class="player-name" name="data.playerName" type="text" value="{{data.playerName}}" placeholder=""/>
         <p class="input-label">PLAYER NAME</p>
       </div>
     </div>
     <div class="header-stats">
       <div class="stats-container">
         <div class="number-input-container">
-          <input class="luck-points" name="luckPoints" type="text" value="{{data.attributes.luckPoints}}" placeholder=""/>
+          <input class="luck-points" name="data.currentluckPoints" type="text" value="{{data.currentluckPoints}}" placeholder=""/>
           <div class="plus-minus-buttons">
             <a>+</a>
             <a>-</a>
@@ -24,7 +24,7 @@
       </div>
       <div class="stats-container">
         <div class="number-input-container">
-          <input class="experience-rolls" name="experienceRolls" type="text" value="{{data.experienceRolls}}" placeholder=""/>
+          <input class="experience-rolls" name="data.experienceRolls" type="text" value="{{data.experienceRolls}}" placeholder=""/>
           <div class="plus-minus-buttons">
             <a>+</a>
             <a>-</a>

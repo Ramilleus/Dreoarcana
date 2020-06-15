@@ -37,7 +37,7 @@ div.window-app section.window-content {
   padding: 5px;
 }
 
-.mythras header.sheet-header {
+.mythras header.actor-sheet-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -49,7 +49,7 @@ div.window-app section.window-content {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  background: url("../assets/sheet/header-background.jpg");
+  background: url("../assets/sheet/header-background-pattern.jpg");
   background-repeat: repeat;
   color: white;
   padding: 10px;
@@ -57,25 +57,25 @@ div.window-app section.window-content {
   box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
 }
 
-.mythras header.sheet-header input {
+.mythras header.actor-sheet-header input {
   border: 0;
 }
 
-.mythras header.sheet-header input:focus {
+.mythras header.actor-sheet-header input:focus {
   outline: none;
   outline-style: none;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-.mythras header.sheet-header .input-label {
+.mythras header.actor-sheet-header .input-label {
   padding: 0px;
   margin: 0px;
   font-size: 0.8em;
   text-shadow: 0px 0px 6px black;
 }
 
-.mythras header.sheet-header .header-personal {
+.mythras header.actor-sheet-header .header-personal {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -84,7 +84,7 @@ div.window-app section.window-content {
   flex: 0 0 300px;
 }
 
-.mythras header.sheet-header .header-personal .names input {
+.mythras header.actor-sheet-header .header-personal .names input {
   color: white;
   border-bottom: solid white 1px;
   border-radius: 0;
@@ -93,16 +93,17 @@ div.window-app section.window-content {
   text-shadow: 0px 0px 6px black;
 }
 
-.mythras header.sheet-header .header-personal .names .char-name {
+.mythras header.actor-sheet-header .header-personal .names .char-name {
   font-size: 2.0em;
   height: 35px;
 }
 
-.mythras header.sheet-header .header-personal .names .player-name {
+.mythras header.actor-sheet-header .header-personal .names .player-name {
   margin-top: 13px;
+  font-size: 1.3em;
 }
 
-.mythras header.sheet-header .header-personal .token-img {
+.mythras header.actor-sheet-header .header-personal .token-img {
   border-radius: 0;
   width: 100px;
   height: 100px;
@@ -113,7 +114,7 @@ div.window-app section.window-content {
   margin-right: 10px;
 }
 
-.mythras header.sheet-header .header-stats {
+.mythras header.actor-sheet-header .header-stats {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -125,7 +126,7 @@ div.window-app section.window-content {
   justify-content: space-between;
 }
 
-.mythras header.sheet-header .header-stats input {
+.mythras header.actor-sheet-header .header-stats input {
   background-color: white;
   width: 55px;
   height: 55px;
@@ -138,13 +139,13 @@ div.window-app section.window-content {
   box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.5);
 }
 
-.mythras header.sheet-header .header-stats .input-label {
+.mythras header.actor-sheet-header .header-stats .input-label {
   width: 70px;
   text-align: center;
   height: 28px;
 }
 
-.mythras header.sheet-header .header-stats .stats-container {
+.mythras header.actor-sheet-header .header-stats .stats-container {
   height: 100px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -161,13 +162,13 @@ div.window-app section.window-content {
   justify-content: center;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container {
+.mythras header.actor-sheet-header .header-stats .stats-container .number-input-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons {
+.mythras header.actor-sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -181,11 +182,11 @@ div.window-app section.window-content {
   font-size: 1.2em;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:hover {
+.mythras header.actor-sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:hover {
   text-shadow: 0px 0px 5px white;
 }
 
-.mythras header.sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:active {
+.mythras header.actor-sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:active {
   color: #DDD;
 }
 
