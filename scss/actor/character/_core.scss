@@ -1,10 +1,32 @@
 div.core {
     width: 100%;
+    h2 {
+        margin: 0;
+        border: none;
+        color: #490200;
+    }
+
+    hr {
+        margin: 15px 0px;
+        color: black;
+        border-color: black;
+        background-color: black;
+        height: 1px;
+        border: 0;
+    }
+
     .core-top-flex{
         display: flex;
 
-        h2 {
-            margin: 0;
+        input {
+            border: 0;
+        }
+
+        input:focus {
+            outline: none;
+            outline-style: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
         }
 
         .input-label {
@@ -17,6 +39,16 @@ div.core {
             padding-right: 10px;
             flex: 2;
             .core-personal-flex {
+                input {
+                    border-radius: 0;
+                    border-bottom: solid black 1px;
+                    background-color: rgba(0,0,0,0.05);
+                }
+
+                input:focus {
+                    background-color: rgba(0,0,0,0.1);
+                }
+
                 .core-personal-left-info {
                     padding-right: 3px;
                     flex: 1;
@@ -28,10 +60,12 @@ div.core {
 
                         .age {
                             flex: 3;
+                            margin-right: 2px;
                         }
 
                         .height {
                             flex: 4;
+                            margin-right: 2px;
                         }
 
                         .weight {
@@ -46,12 +80,33 @@ div.core {
         }
         .core-characteristics-attributes-contianer {
             flex: 3;
+            .core-characteristics {
+                > div {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 65px;
+                }
+
+                display: flex;
+                justify-content: space-between;
+            }
+            label {
+                margin-top: 5px;
+                font-size: 0.7em;
+                margin-bottom: 8px;
+            }
+
+            input {
+                margin-top: 8px;
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                font-size: 1.2em;
+            }
         }
     }
     .core-skills {
         height: 400px;
-        h2 {
-            margin-top: 10px;
-        }
     }
 }
