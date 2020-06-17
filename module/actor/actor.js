@@ -27,7 +27,7 @@ export class ActorMythras extends Actor {
 
     data.attributes.actionPoints = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/12);    
     
-    data.attributes.damageMod = this.damageModCalc(data.characteristics.str.value+data.characteristics.siz.value);
+    data.attributes.damageMod = this.damageModCalc(Number(data.characteristics.str.value)+Number(data.characteristics.siz.value));
     
     data.attributes.experienceMod = Math.ceil(data.characteristics.cha.value/6);
     
@@ -45,6 +45,7 @@ export class ActorMythras extends Actor {
     console.log(data.attributes);
   }
   damageModCalc(strSize) {
+    console.log(strSize);
     let damageSteps = ["-1d8", "-1d6", "-1d4", "-1d2", "0", "1d2", "1d4", "1d6","1d8","1d10", "1d12", "2d6", "1d8+1d6", "2d8", "1d10+1d8", "2d10"];
 
     let damMod = "";
@@ -57,7 +58,7 @@ export class ActorMythras extends Actor {
       damMod = damageSteps[9+Math.ceil((strSize-50)/10)]
     }else{
       let excess = Math.floor(strSize/110);
-
+      console.log(Math.floor((strSize-110*excess)));
       damMod = excess*2+"d10";
       if(strSize % 110 != 0) damMod = damMod + "+" + damInfinite[Math.floor((strSize-110*excess)/10)];
     }
