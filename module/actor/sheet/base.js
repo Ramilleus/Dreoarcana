@@ -70,7 +70,6 @@ export class ActorSheetMythras extends ActorSheet {
         }
       }
     }
-
     // Assign and return
     actorData.gear = gear;
     actorData.features = features;

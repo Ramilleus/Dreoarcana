@@ -12,7 +12,6 @@ export class ActorMythras extends Actor {
 
     const actorData = this.data;
     const data = actorData.data;
-    console.log(data);
     const flags = actorData.flags;
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
@@ -42,12 +41,8 @@ export class ActorMythras extends Actor {
     data.attributes.magicPoints = Number(data.characteristics.pow.value);
 
     data.attributes.movementRate = 6;
-
-    console.log(data.characteristics);
-    console.log(data.attributes);
   }
   damageModCalc(strSize) {
-    console.log(strSize);
     let damageSteps = ["-1d8", "-1d6", "-1d4", "-1d2", "0", "1d2", "1d4", "1d6","1d8","1d10", "1d12", "2d6", "1d8+1d6", "2d8", "1d10+1d8", "2d10"];
 
     let damMod = "";
@@ -60,7 +55,6 @@ export class ActorMythras extends Actor {
       damMod = damageSteps[9+Math.ceil((strSize-50)/10)]
     }else{
       let excess = Math.floor(strSize/110);
-      console.log(Math.floor((strSize-110*excess)));
       damMod = excess*2+"d10";
       if(strSize % 110 != 0) damMod = damMod + "+" + damInfinite[Math.floor((strSize-110*excess)/10)];
     }
