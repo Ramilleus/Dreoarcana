@@ -36,7 +36,6 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Initialize containers.
     const gear = [];
-    const skills = [];
     const features = [];
     const spells = {
       0: [],
@@ -57,7 +56,7 @@ export class ActorSheetMythras extends ActorSheet {
       let item = i.data;
       i.img = i.img || DEFAULT_TOKEN;
       // Append to gear.
-      if (i.type === 'item') {
+      if (i.type === 'skill') {
         gear.push(i);
       }
       // Append to features.
