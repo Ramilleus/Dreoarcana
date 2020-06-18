@@ -6,7 +6,7 @@ export class ActorSheetMythrasCharacter extends ActorSheetMythras {
     return mergeObject(super.defaultOptions, {
       classes: ["mythras", "sheet", "actor"],
       template: "systems/mythras/templates/actor/actor-sheet.html",
-      width: 700,
+      width: 800,
       height: 900,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });

@@ -25,21 +25,23 @@ export class ActorMythras extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
 
-    data.attributes.actionPoints = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/12);    
+    data.attributes.actionPoints = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/12);    
     
     data.attributes.damageMod = this.damageModCalc(Number(data.characteristics.str.value)+Number(data.characteristics.siz.value));
     
-    data.attributes.experienceMod = Math.ceil(data.characteristics.cha.value/6);
+    data.attributes.experienceMod = Math.ceil(Number(data.characteristics.cha.value)/6);
     
-    data.attributes.healingRate = Math.ceil(data.characteristics.con.value/6);
+    data.attributes.healingRate = Math.ceil(Number(data.characteristics.con.value)/6);
     
-    data.attributes.hitPointMod = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/5);
+    data.attributes.hitPointMod = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/5);
     
-    data.attributes.initiativeBonus = Math.ceil((data.characteristics.int.value+data.characteristics.dex.value)/2);
+    data.attributes.initiativeBonus = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/2);
     
-    data.attributes.luckPoints = Math.ceil(data.characteristics.pow.value/6);
+    data.attributes.luckPoints = Math.ceil(Number(data.characteristics.pow.value)/6);
     
-    data.attributes.magicPoints = data.characteristics.pow.value;
+    data.attributes.magicPoints = Number(data.characteristics.pow.value);
+
+    data.attributes.movementRate = 6;
 
     console.log(data.characteristics);
     console.log(data.attributes);

@@ -1,4 +1,4 @@
-<form class="{{cssClass}} flexcol" autocomplete="off">
+<form class="{{cssClass}} char-sheet flexcol" autocomplete="off">
 
   {{!-- Sheet Header --}}
   <header class="sheet-header actor-sheet-header">
@@ -14,13 +14,29 @@
     <div class="header-stats">
       <div class="stats-container">
         <div class="number-input-container">
-          <input class="luck-points" name="data.currentluckPoints" type="text" value="{{data.currentluckPoints}}" placeholder=""/>
+          <div>
+            <input class="luck-points" name="data.currentluckPoints" type="text" value="{{data.currentluckPoints}}" placeholder=""/>
+            <p class="point-total">/{{data.attributes.luckPoints}}</p>
+          </div>
           <div class="plus-minus-buttons">
             <a>+</a>
             <a>-</a>
           </div>
         </div>
         <p class="input-label">LUCK POINTS</p>
+      </div>
+      <div class="stats-container">
+        <div class="number-input-container">
+          <div>
+            <input class="magic-points" name="data.currentMagicPoints" type="text" value="{{data.currentMagicPoints}}" placeholder=""/>
+            <p class="point-total">/{{data.attributes.magicPoints}}</p>
+          </div>
+          <div class="plus-minus-buttons">
+            <a>+</a>
+            <a>-</a>
+          </div>
+        </div>
+        <p class="input-label">MAGIC POINTS</p>
       </div>
       <div class="stats-container">
         <div class="number-input-container">
