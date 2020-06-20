@@ -188,7 +188,7 @@
     <div class="skill-tables">
       <div class="tables-left">
         <div>
-          <h3><span>Basic Skills</span><a class="add-skills-button item-create" title="Create item" data-type="item">+</a></h3>
+          <h3><span>Standard Skills</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
@@ -196,13 +196,13 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.gear as |item id|}}
+              {{#each actor.standardSkills as |item id|}}
                 <tr class="item" data-item-id="{{item._id}}">
                   <td>
                     <a class="item-name item-control item-edit">{{item.name}}</a>
                   </td>
                   <td>
-                    57
+                    {{item.data.baseVal}}
                   </td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>

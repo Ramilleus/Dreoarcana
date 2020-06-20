@@ -60,7 +60,11 @@
     "skill":{
       "templates": ["base"],
       "primaryChar": "str",
-      "secondaryChar": "str"
+      "secondaryChar": "str",
+      "baseVal": 0,
+      "trainingVal": 0,
+      "miscBonus": 0,
+      "totalVal": 0
     },
     "item": {
       "templates": ["base"],
