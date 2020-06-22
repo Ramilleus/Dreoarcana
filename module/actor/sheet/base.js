@@ -71,7 +71,6 @@ export class ActorSheetMythras extends ActorSheet {
         }
       }
     }
-
     // Assign and return
     actorData.gear = gear;
     actorData.standardSkills = standardSkills;
@@ -80,7 +79,16 @@ export class ActorSheetMythras extends ActorSheet {
   }
 
   /* -------------------------------------------- */
-
+  /** @override */
+  _updateObject(event, formData) {
+    const skills = this.getData().actor.standardSkills;
+    skills.forEach(skill => {
+      let primChar = Number(formData["data.characteristics."+skill.data.primaryChar+".value"]);
+      let secondChar = Number(formData["data.characteristics."+skill.data.secondaryChar+".value"]);
+      this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.baseVal.value": primChar+secondChar });
+    });
+    return this.actor.update(formData);
+  }
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);

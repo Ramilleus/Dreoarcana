@@ -12,11 +12,12 @@ export class ActorMythras extends Actor {
 
     const actorData = this.data;
     const data = actorData.data;
-    console.log(data);
     const flags = actorData.flags;
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     if (actorData.type === 'character') this._prepareCharacterData(actorData);
+
+
   }
 
   /**
@@ -43,11 +44,8 @@ export class ActorMythras extends Actor {
 
     data.attributes.movementRate = 6;
 
-    console.log(data.characteristics);
-    console.log(data.attributes);
   }
   damageModCalc(strSize) {
-    console.log(strSize);
     let damageSteps = ["-1d8", "-1d6", "-1d4", "-1d2", "0", "1d2", "1d4", "1d6","1d8","1d10", "1d12", "2d6", "1d8+1d6", "2d8", "1d10+1d8", "2d10"];
 
     let damMod = "";

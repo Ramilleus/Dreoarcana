@@ -43,7 +43,20 @@ export class MythrasItemSheet extends ItemSheet {
     sheetBody.css("height", bodyHeight);
     return position;
   }
-
+  /** @override */
+  _updateObject(event, formData) {
+    console.log(this.item);
+    console.log(formData)
+    const actorData = this.actor.data;
+    const itemData = this.item.data;
+    console.log()
+    if(this.actor != null){
+      let primChar = Number(actorData.data.characteristics[formData["data.primaryChar"]].value);
+      let secondChar = Number(actorData.data.characteristics[formData["data.secondaryChar"]].value);
+      itemData.data.baseVal.value = primChar+secondChar;
+    }
+    return this.item.update(formData);
+  }
   /* -------------------------------------------- */
 
   /** @override */
