@@ -26,7 +26,7 @@ export class ActorMythras extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
     let items = actorData.items;
-
+    
     data.attributes.actionPoints = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/12);    
     
     data.attributes.damageMod = this.damageModCalc(Number(data.characteristics.str.value)+Number(data.characteristics.siz.value));

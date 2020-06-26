@@ -30,6 +30,9 @@
         "attributes": {
           "move": {
             "value": 6
+          },
+          "fatigue": {
+            "value": "fresh"
           }
         }
       }

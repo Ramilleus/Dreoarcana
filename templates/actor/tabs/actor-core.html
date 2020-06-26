@@ -38,17 +38,19 @@
         </div>
         <h2>Fatigue</h2>
         <div class="fatigue-container">
-          <select>
-            <option>Fresh</option>
-            <option>Winded</option>
-            <option>Tired</option>
-            <option>Wearied</option>
-            <option>Exhausted</option>
-            <option>Debilitated</option>
-            <option>Incapacitated</option>
-            <option>Semi-Conscious</option>
-            <option>Comatose</option>
-            <option>Dead</option>
+          <select class="fatigue-selector" name="data.attributes.fatigue.value" data-dtype="String">
+            {{#select data.attributes.fatigue.value}}
+            <option value="fresh">Fresh</option>
+            <option value="winded">Winded</option>
+            <option value="tired">Tired</option>
+            <option value="wearied">Wearied</option>
+            <option value="exhausted">Exhausted</option>
+            <option value="debilitated">Debilitated</option>
+            <option value="incapacitated">Incapacitated</option>
+            <option value="semi-concious">Semi-Conscious</option>
+            <option value="comatose">Comatose</option>
+            <option value="dead">Dead</option>
+            {{/select}}
           </select>
           <p>time until</p>
         </div>

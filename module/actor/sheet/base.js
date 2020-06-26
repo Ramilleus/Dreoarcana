@@ -89,6 +89,7 @@ export class ActorSheetMythras extends ActorSheet {
       this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.totalVal": primChar+secondChar+skill.data.trainingVal+skill.data.miscBonus});
 
     });
+    
     return this.actor.update(formData);
   }
   /** @override */
@@ -97,6 +98,7 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
+
 
     // Add Inventory Item
     html.find('.item-create').click(this._onItemCreate.bind(this));
