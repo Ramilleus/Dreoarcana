@@ -36,6 +36,7 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Initialize containers.
     const gear = [];
+    const standardSkills = [];
     const features = [];
     const spells = {
       0: [],
@@ -57,7 +58,7 @@ export class ActorSheetMythras extends ActorSheet {
       i.img = i.img || DEFAULT_TOKEN;
       // Append to gear.
       if (i.type === 'skill') {
-        gear.push(i);
+        standardSkills.push(i);
       }
       // Append to features.
       else if (i.type === 'feature') {
@@ -72,18 +73,32 @@ export class ActorSheetMythras extends ActorSheet {
     }
     // Assign and return
     actorData.gear = gear;
+    actorData.standardSkills = standardSkills;
     actorData.features = features;
     actorData.spells = spells;
   }
 
   /* -------------------------------------------- */
+  /** @override */
+  _updateObject(event, formData) {
+    const skills = this.getData().actor.standardSkills;
+    skills.forEach(skill => {
+      let primChar = Number(formData["data.characteristics."+skill.data.primaryChar+".value"]);
+      let secondChar = Number(formData["data.characteristics."+skill.data.secondaryChar+".value"]);
+      this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.baseVal.value": primChar+secondChar });
+      this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.totalVal": primChar+secondChar+skill.data.trainingVal+skill.data.miscBonus});
 
+    });
+    
+    return this.actor.update(formData);
+  }
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
+
 
     // Add Inventory Item
     html.find('.item-create').click(this._onItemCreate.bind(this));
@@ -152,14 +167,26 @@ export class ActorSheetMythras extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+    const dataLabel = dataset.label.split(",");
+    const diffGrades = [2,1.5,1,2/3,0.5,0.1].map(function(x) {return Math.ceil(x*Number(dataLabel[1]))});
+    const diffNames = ["Very Easy: ","Easy: ","Standard: ","Hard: ","Formidable: ","Herculean: "];
 
     if (dataset.roll) {
       let roll = new Roll(dataset.roll, this.actor.data.data);
-      let label = dataset.label ? `Rolling ${dataset.label}` : '';
-      roll.roll().toMessage({
+      let label = dataset.label ? `Rolling ${dataLabel[0]}` : '';
+      const rolled = roll.roll();
+      let diffRolled = diffNames.map(function(x) {return "<strong>"+ x +"</strong>" + rolled.result +" <b>≤</b> "});
+      let contentString = "<h3><strong>Roll: "+rolled.result+"</strong></h3>";
+      diffRolled.forEach((rollStr, index) => {
+        contentString += rollStr + diffGrades[index] +"<br>";
+      })
+      let chatData = {
+        user: game.user._id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
-      });
+        flavor: label,
+        content: contentString
+      };
+      ChatMessage.create(chatData);      
     }
   }
 

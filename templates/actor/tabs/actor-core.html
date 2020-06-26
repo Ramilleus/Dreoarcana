@@ -38,17 +38,19 @@
         </div>
         <h2>Fatigue</h2>
         <div class="fatigue-container">
-          <select>
-            <option>Fresh</option>
-            <option>Winded</option>
-            <option>Tired</option>
-            <option>Wearied</option>
-            <option>Exhausted</option>
-            <option>Debilitated</option>
-            <option>Incapacitated</option>
-            <option>Semi-Conscious</option>
-            <option>Comatose</option>
-            <option>Dead</option>
+          <select class="fatigue-selector" name="data.attributes.fatigue.value" data-dtype="String">
+            {{#select data.attributes.fatigue.value}}
+            <option value="fresh">Fresh</option>
+            <option value="winded">Winded</option>
+            <option value="tired">Tired</option>
+            <option value="wearied">Wearied</option>
+            <option value="exhausted">Exhausted</option>
+            <option value="debilitated">Debilitated</option>
+            <option value="incapacitated">Incapacitated</option>
+            <option value="semi-concious">Semi-Conscious</option>
+            <option value="comatose">Comatose</option>
+            <option value="dead">Dead</option>
+            {{/select}}
           </select>
           <p>time until</p>
         </div>
@@ -158,23 +160,23 @@
           <h3>Movement</h3>
           <div class="movement-inner-container">
             <div>
-              <p>6</p>
+              <p>{{data.attributes.movementRate}}</p>
               <p class="movement-label">WALK</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.runRate}}</p>
               <p class="movement-label">RUN</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.sprintRate}}</p>
               <p class="movement-label">SPRINT</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.climbRate}}</p>
               <p class="movement-label">CLIMB</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.swimRate}}</p>
               <p class="movement-label">SWIM</p>
             </div>
           </div>
@@ -188,7 +190,7 @@
     <div class="skill-tables">
       <div class="tables-left">
         <div>
-          <h3><span>Basic Skills</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
+          <h3><span>Standard Skills</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
@@ -196,13 +198,13 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.gear as |item id|}}
+              {{#each actor.standardSkills as |item id|}}
                 <tr class="item" data-item-id="{{item._id}}">
                   <td>
                     <a class="item-name item-control item-edit">{{item.name}}</a>
                   </td>
                   <td>
-                    57
+                    <span class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">{{item.data.totalVal}}</span>
                   </td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>

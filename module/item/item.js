@@ -13,6 +13,13 @@ export class MythrasItem extends Item {
     const itemData = this.data;
     const actorData = this.actor ? this.actor.data : {};
     const data = itemData.data;
+    if(this.actor != null && itemData.data.baseVal.init === 0){
+      let primChar = Number(eval("actorData.data.characteristics."+itemData.data.primaryChar+".value"));
+      let secondChar = Number(eval("actorData.data.characteristics."+itemData.data.secondaryChar+".value"));
+      itemData.data.baseVal.init = 1;
+      itemData.data.baseVal.value = primChar+secondChar;
+      itemData.data.totalVal = itemData.data.baseVal.value + itemData.data.trainingVal + itemData.data.miscBonus;
+    }
   }
 
   /**

@@ -10,6 +10,6 @@ export class ActorSheetMythrasCharacter extends ActorSheetMythras {
       height: 900,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
-  }
+  }  
 
 }
