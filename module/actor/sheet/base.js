@@ -163,14 +163,26 @@ export class ActorSheetMythras extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
-    console.log(dataset);
+    const dataLabel = dataset.label.split(",");
+    const diffGrades = [2,1.5,1,2/3,0.5,0.1].map(function(x) {return Math.ceil(x*Number(dataLabel[1]))});
+    const diffNames = ["Very Easy: ","Easy: ","Standard: ","Hard: ","Formidable: ","Herculean: "];
+
     if (dataset.roll) {
       let roll = new Roll(dataset.roll, this.actor.data.data);
-      let label = dataset.label ? `Rolling ${dataset.label}` : '';
-      roll.roll().toMessage({
+      let label = dataset.label ? `Rolling ${dataLabel[0]}` : '';
+      const rolled = roll.roll();
+      let diffRolled = diffNames.map(function(x) {return "<strong>"+ x +"</strong>" + rolled.result +" <b>≤</b> "});
+      let contentString = "<h3><strong>Roll: "+rolled.result+"</strong></h3>";
+      diffRolled.forEach((rollStr, index) => {
+        contentString += rollStr + diffGrades[index] +"<br>";
+      })
+      let chatData = {
+        user: game.user._id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
-      });
+        flavor: label,
+        content: contentString
+      };
+      ChatMessage.create(chatData);      
     }
   }
 
