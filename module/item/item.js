@@ -18,6 +18,7 @@ export class MythrasItem extends Item {
       let secondChar = Number(eval("actorData.data.characteristics."+itemData.data.secondaryChar+".value"));
       itemData.data.baseVal.init = 1;
       itemData.data.baseVal.value = primChar+secondChar;
+      itemData.data.totalVal = itemData.data.baseVal.value + itemData.data.trainingVal + itemData.data.miscBonus;
     }
   }
 

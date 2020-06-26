@@ -158,23 +158,23 @@
           <h3>Movement</h3>
           <div class="movement-inner-container">
             <div>
-              <p>6</p>
+              <p>{{data.attributes.movementRate}}</p>
               <p class="movement-label">WALK</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.runRate}}</p>
               <p class="movement-label">RUN</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.sprintRate}}</p>
               <p class="movement-label">SPRINT</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.climbRate}}</p>
               <p class="movement-label">CLIMB</p>
             </div>
             <div>
-              <p>6</p>
+              <p>{{data.attributes.swimRate}}</p>
               <p class="movement-label">SWIM</p>
             </div>
           </div>
@@ -202,7 +202,7 @@
                     <a class="item-name item-control item-edit">{{item.name}}</a>
                   </td>
                   <td>
-                    <span class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.baseVal.value}}">{{item.data.baseVal.value}}</span>
+                    <span class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">{{item.data.totalVal}}</span>
                   </td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>

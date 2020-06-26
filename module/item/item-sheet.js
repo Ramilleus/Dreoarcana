@@ -45,15 +45,13 @@ export class MythrasItemSheet extends ItemSheet {
   }
   /** @override */
   _updateObject(event, formData) {
-    console.log(this.item);
-    console.log(formData)
     const actorData = this.actor.data;
     const itemData = this.item.data;
-    console.log()
     if(this.actor != null){
       let primChar = Number(actorData.data.characteristics[formData["data.primaryChar"]].value);
       let secondChar = Number(actorData.data.characteristics[formData["data.secondaryChar"]].value);
       itemData.data.baseVal.value = primChar+secondChar;
+      itemData.data.totalVal = itemData.data.baseVal.value + itemData.data.trainingVal + itemData.data.miscBonus;
     }
     return this.item.update(formData);
   }
