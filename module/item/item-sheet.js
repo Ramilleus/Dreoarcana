@@ -22,6 +22,9 @@ export class MythrasItemSheet extends ItemSheet {
 
     // Alternatively, you could use the following return statement to do a
     // unique item sheet by type, like `weapon-sheet.html`.
+    if(this.item.data.type === "standardSkill" || this.item.data.type === "professionalSkill" || this.item.data.type ==="combatStyle" || this.item.data.type === "magicSkill" || this.item.data.type === "passion"){
+      return `${path}/item-skill-sheet.html`;
+    }
     return `${path}/item-${this.item.data.type}-sheet.html`;
   }
 
@@ -46,9 +49,9 @@ export class MythrasItemSheet extends ItemSheet {
   /** @override */
   _updateObject(event, formData) {
     super._updateObject(event, formData);
-    const actorData = this.actor.data;
     const itemData = this.item.data;
     if(this.actor != null){
+      const actorData = this.actor.data;
       let primChar = Number(actorData.data.characteristics[formData["data.primaryChar"]].value);
       let secondChar = Number(actorData.data.characteristics[formData["data.secondaryChar"]].value);
       itemData.data.baseVal.value = primChar+secondChar;

@@ -28,8 +28,33 @@
           }
         },
         "attributes": {
-          "move": {
-            "value": 6
+          "actionPoints":{
+            "mod": 0
+          },
+          "damageMod": {
+            "mod": 0
+          },
+          "experienceMod": {
+            "mod": 0
+          },
+          "healingRate":{
+            "mod": 0
+          },
+          "hitPointMod":{
+            "mod": 0
+          },
+          "initiativeBonus":{
+            "mod": 0
+          },
+          "luckPoints":{
+            "mod": 0
+          },
+          "magicPoints":{
+            "mod": 0
+          },
+          "movement": {
+            "walk": 6,
+            "mod": 0
           },
           "fatigue": {
             "value": "fresh"
@@ -57,23 +82,40 @@
     }
   },
   "Item": {
-    "types": ["skill", "item", "feature", "spell"],
+    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill","passion", "item", "feature", "spell"],
     "templates": {
       "base": {
         "description": ""
+      },
+      "skill":{
+        "description":"hello",
+        "primaryChar": "str",
+        "secondaryChar": "str",
+        "baseVal": {
+          "value" : 0,
+          "init" : 0
+        },
+        "trainingVal": 0,
+        "miscBonus": 0,
+        "totalVal": 0
       }
     },
-    "skill":{
-      "templates": ["base"],
-      "primaryChar": "str",
-      "secondaryChar": "str",
-      "baseVal": {
-        "value" : 0,
-        "init" : 0
-      },
-      "trainingVal": 0,
-      "miscBonus": 0,
-      "totalVal": 0
+    "standardSkill":{
+      "templates": ["skill"]
+    },
+    "professionalSkill":{
+      "templates": ["skill"]
+    },
+    "combatStyle":{
+      "templates": ["skill"],
+      "traits": "",
+      "weapons": ""
+    },
+    "magicSkill":{
+      "templates": ["skill"]
+    },
+    "passion":{
+      "templates": ["skill"]
     },
     "item": {
       "templates": ["base"],

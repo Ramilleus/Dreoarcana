@@ -27,36 +27,61 @@ export class ActorMythras extends Actor {
     const data = actorData.data;
     let items = actorData.items;
     
-    data.attributes.actionPoints = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/12);    
+    data.attributes.actionPoints.value = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/12) + Number(data.attributes.actionPoints.mod);
+       
     
-    data.attributes.damageMod = this.damageModCalc(Number(data.characteristics.str.value)+Number(data.characteristics.siz.value));
+    data.attributes.damageMod.value = this.damageModCalc((Number(data.characteristics.str.value)+Number(data.characteristics.siz.value)), Number(data.attributes.damageMod.mod));
     
-    data.attributes.experienceMod = Math.ceil(Number(data.characteristics.cha.value)/6);
+    data.attributes.experienceMod.value = Math.ceil(Number(data.characteristics.cha.value)/6)+Number(data.attributes.experienceMod.mod);
     
-    data.attributes.healingRate = Math.ceil(Number(data.characteristics.con.value)/6);
+    data.attributes.healingRate.value = Math.ceil(Number(data.characteristics.con.value)/6)+Number(data.attributes.healingRate.mod);
     
-    data.attributes.hitPointMod = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/5);
+    data.attributes.hitPointMod.value = Math.ceil((Number(data.characteristics.siz.value)+Number(data.characteristics.con.value))/5)+Number(data.attributes.hitPointMod.mod);
     
-    data.attributes.initiativeBonus = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/2);
+    data.attributes.initiativeBonus.value = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/2)+Number(data.attributes.initiativeBonus.mod);
     
-    data.attributes.luckPoints = Math.ceil(Number(data.characteristics.pow.value)/6);
+    data.attributes.luckPoints.value = Math.ceil(Number(data.characteristics.pow.value)/6)+Number(data.attributes.luckPoints.mod);
     
-    data.attributes.magicPoints = Number(data.characteristics.pow.value);
+    data.attributes.magicPoints.value = Number(data.characteristics.pow.value)+Number(data.attributes.magicPoints.mod);
 
-    data.attributes.movementRate = 6;
+    data.attributes.movement.walk = 6 + Number(data.attributes.movement.mod);
 
-    data.attributes.runRate = this.moveRateCalc(data.attributes.movementRate, items.find(entry => entry.name==="Athletics"), "run");
+    data.attributes.runRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "run");
     
-    data.attributes.sprintRate = this.moveRateCalc(data.attributes.movementRate, items.find(entry => entry.name==="Athletics"), "sprint");
+    data.attributes.sprintRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "sprint");
 
-    data.attributes.climbRate = this.moveRateCalc(data.attributes.movementRate, items.find(entry => entry.name==="Athletics"), "climb");
+    data.attributes.climbRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "climb");
 
-    data.attributes.swimRate = this.moveRateCalc(data.attributes.movementRate, items.find(entry => entry.name==="Athletics"), "swim");
+    data.attributes.swimRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "swim");
 
     data.attributes.jumpDist = data.height;
 
+    data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(data.attributes.fatigue.value, Number(data.attributes.healingRate.value));
 
 
+  }
+  recoveryTimeCalc(fatigueLevel, healRate){
+    let levels = {'fresh': "Feeling fresh!", 
+      'winded': 15, 
+      'tired': 3, 
+      'wearied': 6, 
+      'exhausted': 12, 
+      'debilitated': 18, 
+      'incapacitated': 24, 
+      'semi-conscious': 36, 
+      'comatose': 48, 
+      'dead': "There is no hope."
+    };
+    if (healRate < 1) healRate = 1;
+    if(fatigueLevel == 'fresh'){
+      return levels[fatigueLevel];
+    }else if(fatigueLevel == 'dead'){
+      return levels[fatigueLevel];
+    }else if(fatigueLevel == 'winded'){
+      return Math.ceil(levels[fatigueLevel]/healRate) + " minutes until Fresh.";
+    }else{
+      return Math.ceil(levels[fatigueLevel]/healRate) + " hours until Fresh";
+    }
   }
   moveRateCalc(move, skill, type){
     if(skill === undefined){
@@ -76,21 +101,33 @@ export class ActorMythras extends Actor {
       return move
     }
   }
-  damageModCalc(strSize) {
+  damageModCalc(total, stepInc) {
     let damageSteps = ["-1d8", "-1d6", "-1d4", "-1d2", "0", "1d2", "1d4", "1d6","1d8","1d10", "1d12", "2d6", "1d8+1d6", "2d8", "1d10+1d8", "2d10"];
 
     let damMod = "";
-
+    
     let damInfinite = damageSteps.slice(5);
-
-    if(strSize < 51){
-      damMod = damageSteps[Math.ceil(strSize/5)-1];
-    }else if(strSize < 111){
-      damMod = damageSteps[9+Math.ceil((strSize-50)/10)]
-    }else{
-      let excess = Math.floor(strSize/110);
+    let infFlag = false;
+    if(total < 51){
+      let index = Math.ceil(total/5)-1;
+      if(index + stepInc >= damageSteps.length){
+        infFlag = true;
+      }else{
+        damMod = damageSteps[index+stepInc];
+      }
+    }else if(total+stepInc*10 < 111){
+      let index = 9+Math.ceil((total-50)/10);
+      if(index + stepInc >= damageSteps.length){
+        infFlag = true;
+      }else{
+        damMod = damageSteps[index+stepInc];
+      }
+    }
+    if(total >= 111 || infFlag){
+      total+=stepInc*10
+      let excess = Math.floor(total/110);
       damMod = excess*2+"d10";
-      if(strSize % 110 != 0) damMod = damMod + "+" + damInfinite[Math.floor((strSize-110*excess)/10)];
+      if(total % 110 != 0) damMod = damMod + "+" + damInfinite[Math.floor((total-110*excess)/10)];
     }
     return damMod;
   }
