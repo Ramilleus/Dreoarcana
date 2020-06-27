@@ -88,7 +88,7 @@
         "description": ""
       },
       "skill":{
-        "description":"hello",
+        "description":"",
         "primaryChar": "str",
         "secondaryChar": "str",
         "baseVal": {
