@@ -59,31 +59,31 @@
         <h2>Characteristics</h2>
         <div class="core-characteristics">
           <div>
-            <input name="data.characteristics.str.value" value="{{data.characteristics.str.value}}" type="text" />
+            <input id="characteristic-box" name="data.characteristics.str.value" value="{{data.characteristics.str.value}}" type="text" />
             <label>STRENGTH</label>
           </div>
           <div>
-            <input name="data.characteristics.con.value" value="{{data.characteristics.con.value}}" type="text" />
+            <input id="characteristic-box" name="data.characteristics.con.value" value="{{data.characteristics.con.value}}" type="text" />
             <label>CONSTITUTION</label>
           </div>
           <div>
-            <input name="data.characteristics.siz.value" value="{{data.characteristics.siz.value}}" type="text" />
+            <input id="characteristic-box" name="data.characteristics.siz.value" value="{{data.characteristics.siz.value}}" type="text" />
             <label>SIZE</label>
           </div>
           <div>
-            <input name="data.characteristics.dex.value" value="{{data.characteristics.dex.value}}" type="text" />
+            <input id="characteristic-box" name="data.characteristics.dex.value" value="{{data.characteristics.dex.value}}" type="text" />
             <label>DEXTERITY</label>
           </div>
           <div>
-            <input name="data.characteristics.int.value" value="{{data.characteristics.int.value}}" type="text" />
+            <input id="characteristic-box" name="data.characteristics.int.value" value="{{data.characteristics.int.value}}" type="text" />
             <label>INTELLIGENCE</label>
           </div>
           <div>
-            <input name="data.characteristics.pow.value" value="{{data.characteristics.pow.value}}" type="text" />
+            <input id="characteristic-box" name="data.characteristics.pow.value" value="{{data.characteristics.pow.value}}" type="text" />
             <label>POWER</label>
           </div>
           <div>
-            <input name="data.characteristics.cha.value" value="{{data.characteristics.cha.value}}" type="text" />
+            <input id="characteristic-box" name="data.characteristics.cha.value" value="{{data.characteristics.cha.value}}" type="text" />
             <label>CHARISMA</label>
           </div>
         </div>
@@ -92,63 +92,63 @@
           <div>
             <div class="attribute-container">
               <div class="attribute">
-                <p name="data.attributes.actionPoints">{{data.attributes.actionPoints}}</p>
+                <p name="data.attributes.actionPoints.value">{{data.attributes.actionPoints.value}}</p>
                 <div>
-                  <span>+</span><input type="text" />
+                  <span>+</span><input type="text" name="data.attributes.actionPoints.mod" value="{{data.attributes.actionPoints.mod}}"/>
                 </div>
               </div>
-              <p class="attribute-label">ACTION POINTS</p>
+              <p class="attribute-label" >ACTION POINTS</p>
             </div>
             <div class="attribute-container">
               <div class="attribute">
-                <p name="data.attributes.damageMod">{{data.attributes.damageMod}}</p>
+                <p name="data.attributes.damageMod.value">{{data.attributes.damageMod.value}}</p>
                 <div>
-                  <span>+</span><input type="text" />
+                  <span>+</span><input type="text" name="data.attributes.damageMod.mod" value="{{data.attributes.damageMod.mod}}"/>
                 </div>
               </div>
               <p class="attribute-label">DAMAGE MOD</p>
             </div>
             <div class="attribute-container">
               <div class="attribute">
-                <p name="data.attributes.experienceMod">{{data.attributes.experienceMod}}</p>
+                <p name="data.attributes.experienceMod.value">{{data.attributes.experienceMod.value}}</p>
                 <div>
-                  <span>+</span><input type="text" />
+                  <span>+</span><input type="text" name="data.attributes.experienceMod.mod" value="{{data.attributes.experienceMod.mod}}"/>
                 </div>
               </div>
               <p class="attribute-label">EXPERIENCE MOD</p>
             </div>
             <div class="attribute-container">
               <div class="attribute">
-                <p name="data.attributes.healingRate">{{data.attributes.healingRate}}</p>
+                <p name="data.attributes.healingRate.value">{{data.attributes.healingRate.value}}</p>
                 <div>
-                  <span>+</span><input type="text" />
+                  <span>+</span><input type="text" name="data.attributes.healingRate.mod" value="{{data.attributes.healingRate.mod}}"/>
                 </div>
               </div>
               <p class="attribute-label">HEALING RATE</p>
             </div>
             <div class="attribute-container">
               <div class="attribute">
-                <p name="data.attributes.initiativeBonus">{{data.attributes.initiativeBonus}}</p>
+                <p name="data.attributes.initiativeBonus.value">{{data.attributes.initiativeBonus.value}}</p>
                 <div>
-                  <span>+</span><input type="text" />
+                  <span>+</span><input type="text" name="data.attributes.initiativeBonus.mod" value="{{data.attributes.initiativeBonus.mod}}"/>
                 </div>
               </div>
               <p class="attribute-label">INITIATIVE BONUS</p>
             </div>
             <div class="attribute-container">
               <div class="attribute">
-                <p name="data.attributes.luckPoints">{{data.attributes.luckPoints}}</p>
+                <p name="data.attributes.luckPoints.value">{{data.attributes.luckPoints.value}}</p>
                 <div>
-                  <span>+</span><input type="text" />
+                  <span>+</span><input type="text" name="data.attributes.luckPoints.mod" value="{{data.attributes.luckPoints.mod}}"/>
                 </div>
               </div>
               <p class="attribute-label">LUCK<br>POINTS</p>
             </div>
             <div class="attribute-container">
               <div class="attribute">
-                <p name="data.attributes.movementRate">{{data.attributes.movementRate}}</p>
+                <p name="data.attributes.movement.walk">{{data.attributes.movement.walk}}</p>
                 <div>
-                  <span>+</span><input type="text" />
+                  <span>+</span><input type="text" name="data.attributes.movement.mod" value="{{data.attributes.movement.mod}}"/>
                 </div>
               </div>
               <p class="attribute-label">MOVEMENT RATE</p>
@@ -160,7 +160,7 @@
           <h3>Movement</h3>
           <div class="movement-inner-container">
             <div>
-              <p>{{data.attributes.movementRate}}</p>
+              <p>{{data.attributes.movement.walk}}</p>
               <p class="movement-label">WALK</p>
             </div>
             <div>
@@ -190,7 +190,7 @@
     <div class="skill-tables">
       <div class="tables-left">
         <div>
-          <h3><span>Standard Skills</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
+          <h3><span>Standard Skills</span><a class="add-skills-button item-create" title="Create item" data-type="standardSkill">+</a></h3>
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
@@ -215,7 +215,7 @@
           </table>
         </div>
         <div>
-          <h3><span>Combat Styles</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
+          <h3><span>Combat Styles</span><a class="add-skills-button item-create" title="Create item" data-type="combatStyle">+</a></h3>
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
@@ -223,7 +223,7 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.standardSkills as |item id|}}
+              {{#each actor.combatStyles as |item id|}}
                 <tr class="item" data-item-id="{{item._id}}">
                   <td>
                     <a class="item-name item-control item-edit">{{item.name}}</a>
@@ -242,7 +242,7 @@
       </div>
       <div class="tables-right">
         <div>
-          <h3><span>Professional Skills</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
+          <h3><span>Professional Skills</span><a class="add-skills-button item-create" title="Create item" data-type="professionalSkill">+</a></h3>
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
@@ -267,7 +267,7 @@
           </table>
         </div>
         <div>
-          <h3><span>Magic Skills</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
+          <h3><span>Magic Skills</span><a class="add-skills-button item-create" title="Create item" data-type="magicSkill">+</a></h3>
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
@@ -275,7 +275,7 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.standardSkills as |item id|}}
+              {{#each actor.magicSkills as |item id|}}
                 <tr class="item" data-item-id="{{item._id}}">
                   <td>
                     <a class="item-name item-control item-edit">{{item.name}}</a>
@@ -292,7 +292,7 @@
           </table>
         </div>
         <div>
-          <h3><span>Passions</span><a class="add-skills-button item-create" title="Create item" data-type="skill">+</a></h3>
+          <h3><span>Passions</span><a class="add-skills-button item-create" title="Create item" data-type="passion">+</a></h3>
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
@@ -300,7 +300,7 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.standardSkills as |item id|}}
+              {{#each actor.passions as |item id|}}
                 <tr class="item" data-item-id="{{item._id}}">
                   <td>
                     <a class="item-name item-control item-edit">{{item.name}}</a>

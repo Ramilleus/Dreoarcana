@@ -37,6 +37,11 @@ export class ActorSheetMythras extends ActorSheet {
     // Initialize containers.
     const gear = [];
     const standardSkills = [];
+    const professionalSkills = [];
+    const combatStyles = [];
+    const magicSkills = [];
+    const passions = [];
+    const skillsAndPassions = [];
     const features = [];
     const spells = {
       0: [],
@@ -57,8 +62,21 @@ export class ActorSheetMythras extends ActorSheet {
       let item = i.data;
       i.img = i.img || DEFAULT_TOKEN;
       // Append to gear.
-      if (i.type === 'skill') {
+      if (i.type === 'standardSkill') {
         standardSkills.push(i);
+        skillsAndPassions.push(i);
+      }else if (i.type === 'professionalSkill'){
+        professionalSkills.push(i);
+        skillsAndPassions.push(i);
+      }else if (i.type === 'combatStyle'){
+        combatStyles.push(i);
+        skillsAndPassions.push(i)
+      }else if (i.type === 'magicSkill'){
+        magicSkills.push(i);
+        skillsAndPassions.push(i);
+      }else if (i.type === 'passion'){
+        passions.push(i);
+        skillsAndPassions.push(i);
       }
       // Append to features.
       else if (i.type === 'feature') {
@@ -74,6 +92,11 @@ export class ActorSheetMythras extends ActorSheet {
     // Assign and return
     actorData.gear = gear;
     actorData.standardSkills = standardSkills;
+    actorData.professionalSkills = professionalSkills;
+    actorData.combatStyles = combatStyles;
+    actorData.magicSkills = magicSkills;
+    actorData.passions = passions;
+    actorData.skillsAndPassions = skillsAndPassions;
     actorData.features = features;
     actorData.spells = spells;
   }
@@ -81,16 +104,17 @@ export class ActorSheetMythras extends ActorSheet {
   /* -------------------------------------------- */
   /** @override */
   _updateObject(event, formData) {
-    const skills = this.getData().actor.standardSkills;
-    skills.forEach(skill => {
-      let primChar = Number(formData["data.characteristics."+skill.data.primaryChar+".value"]);
-      let secondChar = Number(formData["data.characteristics."+skill.data.secondaryChar+".value"]);
-      this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.baseVal.value": primChar+secondChar });
-      this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.totalVal": primChar+secondChar+skill.data.trainingVal+skill.data.miscBonus});
+    const actor = this.getData().actor;
+    const skills = actor.skillsAndPassions;
+    if(event.target != null && event.target.id === "characteristic-box"){
+      skills.forEach(skill => {
+        let primChar = Number(formData["data.characteristics."+skill.data.primaryChar+".value"]);
+        let secondChar = Number(formData["data.characteristics."+skill.data.secondaryChar+".value"]);
+        this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.baseVal.value": primChar+secondChar });
+        this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.totalVal": primChar+secondChar+skill.data.trainingVal+skill.data.miscBonus});
 
-    });
-    console.log(formData);
-    console.log(this.actor);
+      });
+    }
     return this.actor.update(formData);
   }
 
@@ -185,7 +209,7 @@ export class ActorSheetMythras extends ActorSheet {
     // Grab any data associated with this control.
     const data = duplicate(header.dataset);
     // Initialize a default name.
-    const name = `New ${type.capitalize()}`;
+    const name = `New ${type.capitalize().replace(/([a-z])([A-Z])/g, '$1 $2')}`;
     // Prepare the item object.
     const itemData = {
       name: name,
