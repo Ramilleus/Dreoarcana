@@ -8,8 +8,8 @@ export class MythrasItemSheet extends ItemSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["mythras", "sheet", "item"],
-      width: 520,
-      height: 480,
+      width: 495,
+      height: 550,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }

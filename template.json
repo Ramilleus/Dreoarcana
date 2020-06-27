@@ -60,7 +60,7 @@
     "types": ["skill", "item", "feature", "spell"],
     "templates": {
       "base": {
-        "description": "hello"
+        "description": ""
       }
     },
     "skill":{

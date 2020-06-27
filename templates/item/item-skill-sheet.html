@@ -1,27 +1,26 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form class="{{cssClass}} skill-sheet flexcol" autocomplete="off">
   <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-    <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-      <div class="grid grid-2col">
-        <div class="resource">
-          <label class="resource-label">Base Characteristic 1</label>
-          <select name="data.primaryChar" data-dtype="String">
-            {{#select data.primaryChar}}
-            <option value="str">Strength</option>
-            <option value="con">Constitution</option>
-            <option value="siz">Size</option>
-            <option value="dex">Dexterity</option>
-            <option value="int">Intelligence</option>
-            <option value="pow">Power</option>
-            <option value="cha">Charisma</option>
-            {{/select}}
-          </select>
-        </div>
-        <div class="resource">
-          <label class="resource-label">Base Characteristic 2</label>
-          <select name="data.secondaryChar" data-dtype="String">
-              {{#select data.secondaryChar}}
+    <div class="header-flex">
+      <div class="header-fields">
+        <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+      </div>
+      <h1>57%</h1>
+    </div>
+  </header>
+
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body flexcol">
+
+    <div class="upper-flex">
+      <div class="skill-section-left">
+        <div class="skill-section">
+          <h3>Base Characteristics</h3>
+          <span class="resource">
+            <select name="data.primaryChar" data-dtype="String">
+              {{#select data.primaryChar}}
               <option value="str">Strength</option>
               <option value="con">Constitution</option>
               <option value="siz">Size</option>
@@ -30,30 +29,64 @@
               <option value="pow">Power</option>
               <option value="cha">Charisma</option>
               {{/select}}
-          </select>
+            </select>
+          </span>
+          <span>+</span>
+          <span class="resource">
+            <select name="data.secondaryChar" data-dtype="String">
+                {{#select data.secondaryChar}}
+                <option value="str">Strength</option>
+                <option value="con">Constitution</option>
+                <option value="siz">Size</option>
+                <option value="dex">Dexterity</option>
+                <option value="int">Intelligence</option>
+                <option value="pow">Power</option>
+                <option value="cha">Charisma</option>
+                {{/select}}
+            </select>
+          </span>
+        </div>
+        <div class="skill-section">
+          <h3>Other</h3>
+          <div class="other-flex">
+            <div>
+              <label><p>REPLACE ME</p></label>
+              <input type="checkbox" />
+            </div>
+            <div>
+              <label><p>REPLACE ME TOO</p></label>
+              <input type="checkbox" />
+            </div>
+            <div>
+              <label><p>REPLACE ME ALSO</p></label>
+              <input type="checkbox" />
+            </div>
+          </div>
         </div>
       </div>
+      
+      <div class="skill-section-right">
+        <div class="skill-section">
+          <div class="improvements-flex">
+            <div>
+              <label><p>TRAINING</p></label>
+              <input type="text" />%
+            </div>
+            <div>
+              <label><p>MISC</p></label>
+              <input class="misc-input" type="text" />%
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
-  </header>
-
-  {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="attributes">Attributes</a>
-  </nav>
-
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
-
-    {{!-- Description Tab --}}
-    <div class="tab desc" data-group="primary" data-tab="description">
+    <h2>Description</h2>
+    <div class="desc skill-section" data-group="primary">
       {{editor content=data.description target="data.description" button=false owner=owner editable=editable}}
       <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
     </div>
-
-    {{!-- Attributes Tab --}}
-    <div class="tab attributes" data-group="primary" data-tab="attributes">
-      {{!-- As you add new fields, add them in here! --}}
-    </div>
   </section>
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
 </form>

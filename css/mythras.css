@@ -14,6 +14,11 @@
   src: url("../fonts/Mythras/Mythras.otf");
 }
 
+@font-face {
+  font-family: 'Amethysta';
+  src: url("../fonts/Amethysta/Amethysta-Regular.otf");
+}
+
 div.window-app section.window-content {
   background: url("../assets/sheet/sheet-background.jpg");
   background-repeat: repeat;
@@ -53,14 +58,6 @@ div.window-app section.window-content {
   border: none;
   background: #6c0300;
   border-radius: 0px;
-}
-
-.mythras .desc {
-  height: 200px;
-}
-
-.mythras .desc .editor {
-  height: 200px;
 }
 
 .mythras header.actor-sheet-header {
@@ -666,4 +663,215 @@ div.window-app section.window-content {
 
 .mythras div.core .core-skills .skill-tables > div div .delete-column {
   width: 20px;
+}
+
+.mythras .skill-sheet {
+  min-width: 400px;
+}
+
+.mythras .skill-sheet h2 {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.mythras .skill-sheet .sheet-header {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  height: 68px;
+}
+
+.mythras .skill-sheet .sheet-body {
+  padding: 0px 10px;
+}
+
+.mythras .skill-sheet input:focus {
+  outline: none;
+  outline-style: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.mythras .skill-sheet input {
+  border: 0;
+}
+
+.mythras .skill-sheet select {
+  border: 0;
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.mythras .skill-sheet select:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras .skill-sheet select:focus {
+  outline: none;
+  outline-style: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras .skill-sheet .header-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: url("../assets/sheet/header-background-pattern.jpg");
+  background-repeat: repeat;
+  -webkit-box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+}
+
+.mythras .skill-sheet .header-flex > h1 {
+  text-align: right;
+  color: white;
+  font-family: 'Amethysta';
+  margin: 0px;
+  font-size: 2.5em;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.mythras .skill-sheet .header-flex h1 {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.mythras .skill-sheet .header-flex h1 input {
+  width: 100%;
+  margin: 0px;
+  color: white;
+  border: 0;
+  border-bottom: solid white 1px;
+  border-radius: 0;
+  font-family: 'Fanwood';
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0px 0px 6px black;
+}
+
+.mythras .skill-sheet .header-flex h1 input:focus {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mythras .skill-sheet .header-flex h1 input:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mythras .skill-sheet .upper-flex {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section label p {
+  font-size: 0.7em;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .improvements-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .improvements-flex input {
+  width: 50px;
+  margin-bottom: 8px;
+  border-radius: 0;
+  border-bottom: solid rgba(0, 0, 0, 0.5) 1px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .improvements-flex input:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .improvements-flex input:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .improvements-flex .misc-input {
+  margin-bottom: 2px;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .other-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .other-flex input {
+  width: 15px;
+  height: 15px;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .other-flex div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.mythras .skill-sheet .desc.skill-section {
+  height: 150px;
+  margin-bottom: 0px;
+}
+
+.mythras .skill-sheet .desc.skill-section .editor {
+  height: 150px;
+}
+
+.mythras .skill-sheet .skill-section {
+  margin-bottom: 10px;
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+  padding: 5px;
+}
+
+.mythras .skill-sheet .skill-section-left {
+  width: 290px;
+  margin-right: 5px;
+}
+
+.mythras .skill-sheet .skill-section-right {
+  width: 75px;
+  margin-left: 5px;
 }
