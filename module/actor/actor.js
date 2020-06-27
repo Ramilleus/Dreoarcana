@@ -56,7 +56,32 @@ export class ActorMythras extends Actor {
 
     data.attributes.jumpDist = data.height;
 
+    data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(data.attributes.fatigue.value, Number(data.attributes.healingRate.value));
 
+
+  }
+  recoveryTimeCalc(fatigueLevel, healRate){
+    let levels = {'fresh': "Feeling fresh!", 
+      'winded': 15, 
+      'tired': 3, 
+      'wearied': 6, 
+      'exhausted': 12, 
+      'debilitated': 18, 
+      'incapacitated': 24, 
+      'semi-conscious': 36, 
+      'comatose': 48, 
+      'dead': "There is no hope."
+    };
+    if (healRate < 1) healRate = 1;
+    if(fatigueLevel == 'fresh'){
+      return levels[fatigueLevel];
+    }else if(fatigueLevel == 'dead'){
+      return levels[fatigueLevel];
+    }else if(fatigueLevel == 'winded'){
+      return Math.ceil(levels[fatigueLevel]/healRate) + " minutes until Fresh.";
+    }else{
+      return Math.ceil(levels[fatigueLevel]/healRate) + " hours until Fresh";
+    }
   }
   moveRateCalc(move, skill, type){
     if(skill === undefined){
