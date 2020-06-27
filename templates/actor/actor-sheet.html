@@ -15,12 +15,12 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="luck-points" name="data.currentluckPoints" type="text" value="{{data.currentluckPoints}}" placeholder=""/>
+            <input class="luck-points" name="data.currentLuckPoints" type="text" value="{{data.currentLuckPoints}}" placeholder=""/>
             <p class="point-total">/{{data.attributes.luckPoints}}</p>
           </div>
           <div class="plus-minus-buttons">
-            <a>+</a>
-            <a>-</a>
+            <a id="increase-current-lp">+</a>
+            <a id="decrease-current-lp">-</a>
           </div>
         </div>
         <p class="input-label">LUCK POINTS</p>
@@ -32,8 +32,8 @@
             <p class="point-total">/{{data.attributes.magicPoints}}</p>
           </div>
           <div class="plus-minus-buttons">
-            <a>+</a>
-            <a>-</a>
+            <a id="increase-current-mp">+</a>
+            <a id="decrease-current-mp">-</a>
           </div>
         </div>
         <p class="input-label">MAGIC POINTS</p>
@@ -42,8 +42,8 @@
         <div class="number-input-container">
           <input class="experience-rolls" name="data.experienceRolls" type="text" value="{{data.experienceRolls}}" placeholder=""/>
           <div class="plus-minus-buttons">
-            <a>+</a>
-            <a>-</a>
+            <a id="increase-current-er">+</a>
+            <a id="decrease-current-er">-</a>
           </div>
         </div>
         <p class="input-label">EXPERIENCE ROLLS</p>

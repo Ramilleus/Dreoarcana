@@ -6,25 +6,25 @@
         "name": "",
         "characteristics": {
           "str": {
-            "value": 10
+            "value": 11
           },
           "con": {
-            "value": 10
+            "value": 11
           },
           "siz": {
-            "value": 10
+            "value": 11
           },
           "dex": {
-            "value": 10
+            "value": 11
           },
           "int": {
-            "value": 10
+            "value": 11
           },
           "pow": {
-            "value": 10
+            "value": 11
           },
           "cha": {
-            "value": 10
+            "value": 11
           }
         },
         "attributes": {
@@ -34,7 +34,10 @@
           "fatigue": {
             "value": "fresh"
           }
-        }
+        },
+        "currentLuckPoints": 2,
+        "currentMagicPoints": 11,
+        "experienceRolls": 0
       }
     },
     "character": {
@@ -57,7 +60,7 @@
     "types": ["skill", "item", "feature", "spell"],
     "templates": {
       "base": {
-        "description": ""
+        "description": "hello"
       }
     },
     "skill":{

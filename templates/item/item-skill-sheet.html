@@ -46,8 +46,9 @@
   <section class="sheet-body">
 
     {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+    <div class="tab desc" data-group="primary" data-tab="description">
+      {{editor content=data.description target="data.description" button=false owner=owner editable=editable}}
+      <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
     </div>
 
     {{!-- Attributes Tab --}}

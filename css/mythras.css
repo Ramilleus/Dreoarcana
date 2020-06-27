@@ -55,6 +55,14 @@ div.window-app section.window-content {
   border-radius: 0px;
 }
 
+.mythras .desc {
+  height: 200px;
+}
+
+.mythras .desc .editor {
+  height: 200px;
+}
+
 .mythras header.actor-sheet-header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -636,6 +644,7 @@ div.window-app section.window-content {
 
 .mythras div.core .core-skills .skill-tables > div div {
   margin-left: 2px;
+  margin-bottom: 10px;
   border: solid rgba(0, 0, 0, 0.2) 1px;
   padding: 5px;
 }

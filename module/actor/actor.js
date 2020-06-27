@@ -94,5 +94,4 @@ export class ActorMythras extends Actor {
     }
     return damMod;
   }
-
 }

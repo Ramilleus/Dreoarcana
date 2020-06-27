@@ -89,9 +89,11 @@ export class ActorSheetMythras extends ActorSheet {
       this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.totalVal": primChar+secondChar+skill.data.trainingVal+skill.data.miscBonus});
 
     });
-    
+    console.log(formData);
+    console.log(this.actor);
     return this.actor.update(formData);
   }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -119,6 +121,45 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Rollable abilities.
     html.find('.rollable').click(this._onRoll.bind(this));
+
+    // Current Point Increase/Decrease
+    html.find('#increase-current-lp').click(function (event) {
+      event.preventDefault();
+      this.actor.update({
+        "data.currentLuckPoints": Number(this.actor.data.data.currentLuckPoints) + 1
+      });
+    }.bind(this));
+    html.find('#increase-current-mp').click(function (event) {
+      event.preventDefault();
+      this.actor.update({
+        "data.currentMagicPoints": Number(this.actor.data.data.currentMagicPoints) + 1
+      });
+    }.bind(this));
+    html.find('#increase-current-er').click(function (event) {
+      event.preventDefault();
+      this.actor.update({
+        "data.experienceRolls": Number(this.actor.data.data.experienceRolls) + 1
+      });
+    }.bind(this));
+
+    html.find('#decrease-current-lp').click(function (event) {
+      event.preventDefault();
+      this.actor.update({
+        "data.currentLuckPoints": Number(this.actor.data.data.currentLuckPoints) - 1
+      });
+    }.bind(this));
+    html.find('#decrease-current-mp').click(function (event) {
+      event.preventDefault();
+      this.actor.update({
+        "data.currentMagicPoints": Number(this.actor.data.data.currentMagicPoints) - 1
+      });
+    }.bind(this));
+    html.find('#decrease-current-er').click(function (event) {
+      event.preventDefault();
+      this.actor.update({
+        "data.experienceRolls": Number(this.actor.data.data.experienceRolls) - 1
+      });
+    }.bind(this));
 
     // Drag events for macros.
     if (this.actor.owner) {
@@ -189,5 +230,4 @@ export class ActorSheetMythras extends ActorSheet {
       ChatMessage.create(chatData);      
     }
   }
-
 }
