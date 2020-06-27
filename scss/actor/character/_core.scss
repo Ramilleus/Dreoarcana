@@ -98,6 +98,7 @@ div.core {
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
                 select {
                     border: 0;
                     border-radius: 0;
@@ -112,6 +113,9 @@ div.core {
                     -webkit-box-shadow: none;
                     box-shadow: none;
                     background-color: rgba(0,0,0,0.10);
+                }
+                p {
+                    margin: 0;
                 }
             }
         }
@@ -188,6 +192,34 @@ div.core {
             }
 
             .movement-container {
+                .enc-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    .enc {
+                        width: 70px;
+                        padding: 5px;
+                        height: 30px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        p {
+                            margin: 0;
+                            font-weight: bold;
+                            font-size: 1.3em;
+                            text-align: center;
+                        }
+                    }
+                    .enc-label {
+                        font-size: 0.9em;
+                        width: 70px;
+                        margin-top: 5px;
+                        text-align: center;
+                        margin-bottom: 8px;
+                    }
+                }
+
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -195,7 +227,7 @@ div.core {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    width: 220px;
+                    width: 308px;
                     border: solid 1px rgba(0,0,0,0.2);
                     padding: 5px;
                 }
@@ -214,6 +246,20 @@ div.core {
                     font-size: 0.7em;
                     margin-top: 5px;
                     text-align: center;
+                }
+                div {
+                    .movement-mod {
+                        width: 30px;
+                        margin-left: 22px;
+                        input {
+                            font-size: 0.7em;
+                            height: 15px;
+                            width: 15px;
+                            margin: 0;
+                            margin-top: 2px;
+                            text-align: left;
+                        }
+                    }
                 }
             }
         }

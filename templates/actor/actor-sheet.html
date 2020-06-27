@@ -15,7 +15,7 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="luck-points" name="data.currentLuckPoints" type="text" value="{{data.currentLuckPoints}}" placeholder=""/>
+            <input class="luck-points" name="data.currentLuckPoints" onclick="this.select()" type="text" value="{{data.currentLuckPoints}}" placeholder=""/>
             <p class="point-total">/{{data.attributes.luckPoints.value}}</p>
           </div>
           <div class="plus-minus-buttons">
@@ -28,7 +28,7 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="magic-points" name="data.currentMagicPoints" type="text" value="{{data.currentMagicPoints}}" placeholder=""/>
+            <input class="magic-points" name="data.currentMagicPoints" onclick="this.select()" type="text" value="{{data.currentMagicPoints}}" placeholder=""/>
             <p class="point-total">/{{data.attributes.magicPoints.value}}</p>
           </div>
           <div class="plus-minus-buttons">
@@ -40,7 +40,7 @@
       </div>
       <div class="stats-container">
         <div class="number-input-container">
-          <input class="experience-rolls" name="data.experienceRolls.value" type="text" value="{{data.experienceRolls.value}}" placeholder=""/>
+          <input class="experience-rolls" name="data.experienceRolls.value" onclick="this.select()" type="text" value="{{data.experienceRolls.value}}" placeholder=""/>
           <div class="plus-minus-buttons">
             <a id="increase-current-er">+</a>
             <a id="decrease-current-er">-</a>

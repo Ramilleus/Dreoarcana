@@ -58,8 +58,20 @@ export class ActorMythras extends Actor {
 
     data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(data.attributes.fatigue.value, Number(data.attributes.healingRate.value));
 
-
+    for (let key in data.attributes) {
+      if(data.attributes[key].mod != null) {
+        let mod = Number(data.attributes[key].mod)
+        if(mod > 0) {
+          data.attributes[key].applyClass = "increased-attribute";
+        } else if (mod < 0) {
+          data.attributes[key].applyClass = "decreased-attribute";
+        } else {
+          data.attributes[key].applyClass = "";
+        }
+      }
+    }
   }
+
   recoveryTimeCalc(fatigueLevel, healRate){
     let levels = {'fresh': "Feeling fresh!", 
       'winded': 15, 
@@ -83,6 +95,7 @@ export class ActorMythras extends Actor {
       return Math.ceil(levels[fatigueLevel]/healRate) + " hours until Fresh";
     }
   }
+
   moveRateCalc(move, skill, type){
     if(skill === undefined){
       return move;
@@ -101,6 +114,7 @@ export class ActorMythras extends Actor {
       return move
     }
   }
+
   damageModCalc(total, stepInc) {
     let damageSteps = ["-1d8", "-1d6", "-1d4", "-1d2", "0", "1d2", "1d4", "1d6","1d8","1d10", "1d12", "2d6", "1d8+1d6", "2d8", "1d10+1d8", "2d10"];
 

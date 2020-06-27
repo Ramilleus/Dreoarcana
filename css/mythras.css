@@ -60,6 +60,14 @@ div.window-app section.window-content {
   border-radius: 0px;
 }
 
+.mythras .increased-attribute {
+  color: #4fa04d;
+}
+
+.mythras .decreased-attribute {
+  color: #c11f1f;
+}
+
 .mythras header.actor-sheet-header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -437,6 +445,9 @@ div.window-app section.window-content {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .mythras div.core .core-top-flex .core-personal-info .fatigue-container select {
@@ -455,6 +466,10 @@ div.window-app section.window-content {
   -webkit-box-shadow: none;
   box-shadow: none;
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras div.core .core-top-flex .core-personal-info .fatigue-container p {
+  margin: 0;
 }
 
 .mythras div.core .core-top-flex .core-characteristics-attributes-contianer {
@@ -583,6 +598,53 @@ div.window-app section.window-content {
   align-items: center;
 }
 
+.mythras div.core .core-top-flex .core-characteristics-attributes-contianer .movement-container .enc-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.mythras div.core .core-top-flex .core-characteristics-attributes-contianer .movement-container .enc-container .enc {
+  width: 70px;
+  padding: 5px;
+  height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.mythras div.core .core-top-flex .core-characteristics-attributes-contianer .movement-container .enc-container .enc p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.3em;
+  text-align: center;
+}
+
+.mythras div.core .core-top-flex .core-characteristics-attributes-contianer .movement-container .enc-container .enc-label {
+  font-size: 0.9em;
+  width: 70px;
+  margin-top: 5px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
 .mythras div.core .core-top-flex .core-characteristics-attributes-contianer .movement-container .movement-inner-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -593,7 +655,7 @@ div.window-app section.window-content {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  width: 220px;
+  width: 308px;
   border: solid 1px rgba(0, 0, 0, 0.2);
   padding: 5px;
 }
@@ -615,6 +677,20 @@ div.window-app section.window-content {
   font-size: 0.7em;
   margin-top: 5px;
   text-align: center;
+}
+
+.mythras div.core .core-top-flex .core-characteristics-attributes-contianer .movement-container div .movement-mod {
+  width: 30px;
+  margin-left: 22px;
+}
+
+.mythras div.core .core-top-flex .core-characteristics-attributes-contianer .movement-container div .movement-mod input {
+  font-size: 0.7em;
+  height: 15px;
+  width: 15px;
+  margin: 0;
+  margin-top: 2px;
+  text-align: left;
 }
 
 .mythras div.core .core-skills .skill-tables {
