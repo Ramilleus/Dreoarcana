@@ -10,7 +10,15 @@
   "esmodules": ["mythras.js"],
   "styles": ["css/mythras.css"],
   "scripts": [],
-  "packs": [],
+  "packs": [
+	{
+      "name": "standardSkill",
+      "label": "Standard Skills",
+      "system": "mythras",
+      "path": "./packs/standardskill.db",
+      "entity": "Item"
+	}
+  ],
   "languages": [
     {
       "lang": "en",
