@@ -29,7 +29,6 @@ export class ActorMythras extends Actor {
     
     data.attributes.actionPoints.value = Math.ceil((Number(data.characteristics.int.value)+Number(data.characteristics.dex.value))/12) + Number(data.attributes.actionPoints.mod);
        
-    
     data.attributes.damageMod.value = this.damageModCalc((Number(data.characteristics.str.value)+Number(data.characteristics.siz.value)), Number(data.attributes.damageMod.mod));
     
     data.attributes.experienceMod.value = Math.ceil(Number(data.characteristics.cha.value)/6)+Number(data.attributes.experienceMod.mod);
@@ -52,11 +51,17 @@ export class ActorMythras extends Actor {
 
     data.attributes.climbRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "climb");
 
-    data.attributes.swimRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "swim");
+    data.attributes.swimRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Swim"), "swim");
 
     data.attributes.jumpDist = data.height;
 
     data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(data.attributes.fatigue.value, Number(data.attributes.healingRate.value));
+    
+    data.attributes.encumbrance.burdened = Number(data.characteristics.str.value)*2;
+
+    data.attributes.encumbrance.overloaded = Number(data.characteristics.str.value)*3;
+
+    data.attributes.encumbrance.maxLoad = Number(data.characteristics.str.value)*4;
 
     for (let key in data.attributes) {
       if(data.attributes[key].mod != null) {

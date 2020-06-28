@@ -58,6 +58,10 @@
           },
           "fatigue": {
             "value": "fresh"
+          },
+          "encumbrance":{
+            "value": 0,
+            "mod": 0
           }
         },
         "currentLuckPoints": 2,

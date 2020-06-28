@@ -4,7 +4,7 @@
       <div class="header-fields">
         <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
       </div>
-      <h1>57%</h1>
+      <h1>{{data.totalVal}}</h1>
     </div>
   </header>
 
@@ -19,7 +19,7 @@
         <div class="skill-section">
           <h3>Base Characteristics</h3>
           <span class="resource">
-            <select name="data.primaryChar" data-dtype="String">
+            <select id="char-change" name="data.primaryChar" data-dtype="String">
               {{#select data.primaryChar}}
               <option value="str">Strength</option>
               <option value="con">Constitution</option>
@@ -33,7 +33,7 @@
           </span>
           <span>+</span>
           <span class="resource">
-            <select name="data.secondaryChar" data-dtype="String">
+            <select id="char-change" name="data.secondaryChar" data-dtype="String">
                 {{#select data.secondaryChar}}
                 <option value="str">Strength</option>
                 <option value="con">Constitution</option>
@@ -50,15 +50,15 @@
           <h3>Other</h3>
           <div class="other-flex">
             <div>
-              <label><p>REPLACE ME</p></label>
+              <label><p>ENC Penalty</p></label>
+              <input type="checkbox" class="char-enc" disabled="disabled" checked=""/>
+            </div>
+            <div>
+              <label><p>Trained</p></label>
               <input type="checkbox" />
             </div>
             <div>
-              <label><p>REPLACE ME TOO</p></label>
-              <input type="checkbox" />
-            </div>
-            <div>
-              <label><p>REPLACE ME ALSO</p></label>
+              <label><p>Fumbled</p></label>
               <input type="checkbox" />
             </div>
           </div>
@@ -70,11 +70,11 @@
           <div class="improvements-flex">
             <div>
               <label><p>TRAINING</p></label>
-              <input type="text" />%
+              <input id="skill-mod" type="text" name="data.trainingVal" value="{{data.trainingVal}}"/>%
             </div>
             <div>
               <label><p>MISC</p></label>
-              <input class="misc-input" type="text" />%
+              <input id="skill-mod" class="misc-input" type="text" name="data.miscBonus" value="{{data.miscBonus}}"/>%
             </div>
           </div>
         </div>

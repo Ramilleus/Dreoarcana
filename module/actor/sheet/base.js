@@ -111,7 +111,7 @@ export class ActorSheetMythras extends ActorSheet {
         let primChar = Number(formData["data.characteristics."+skill.data.primaryChar+".value"]);
         let secondChar = Number(formData["data.characteristics."+skill.data.secondaryChar+".value"]);
         this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.baseVal.value": primChar+secondChar });
-        this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.totalVal": primChar+secondChar+skill.data.trainingVal+skill.data.miscBonus});
+        this.actor.updateEmbeddedEntity("OwnedItem", {_id: skill._id, "data.totalVal": primChar+secondChar+Number(skill.data.trainingVal)+Number(skill.data.miscBonus)});
 
       });
     }
