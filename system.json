@@ -14,8 +14,15 @@
 	{
       "name": "standardSkill",
       "label": "Standard Skills",
-      "system": "mythras",
+      "system": "Mythras",
       "path": "./packs/standardskill.db",
+      "entity": "Item"
+	},
+	{
+      "name": "professionalSkill",
+      "label": "Professional Skills",
+      "system": "Mythras",
+      "path": "./packs/professionalskill.db",
       "entity": "Item"
 	}
   ],
