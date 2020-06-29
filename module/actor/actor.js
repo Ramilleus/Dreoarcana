@@ -16,8 +16,6 @@ export class ActorMythras extends Actor {
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     if (actorData.type === 'character') this._prepareCharacterData(actorData);
-
-
   }
 
   /**

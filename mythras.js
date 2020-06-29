@@ -52,6 +52,14 @@ Hooks.once('init', async function() {
 Hooks.once("ready", async function() {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createMythrasMacro(data, slot));
+  Hooks.on("createActor", (actor, x, y) => {
+    game.packs.get("mythras.standardSkill").getContent().then((result) => {
+      let chain = Promise.resolve();
+      result.forEach((skill, index) => {
+        chain = chain.then(() => actor.createOwnedItem(skill.data));
+      });
+    });
+  });
 });
 
 /* -------------------------------------------- */
