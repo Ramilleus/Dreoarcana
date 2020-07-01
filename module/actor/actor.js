@@ -43,15 +43,17 @@ export class ActorMythras extends Actor {
 
     data.attributes.movement.walk = 6 + Number(data.attributes.movement.mod);
 
-    data.attributes.runRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "run");
+    data.attributes.movement.run = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "run");
     
-    data.attributes.sprintRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "sprint");
+    data.attributes.movement.sprint = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "sprint");
 
-    data.attributes.climbRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "climb");
+    data.attributes.climb.value = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Athletics"), "climb");
 
-    data.attributes.swimRate = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Swim"), "swim");
+    data.attributes.swim.value = this.moveRateCalc(data.attributes.movement.walk, items.find(entry => entry.name==="Swim"), "swim");
 
-    data.attributes.jumpDist = data.height;
+    data.attributes.jump.horizontal = this.moveRateCalc(Number(data.height), items.find(entry => entry.name==="Athletics"), "hJump");
+    
+    data.attributes.jump.vertical = this.moveRateCalc(Number(data.height), items.find(entry => entry.name==="Athletics"), "vJump");
 
     data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(data.attributes.fatigue.value, Number(data.attributes.healingRate.value));
     
@@ -103,7 +105,6 @@ export class ActorMythras extends Actor {
     if(skill === undefined){
       return move;
     }
-    // let type = skill.name.toLowerCase();
     let skillVal = Number(skill.data.totalVal);
     if(type==="run"){
       return 3*(move+Math.floor(skillVal/50));
@@ -113,8 +114,12 @@ export class ActorMythras extends Actor {
       return move;
     }else if(type==="swim"){
       return move+Math.floor(skillVal/20);
-    }else if(type==="jump"){
-      return move
+    }else if(type==="hJump"){
+      return (move*2+100*Math.floor(skillVal/20))/100;
+    }else if(type==="vJump"){
+      return (Math.floor(move/2)+20*Math.floor(skillVal/20))/100;
+    }else{
+      return move;
     }
   }
 

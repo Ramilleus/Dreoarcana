@@ -26,6 +26,7 @@
               <div class="height">
                 <p class="input-label">HEIGHT</p>
                 <input type="text" name="data.height" value="{{data.height}}"/>
+                <span style="margin-left:-20px; font-size: small;">cm</span>
               </div>
               <div class="weight">
                 <p class="input-label">WEIGHT</p>
@@ -169,27 +170,27 @@
               <p class="movement-label">WALK</p>
             </div>
             <div>
-              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.runRate}}</p>
+              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.movement.run}}</p>
               <p class="movement-label">RUN</p>
             </div>
             <div>
-              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.sprintRate}}</p>
+              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.movement.sprint}}</p>
               <p class="movement-label">SPRINT</p>
             </div>
             <div>
-              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.climbRate}}</p>
+              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.climb.value}}</p>
               <p class="movement-label">CLIMB</p>
             </div>
             <div>
-              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.climbRate}}</p>
+              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.jump.horizontal}}</p>
               <p class="movement-label">H. JUMP</p>
             </div>
             <div>
-              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.climbRate}}</p>
+              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.jump.vertical}}</p>
               <p class="movement-label">V. JUMP</p>
             </div>
             <div>
-              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.swimRate}}</p>
+              <p class="{{data.attributes.movement.applyClass}}">{{data.attributes.swim.value}}</p>
               <p class="movement-label">SWIM</p>
             </div>
           </div>
@@ -213,6 +214,7 @@
           <table class="basic-skills-table">
             <thead>
               <th>Name</th>
+              <th>Base Char</th>
               <th>%</th>
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
@@ -221,6 +223,9 @@
                 <tr class="item" data-item-id="{{item._id}}">
                   <td>
                     <a class="item-name item-control item-edit">{{item.name}}</a>
+                  </td>
+                  <td>
+                    {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar}}
                   </td>
                   <td>
                     <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">{{item.data.totalVal}}</a>

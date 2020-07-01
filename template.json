@@ -56,6 +56,15 @@
             "walk": 6,
             "mod": 0
           },
+          "climb": {
+            "mod": 0
+          },
+          "jump": {
+            "mod": 0
+          },
+          "swim": {
+            "mod": 0
+          },
           "fatigue": {
             "value": "fresh"
           },
@@ -86,7 +95,7 @@
     }
   },
   "Item": {
-    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill","passion", "item", "feature", "spell"],
+    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill", "passion", "melee-weapon", "ranged-weapon", "armor", "equipment", "feature", "spell"],
     "templates": {
       "base": {
         "description": ""
@@ -102,6 +111,14 @@
         "trainingVal": 0,
         "miscBonus": 0,
         "totalVal": 0
+      },
+      "item":{
+        "description": "",
+        "encumbrance": 0,
+        "quantity": 1,
+        "value": 0,
+        "ap": 0,
+        "hp": 0
       }
     },
     "standardSkill":{
@@ -121,10 +138,27 @@
     "passion":{
       "templates": ["skill"]
     },
-    "item": {
-      "templates": ["base"],
-      "quantity": 1,
-      "weight": 0
+    "melee-weapon":{
+      "templates":["item"],
+      "damage": 0,
+      "size": "S",
+      "reach": "T",
+      "combat-effects": "",
+      "traits": "",
+      "hands": "one"
+    },
+    "ranged-weapon": {
+      "templates": ["item"],
+      "damage": 0,
+      "damage-modifier": true,
+      "force": "S",
+      "range": "",
+      "load": 0,
+      "combat-effects": "",
+      "impale-size": "s"      
+    },
+    "equipment":{
+      "templates":["item"]
     },
     "feature": {
       "templates": ["base"]
