@@ -1,25 +1,29 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
   <div class="equipment-tables">
     <div>
-      <h3><span>Weapons</span><a class="add-equipment-button item-create" title="Create item" data-type="standardSkill">+</a></h3>
+      <h3><span>Melee Weapons</span><a class="add-equipment-button item-create" title="Create item" data-type="melee-weapon">+</a></h3>
       <table class="weapons-table">
         <thead>
           <th>Name</th>
-          <th>Base Char</th>
-          <th>%</th>
+          <th>Size</th>
+          <th>Reach</th>
+          <th>Damage</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
-          {{#each actor.standardSkills as |item id|}}
+          {{#each actor.meleeWeapons as |item id|}}
             <tr class="item" data-item-id="{{item._id}}">
               <td>
                 <a class="item-name item-control item-edit">{{item.name}}</a>
               </td>
               <td>
-                {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar}}
+                {{item.data.size}}
               </td>
               <td>
-                <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">{{item.data.totalVal}}</a>
+                {{item.data.reach}}
+              </td>
+              <td>
+                {{item.data.damage}}
               </td>
               <td>
                 <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -30,21 +34,65 @@
       </table>
     </div>
     <div>
-      <h3><span>Armor</span><a class="add-equipment-button item-create" title="Create item" data-type="combatStyle">+</a></h3>
-      <table class="armor-table">
+      <h3><span>Ranged Weapons</span><a class="add-equipment-button item-create" title="Create item" data-type="ranged-weapon">+</a></h3>
+      <table class="weapons-table">
         <thead>
           <th>Name</th>
-          <th>%</th>
+          <th>Force</th>
+          <th>Range</th>
+          <th>Damage</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
-          {{#each actor.combatStyles as |item id|}}
+          {{#each actor.rangedWeapons as |item id|}}
             <tr class="item" data-item-id="{{item._id}}">
               <td>
                 <a class="item-name item-control item-edit">{{item.name}}</a>
               </td>
               <td>
-                <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">{{item.data.totalVal}}</a>
+                {{item.data.force}}
+              </td>
+              <td>
+                {{item.data.range}}
+              </td>
+              <td>
+                {{item.data.damage}}
+              </td>
+              <td>
+                <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+
+    
+    <div>
+      <h3><span>Armor</span><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a></h3>
+      <table class="armor-table">
+        <thead>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Encumbrance</th>
+          <th>AP/HP</th>
+          <th class="delete-column"><i class="fas fa-trash"></i></th>
+        </thead>
+        <tbody>
+          {{#each actor.armor as |item id|}}
+            <tr class="item" data-item-id="{{item._id}}">
+              <td>
+                <a class="item-name item-control item-edit">{{item.name}}</a>
+              </td>
+              <td>
+                {{item.data.location}}
+              </td>
+              <td>
+                {{item.data.encumbrance}}
+              </td>
+              <td>
+                {{item.data.ap}} / {{item.data.hp}}
               </td>
               <td>
                 <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>

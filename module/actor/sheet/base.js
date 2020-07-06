@@ -42,7 +42,11 @@ export class ActorSheetMythras extends ActorSheet {
     const magicSkills = [];
     const passions = [];
     const skillsAndPassions = [];
-    const features = [];
+    const meleeWeapons = [];
+    const rangedWeapons = [];
+    const armor = [];
+    const equipment = [];
+    const abilities = [];
     const spells = {
       0: [],
       1: [],
@@ -77,10 +81,18 @@ export class ActorSheetMythras extends ActorSheet {
       }else if (i.type === 'passion'){
         passions.push(i);
         skillsAndPassions.push(i);
+      }else if (i.type === 'melee-weapon'){
+        meleeWeapons.push(i);
+      }else if (i.type === 'ranged-weapon'){
+        rangedWeapons.push(i);
+      }else if (i.type === 'armor'){
+        armor.push(i);
+      }else if (i.type === 'equipment'){
+        equipment.push(i);
       }
       // Append to features.
-      else if (i.type === 'feature') {
-        features.push(i);
+      else if (i.type === 'ability') {
+        abilities.push(i);
       }
       // Append to spells.
       else if (i.type === 'spell') {
@@ -97,7 +109,11 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.magicSkills = magicSkills;
     actorData.passions = passions;
     actorData.skillsAndPassions = skillsAndPassions;
-    actorData.features = features;
+    actorData.meleeWeapons = meleeWeapons;
+    actorData.rangedWeapons = rangedWeapons;
+    actorData.armor = armor;
+    actorData.equipment = equipment;
+    actorData.abilities = abilities;
     actorData.spells = spells;
   }
 

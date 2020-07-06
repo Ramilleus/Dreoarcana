@@ -141,6 +141,7 @@
     "melee-weapon":{
       "templates":["item"],
       "damage": 0,
+      "damage-modifier": true,
       "size": "S",
       "reach": "T",
       "combat-effects": "",
@@ -156,6 +157,10 @@
       "load": 0,
       "combat-effects": "",
       "impale-size": "s"      
+    },
+    "armor":{
+      "templates": ["item"],
+      "location": ""
     },
     "equipment":{
       "templates":["item"]
