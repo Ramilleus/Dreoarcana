@@ -136,10 +136,13 @@
     }
 
     .desc.skill-section {
-        height: 150px;
+        height: 100%;
         margin-bottom: 0px;
         .editor {
-            height: 150px;
+            div.tox.tox-tinymce {
+                height: 100% !important;
+            }
+            height: 100%;
         }
     }
 

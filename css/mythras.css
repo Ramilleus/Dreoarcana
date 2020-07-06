@@ -25,6 +25,19 @@ div.window-app section.window-content {
   background-attachment: local;
 }
 
+#logo {
+  display: block;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: url("../assets/sheet/mythras-gateway-logo-black-small.png") no-repeat;
+  width: 100px;
+  /* Width of new image */
+  height: 46px;
+  /* Height of new image */
+  padding-left: 100px;
+  /* Equal to width of new image */
+}
+
 /* Styles limited to mythras sheets */
 .mythras .window-content {
   padding: 0px;
@@ -741,6 +754,72 @@ div.window-app section.window-content {
   width: 20px;
 }
 
+.mythras div.equipment .equipment-tables {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
+.mythras div.equipment .equipment-tables > div {
+  width: 100%;
+  margin-left: 2px;
+  margin-bottom: 10px;
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+  padding: 5px;
+}
+
+.mythras div.equipment .equipment-tables > div .add-equipment-button {
+  float: right;
+  margin-right: 10px;
+  font-size: 1.2em;
+}
+
+.mythras div.equipment .equipment-tables > div table {
+  background: none;
+  border: none;
+}
+
+.mythras div.equipment .equipment-tables > div th {
+  text-align: left;
+}
+
+.mythras div.equipment .equipment-tables > div thead {
+  background: none;
+  color: black;
+  text-shadow: none;
+}
+
+.mythras div.equipment .equipment-tables > div .delete-column {
+  width: 20px;
+}
+
+.mythras div.notes {
+  height: 100%;
+}
+
+.mythras div.notes .desc {
+  height: 100%;
+  margin-bottom: 0px;
+}
+
+.mythras div.notes .desc .editor {
+  height: 100%;
+}
+
+.mythras div.notes .desc .editor div.tox.tox-tinymce {
+  height: 100% !important;
+}
+
 .mythras .skill-sheet {
   min-width: 400px;
 }
@@ -928,12 +1007,16 @@ div.window-app section.window-content {
 }
 
 .mythras .skill-sheet .desc.skill-section {
-  height: 150px;
+  height: 100%;
   margin-bottom: 0px;
 }
 
 .mythras .skill-sheet .desc.skill-section .editor {
-  height: 150px;
+  height: 100%;
+}
+
+.mythras .skill-sheet .desc.skill-section .editor div.tox.tox-tinymce {
+  height: 100% !important;
 }
 
 .mythras .skill-sheet .skill-section {

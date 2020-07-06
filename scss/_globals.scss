@@ -3,3 +3,13 @@ div.window-app section.window-content {
     background-repeat: repeat;
     background-attachment: local;
 }
+
+#logo {
+    display: block;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: url('../assets/sheet/mythras-gateway-logo-black-small.png') no-repeat;
+    width: 100px; /* Width of new image */
+    height: 46px; /* Height of new image */
+    padding-left: 100px; /* Equal to width of new image */
+  }
