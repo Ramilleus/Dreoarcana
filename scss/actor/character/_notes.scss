@@ -1,0 +1,13 @@
+div.notes {
+    height: 100%;
+    .desc {
+        height: 100%;
+        margin-bottom: 0px;
+        .editor {
+            div.tox.tox-tinymce {
+                height: 100% !important;
+            }
+            height: 100%;
+        }
+    }
+}
