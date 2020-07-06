@@ -95,7 +95,7 @@
     }
   },
   "Item": {
-    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill", "passion", "melee-weapon", "ranged-weapon", "armor", "equipment", "feature", "spell"],
+    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill", "passion", "melee-weapon", "ranged-weapon", "armor", "equipment", "ability", "spell"],
     "templates": {
       "base": {
         "description": ""
@@ -160,7 +160,7 @@
     "equipment":{
       "templates":["item"]
     },
-    "feature": {
+    "ability": {
       "templates": ["base"]
     },
     "spell": {
