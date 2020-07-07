@@ -156,7 +156,8 @@
       "range": "",
       "load": 0,
       "combat-effects": "",
-      "impale-size": "s"      
+      "impale-size": "s",
+      "ammo": 0      
     },
     "armor":{
       "templates": ["item"],

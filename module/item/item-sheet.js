@@ -50,15 +50,18 @@ export class MythrasItemSheet extends ItemSheet {
   _updateObject(event, formData) {
     super._updateObject(event, formData);
     const itemData = this.item.data;
-    if(this.actor != null && event.target != null && event.target.id === "char-change"){
-      const actorData = this.actor.data;
-      const primChar = Number(actorData.data.characteristics[formData["data.primaryChar"]].value);
-      const secondChar = Number(actorData.data.characteristics[formData["data.secondaryChar"]].value);
-      itemData.data.baseVal.value = primChar+secondChar;
-      itemData.data.totalVal = primChar+secondChar + Number(itemData.data.trainingVal)+Number(itemData.data.miscBonus);
-    }
-    if(event.target != null && event.target.id === "skill-mod"){
-      itemData.data.totalVal = itemData.data.baseVal.value+ Number(formData["data.trainingVal"]) + Number(formData["data.miscBonus"]);
+    const itemType = itemData.type;
+    if((itemType==="standardSkill" || itemType==="professionalSkill" || itemType==="combatStyle" || itemType==="magicSkill" || itemType==="passion")){
+      if(this.actor != null && event.target != null && event.target.id === "char-change"){
+        const actorData = this.actor.data;
+        const primChar = Number(actorData.data.characteristics[formData["data.primaryChar"]].value);
+        const secondChar = Number(actorData.data.characteristics[formData["data.secondaryChar"]].value);
+        itemData.data.baseVal.value = primChar+secondChar;
+        itemData.data.totalVal = primChar+secondChar + Number(itemData.data.trainingVal)+Number(itemData.data.miscBonus);
+      }
+      if(event.target != null && event.target.id === "skill-mod"){
+        itemData.data.totalVal = itemData.data.baseVal.value+ Number(formData["data.trainingVal"]) + Number(formData["data.miscBonus"]);
+      }
     }
     return this.item.update(formData);
   }
@@ -68,10 +71,13 @@ export class MythrasItemSheet extends ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
     let itemData = this.item.data.data;
-    if((itemData.primaryChar+itemData.secondaryChar).includes("str")||(itemData.primaryChar+itemData.secondaryChar).includes("dex")){
-      html.find(".char-enc")[0].checked = true;
-    }else{
-      html.find(".char-enc")[0].checked = false;
+    let itemType = this.item.data.type;
+    if((itemType==="standardSkill" || itemType==="professionalSkill" || itemType==="combatStyle" || itemType==="magicSkill" || itemType==="passion")){
+      if(((itemData.primaryChar+itemData.secondaryChar).includes("str")||(itemData.primaryChar+itemData.secondaryChar).includes("dex"))){
+        html.find(".char-enc")[0].checked = true;
+      }else{
+        html.find(".char-enc")[0].checked = false;
+      }
     }
 
 

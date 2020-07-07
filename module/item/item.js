@@ -11,9 +11,11 @@ export class MythrasItem extends Item {
 
     // Get the Item's data
     const itemData = this.data;
+    const itemType = itemData.type;
     const actorData = this.actor ? this.actor.data : {};
     const data = itemData.data;
-    if(this.actor != null && itemData.data.baseVal.init === 0){
+    
+    if((itemType==="standardSkill" || itemType==="professionalSkill" || itemType==="combatStyle" || itemType==="magicSkill" || itemType==="passion")&&(this.actor !== null)&&itemData.data.baseVal.init === 0){
       let primChar = Number(eval("actorData.data.characteristics."+itemData.data.primaryChar+".value"));
       let secondChar = Number(eval("actorData.data.characteristics."+itemData.data.secondaryChar+".value"));
       itemData.data.baseVal.init = 1;
