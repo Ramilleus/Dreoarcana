@@ -335,7 +335,7 @@ div.window-app section.window-content {
   margin: 0;
   margin-bottom: 8px;
   border: none;
-  color: #490200;
+  color: #191813;
 }
 
 .mythras div.core hr {
@@ -775,14 +775,14 @@ div.window-app section.window-content {
 
 .mythras div.equipment .equipment-tables > div {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border: solid rgba(0, 0, 0, 0.2) 1px;
   padding: 5px;
 }
 
 .mythras div.equipment .equipment-tables > div .add-equipment-button {
   float: right;
-  margin-right: 10px;
+  margin-right: 8px;
   font-size: 1.2em;
 }
 
@@ -831,12 +831,11 @@ div.window-app section.window-content {
 
 .mythras div.equipment .equipment-tables .top-equipment-tables > div .add-items-button {
   float: right;
-  margin-right: 10px;
+  margin-right: 8px;
   font-size: 1.2em;
 }
 
 .mythras div.equipment .equipment-tables .top-equipment-tables > div div {
-  margin-bottom: 10px;
   border: solid rgba(0, 0, 0, 0.2) 1px;
   padding: 5px;
 }
@@ -861,19 +860,37 @@ div.window-app section.window-content {
 }
 
 .mythras div.notes {
-  height: 100%;
+  margin: 0;
+  height: calc(100% - 25px);
 }
 
-.mythras div.notes .desc {
+.mythras div.notes > h2 {
+  margin-top: 5px;
+  margin-bottom: 13px;
+  color: #191813;
+  border: none;
+  font-size: 21px;
+}
+
+.mythras div.notes > div {
+  padding: 5px;
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+}
+
+.mythras div.notes > div h2 {
+  border: 0;
+}
+
+.mythras div.notes > div .desc {
   height: 100%;
   margin-bottom: 0px;
 }
 
-.mythras div.notes .desc .editor {
+.mythras div.notes > div .desc .editor {
   height: 100%;
 }
 
-.mythras div.notes .desc .editor div.tox.tox-tinymce {
+.mythras div.notes > div .desc .editor div.tox.tox-tinymce {
   height: 100% !important;
 }
 
