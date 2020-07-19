@@ -29,7 +29,7 @@ export class ActorMythras extends Actor {
        
     data.attributes.damageMod.value = this.damageModCalc((Number(data.characteristics.str.value)+Number(data.characteristics.siz.value)), Number(data.attributes.damageMod.mod));
     
-    data.attributes.experienceMod.value = Math.ceil(Number(data.characteristics.cha.value)/6)+Number(data.attributes.experienceMod.mod);
+    data.attributes.experienceMod.value = Math.ceil(Number(data.characteristics.cha.value)/6-2)+Number(data.attributes.experienceMod.mod);
     
     data.attributes.healingRate.value = Math.ceil(Number(data.characteristics.con.value)/6)+Number(data.attributes.healingRate.mod);
     
