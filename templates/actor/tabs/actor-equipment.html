@@ -1,5 +1,107 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
   <div class="equipment-tables">
+    <h2>Equipment</h2>
+    <div class="top-equipment-tables">
+      <div class="tables-left">
+        <div>
+          <h3><span>Items</span><a class="add-items-button item-create" title="Create item" data-type="equipment">+</a></h3>
+          <table class="equipment-table">
+            <thead>
+              <th>Name</th>
+              <th>Base Char</th>
+              <th>%</th>
+              <th class="delete-column"><i class="fas fa-trash"></i></th>
+            </thead>
+            <tbody>
+              {{#each actor.equipment as |item id|}}
+                <tr class="item" data-item-id="{{item._id}}">
+                  <td>
+                    <a class="item-name item-control item-edit">{{item.name}}</a>
+                  </td>
+                  <td>
+                    
+                  </td>
+                  <td>
+                    
+                  </td>
+                  <td>
+                    <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tables-right">
+        <div>
+          <h3><span>Currency and Wealth</span><a class="add-items-button item-create" title="Create item" data-type="currency">+</a></h3>
+          <table class="currency-table">
+            <thead>
+              <th>Name</th>
+              <th>Base Char</th>
+              <th>%</th>
+              <th class="delete-column"><i class="fas fa-trash"></i></th>
+            </thead>
+            <tbody>
+              {{#each actor.currency as |item id|}}
+                <tr class="item" data-item-id="{{item._id}}">
+                  <td>
+                    <a class="item-name item-control item-edit">{{item.name}}</a>
+                  </td>
+                  <td>
+                    
+                  </td>
+                  <td>
+                    
+                  </td>
+                  <td>
+                    <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <h2>Armor</h2>
+    <div>
+      <h3><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a></h3>
+      <table class="armor-table">
+        <thead>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Encumbrance</th>
+          <th>AP/HP</th>
+          <th class="delete-column"><i class="fas fa-trash"></i></th>
+        </thead>
+        <tbody>
+          {{#each actor.armor as |item id|}}
+            <tr class="item" data-item-id="{{item._id}}">
+              <td>
+                <a class="item-name item-control item-edit">{{item.name}}</a>
+              </td>
+              <td>
+                {{item.data.location}}
+              </td>
+              <td>
+                {{item.data.encumbrance}}
+              </td>
+              <td>
+                {{item.data.ap}} / {{item.data.hp}}
+              </td>
+              <td>
+                <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Weapons</h2>
     <div>
       <h3><span>Melee Weapons</span><a class="add-equipment-button item-create" title="Create item" data-type="melee-weapon">+</a></h3>
       <table class="weapons-table">
@@ -32,8 +134,7 @@
           {{/each}}
         </tbody>
       </table>
-    </div>
-    <div>
+      <hr>
       <h3><span>Ranged Weapons</span><a class="add-equipment-button item-create" title="Create item" data-type="ranged-weapon">+</a></h3>
       <table class="weapons-table">
         <thead>
@@ -67,40 +168,5 @@
       </table>
     </div>
 
-
-    
-    <div>
-      <h3><span>Armor</span><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a></h3>
-      <table class="armor-table">
-        <thead>
-          <th>Name</th>
-          <th>Location</th>
-          <th>Encumbrance</th>
-          <th>AP/HP</th>
-          <th class="delete-column"><i class="fas fa-trash"></i></th>
-        </thead>
-        <tbody>
-          {{#each actor.armor as |item id|}}
-            <tr class="item" data-item-id="{{item._id}}">
-              <td>
-                <a class="item-name item-control item-edit">{{item.name}}</a>
-              </td>
-              <td>
-                {{item.data.location}}
-              </td>
-              <td>
-                {{item.data.encumbrance}}
-              </td>
-              <td>
-                {{item.data.ap}} / {{item.data.hp}}
-              </td>
-              <td>
-                <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
   </div>
 </div>
