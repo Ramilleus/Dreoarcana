@@ -1,4 +1,43 @@
 .melee-weapon{
+    h2 {
+        flex: 0;
+    }
+
+    .sheet-header {
+        flex: 0;
+        height: 68px;
+    }
+
+    .sheet-body {
+        padding: 0px 10px;
+    }
+
+    min-width: 400px;
+    input:focus {
+        outline: none;
+        outline-style: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    input {
+        border: 0;
+    }
+    select {
+        border: 0;
+        border-radius: 0;
+        background-color: rgba(0,0,0,0.05);
+    }
+    select:hover {
+        background-color: rgba(0,0,0,0.10);
+    }
+    select:focus {
+        outline: none;
+        outline-style: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background-color: rgba(0,0,0,0.10);
+    }
+
     .header-flex {
         display:flex;
         justify-content: space-between;
@@ -38,7 +77,64 @@
                 background-color: rgba(255,255,255,0.05);
             }
         }
-        
+    }
+    .equipment-core{
+        display: flex;
+        flex-direction: row;
+        height: 100px;
+        justify-content: space-between;
+        .equip-core-section{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
+        }
+        .core-info{
+            font-size: 1.25em;
+            text-decoration: underline;
+        }
+        input {
+            text-align: center;
+            width: 30px;
+            height: 20px;
+        }
+    }
+    .weapon-core{
+        display: flex;
+        flex-direction: row;
+        height: 200px;
+        flex-direction: column;
+        justify-content: space-between;
+        .weapon-core-section{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            .weapon-piece{
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+        }
+        .core-info{
+            font-size: 1.25em;
+            text-decoration: underline;
+        }
+
+    }
+    .equip-section {
+        margin-bottom: 10px;
+        border: solid rgba(0,0,0,0.20) 1px;
+        padding: 5px;
+    }
+    .desc.skill-section {
+        height: 100%;
+        margin-bottom: 0px;
+        .editor {
+            div.tox.tox-tinymce {
+                height: 100% !important;
+            }
+            height: 100%;
+        }
     }
 }

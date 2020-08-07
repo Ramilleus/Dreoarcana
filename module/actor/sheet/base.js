@@ -46,6 +46,7 @@ export class ActorSheetMythras extends ActorSheet {
     const rangedWeapons = [];
     const armor = [];
     const equipment = [];
+    const currency = [];
     const abilities = [];
     const spells = {
       0: [],
@@ -89,6 +90,8 @@ export class ActorSheetMythras extends ActorSheet {
         armor.push(i);
       }else if (i.type === 'equipment'){
         equipment.push(i);
+      }else if (i.type === 'currency'){
+        currency.push(i);
       }
       // Append to features.
       else if (i.type === 'ability') {
@@ -113,6 +116,7 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.rangedWeapons = rangedWeapons;
     actorData.armor = armor;
     actorData.equipment = equipment;
+    actorData.currency = currency;
     actorData.abilities = abilities;
     actorData.spells = spells;
   }

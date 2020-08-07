@@ -76,10 +76,13 @@
         "currentLuckPoints": 2,
         "currentMagicPoints": 11,
         "experienceRolls": 0
+      },
+      "humanoid": {
+        "hit-loc": ["Right Leg", "Left Leg", "Abdomen", "Chest", "Right Arm", "Left Arm", "Head"]
       }
     },
     "character": {
-      "templates": ["common"],
+      "templates": ["common", "humanoid"],
       "career": "",
 	    "homeland": "",
 	    "socialClass": "",
@@ -95,7 +98,7 @@
     }
   },
   "Item": {
-    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill", "passion", "melee-weapon", "ranged-weapon", "armor", "equipment", "ability", "spell"],
+    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill", "passion", "melee-weapon", "ranged-weapon", "armor", "equipment", "currency", "ability", "spell"],
     "templates": {
       "base": {
         "description": ""
@@ -153,7 +156,11 @@
       "damage": 0,
       "damage-modifier": true,
       "force": "S",
-      "range": "",
+      "range": {
+        "close": 0,
+        "effective": 0,
+        "long": 0
+      },
       "load": 0,
       "combat-effects": "",
       "impale-size": "s",
@@ -164,6 +171,9 @@
       "location": ""
     },
     "equipment":{
+      "templates":["item"]
+    },
+    "currency":{
       "templates":["item"]
     },
     "ability": {

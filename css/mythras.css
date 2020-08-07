@@ -1109,6 +1109,56 @@ div.window-app section.window-content {
   margin-left: 5px;
 }
 
+.mythras .melee-weapon {
+  min-width: 400px;
+}
+
+.mythras .melee-weapon h2 {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.mythras .melee-weapon .sheet-header {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  height: 68px;
+}
+
+.mythras .melee-weapon .sheet-body {
+  padding: 0px 10px;
+}
+
+.mythras .melee-weapon input:focus {
+  outline: none;
+  outline-style: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.mythras .melee-weapon input {
+  border: 0;
+}
+
+.mythras .melee-weapon select {
+  border: 0;
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.mythras .melee-weapon select:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras .melee-weapon select:focus {
+  outline: none;
+  outline-style: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .mythras .melee-weapon .header-flex {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1161,4 +1211,111 @@ div.window-app section.window-content {
 
 .mythras .melee-weapon .header-flex h1 input:hover {
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mythras .melee-weapon .equipment-core {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  height: 100px;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.mythras .melee-weapon .equipment-core .equip-core-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.mythras .melee-weapon .equipment-core .core-info {
+  font-size: 1.25em;
+  text-decoration: underline;
+}
+
+.mythras .melee-weapon .equipment-core input {
+  text-align: center;
+  width: 30px;
+  height: 20px;
+}
+
+.mythras .melee-weapon .weapon-core {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  height: 200px;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.mythras .melee-weapon .weapon-core .weapon-core-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.mythras .melee-weapon .weapon-core .weapon-core-section .weapon-piece {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.mythras .melee-weapon .weapon-core .core-info {
+  font-size: 1.25em;
+  text-decoration: underline;
+}
+
+.mythras .melee-weapon .equip-section {
+  margin-bottom: 10px;
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+  padding: 5px;
+}
+
+.mythras .melee-weapon .desc.skill-section {
+  height: 100%;
+  margin-bottom: 0px;
+}
+
+.mythras .melee-weapon .desc.skill-section .editor {
+  height: 100%;
+}
+
+.mythras .melee-weapon .desc.skill-section .editor div.tox.tox-tinymce {
+  height: 100% !important;
 }

@@ -1,15 +1,15 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
   <div class="equipment-tables">
-    <h2>Equipment</h2>
+    <h2>Items</h2>
     <div class="top-equipment-tables">
       <div class="tables-left">
         <div>
-          <h3><span>Items</span><a class="add-items-button item-create" title="Create item" data-type="equipment">+</a></h3>
+          <h3><span>Equipment</span><a class="add-items-button item-create" title="Create item" data-type="equipment">+</a></h3>
           <table class="equipment-table">
             <thead>
               <th>Name</th>
-              <th>Base Char</th>
-              <th>%</th>
+              <th>ENC</th>
+              <th>Quantity</th>
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
@@ -19,10 +19,10 @@
                     <a class="item-name item-control item-edit">{{item.name}}</a>
                   </td>
                   <td>
-                    
+                    {{item.data.encumbrance}}
                   </td>
                   <td>
-                    
+                    {{item.data.quantity}}
                   </td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -39,8 +39,9 @@
           <table class="currency-table">
             <thead>
               <th>Name</th>
-              <th>Base Char</th>
-              <th>%</th>
+              <th>Value</th>
+              <th>ENC</th>
+              <th>Quantity</th>
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
@@ -50,10 +51,13 @@
                     <a class="item-name item-control item-edit">{{item.name}}</a>
                   </td>
                   <td>
-                    
+                    {{item.data.value}}
                   </td>
                   <td>
-                    
+                    {{item.data.encumbrance}}
+                  </td>
+                  <td>
+                    {{item.data.quantity}}
                   </td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -68,7 +72,7 @@
     
     <h2>Armor</h2>
     <div>
-      <h3><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a></h3>
+      <h3><span>Armor</span><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a></h3>
       <table class="armor-table">
         <thead>
           <th>Name</th>
@@ -154,7 +158,7 @@
                 {{item.data.force}}
               </td>
               <td>
-                {{item.data.range}}
+                {{item.data.range.close}}/{{item.data.range.effective}}/{{item.data.range.long}}
               </td>
               <td>
                 {{item.data.damage}}
