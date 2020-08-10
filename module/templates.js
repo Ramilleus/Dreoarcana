@@ -10,6 +10,6 @@ export default function () {
     'systems/mythras/templates/actor/tabs/actor-abilities.html',
     'systems/mythras/templates/actor/tabs/actor-equipment.html',
     'systems/mythras/templates/actor/tabs/actor-notes.html'
-  ];
-  return loadTemplates(templatePaths);
+  ]
+  return loadTemplates(templatePaths)
 }

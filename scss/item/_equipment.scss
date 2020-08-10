@@ -1,155 +1,153 @@
-.melee-weapon{
-    h2 {
-        flex: 0;
-        margin-top: 15px;
-    }
+.melee-weapon {
+  h2 {
+    flex: 0;
+    margin-top: 15px;
+  }
 
-    .sheet-header {
-        flex: 0;
-        height: 68px;
-    }
+  .sheet-header {
+    flex: 0;
+    height: 68px;
+  }
 
-    .sheet-body {
-        padding: 0px 10px;
-    }
+  .sheet-body {
+    padding: 0px 10px;
+  }
 
-    min-width: 400px;
-    input:focus {
-        outline: none;
-        outline-style: none;
-        -webkit-box-shadow: none;
-        box-shadow: none;
+  min-width: 400px;
+  input:focus {
+    outline: none;
+    outline-style: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  input {
+    border: 0;
+  }
+  select {
+    border: 0;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  select:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  select:focus {
+    outline: none;
+    outline-style: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: url('../assets/sheet/header-background-pattern.jpg');
+    background-repeat: repeat;
+    box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+
+    > h1 {
+      text-align: right;
+      color: white;
+      font-family: 'Amethysta';
+      margin: 0px;
+      font-size: 2.5em;
+      flex: 1;
+    }
+    h1 {
+      flex: 1;
+      input {
+        width: 100%;
+        margin: 0px;
+        color: white;
+        border: 0;
+        border-bottom: solid white 1px;
+        border-radius: 0;
+        font-family: 'Fanwood';
+        background-color: rgba(0, 0, 0, 0);
+        text-shadow: 0px 0px 6px black;
+      }
+
+      input:focus {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      input:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+    }
+  }
+  .equipment-core {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .equip-core-section {
+      display: flex;
+      flex-direction: row;
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    .core-info {
+      font-size: 1em;
     }
     input {
-        border: 0;
+      text-align: center;
+      width: 40px;
+      height: 20px;
     }
-    select {
-        border: 0;
-        border-radius: 0;
-        background-color: rgba(0,0,0,0.05);
-    }
-    select:hover {
-        background-color: rgba(0,0,0,0.10);
-    }
-    select:focus {
-        outline: none;
-        outline-style: none;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        background-color: rgba(0,0,0,0.10);
-    }
-
-    .header-flex {
-        display:flex;
-        justify-content: space-between;
+  }
+  .weapon-core {
+    display: flex;
+    flex-direction: row;
+    flex-direction: column;
+    justify-content: space-between;
+    .weapon-core-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      .weapon-piece {
+        display: flex;
         align-items: center;
-        background: url('../assets/sheet/header-background-pattern.jpg');
-        background-repeat: repeat;
-        box-shadow: inset 0 -7px 9px -7px rgba(0,0,0,0.5);
-        padding: 10px;
-
-        > h1 {
-            text-align: right;
-            color: white;
-            font-family: 'Amethysta';
-            margin: 0px;
-            font-size: 2.5em;
-            flex: 1;
-        }
-        h1 {
-            flex: 1;
-            input {
-                width: 100%;
-                margin: 0px;
-                color: white;
-                border: 0;
-                border-bottom: solid white 1px;
-                border-radius: 0;
-                font-family: 'Fanwood';
-                background-color: rgba(0,0,0,0);
-                text-shadow: 0px 0px 6px black;
-            }
-
-            input:focus {
-                background-color: rgba(255,255,255,0.05);
-            }
-
-            input:hover {
-                background-color: rgba(255,255,255,0.05);
-            }
-        }
-    }
-    .equipment-core{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        .equip-core-section{
-            display: flex;
-            flex-direction: row;
-            div{
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-        .core-info{
-            font-size: 1em;
-            
-        }
-        input {
-            text-align: center;
-            width: 40px;
-            height: 20px;
-        }
-    }
-    .weapon-core{
-        display: flex;
-        flex-direction: row;
         flex-direction: column;
-        justify-content: space-between;
-        .weapon-core-section{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            .weapon-piece{
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                input{
-                    text-align: center;
-                }
-                .range-info{
-                    display: flex;
-                    flex-direction: row;
-                    input{
-                        width: 40px;
-                    }
-                    .range-piece{
-                        font-size: .8em;
-                    }
-                }
-            }
+        input {
+          text-align: center;
         }
-        .core-info{
-            font-size: 1em;
+        .range-info {
+          display: flex;
+          flex-direction: row;
+          input {
+            width: 40px;
+          }
+          .range-piece {
+            font-size: 0.8em;
+          }
         }
+      }
+    }
+    .core-info {
+      font-size: 1em;
+    }
+  }
+  .equip-section {
+    border-bottom: solid 1px rgb(192, 192, 192);
 
+    padding: 15px 5px;
+    flex: 0;
+  }
+  .desc.skill-section {
+    height: 100%;
+    margin-bottom: 0px;
+    .editor {
+      div.tox.tox-tinymce {
+        height: 100% !important;
+      }
+      height: 100%;
     }
-    .equip-section {
-        border-bottom: solid 1px rgb(192, 192, 192);
-        
-        padding: 15px 5px;
-        flex: 0;
-    }
-    .desc.skill-section {
-        height: 100%;
-        margin-bottom: 0px;
-        .editor {
-            div.tox.tox-tinymce {
-                height: 100% !important;
-            }
-            height: 100%;
-        }
-    }
+  }
 }

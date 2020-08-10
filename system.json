@@ -11,20 +11,20 @@
   "styles": ["css/mythras.css"],
   "scripts": [],
   "packs": [
-	{
+    {
       "name": "standardSkill",
       "label": "Standard Skills",
       "system": "mythras",
       "path": "./packs/standardskill.db",
       "entity": "Item"
-	},
-	{
+    },
+    {
       "name": "professionalSkill",
       "label": "Professional Skills",
       "system": "mythras",
       "path": "./packs/professionalskill.db",
       "entity": "Item"
-	}
+    }
   ],
   "languages": [
     {

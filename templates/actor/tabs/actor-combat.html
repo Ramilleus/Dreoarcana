@@ -1,3 +1,200 @@
 <div class="tab combat" data-group="primary" data-tab="combat">
-    Combat Tab Coming soon!
+  <div class="combat-tables">
+    <div>
+      <h3>
+        <span>
+          Combat Styles
+        </span>
+        <a class="add-skills-button item-create" title="Create item" data-type="combatStyle">
+          +
+        </a>
+      </h3>
+      <table class="basic-skills-table">
+        <thead>
+          <th>
+            Name
+          </th>
+          <th>
+            Base Char
+          </th>
+          <th>
+            %
+          </th>
+          <th class="delete-column">
+            <i class="fas fa-trash"></i>
+          </th>
+        </thead>
+        <tbody>
+          {{#each actor.combatStyles as |item id|}}
+          <tr class="item" data-item-id="{{item._id}}">
+            <td>
+              <a class="item-name item-control item-edit">
+                {{item.name}}
+              </a>
+            </td>
+            <td>
+              {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar}}
+            </td>
+            <td>
+              <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                {{item.data.totalVal}}
+              </a>
+            </td>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <h2>
+      Weapons
+    </h2>
+    <div>
+      <h3>
+        <span>
+          Melee Weapons
+        </span>
+        <a class="add-equipment-button item-create" title="Create item" data-type="melee-weapon">
+          +
+        </a>
+      </h3>
+      <table class="weapons-table">
+        <thead>
+          <th>
+            Name
+          </th>
+          <th>
+            Damage
+          </th>
+          <th>
+            DM
+          </th>
+          <th>
+            Size
+          </th>
+          <th>
+            Reach
+          </th>
+          <th>
+            AP/HP
+          </th>
+          <th class="delete-column">
+            <i class="fas fa-trash"></i>
+          </th>
+        </thead>
+        <tbody>
+          {{#each actor.meleeWeapons as |item id|}}
+          <tr class="item" data-item-id="{{item._id}}">
+            <td>
+              <a class="item-name item-control item-edit">
+                {{item.name}}
+              </a>
+            </td>
+            <td>
+              {{item.data.damage}}
+            </td>
+            <td>
+              <input type="checkbox" disabled="disabled" name="data.damage-modifier" {{checked data.damage-modifier}} />
+            </td>
+            <td>
+              {{item.data.size}}
+            </td>
+            <td>
+              {{item.data.reach}}
+            </td>
+            <td>
+              {{item.data.ap}} / {{item.data.hp}}
+            </td>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <hr />
+      <h3>
+        <span>
+          Ranged Weapons
+        </span>
+        <a class="add-equipment-button item-create" title="Create item" data-type="ranged-weapon">
+          +
+        </a>
+      </h3>
+      <table class="weapons-table">
+        <thead>
+          <th>
+            Name
+          </th>
+          <th>
+            Damage
+          </th>
+          <th>
+            DM
+          </th>
+          <th>
+            Force
+          </th>
+          <th>
+            Impale Size
+          </th>
+          <th>
+            Range
+          </th>
+          <th>
+            Load
+          </th>
+          <th>
+            Ammo
+          </th>
+          <th class="delete-column">
+            <i class="fas fa-trash"></i>
+          </th>
+        </thead>
+        <tbody>
+          {{#each actor.rangedWeapons as |item id|}}
+          <tr class="item" data-item-id="{{item._id}}">
+            <td>
+              <a class="item-name item-control item-edit">
+                {{item.name}}
+              </a>
+            </td>
+            <td>
+              {{item.data.damage}}
+            </td>
+            <td>
+              <input type="checkbox" disabled="disabled" name="data.damage-modifier" {{checked data.damage-modifier}} />
+            </td>
+            <td>
+              {{item.data.force}}
+            </td>
+            <td>
+              {{item.data.impale-size}}
+            </td>
+            <td>
+              {{item.data.range.close}}/{{item.data.range.effective}}/{{item.data.range.long }}
+            </td>
+            <th>
+              {{item.data.load}}
+            </th>
+            <th>
+              {{item.data.ammo}}
+            </th>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

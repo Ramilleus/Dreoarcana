@@ -28,7 +28,7 @@
           }
         },
         "attributes": {
-          "actionPoints":{
+          "actionPoints": {
             "mod": 0
           },
           "damageMod": {
@@ -37,19 +37,19 @@
           "experienceMod": {
             "mod": 0
           },
-          "healingRate":{
+          "healingRate": {
             "mod": 0
           },
-          "hitPointMod":{
+          "hitPointMod": {
             "mod": 0
           },
-          "initiativeBonus":{
+          "initiativeBonus": {
             "mod": 0
           },
-          "luckPoints":{
+          "luckPoints": {
             "mod": 0
           },
-          "magicPoints":{
+          "magicPoints": {
             "mod": 0
           },
           "movement": {
@@ -68,7 +68,7 @@
           "fatigue": {
             "value": "fresh"
           },
-          "encumbrance":{
+          "encumbrance": {
             "value": 0,
             "mod": 0
           }
@@ -78,38 +78,59 @@
         "experienceRolls": 0
       },
       "humanoid": {
-        "hitLoc": ["Right Leg", "Left Leg", "Abdomen", "Chest", "Right Arm", "Left Arm", "Head"]
+        "hitLoc": [
+          "Right Leg",
+          "Left Leg",
+          "Abdomen",
+          "Chest",
+          "Right Arm",
+          "Left Arm",
+          "Head"
+        ]
       }
     },
     "character": {
       "templates": ["common", "humanoid"],
       "career": "",
-	    "homeland": "",
-	    "socialClass": "",
-	    "gender": "",
-	    "age": "",
-	    "handedness": "",
-	    "frame": "",
-	    "height": "",
-	    "weight": "",
-	    "raceCulture": "",
-	    "description": "",
-	    "cult information": ""
+      "homeland": "",
+      "socialClass": "",
+      "gender": "",
+      "age": "",
+      "handedness": "",
+      "frame": "",
+      "height": "",
+      "weight": "",
+      "raceCulture": "",
+      "description": "",
+      "cult information": ""
     }
   },
   "Item": {
-    "types": ["standardSkill", "professionalSkill", "combatStyle", "magicSkill", "passion", "melee-weapon", "ranged-weapon", "armor", "equipment", "currency", "ability", "spell"],
+    "types": [
+      "standardSkill",
+      "professionalSkill",
+      "combatStyle",
+      "magicSkill",
+      "passion",
+      "melee-weapon",
+      "ranged-weapon",
+      "armor",
+      "equipment",
+      "currency",
+      "ability",
+      "spell"
+    ],
     "templates": {
       "base": {
         "description": ""
       },
-      "skill":{
-        "description":"",
+      "skill": {
+        "description": "",
         "primaryChar": "str",
         "secondaryChar": "str",
         "baseVal": {
-          "value" : 0,
-          "init" : 0
+          "value": 0,
+          "init": 0
         },
         "trainingVal": 0,
         "miscBonus": 0,
@@ -117,7 +138,7 @@
         "trained": false,
         "fumbled": false
       },
-      "item":{
+      "item": {
         "description": "",
         "encumbrance": 0,
         "quantity": 1,
@@ -126,25 +147,25 @@
         "hp": 0
       }
     },
-    "standardSkill":{
+    "standardSkill": {
       "templates": ["skill"]
     },
-    "professionalSkill":{
+    "professionalSkill": {
       "templates": ["skill"]
     },
-    "combatStyle":{
+    "combatStyle": {
       "templates": ["skill"],
       "traits": "",
       "weapons": ""
     },
-    "magicSkill":{
+    "magicSkill": {
       "templates": ["skill"]
     },
-    "passion":{
+    "passion": {
       "templates": ["skill"]
     },
-    "melee-weapon":{
-      "templates":["item"],
+    "melee-weapon": {
+      "templates": ["item"],
       "damage": 0,
       "damageModifier": true,
       "size": "S",
@@ -166,20 +187,28 @@
       "load": 0,
       "combat-effects": "",
       "impale-size": "S",
-      "ammo": 0      
+      "ammo": 0
     },
-    "armor":{
+    "armor": {
       "templates": ["item"],
-      "hitLoc": ["Right Leg", "Left Leg", "Abdomen", "Chest", "Right Arm", "Left Arm", "Head"],
+      "hitLoc": [
+        "Right Leg",
+        "Left Leg",
+        "Abdomen",
+        "Chest",
+        "Right Arm",
+        "Left Arm",
+        "Head"
+      ],
       "location": "",
       "type": "",
       "equipped": true
     },
-    "equipment":{
-      "templates":["item"]
+    "equipment": {
+      "templates": ["item"]
     },
-    "currency":{
-      "templates":["item"]
+    "currency": {
+      "templates": ["item"]
     },
     "ability": {
       "templates": ["base"]

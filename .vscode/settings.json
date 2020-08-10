@@ -1,5 +1,12 @@
 {
-    "files.associations": {
-        "*.html": "handlebars"
-    }
+  "files.associations": {
+    "*.html": "handlebars"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.tabSize": 2,
+  "[handlebars]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  }
 }

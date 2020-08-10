@@ -1,13 +1,12 @@
 <form class="{{cssClass}} char-sheet flexcol" autocomplete="off">
-
   {{!-- Sheet Header --}}
   <header class="sheet-header actor-sheet-header">
     <div class="header-personal">
-      <img class="token-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+      <img class="token-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
       <div class="names">
-        <input class="char-name" name="name" type="text" value="{{actor.name}}" placeholder=""/>
+        <input class="char-name" name="name" type="text" value="{{actor.name}}" placeholder="" />
         <p class="input-label">CHARACTER NAME</p>
-        <input class="player-name" name="data.playerName" type="text" value="{{data.playerName}}" placeholder=""/>
+        <input class="player-name" name="data.playerName" type="text" value="{{data.playerName}}" placeholder="" />
         <p class="input-label">PLAYER NAME</p>
       </div>
     </div>
@@ -15,7 +14,8 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="luck-points" name="data.currentLuckPoints" onclick="this.select()" type="text" value="{{data.currentLuckPoints}}" placeholder=""/>
+            <input class="luck-points" name="data.currentLuckPoints" onclick="this.select()" type="text"
+              value="{{data.currentLuckPoints}}" placeholder="" />
             <p class="point-total">/{{data.attributes.luckPoints.value}}</p>
           </div>
           <div class="plus-minus-buttons">
@@ -28,7 +28,8 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="magic-points" name="data.currentMagicPoints" onclick="this.select()" type="text" value="{{data.currentMagicPoints}}" placeholder=""/>
+            <input class="magic-points" name="data.currentMagicPoints" onclick="this.select()" type="text"
+              value="{{data.currentMagicPoints}}" placeholder="" />
             <p class="point-total">/{{data.attributes.magicPoints.value}}</p>
           </div>
           <div class="plus-minus-buttons">
@@ -40,7 +41,8 @@
       </div>
       <div class="stats-container">
         <div class="number-input-container">
-          <input class="experience-rolls" name="data.experienceRolls" onclick="this.select()" type="text" value="{{data.experienceRolls}}" placeholder=""/>
+          <input class="experience-rolls" name="data.experienceRolls" onclick="this.select()" type="text"
+            value="{{data.experienceRolls}}" placeholder="" />
           <div class="plus-minus-buttons">
             <a id="increase-current-er">+</a>
             <a id="decrease-current-er">-</a>
@@ -56,31 +58,36 @@
 
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-      <a class="item active" data-tab="core"><div>Character</div></a>
-      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-      <a class="item" data-tab="combat"><div>Combat</div></a>
-      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-      <a class="item" data-tab="abilities"><div>Abilities</div></a>
-      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-      <a class="item" data-tab="equipment"><div>Equipment</div></a>
-      <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png"/>
-      <a class="item" data-tab="notes"><div>Journal</div></a>
+    <a class="item active" data-tab="core">
+      <div>Character</div>
+    </a>
+    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
+    <a class="item" data-tab="combat">
+      <div>Combat</div>
+    </a>
+    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
+    <a class="item" data-tab="abilities">
+      <div>Abilities</div>
+    </a>
+    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
+    <a class="item" data-tab="equipment">
+      <div>Equipment</div>
+    </a>
+    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
+    <a class="item" data-tab="notes">
+      <div>Journal</div>
+    </a>
   </nav>
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
     {{> systems/mythras/templates/actor/tabs/actor-core.html}}
-
     {{> systems/mythras/templates/actor/tabs/actor-combat.html}}
-
     {{> systems/mythras/templates/actor/tabs/actor-abilities.html}}
-
     {{> systems/mythras/templates/actor/tabs/actor-equipment.html}}
-
     {{> systems/mythras/templates/actor/tabs/actor-notes.html}}
   </section>
 
   {{!-- Decorative Symbol Divider --}}
   {{> systems/mythras/templates/global/mythras-symbols.html}}
 </form>
-

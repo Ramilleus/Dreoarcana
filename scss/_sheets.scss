@@ -1,39 +1,39 @@
 .window-content {
-    padding: 0px;
-    overflow-x: scroll;
+  padding: 0px;
+  overflow-x: scroll;
 }
 
 .char-sheet {
-    min-width: 700px;
+  min-width: 700px;
 }
 
 .mythras-symbols {
-    height: 38px;
-    font-family: 'Mythras';
-    font-size: 2.0em;
-    flex: 0 0 38px;
-    overflow: hidden;
-    word-wrap: break-word;
-    padding: 5px;
+  height: 38px;
+  font-family: 'Mythras';
+  font-size: 2em;
+  flex: 0 0 38px;
+  overflow: hidden;
+  word-wrap: break-word;
+  padding: 5px;
 }
 
 ::-webkit-scrollbar {
-    background: #EEEEEE;
-    width: 8px;
-    border-radius: 0px;
-    border: none;
+  background: #eeeeee;
+  width: 8px;
+  border-radius: 0px;
+  border: none;
 }
 
 ::-webkit-scrollbar-thumb {
-    border: none;
-    background: #6c0300;
-    border-radius: 0px;
+  border: none;
+  background: #6c0300;
+  border-radius: 0px;
 }
 
 .increased-attribute {
-    color: #4fa04d;
+  color: #4fa04d;
 }
 
 .decreased-attribute {
-    color: #c11f1f;
+  color: #c11f1f;
 }

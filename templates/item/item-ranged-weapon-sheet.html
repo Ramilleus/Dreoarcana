@@ -2,10 +2,13 @@
   <header class="sheet-header">
     <div class="header-flex">
       <div class="header-fields">
-        <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+        <h1 class="charname">
+          <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
+        </h1>
       </div>
     </div>
   </header>
+
   {{!-- Decorative Symbol Divider --}}
   {{> systems/mythras/templates/global/mythras-symbols.html}}
 
@@ -16,30 +19,30 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">ENC</h3>
-            <input  type="text" name="data.encumbrance" value="{{data.encumbrance}}"/>
+            <input type="text" name="data.encumbrance" value="{{data.encumbrance}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">Quantity</h3>
-            <input type="text" name="data.quantity" value="{{data.quantity}}"/>
+            <input type="text" name="data.quantity" value="{{data.quantity}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
-            <h3 class="core-info">AP</h3> 
-            <input type="text" name="data.ap" value="{{data.ap}}"/>
+            <h3 class="core-info">AP</h3>
+            <input type="text" name="data.ap" value="{{data.ap}}" />
           </div>
-          <div> / </div>
+          <div>/</div>
           <div>
             <h3 class="core-info">HP</h3>
-            <input type="text" name="data.hp" value="{{data.hp}}"/>
+            <input type="text" name="data.hp" value="{{data.hp}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">Value</h3>
-            <input type="text" name="data.value" value="{{data.value}}"/>
+            <input type="text" name="data.value" value="{{data.value}}" />
           </div>
         </div>
       </div>
@@ -49,11 +52,11 @@
         <div class="weapon-core-section">
           <div class="weapon-piece">
             <h3 class="core-info">Damage</h3>
-            <input type="text" name="data.damage" value="{{data.damage}}"/>
+            <input type="text" name="data.damage" value="{{data.damage}}" />
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">DM</h3>
-            <input type="checkbox" name="data.damageModifier" {{checked data.damageModifier}}/>
+            <input type="checkbox" name="data.damageModifier" {{checked data.damageModifier}} />
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">Force</h3>
@@ -88,39 +91,40 @@
             <div class="range-info">
               <div class="weapon-piece">
                 <h3 class="range-piece">Close</h3>
-                <input type="text" name="data.range.close" value="{{data.range.close}}"/>
+                <input type="text" name="data.range.close" value="{{data.range.close}}" />
               </div>
               <div class="weapon-piece">
                 <h3 class="range-piece">Effective</h3>
-                <input type="text" name="data.range.effective" value="{{data.range.effective}}"/>
+                <input type="text" name="data.range.effective" value="{{data.range.effective}}" />
               </div>
               <div class="weapon-piece">
                 <h3 class="range-piece">Long</h3>
-                <input type="text" name="data.range.long" value="{{data.range.long}}"/>
+                <input type="text" name="data.range.long" value="{{data.range.long}}" />
               </div>
             </div>
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">Load</h3>
-            <input type="text" name="data.load" value="{{data.load}}"/>
+            <input type="text" name="data.load" value="{{data.load}}" />
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">Ammo</h3>
-            <input type="text" name="data.ammo" value="{{data.ammo}}"/>
+            <input type="text" name="data.ammo" value="{{data.ammo}}" />
           </div>
         </div>
         <div>
           <h3 class="core-info">Combat Effects</h3>
-          <input type="text" name="data.combat-effects" value="{{data.combat-effects}}"/>
+          <input type="text" name="data.combat-effects" value="{{data.combat-effects}}" />
         </div>
       </div>
     </div>
     <h2>Description</h2>
-      <div class="desc skill-section" data-group="primary">
-        {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-        <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
-      </div>
+    <div class="desc skill-section" data-group="primary">
+      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+      <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
+    </div>
   </section>
+
   {{!-- Decorative Symbol Divider --}}
   {{> systems/mythras/templates/global/mythras-symbols.html}}
 </form>
