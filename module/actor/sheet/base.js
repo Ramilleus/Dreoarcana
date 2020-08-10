@@ -135,8 +135,10 @@ export class ActorSheetMythras extends ActorSheet {
 
       });
     }
+    console.log(formData);
+    console.log(event);
     if(event.target != null && event.target.id.includes("_equipped")){
-      let armorInfo = event.target.id.split("_")
+      let armorInfo = event.target.id.split("_");
       let armor = this.actor.getOwnedItem(armorInfo[1]);
       let equipped = formData["item.data.equipped"][armorInfo[0]];
       this.actor.updateEmbeddedEntity("OwnedItem", {_id: armor._id, "data.equipped": equipped});

@@ -146,7 +146,7 @@
     "melee-weapon":{
       "templates":["item"],
       "damage": 0,
-      "damage-modifier": true,
+      "damageModifier": true,
       "size": "S",
       "reach": "T",
       "combat-effects": "",
@@ -156,7 +156,7 @@
     "ranged-weapon": {
       "templates": ["item"],
       "damage": 0,
-      "damage-modifier": true,
+      "damageModifier": true,
       "force": "S",
       "range": {
         "close": 0,
