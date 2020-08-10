@@ -1080,6 +1080,20 @@ div.window-app section.window-content {
   align-items: center;
 }
 
+.mythras .skill-sheet .combat-flex {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.mythras .skill-sheet .combat-flex input:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras .skill-sheet .combat-flex input:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .mythras .skill-sheet .desc.skill-section {
   height: 100%;
   margin-bottom: 0px;

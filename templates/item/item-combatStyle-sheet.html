@@ -1,0 +1,98 @@
+<form class="{{cssClass}} skill-sheet flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <div class="header-flex">
+      <div class="header-fields">
+        <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+      </div>
+      <h1>{{data.totalVal}}</h1>
+    </div>
+  </header>
+
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body flexcol">
+
+    <div class="upper-flex">
+      <div class="skill-section-left">
+        <div class="skill-section">
+          <h3>Base Characteristics</h3>
+          <span class="resource">
+            <select id="char-change" name="data.primaryChar" data-dtype="String">
+              {{#select data.primaryChar}}
+              <option value="str">Strength</option>
+              <option value="con">Constitution</option>
+              <option value="siz">Size</option>
+              <option value="dex">Dexterity</option>
+              <option value="int">Intelligence</option>
+              <option value="pow">Power</option>
+              <option value="cha">Charisma</option>
+              {{/select}}
+            </select>
+          </span>
+          <span>+</span>
+          <span class="resource">
+            <select id="char-change" name="data.secondaryChar" data-dtype="String">
+                {{#select data.secondaryChar}}
+                <option value="str">Strength</option>
+                <option value="con">Constitution</option>
+                <option value="siz">Size</option>
+                <option value="dex">Dexterity</option>
+                <option value="int">Intelligence</option>
+                <option value="pow">Power</option>
+                <option value="cha">Charisma</option>
+                {{/select}}
+            </select>
+          </span>
+        </div>
+        <div class="skill-section">
+          <h3>Other</h3>
+          <div class="other-flex">
+            <div>
+              <label><p>ENC Penalty</p></label>
+              <input type="checkbox" class="char-enc" disabled="disabled" checked=""/>
+            </div>
+            <div>
+              <label><p>Trained</p></label>
+              <input id="train-check" type="checkbox" data="data.trained" {{checked data.trained}}/>
+            </div>
+            <div>
+              <label><p>Fumbled</p></label>
+              <input id="fumble-check" type="checkbox" data="data.fumbled" {{checked data.fumbled}}/>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="skill-section-right">
+        <div class="skill-section">
+          <div class="improvements-flex">
+            <div>
+              <label><p>TRAINING</p></label>
+              <input id="skill-mod" type="text" name="data.trainingVal" value="{{data.trainingVal}}"/>%
+            </div>
+            <div>
+              <label><p>MISC</p></label>
+              <input id="skill-mod" class="misc-input" type="text" name="data.miscBonus" value="{{data.miscBonus}}"/>%
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="combat-flex">
+      <h3>Weapons</h3>
+      <input type="text" name="data.weapons" value="{{data.weapons}}"/>
+      <h3>Traits</h3>
+      <input type="text" name="data.traits" value="{{data.traits}}"/>
+    </div>
+    <h2>Description</h2>
+    <div class="desc skill-section" data-group="primary">
+      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+      <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
+    </div>
+  </section>
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
+</form>

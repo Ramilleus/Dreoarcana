@@ -22,7 +22,7 @@ export class MythrasItemSheet extends ItemSheet {
 
     // Alternatively, you could use the following return statement to do a
     // unique item sheet by type, like `weapon-sheet.html`.
-    if(this.item.data.type === "standardSkill" || this.item.data.type === "professionalSkill" || this.item.data.type ==="combatStyle" || this.item.data.type === "magicSkill" || this.item.data.type === "passion"){
+    if(this.item.data.type === "standardSkill" || this.item.data.type === "professionalSkill"  || this.item.data.type === "magicSkill" || this.item.data.type === "passion"){
       return `${path}/item-skill-sheet.html`;
     }
     return `${path}/item-${this.item.data.type}-sheet.html`;

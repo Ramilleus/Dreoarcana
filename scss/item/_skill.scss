@@ -134,7 +134,15 @@
             }
         }
     }
-
+    .combat-flex{
+        flex: 0;
+        input:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+        input:focus {
+            background-color: rgba(0,0,0,0.1);
+        }
+    }
     .desc.skill-section {
         height: 100%;
         margin-bottom: 0px;
