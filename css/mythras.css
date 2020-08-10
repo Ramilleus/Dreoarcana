@@ -1117,6 +1117,7 @@ div.window-app section.window-content {
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
+  margin-top: 15px;
 }
 
 .mythras .melee-weapon .sheet-header {
@@ -1221,13 +1222,22 @@ div.window-app section.window-content {
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
   flex-direction: row;
-  height: 100px;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
 .mythras .melee-weapon .equipment-core .equip-core-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.mythras .melee-weapon .equipment-core .equip-core-section div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1241,13 +1251,12 @@ div.window-app section.window-content {
 }
 
 .mythras .melee-weapon .equipment-core .core-info {
-  font-size: 1.25em;
-  text-decoration: underline;
+  font-size: 1em;
 }
 
 .mythras .melee-weapon .equipment-core input {
   text-align: center;
-  width: 30px;
+  width: 40px;
   height: 20px;
 }
 
@@ -1259,8 +1268,6 @@ div.window-app section.window-content {
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
   flex-direction: row;
-  height: 200px;
-  -ms-flex-direction: column;
   flex-direction: column;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
@@ -1296,15 +1303,38 @@ div.window-app section.window-content {
   flex-direction: column;
 }
 
+.mythras .melee-weapon .weapon-core .weapon-core-section .weapon-piece input {
+  text-align: center;
+}
+
+.mythras .melee-weapon .weapon-core .weapon-core-section .weapon-piece .range-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.mythras .melee-weapon .weapon-core .weapon-core-section .weapon-piece .range-info input {
+  width: 40px;
+}
+
+.mythras .melee-weapon .weapon-core .weapon-core-section .weapon-piece .range-info .range-piece {
+  font-size: .8em;
+}
+
 .mythras .melee-weapon .weapon-core .core-info {
-  font-size: 1.25em;
-  text-decoration: underline;
+  font-size: 1em;
 }
 
 .mythras .melee-weapon .equip-section {
-  margin-bottom: 10px;
-  border: solid rgba(0, 0, 0, 0.2) 1px;
-  padding: 5px;
+  border-bottom: solid 1px silver;
+  padding: 15px 5px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
 }
 
 .mythras .melee-weapon .desc.skill-section {

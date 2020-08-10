@@ -63,6 +63,14 @@ export class MythrasItemSheet extends ItemSheet {
         itemData.data.totalVal = itemData.data.baseVal.value+ Number(formData["data.trainingVal"]) + Number(formData["data.miscBonus"]);
       }
     }
+    if(event.target != null && event.target.id === "train-check"){
+      let trained = itemData.data.trained;
+      itemData.data.trained = !trained;
+    }
+    if(event.target != null && event.target.id === "fumble-check"){
+      let fumbled = itemData.data.fumbled;
+      itemData.data.fumbled = !fumbled;
+    }
     return this.item.update(formData);
   }
   /* -------------------------------------------- */

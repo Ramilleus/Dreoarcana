@@ -78,7 +78,7 @@
         "experienceRolls": 0
       },
       "humanoid": {
-        "hit-loc": ["Right Leg", "Left Leg", "Abdomen", "Chest", "Right Arm", "Left Arm", "Head"]
+        "hitLoc": ["Right Leg", "Left Leg", "Abdomen", "Chest", "Right Arm", "Left Arm", "Head"]
       }
     },
     "character": {
@@ -113,7 +113,9 @@
         },
         "trainingVal": 0,
         "miscBonus": 0,
-        "totalVal": 0
+        "totalVal": 0,
+        "trained": false,
+        "fumbled": false
       },
       "item":{
         "description": "",
@@ -163,12 +165,15 @@
       },
       "load": 0,
       "combat-effects": "",
-      "impale-size": "s",
+      "impale-size": "S",
       "ammo": 0      
     },
     "armor":{
       "templates": ["item"],
-      "location": ""
+      "hitLoc": ["Right Leg", "Left Leg", "Abdomen", "Chest", "Right Arm", "Left Arm", "Head"],
+      "location": "",
+      "type": "",
+      "equipped": true
     },
     "equipment":{
       "templates":["item"]

@@ -44,6 +44,30 @@
         </div>
       </div>
     </div>
+    <div class="equip-section">
+      <div class="weapon-core">
+        <div class="weapon-core-section">
+          <div class="weapon-piece">
+            <h3 class="core-info">Armor Location</h3>
+            <select name="data.location" data-dtype="String">
+              {{#select data.location}}
+              {{#each data.hitLoc as |loc|}}
+              <option value="{{loc}}">{{loc}}</option> 
+              {{/each}}
+              {{/select}}
+            </select>
+          </div>
+          <div class="weapon-piece">
+            <h3 class="core-info">Type</h3>
+            <input type="text" name="data.type" value="{{data.type}}"/>
+          </div>
+          <div class="weapon-piece">
+            <h3 class="core-info">Equipped</h3>
+            <input type="checkbox" name="data.equipped" {{checked data.equipped}}/>
+          </div>
+        </div>
+      </div>
+    </div>
     <h2>Description</h2>
       <div class="desc skill-section" data-group="primary">
         {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}

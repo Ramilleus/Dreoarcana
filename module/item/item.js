@@ -22,7 +22,9 @@ export class MythrasItem extends Item {
       itemData.data.baseVal.value = primChar+secondChar;
       itemData.data.totalVal = itemData.data.baseVal.value + Number(itemData.data.trainingVal) + Number(itemData.data.miscBonus);
     }
-    
+    if((itemType==="armor") && (this.actor !== null)){
+      itemData.data.hitLoc = actorData.data.hitLoc;
+    }
   }
 
   /**

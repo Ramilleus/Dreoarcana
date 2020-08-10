@@ -56,9 +56,9 @@
             <input type="checkbox" name="data.damage-modifier" {{checked data.damage-modifier}}/>
           </div>
           <div class="weapon-piece">
-            <h3 class="core-info">Size</h3>
-            <select id="char-change" name="data.size" data-dtype="String">
-              {{#select data.size}}
+            <h3 class="core-info">Force</h3>
+            <select id="char-change" name="data.force" data-dtype="String">
+              {{#select data.force}}
               <option value="S">Small</option>
               <option value="M">Medium</option>
               <option value="L">Large</option>
@@ -69,25 +69,49 @@
             </select>
           </div>
           <div class="weapon-piece">
-            <h3 class="core-info">Reach</h3>
-            <select id="char-change" name="data.reach" data-dtype="reach">
-              {{#select data.reach}}
-              <option value="T">Touch</option>
-              <option value="S">Short</option>
+            <h3 class="core-info">Impale Size</h3>
+            <select id="char-change" name="data.impale-size" data-dtype="String">
+              {{#select data.impale-size}}
+              <option value="S">Small</option>
               <option value="M">Medium</option>
-              <option value="L">Long</option>
-              <option value="VL">Very Long</option>
+              <option value="L">Large</option>
+              <option value="H">Huge</option>
+              <option value="E">Enormous</option>
+              <option value="BE">Beyond Enormous</option>
               {{/select}}
             </select>
+          </div>
+        </div>
+        <div class="weapon-core-section">
+          <div class="weapon-piece">
+            <h3 class="core-info">Range</h3>
+            <div class="range-info">
+              <div class="weapon-piece">
+                <h3 class="range-piece">Close</h3>
+                <input type="text" name="data.range.close" value="{{data.range.close}}"/>
+              </div>
+              <div class="weapon-piece">
+                <h3 class="range-piece">Effective</h3>
+                <input type="text" name="data.range.effective" value="{{data.range.effective}}"/>
+              </div>
+              <div class="weapon-piece">
+                <h3 class="range-piece">Long</h3>
+                <input type="text" name="data.range.long" value="{{data.range.long}}"/>
+              </div>
+            </div>
+          </div>
+          <div class="weapon-piece">
+            <h3 class="core-info">Load</h3>
+            <input type="text" name="data.load" value="{{data.load}}"/>
+          </div>
+          <div class="weapon-piece">
+            <h3 class="core-info">Ammo</h3>
+            <input type="text" name="data.ammo" value="{{data.ammo}}"/>
           </div>
         </div>
         <div>
           <h3 class="core-info">Combat Effects</h3>
           <input type="text" name="data.combat-effects" value="{{data.combat-effects}}"/>
-        </div>
-        <div>
-          <h3 class="core-info">Traits</h3>
-          <input type="text" name="data.traits" value="{{data.traits}}"/>
         </div>
       </div>
     </div>

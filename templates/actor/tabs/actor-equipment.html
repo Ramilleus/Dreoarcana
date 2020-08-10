@@ -77,6 +77,7 @@
         <thead>
           <th>Name</th>
           <th>Location</th>
+          <th>Equipped</th>
           <th>Encumbrance</th>
           <th>AP/HP</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
@@ -89,6 +90,9 @@
               </td>
               <td>
                 {{item.data.location}}
+              </td>
+              <td>
+                 <input id="{{id}}_{{item._id}}_equipped" type="checkbox" name="item.data.equipped" {{checked item.data.equipped}}/>
               </td>
               <td>
                 {{item.data.encumbrance}}
@@ -111,9 +115,11 @@
       <table class="weapons-table">
         <thead>
           <th>Name</th>
+          <th>Damage</th>
+          <th>DM</th>
           <th>Size</th>
           <th>Reach</th>
-          <th>Damage</th>
+          <th>AP/HP</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
@@ -123,13 +129,19 @@
                 <a class="item-name item-control item-edit">{{item.name}}</a>
               </td>
               <td>
+                {{item.data.damage}}
+              </td>
+              <td>
+                <input type="checkbox" disabled="disabled" name="data.damage-modifier" {{checked data.damage-modifier}}/>
+              </td>
+              <td>
                 {{item.data.size}}
               </td>
               <td>
                 {{item.data.reach}}
               </td>
               <td>
-                {{item.data.damage}}
+                {{item.data.ap}} / {{item.data.hp}}
               </td>
               <td>
                 <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -143,9 +155,13 @@
       <table class="weapons-table">
         <thead>
           <th>Name</th>
-          <th>Force</th>
-          <th>Range</th>
           <th>Damage</th>
+          <th>DM</th>
+          <th>Force</th>
+          <th>Impale Size</th>
+          <th>Range</th>
+          <th>Load</th>
+          <th>Ammo</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
@@ -155,14 +171,26 @@
                 <a class="item-name item-control item-edit">{{item.name}}</a>
               </td>
               <td>
+                {{item.data.damage}}
+              </td>
+              <td>
+                <input type="checkbox" disabled="disabled" name="data.damage-modifier" {{checked data.damage-modifier}}/>
+              </td>
+              <td>
                 {{item.data.force}}
+              </td>
+              <td>
+                {{item.data.impale-size}}
               </td>
               <td>
                 {{item.data.range.close}}/{{item.data.range.effective}}/{{item.data.range.long}}
               </td>
-              <td>
-                {{item.data.damage}}
-              </td>
+              <th>
+                {{item.data.load}}
+              </th>
+              <th>
+                {{item.data.ammo}}
+              </th>
               <td>
                 <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
               </td>
