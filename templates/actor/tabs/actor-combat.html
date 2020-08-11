@@ -1,5 +1,135 @@
 <div class="tab combat" data-group="primary" data-tab="combat">
   <div class="combat-tables">
+
+    <h2>Combat</h2>
+    <div class="top-combat-tables">
+      <div class="tables-left">
+
+        <div>
+          <h3>
+            <span>Hit Locations</span><a class="add-items-button item-create" title="Create item"
+              data-type="equipment">+</a>
+          </h3>
+          <table class="equipment-table">
+            <thead>
+              <th>Location</th>
+              <th>Range</th>
+              <th>AP</th>
+              <th>HP</th>
+              <th class="delete-column"><i class="fas fa-trash"></i></th>
+            </thead>
+            <tbody>
+              {{#each actor.equipment as |item id|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td>
+                  <a class="item-name item-control item-edit">{{item.name}}</a>
+                </td>
+                <td>
+                  {{item.data.encumbrance}}
+                </td>
+                <td>
+                  {{item.data.quantity}}
+                </td>
+                <td>
+                  <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tables-right">
+        <div>
+          <h3>
+            <span>Resistances</span>
+          </h3>
+          <table class="resistances-table">
+            <thead>
+              <th>
+                Name
+              </th>
+              <th>
+                Base Char
+              </th>
+              <th>
+                Roll
+              </th>
+            </thead>
+            <tbody>
+              {{#with (findItemByName actor.standardSkills "Brawn") as |item|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                </td>
+                <td>
+                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                    {{item.data.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+              {{#with (findItemByName actor.standardSkills "Endurance") as |item|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                </td>
+                <td>
+                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                    {{item.data.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+              {{#with (findItemByName actor.standardSkills "Evade") as |item|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                </td>
+                <td>
+                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                    {{item.data.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+              {{#with (findItemByName actor.standardSkills "Willpower") as |item|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                </td>
+                <td>
+                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                    {{item.data.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     <div>
       <h3>
         <span>
@@ -18,7 +148,7 @@
             Base Char
           </th>
           <th>
-            %
+            Roll
           </th>
           <th class="delete-column">
             <i class="fas fa-trash"></i>
@@ -37,7 +167,7 @@
             </td>
             <td>
               <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
-                {{item.data.totalVal}}
+                {{item.data.totalVal}}%
               </a>
             </td>
             <td>

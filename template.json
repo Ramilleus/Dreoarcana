@@ -79,13 +79,55 @@
       },
       "humanoid": {
         "hitLoc": [
-          "Right Leg",
-          "Left Leg",
-          "Abdomen",
-          "Chest",
-          "Right Arm",
-          "Left Arm",
-          "Head"
+          {
+            "location": "Right Leg",
+            "rollRangeStart": 1,
+            "rollRangeEnd": 3,
+            "currentHP": 0,
+            "maxHP": 0
+          },
+          {
+            "location": "Left Leg",
+            "rollRangeStart": 4,
+            "rollRangeEnd": 6,
+            "currentHP": 0,
+            "maxHP": 0
+          },
+          {
+            "location": "Abdomen",
+            "rollRangeStart": 7,
+            "rollRangeEnd": 9,
+            "currentHP": 0,
+            "maxHP": 1
+          },
+          {
+            "location": "Chest",
+            "rollRangeStart": 10,
+            "rollRangeEnd": 12,
+            "currentHP": 0,
+            "maxHP": 2
+          },
+          {
+            "location": "Right Arm",
+            "rollRangeStart": 13,
+            "rollRangeEnd": 15,
+            "currentHP": 0,
+            "maxHP": -1
+          },
+          {
+            "location": "Left Arm",
+            "rollRangeStart": 16,
+            "rollRangeEnd": 18,
+            "currentHP": 0,
+            "maxHP": -1
+          },
+          {
+            "location": "Head",
+            "rollRangeStart": 19,
+            "rollRangeEnd": 20,
+            "currentHP": 0,
+            "maxHP": 0
+          }
         ]
       }
     },
@@ -191,16 +233,8 @@
     },
     "armor": {
       "templates": ["item"],
-      "hitLoc": [
-        "Right Leg",
-        "Left Leg",
-        "Abdomen",
-        "Chest",
-        "Right Arm",
-        "Left Arm",
-        "Head"
-      ],
-      "location": "",
+      "hitLoc": [],
+      "location": "Unequipped",
       "type": "",
       "equipped": true
     },

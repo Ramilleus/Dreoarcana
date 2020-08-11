@@ -48,6 +48,10 @@ Hooks.once('init', async function () {
     return str.toUpperCase()
   })
 
+  Handlebars.registerHelper('findItemByName', function (items, itemName) {
+    return items.find((entry) => entry.name === itemName)
+  })
+
   registerActors()
   loadTemplates()
 })

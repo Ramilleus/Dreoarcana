@@ -53,7 +53,7 @@
             <h3 class="core-info">Armor Location</h3>
             <select name="data.location" data-dtype="String">
               {{#select data.location}} {{#each data.hitLoc as |loc|}}
-              <option value="{{loc}}">{{loc}}</option>
+              <option value="{{loc.location}}">{{loc.location}}</option>
               {{/each}} {{/select}}
             </select>
           </div>

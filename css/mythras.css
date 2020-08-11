@@ -51,7 +51,7 @@ div.window-app section.window-content {
 .mythras .mythras-symbols {
   height: 38px;
   font-family: 'Mythras';
-  font-size: 2.0em;
+  font-size: 2em;
   -webkit-box-flex: 0;
   -ms-flex: 0 0 38px;
   flex: 0 0 38px;
@@ -61,7 +61,7 @@ div.window-app section.window-content {
 }
 
 .mythras ::-webkit-scrollbar {
-  background: #EEEEEE;
+  background: #eeeeee;
   width: 8px;
   border-radius: 0px;
   border: none;
@@ -142,7 +142,7 @@ div.window-app section.window-content {
 }
 
 .mythras header.actor-sheet-header .header-personal .names .char-name {
-  font-size: 2.0em;
+  font-size: 2em;
   height: 35px;
 }
 
@@ -254,7 +254,7 @@ div.window-app section.window-content {
 }
 
 .mythras header.actor-sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:active {
-  color: #DDD;
+  color: #ddd;
 }
 
 .mythras .tabs > * {
@@ -921,6 +921,12 @@ div.window-app section.window-content {
   padding: 5px;
 }
 
+.mythras div.combat .combat-tables > div .add-skills-button {
+  float: right;
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
 .mythras div.combat .combat-tables > div .add-equipment-button {
   float: right;
   margin-right: 8px;
@@ -949,6 +955,54 @@ div.window-app section.window-content {
 }
 
 .mythras div.combat .combat-tables > div .delete-column {
+  width: 20px;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  border: 0;
+  padding: 0;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div {
+  width: 49.5%;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div .add-items-button {
+  float: right;
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div div {
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+  padding: 5px;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div div table {
+  background: none;
+  border: none;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div div th {
+  text-align: left;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div div thead {
+  background: none;
+  color: black;
+  text-shadow: none;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div div .delete-column {
   width: 20px;
 }
 
@@ -1104,12 +1158,31 @@ div.window-app section.window-content {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.mythras .skill-sheet .upper-flex .skill-section .improvements-flex input:focus {
+.mythras .skill-sheet .upper-flex .skill-section .combat-flex {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .combat-flex input:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.mythras .skill-sheet .upper-flex .skill-section .improvements-flex .misc-input {
-  margin-bottom: 2px;
+.mythras .skill-sheet .upper-flex .skill-section .combat-flex input:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .desc.skill-section {
+  height: 100%;
+  margin-bottom: 0px;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .desc.skill-section .editor {
+  height: 100%;
+}
+
+.mythras .skill-sheet .upper-flex .skill-section .desc.skill-section .editor div.tox.tox-tinymce {
+  height: 100% !important;
 }
 
 .mythras .skill-sheet .upper-flex .skill-section .other-flex {
@@ -1136,20 +1209,6 @@ div.window-app section.window-content {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.mythras .skill-sheet .combat-flex {
-  -webkit-box-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-}
-
-.mythras .skill-sheet .combat-flex input:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.mythras .skill-sheet .combat-flex input:focus {
-  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .mythras .skill-sheet .desc.skill-section {
@@ -1394,7 +1453,7 @@ div.window-app section.window-content {
 }
 
 .mythras .melee-weapon .weapon-core .weapon-core-section .weapon-piece .range-info .range-piece {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 
 .mythras .melee-weapon .weapon-core .core-info {
