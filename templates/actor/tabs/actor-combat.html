@@ -19,16 +19,16 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.equipment as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              {{#each data.hitLoc as |item id|}}
+              <tr class="item">
                 <td>
-                  <a class="item-name item-control item-edit">{{item.name}}</a>
+                  <a class="item-name item-control item-edit">{{item.location}}</a>
                 </td>
                 <td>
-                  {{item.data.encumbrance}}
+                  <input type="text" name="item.rollRangeStart" value="{{item.rollRangeStart}}" />
                 </td>
                 <td>
-                  {{item.data.quantity}}
+
                 </td>
                 <td>
                   <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
