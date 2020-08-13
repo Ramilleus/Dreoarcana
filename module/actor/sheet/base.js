@@ -35,6 +35,7 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Initialize containers.
     const gear = []
+    const hitLocations = []
     const standardSkills = []
     const professionalSkills = []
     const combatStyles = []
@@ -66,7 +67,9 @@ export class ActorSheetMythras extends ActorSheet {
       let item = i.data
       i.img = i.img || DEFAULT_TOKEN
       // Append to gear.
-      if (i.type === 'standardSkill') {
+      if (i.type === 'hitLocation') {
+        hitLocations.push(i)
+      } else if (i.type === 'standardSkill') {
         standardSkills.push(i)
         skillsAndPassions.push(i)
       } else if (i.type === 'professionalSkill') {
@@ -105,6 +108,7 @@ export class ActorSheetMythras extends ActorSheet {
     }
     // Assign and return
     actorData.gear = gear
+    actorData.hitLocations = hitLocations
     actorData.standardSkills = standardSkills
     actorData.professionalSkills = professionalSkills
     actorData.combatStyles = combatStyles
@@ -163,6 +167,28 @@ export class ActorSheetMythras extends ActorSheet {
         'data.equipped': equipped
       })
     }
+
+    if (event.target != null && event.target.id.includes('_hitLoc')) {
+      let fieldInfo = event.target.id.split('_')
+      let hitLocIndex = fieldInfo[0]
+      let hitLoc = this.actor.getOwnedItem(fieldInfo[1])
+      let hitLocField = fieldInfo[2]
+      let updateField = ''
+      let newFieldValue = ''
+      if (hitLocField === 'name') {
+        updateField = 'name'
+        newFieldValue = formData['item.name'][Number(hitLocIndex)]
+      } else {
+        updateField = 'data.' + hitLocField
+        newFieldValue =
+          formData['item.data.' + hitLocField][Number(hitLocIndex)]
+      }
+      this.actor.updateEmbeddedEntity('OwnedItem', {
+        _id: hitLoc._id,
+        [updateField]: newFieldValue
+      })
+    }
+
     return this.actor.update(formData)
   }
 

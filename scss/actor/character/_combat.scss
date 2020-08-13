@@ -14,11 +14,6 @@ div.combat {
         margin-right: 8px;
         font-size: 1.2em;
       }
-      .add-equipment-button {
-        float: right;
-        margin-right: 8px;
-        font-size: 1.2em;
-      }
       margin-bottom: 20px;
       border: solid rgba(0, 0, 0, 0.2) 1px;
       padding: 5px;
@@ -30,6 +25,14 @@ div.combat {
         margin: 0;
         background: none;
         border: none;
+
+        .hitLoc-flex-cell {
+          display: flex;
+          flex-direction: row;
+          input {
+            width: 25px;
+          }
+        }
       }
 
       th {
@@ -53,7 +56,6 @@ div.combat {
       border: 0;
       padding: 0;
       > div {
-        width: 49.5%;
         .add-items-button {
           float: right;
           margin-right: 8px;
@@ -81,6 +83,12 @@ div.combat {
             width: 20px;
           }
         }
+      }
+      > div.tables-left {
+        width: 69%;
+      }
+      > div.tables-right {
+        width: 30%;
       }
     }
   }

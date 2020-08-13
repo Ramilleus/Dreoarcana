@@ -1,0 +1,7 @@
+{"name":"Left Leg","permission":{"default":0,"HUv6PC24DWd7xI9f":3},"type":"hitLocation","data":{"rollRangeStart":0,"rollRangeEnd":0,"maxHp":"0","currentHp":"0","maxHpMod":"0"},"flags":{},"_id":"3vv9jBI4yJpPA1yg"}
+{"name":"Right Arm","permission":{"default":0,"HUv6PC24DWd7xI9f":3},"type":"hitLocation","data":{"rollRangeStart":0,"rollRangeEnd":0,"maxHp":"0","currentHp":"0","maxHpMod":"0"},"flags":{},"_id":"B7xqp5brGYZayM5v"}
+{"name":"Left Arm","permission":{"default":0,"HUv6PC24DWd7xI9f":3},"type":"hitLocation","data":{"rollRangeStart":0,"rollRangeEnd":0,"maxHp":"0","currentHp":"0","maxHpMod":"0"},"flags":{},"_id":"I5wW3l6YmDGHZOsz"}
+{"name":"Head","permission":{"default":0,"HUv6PC24DWd7xI9f":3},"type":"hitLocation","data":{"rollRangeStart":0,"rollRangeEnd":0,"maxHp":"0","currentHp":"0","maxHpMod":"0"},"flags":{},"_id":"Y9hlOtLXx1mWDdkE"}
+{"name":"Right Leg","permission":{"default":0,"HUv6PC24DWd7xI9f":3},"type":"hitLocation","data":{"rollRangeStart":0,"rollRangeEnd":0,"maxHp":"0","currentHp":"0","maxHpMod":"0"},"flags":{},"_id":"eWS7lvaImFXjv3rZ"}
+{"name":"Chest","permission":{"default":0,"HUv6PC24DWd7xI9f":3},"type":"hitLocation","data":{"rollRangeStart":0,"rollRangeEnd":0,"maxHp":"0","currentHp":"0","maxHpMod":"0"},"flags":{},"_id":"fowt5nDxW8Xh7oBC"}
+{"name":"Abdomen","permission":{"default":0,"HUv6PC24DWd7xI9f":3},"type":"hitLocation","data":{"rollRangeStart":0,"rollRangeEnd":0,"maxHp":"0","currentHp":"0","maxHpMod":"0"},"flags":{},"_id":"xswfTv2uI8vhuDIH"}

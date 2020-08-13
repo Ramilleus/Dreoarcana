@@ -6,7 +6,7 @@
   "minimumCoreVersion": "0.6.2",
   "compatibleCoreVersion": "0.6.2",
   "templateVersion": 2,
-  "author": "John Doe",
+  "author": "Jonathan Karkour and Tom Paoloni",
   "esmodules": ["mythras.js"],
   "styles": ["css/mythras.css"],
   "scripts": [],
@@ -23,6 +23,13 @@
       "label": "Professional Skills",
       "system": "mythras",
       "path": "./packs/professionalskill.db",
+      "entity": "Item"
+    },
+    {
+      "name": "humanoidHitLocations",
+      "label": "Humanoid Hit Locations",
+      "system": "mythras",
+      "path": "./packs/humanoidHitLocations.db",
       "entity": "Item"
     }
   ],

@@ -46,12 +46,9 @@ export class MythrasItem extends Item {
         Number(itemData.data.miscBonus)
     }
     if (itemType === 'armor' && this.actor !== null) {
-      itemData.data.hitLoc = actorData.data.hitLoc
-      if (itemData.data.hitLoc[0].location !== 'Unequipped') {
-        itemData.data.hitLoc.unshift({
-          location: 'Unequipped'
-        })
-      }
+      itemData.data.hitLoc = actorData.items.filter(function (value) {
+        return value.type === 'hitLocation'
+      })
     }
   }
 

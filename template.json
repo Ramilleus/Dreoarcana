@@ -77,59 +77,7 @@
         "currentMagicPoints": 11,
         "experienceRolls": 0
       },
-      "humanoid": {
-        "hitLoc": [
-          {
-            "location": "Right Leg",
-            "rollRangeStart": 1,
-            "rollRangeEnd": 3,
-            "currentHP": 0,
-            "maxHP": 0
-          },
-          {
-            "location": "Left Leg",
-            "rollRangeStart": 4,
-            "rollRangeEnd": 6,
-            "currentHP": 0,
-            "maxHP": 0
-          },
-          {
-            "location": "Abdomen",
-            "rollRangeStart": 7,
-            "rollRangeEnd": 9,
-            "currentHP": 0,
-            "maxHP": 1
-          },
-          {
-            "location": "Chest",
-            "rollRangeStart": 10,
-            "rollRangeEnd": 12,
-            "currentHP": 0,
-            "maxHP": 2
-          },
-          {
-            "location": "Right Arm",
-            "rollRangeStart": 13,
-            "rollRangeEnd": 15,
-            "currentHP": 0,
-            "maxHP": -1
-          },
-          {
-            "location": "Left Arm",
-            "rollRangeStart": 16,
-            "rollRangeEnd": 18,
-            "currentHP": 0,
-            "maxHP": -1
-          },
-          {
-            "location": "Head",
-            "rollRangeStart": 19,
-            "rollRangeEnd": 20,
-            "currentHP": 0,
-            "maxHP": 0
-          }
-        ]
-      }
+      "humanoid": {}
     },
     "character": {
       "templates": ["common", "humanoid"],
@@ -150,6 +98,7 @@
   "Item": {
     "types": [
       "standardSkill",
+      "hitLocation",
       "professionalSkill",
       "combatStyle",
       "magicSkill",
@@ -188,6 +137,13 @@
         "ap": 0,
         "hp": 0
       }
+    },
+    "hitLocation": {
+      "rollRangeStart": 0,
+      "rollRangeEnd": 0,
+      "maxHp": 0,
+      "currentHp": 0,
+      "maxHpMod": 0
     },
     "standardSkill": {
       "templates": ["skill"]

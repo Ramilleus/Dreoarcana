@@ -69,6 +69,15 @@ Hooks.once('ready', async function () {
           chain = chain.then(() => actor.createOwnedItem(skill.data))
         })
       })
+    game.packs
+      .get('mythras.humanoidHitLocations')
+      .getContent()
+      .then((result) => {
+        let chain = Promise.resolve()
+        result.forEach((hitLoc, index) => {
+          chain = chain.then(() => actor.createOwnedItem(hitLoc.data))
+        })
+      })
   })
 })
 

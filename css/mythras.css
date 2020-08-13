@@ -927,12 +927,6 @@ div.window-app section.window-content {
   font-size: 1.2em;
 }
 
-.mythras div.combat .combat-tables > div .add-equipment-button {
-  float: right;
-  margin-right: 8px;
-  font-size: 1.2em;
-}
-
 .mythras div.combat .combat-tables > div h3 {
   margin-bottom: 0px;
   color: #840701;
@@ -942,6 +936,20 @@ div.window-app section.window-content {
   margin: 0;
   background: none;
   border: none;
+}
+
+.mythras div.combat .combat-tables > div table .hitLoc-flex-cell {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.mythras div.combat .combat-tables > div table .hitLoc-flex-cell input {
+  width: 25px;
 }
 
 .mythras div.combat .combat-tables > div th {
@@ -972,10 +980,6 @@ div.window-app section.window-content {
   padding: 0;
 }
 
-.mythras div.combat .combat-tables .top-combat-tables > div {
-  width: 49.5%;
-}
-
 .mythras div.combat .combat-tables .top-combat-tables > div .add-items-button {
   float: right;
   margin-right: 8px;
@@ -1004,6 +1008,14 @@ div.window-app section.window-content {
 
 .mythras div.combat .combat-tables .top-combat-tables > div div .delete-column {
   width: 20px;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div.tables-left {
+  width: 69%;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div.tables-right {
+  width: 30%;
 }
 
 .mythras .skill-sheet {
