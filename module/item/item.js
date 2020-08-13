@@ -49,6 +49,32 @@ export class MythrasItem extends Item {
       itemData.data.hitLoc = actorData.items.filter(function (value) {
         return value.type === 'hitLocation'
       })
+      let hitLocName = this.actor.getOwnedItem(itemData.data.location)
+      if (hitLocName) {
+        itemData.data.locationName = hitLocName.data.name
+      }
+    }
+    if (itemType === 'hitLocation' && this.actor !== null) {
+      let armors = actorData.items.filter(function (value) {
+        return value.type === 'armor'
+      })
+      let armorEquipped = []
+      let ap = 0
+      armors.forEach(function (piece, index) {
+        if (piece.data.location === itemData._id && piece.data.equipped) {
+          armorEquipped.push(piece.name)
+          ap += Number(piece.data.ap)
+        }
+      })
+      itemData.data.armors = armorEquipped.join(', ')
+      console.log(armorEquipped)
+      itemData.data.ap = ap
+      itemData.data.maxHp =
+        Number(itemData.data.baseHp) +
+        Number(actorData.data.attributes.hitPointMod.value)
+      if (itemData.data.maxHp < 1) {
+        itemData.data.maxHp = 1
+      }
     }
   }
 

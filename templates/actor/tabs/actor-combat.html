@@ -33,17 +33,16 @@
                     value="{{item.data.rollRangeEnd}}" />
                 </td>
                 <td>
-
+                  {{item.data.armors}}
                 </td>
                 <td>
-
+                  {{item.data.ap}}
                 </td>
                 <td class="hitLoc-flex-cell">
                   <input id="{{id}}_{{item._id}}_currentHp_hitLoc" type="text" name="item.data.currentHp"
                     value="{{item.data.currentHp}}" />
                   /
-                  <input id="{{id}}_{{item._id}}_maxHp_hitLoc" type="text" name="item.data.maxHp"
-                    value="{{item.data.maxHp}}" />
+                  {{item.data.maxHp}}
                 </td>
               </tr>
               {{/each}}

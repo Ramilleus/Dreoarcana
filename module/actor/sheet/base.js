@@ -129,7 +129,11 @@ export class ActorSheetMythras extends ActorSheet {
   _updateObject(event, formData) {
     const actor = this.getData().actor
     const skills = actor.skillsAndPassions
-    if (event.target != null && event.target.id === 'characteristic-box') {
+    if (
+      event.target != null &&
+      event.target.id.includes('characteristic-box')
+    ) {
+      let affectedChar = event.target.id.slice(0, 3)
       skills.forEach((skill) => {
         let primChar = Number(
           formData['data.characteristics.' + skill.data.primaryChar + '.value']
@@ -139,22 +143,22 @@ export class ActorSheetMythras extends ActorSheet {
             'data.characteristics.' + skill.data.secondaryChar + '.value'
           ]
         )
-        this.actor.updateEmbeddedEntity('OwnedItem', {
-          _id: skill._id,
-          'data.baseVal.value': primChar + secondChar
-        })
-        this.actor.updateEmbeddedEntity('OwnedItem', {
-          _id: skill._id,
-          'data.totalVal':
-            primChar +
-            secondChar +
-            Number(skill.data.trainingVal) +
-            Number(skill.data.miscBonus)
-        })
+        if (
+          skill.data.primaryChar === affectedChar ||
+          skill.data.secondaryChar === affectedChar
+        ) {
+          this.actor.updateEmbeddedEntity('OwnedItem', {
+            _id: skill._id,
+            'data.baseVal.value': primChar + secondChar,
+            'data.totalVal':
+              primChar +
+              secondChar +
+              Number(skill.data.trainingVal) +
+              Number(skill.data.miscBonus)
+          })
+        }
       })
     }
-    console.log(formData)
-    console.log(event)
     if (event.target != null && event.target.id.includes('_equipped')) {
       let armorInfo = event.target.id.split('_')
       let armor = this.actor.getOwnedItem(armorInfo[1])
