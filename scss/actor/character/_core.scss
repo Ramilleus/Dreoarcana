@@ -246,6 +246,7 @@ div.core {
         }
         div {
           .movement-mod {
+            display: flex;
             width: 30px;
             margin-left: 22px;
             input {

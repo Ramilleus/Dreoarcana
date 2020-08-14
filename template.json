@@ -6,25 +6,32 @@
         "name": "",
         "characteristics": {
           "str": {
-            "value": 11
+            "value": 11,
+            "mod": 0
           },
           "con": {
-            "value": 11
+            "value": 11,
+            "mod": 0
           },
           "siz": {
-            "value": 11
+            "value": 11,
+            "mod": 0
           },
           "dex": {
-            "value": 11
+            "value": 11,
+            "mod": 0
           },
           "int": {
-            "value": 11
+            "value": 11,
+            "mod": 0
           },
           "pow": {
-            "value": 11
+            "value": 11,
+            "mod": 0
           },
           "cha": {
-            "value": 11
+            "value": 11,
+            "mod": 0
           }
         },
         "attributes": {

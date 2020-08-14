@@ -14,6 +14,12 @@ div.combat {
         margin-right: 8px;
         font-size: 1.2em;
       }
+
+      .add-equipment-button {
+        float: right;
+        margin-right: 8px;
+        font-size: 1.2em;
+      }
       margin-bottom: 20px;
       border: solid rgba(0, 0, 0, 0.2) 1px;
       padding: 5px;
@@ -28,15 +34,21 @@ div.combat {
 
         .hitLoc-flex-cell {
           display: flex;
+          justify-content: center;
           flex-direction: row;
           input {
             width: 25px;
+            text-align: center;
           }
         }
       }
 
       th {
         text-align: left;
+      }
+
+      td {
+        text-align: center;
       }
 
       thead {
@@ -50,18 +62,68 @@ div.combat {
       }
     }
     .top-combat-tables {
+      margin-bottom: 0px;
+      input,
+      textarea {
+        border-radius: 0;
+        border: none;
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      input:focus,
+      textarea:focus {
+        border: none;
+        outline: none;
+        outline-style: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      input:hover,
+      textarea:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .max-hp {
+        margin: 0;
+        margin-left: 3px;
+        display: flex;
+        align-items: center;
+      }
+      .max-hp-mod {
+        display: flex;
+        align-items: center;
+        margin-left: 5px;
+        width: 30px;
+        input {
+          font-size: 0.7em;
+          height: 15px;
+          width: 15px;
+          margin: 0;
+          margin-top: 2px;
+          text-align: left;
+        }
+      }
+
+      .hit-loc-text {
+        margin: 0px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       border: 0;
       padding: 0;
       > div {
-        .add-items-button {
+        .roll-hitlocations-button {
           float: right;
           margin-right: 8px;
-          font-size: 1.2em;
         }
-        div {
+        > div {
           border: solid rgba(0, 0, 0, 0.2) 1px;
           padding: 5px;
           table {
@@ -70,13 +132,25 @@ div.combat {
           }
 
           th {
-            text-align: left;
+            text-align: center;
           }
-
           thead {
             background: none;
             color: black;
             text-shadow: none;
+          }
+
+          .hitloc-location-cell {
+            text-align: left;
+            width: 120px;
+          }
+
+          .hitloc-hp-cell {
+            width: 100px;
+          }
+
+          .hitloc-range-cell {
+            width: 80px;
           }
 
           .delete-column {
@@ -85,10 +159,18 @@ div.combat {
         }
       }
       > div.tables-left {
+        margin-bottom: 8px;
         width: 69%;
       }
       > div.tables-right {
         width: 30%;
+        > div {
+          margin-bottom: 8px;
+          textarea {
+            font-family: 'Amethysta';
+            height: 62px;
+          }
+        }
       }
     }
   }

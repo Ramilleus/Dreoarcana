@@ -23,6 +23,52 @@ export class ActorMythras extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data
     let items = actorData.items
+    data.attributes.hitPointMod.value =
+      Math.ceil(
+        (Number(data.characteristics.siz.value) +
+          Number(data.characteristics.con.value)) /
+          5
+      ) + Number(data.attributes.hitPointMod.mod)
+
+    let hitLocations = actorData.items.filter(function (value) {
+      return value.type === 'hitLocation'
+    })
+
+    let equippedArmor = actorData.items.filter(function (value) {
+      return value.type === 'armor' && value.data.equipped
+    })
+
+    for (let i = 0; i < hitLocations.length; i++) {
+      let hitLocArmor = []
+      let ap = 0
+      equippedArmor.forEach(function (piece, index) {
+        if (
+          piece.data.location === hitLocations[i]._id &&
+          piece.data.equipped
+        ) {
+          hitLocArmor.push(piece.name)
+          ap += Number(piece.data.ap)
+        }
+      })
+      let armorString = hitLocArmor.join(', ')
+
+      let baseHp = Number(hitLocations[i].data.baseHp)
+      let hpMod = Number(data.attributes.hitPointMod.value)
+
+      let newMaxHp = baseHp + hpMod + Number(hitLocations[i].data.maxHpMod)
+
+      // arms are weird
+      if (newMaxHp < 1) {
+        newMaxHp = 1
+      }
+
+      this.updateEmbeddedEntity('OwnedItem', {
+        _id: hitLocations[i]._id,
+        'data.armors': armorString,
+        'data.ap': ap,
+        'data.maxHp': newMaxHp
+      })
+    }
 
     data.attributes.actionPoints.value =
       Math.ceil(
@@ -44,13 +90,6 @@ export class ActorMythras extends Actor {
     data.attributes.healingRate.value =
       Math.ceil(Number(data.characteristics.con.value) / 6) +
       Number(data.attributes.healingRate.mod)
-
-    data.attributes.hitPointMod.value =
-      Math.ceil(
-        (Number(data.characteristics.siz.value) +
-          Number(data.characteristics.con.value)) /
-          5
-      ) + Number(data.attributes.hitPointMod.mod)
 
     data.attributes.initiativeBonus.value =
       Math.ceil(

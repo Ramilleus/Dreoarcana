@@ -7,42 +7,58 @@
 
         <div>
           <h3>
-            <span>Hit Locations</span><a class="add-items-button item-create" title="Create item"
-              data-type="hitLocation">+</a>
+            <span>Hit Locations</span><a class="roll-hitlocations-button" title="Roll 1d20" data-type="hitLocation">Roll
+              1d20</a>
           </h3>
           <table class="hitLocation-table">
             <thead>
-              <th>Location</th>
-              <th>Range</th>
-              <th>Armor</th>
-              <th>AP</th>
-              <th>HP</th>
-              <th class="delete-column"><i class="fas fa-trash"></i></th>
+              <th class="hitloc-location-cell">Location</th>
+              <th class="hitloc-range-cell">Range</th>
+              <th class="hitloc-armor-cell">Armor</th>
+              <th class="hitloc-ap-cell">AP</th>
+              <th class="hitloc-hp-cell ">
+                <div class="hitLoc-flex-cell">
+                  <p class="hit-loc-text">HP</p>
+                  <span class="max-hp-mod">
+                    <span>
+                      +
+                    </span>
+                    <input type="text" name="data.attributes.hitPointMod.mod" class="" onclick="this.select()"
+                      value="{{data.attributes.hitPointMod.mod}}" />
+                  </span>
+                </div>
+              </th>
             </thead>
             <tbody>
               {{#each actor.hitLocations as |item id|}}
               <tr class="item" data-item-id="{{item._id}}">
-                <td>
+                <td class="hitloc-location-cell">
                   <input id="{{id}}_{{item._id}}_name_hitLoc" type="text" name="item.name" value="{{item.name}}" />
                 </td>
-                <td class="hitLoc-flex-cell">
+                <td class="hitLoc-flex-cell hitloc-range-cell">
                   <input id="{{id}}_{{item._id}}_rollRangeStart_hitLoc" type="text" name="item.data.rollRangeStart"
                     value="{{item.data.rollRangeStart}}" />
-                  -
+                  <p class="hit-loc-text">-</p>
                   <input id="{{id}}_{{item._id}}_rollRangeEnd_hitLoc" type="text" name="item.data.rollRangeEnd"
                     value="{{item.data.rollRangeEnd}}" />
                 </td>
-                <td>
+                <td class="hitloc-armor-cell">
                   {{item.data.armors}}
                 </td>
-                <td>
-                  {{item.data.ap}}
+                <td class="hitloc-ap-cell">
+                  <p class="hit-loc-text">{{item.data.ap}}</p>
                 </td>
-                <td class="hitLoc-flex-cell">
+                <td class="hitLoc-flex-cell hitloc-hp-cell">
                   <input id="{{id}}_{{item._id}}_currentHp_hitLoc" type="text" name="item.data.currentHp"
                     value="{{item.data.currentHp}}" />
-                  /
-                  {{item.data.maxHp}}
+                  <p class="max-hp"> / {{item.data.maxHp}}</p>
+                  <div class="max-hp-mod">
+                    <span>
+                      +
+                    </span>
+                    <input id="{{id}}_{{item._id}}_maxHpMod_hitLoc" type="text" name="item.data.maxHpMod" class=""
+                      onclick="this.select()" value="{{item.data.maxHpMod}}" />
+                  </div>
                 </td>
               </tr>
               {{/each}}
@@ -138,6 +154,12 @@
               {{/with}}
             </tbody>
           </table>
+        </div>
+        <div>
+          <h3>
+            <span>Wounds and Conditions</span>
+          </h3>
+          <textarea name="data.conditionsAndWounds">{{data.conditionsAndWounds}}</textarea>
         </div>
       </div>
     </div>

@@ -129,6 +129,7 @@ export class ActorSheetMythras extends ActorSheet {
   _updateObject(event, formData) {
     const actor = this.getData().actor
     const skills = actor.skillsAndPassions
+    const hitLocations = actor.hitLocations
     if (
       event.target != null &&
       event.target.id.includes('characteristic-box')
