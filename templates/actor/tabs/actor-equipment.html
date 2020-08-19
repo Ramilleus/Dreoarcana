@@ -1,4 +1,18 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
+  <div class="enc-row">
+    <div class="enc-section">
+      <h3 class="enc-tag">Current ENC:</h3> <span class="enc-value">{{data.attributes.encumbrance.value}}</span>
+    </div>
+    <div class="enc-section">
+      <h3 class="enc-tag">Normal Cap: </h3> <span class="enc-value">{{data.attributes.encumbrance.burdened}}</span>
+    </div>
+    <div class="enc-section">
+      <h3 class="enc-tag">Burdened Cap:</h3> <span class="enc-value">{{data.attributes.encumbrance.overloaded}}</span>
+    </div>
+    <div class="enc-section">
+      <h3 class="enc-tag">Overloaded Cap:</h3> <span class="enc-value">{{data.attributes.encumbrance.maxLoad}}</span>
+    </div>
+  </div>
   <div class="equipment-tables">
     <h2>Items</h2>
     <div class="top-equipment-tables">
@@ -141,10 +155,14 @@
               <a class="item-name item-control item-edit">{{item.name}}</a>
             </td>
             <td>
-              {{item.data.damage}}
+              <a class="rollableMeleeDamage" data-roll="{{item.data.damage}}"
+                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}},{{item.data.traits}}">
+                {{item.data.damage}}
+              </a>
             </td>
             <td>
-              <input type="checkbox" disabled="disabled" name="data.damageModifier" {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
+                {{checked data.damageModifier}} />
             </td>
             <td>
               {{item.data.size}}
@@ -186,10 +204,14 @@
               <a class="item-name item-control item-edit">{{item.name}}</a>
             </td>
             <td>
-              {{item.data.damage}}
+              <a class="rollableRangedDamage" data-roll="{{item.data.damage}}"
+                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}}">
+                {{item.data.damage}}
+              </a>
             </td>
             <td>
-              <input type="checkbox" disabled="disabled" name="data.damageModifier" {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
+                {{checked data.damageModifier}} />
             </td>
             <td>
               {{item.data.force}}

@@ -49,10 +49,16 @@ export class MythrasItem extends Item {
       itemData.data.hitLoc = actorData.items.filter(function (value) {
         return value.type === 'hitLocation'
       })
-      let hitLocName = this.actor.getOwnedItem(itemData.data.location)
-      if (hitLocName) {
-        itemData.data.locationName = hitLocName.data.name
+      let hitLocName = itemData.data.hitLoc.filter(function (value) {
+        return value._id === itemData.data.location
+      })
+      if (hitLocName.length > 0) {
+        itemData.data.locationName = hitLocName[0].name
       }
+      // let hitLocName = this.actor.getOwnedItem(itemData.data.location)
+      // if (hitLocName) {
+      //   itemData.data.locationName = hitLocName.data.name
+      // }
     }
     if (itemType === 'hitLocation' && this.actor !== null) {
       let armors = actorData.items.filter(function (value) {

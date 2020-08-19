@@ -3,6 +3,25 @@
  * @extends {Actor}
  */
 export class ActorMythras extends Actor {
+  /** @override */
+  static async create(data, options = {}) {
+    data.token = data.token || {}
+    if (data.type === 'character') {
+      mergeObject(
+        data.token,
+        {
+          vision: true,
+          dimSight: 30,
+          brightSight: 0,
+          actorLink: true,
+          disposition: 1
+        },
+        { overwrite: false }
+      )
+    }
+    return super.create(data, options)
+  }
+
   /**
    * Augment the basic actor data with additional dynamic data.
    */
@@ -158,6 +177,8 @@ export class ActorMythras extends Actor {
     data.attributes.encumbrance.maxLoad =
       Number(data.characteristics.str.value) * 4
 
+    data.attributes.encumbrance.value = this.encumbranceCalc(actorData)
+
     for (let key in data.attributes) {
       if (data.attributes[key].mod != null) {
         let mod = Number(data.attributes[key].mod)
@@ -171,7 +192,37 @@ export class ActorMythras extends Actor {
       }
     }
   }
+  doesTypeHaveTemplate(type, template) {
+    let itemTemplates = game.system.template.Item[type].templates
+    if (itemTemplates === undefined) return false
 
+    return itemTemplates.includes(template)
+  }
+  encumbranceCalc(actorData) {
+    const physicalItems = [
+      'melee-weapon',
+      'ranged-weapon',
+      'armor',
+      'equipment',
+      'currency'
+    ]
+    let encItems = actorData.items.filter(function (value) {
+      return physicalItems.includes(value.type)
+    })
+    let totalEnc = 0
+    if (encItems.length > 0) {
+      totalEnc = encItems.reduce((weight, i) => {
+        const q = Number(i.data.quantity) || 0
+        const enc = Number(i.data.encumbrance) || 0
+        if (i.type === 'armor' && i.data.equipped) {
+          return weight + Math.ceil(enc / 2)
+        } else {
+          return weight + enc * q
+        }
+      }, 0)
+    }
+    return totalEnc
+  }
   recoveryTimeCalc(fatigueLevel, healRate) {
     let levels = {
       fresh: 'Feeling fresh!',

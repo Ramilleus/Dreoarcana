@@ -756,6 +756,49 @@ div.window-app section.window-content {
   width: 20px;
 }
 
+.mythras div.equipment .damageModCheck {
+  pointer-events: none;
+}
+
+.mythras div.equipment .enc-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: row;
+  -ms-flex-align: row;
+  align-items: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.mythras div.equipment .enc-row .enc-value {
+  font-size: 1.25em;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 5px 5px 5px 5px;
+  border-radius: 5px;
+  min-width: 36px;
+  text-align: center;
+}
+
+.mythras div.equipment .enc-row .enc-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: row;
+  -ms-flex-align: row;
+  align-items: row;
+  font-size: 1.2em;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.mythras div.equipment .enc-row .enc-tag {
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
 .mythras div.equipment .equipment-tables {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -898,6 +941,10 @@ div.window-app section.window-content {
   height: 100% !important;
 }
 
+.mythras div.combat .damageModCheck {
+  pointer-events: none;
+}
+
 .mythras div.combat .combat-tables {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -968,10 +1015,6 @@ div.window-app section.window-content {
 
 .mythras div.combat .combat-tables > div th {
   text-align: left;
-}
-
-.mythras div.combat .combat-tables > div td {
-  text-align: center;
 }
 
 .mythras div.combat .combat-tables > div thead {

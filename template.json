@@ -164,6 +164,7 @@
     },
     "combatStyle": {
       "templates": ["skill"],
+      "secondaryChar": "dex",
       "traits": "",
       "weapons": ""
     },
@@ -205,8 +206,9 @@
       "templates": ["item"],
       "hitLoc": [],
       "location": "Unequipped",
+      "locationName": "",
       "type": "",
-      "equipped": true
+      "equipped": false
     },
     "equipment": {
       "templates": ["item"]

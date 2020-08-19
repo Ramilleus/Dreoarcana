@@ -1,4 +1,7 @@
 div.combat {
+  .damageModCheck {
+    pointer-events: none;
+  }
   .combat-tables {
     display: flex;
     flex-direction: column;
@@ -45,10 +48,6 @@ div.combat {
 
       th {
         text-align: left;
-      }
-
-      td {
-        text-align: center;
       }
 
       thead {

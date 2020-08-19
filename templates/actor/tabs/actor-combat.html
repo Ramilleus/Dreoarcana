@@ -7,7 +7,8 @@
 
         <div>
           <h3>
-            <span>Hit Locations</span><a class="roll-hitlocations-button" title="Roll 1d20" data-type="hitLocation">Roll
+            <span>Hit Locations</span><a class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
+              data-label="{{#each actor.hitLocations as |item|}}{{item.name}}/{{item.data.rollRangeStart}}/{{item.data.rollRangeEnd}},{{/each}}">Roll
               1d20</a>
           </h3>
           <table class="hitLocation-table">
@@ -95,7 +96,7 @@
                   {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -112,7 +113,7 @@
                   {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -129,7 +130,7 @@
                   {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -146,7 +147,7 @@
                   {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -181,6 +182,12 @@
             Base Char
           </th>
           <th>
+            Traits
+          </th>
+          <th>
+            Weapons
+          </th>
+          <th>
             Roll
           </th>
           <th class="delete-column">
@@ -199,7 +206,13 @@
               {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar}}
             </td>
             <td>
-              <a class="skill-val rollable" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+              {{item.data.traits}}
+            </td>
+            <td>
+              {{item.data.weapons}}
+            </td>
+            <td>
+              <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
                 {{item.data.totalVal}}%
               </a>
             </td>
@@ -258,10 +271,14 @@
               </a>
             </td>
             <td>
-              {{item.data.damage}}
+              <a class="rollableMeleeDamage" data-roll="{{item.data.damage}}"
+                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}},{{item.data.traits}}">
+                {{item.data.damage}}
+              </a>
             </td>
             <td>
-              <input type="checkbox" disabled="disabled" name="data.damageModifier" {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
+                {{checked data.damageModifier}} />
             </td>
             <td>
               {{item.data.size}}
@@ -329,10 +346,14 @@
               </a>
             </td>
             <td>
-              {{item.data.damage}}
+              <a class="rollableRangedDamage" data-roll="{{item.data.damage}}"
+                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}}">
+                {{item.data.damage}}
+              </a>
             </td>
             <td>
-              <input type="checkbox" disabled="disabled" name="data.damageModifier" {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
+                {{checked data.damageModifier}} />
             </td>
             <td>
               {{item.data.force}}

@@ -221,8 +221,15 @@ export class ActorSheetMythras extends ActorSheet {
       li.slideUp(200, () => this.render(false))
     })
 
-    // Rollable abilities.
-    html.find('.rollable').click(this._onRoll.bind(this))
+    // rollableSkill abilities.
+    html.find('.rollableSkill').click(this._onRollSkill.bind(this))
+
+    html.find('.rollableMeleeDamage').click(this._onRollMeleeDamage.bind(this))
+
+    html
+      .find('.rollableRangedDamage')
+      .click(this._onRollRangedDamage.bind(this))
+    html.find('.roll-hitlocations-button').click(this._onRollHitLoc.bind(this))
 
     // Current Point Increase/Decrease
     html.find('#increase-current-lp').click(
@@ -314,7 +321,6 @@ export class ActorSheetMythras extends ActorSheet {
     }
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.data['type']
-
     // Finally, create the item!
     return this.actor.createOwnedItem(itemData)
   }
@@ -324,7 +330,7 @@ export class ActorSheetMythras extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRoll(event) {
+  _onRollSkill(event) {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
@@ -360,6 +366,77 @@ export class ActorSheetMythras extends ActorSheet {
         content: contentString
       }
       ChatMessage.create(chatData)
+    }
+  }
+  _onRollMeleeDamage(event) {
+    event.preventDefault()
+    const element = event.currentTarget
+    const dataset = element.dataset
+    const dataLabel = dataset.label.split(',')
+    const name = dataLabel[0]
+    const weaponDam = dataLabel[1]
+    const damMod = dataLabel[2] === 'true'
+    const combatEffect = dataLabel[3]
+    const traits = dataLabel[4]
+    if (dataset.roll) {
+      if (damMod) {
+        dataset.roll += '+' + this.actor.data.data.attributes.damageMod.value
+      }
+      let roll = new Roll(dataset.roll, this.actor.data.data)
+      let label = dataset.label ? `Rolling ${name}` : ''
+      label +=
+        '<br><strong>Combat-Effects: </strong>' +
+        combatEffect +
+        '<br><strong>Traits: </strong>' +
+        traits
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label
+      })
+    }
+  }
+  _onRollRangedDamage(event) {
+    event.preventDefault()
+    const element = event.currentTarget
+    const dataset = element.dataset
+    const dataLabel = dataset.label.split(',')
+    const name = dataLabel[0]
+    const weaponDam = dataLabel[1]
+    const damMod = dataLabel[2] === 'true'
+    const combatEffect = dataLabel[3]
+    if (dataset.roll) {
+      if (damMod) {
+        dataset.roll += '+' + this.actor.data.data.attributes.damageMod.value
+      }
+      let roll = new Roll(dataset.roll, this.actor.data.data)
+      let label = dataset.label ? `Rolling ${name}` : ''
+      label += '<br><strong>Combat-Effects: </strong>' + combatEffect
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label
+      })
+    }
+  }
+  _onRollHitLoc(event) {
+    event.preventDefault()
+    const element = event.currentTarget
+    const dataset = element.dataset
+    const hitLoc = dataset.label.split(',')
+    if (dataset.roll) {
+      let roll = new Roll(dataset.roll, this.actor.data.data)
+      const rolled = roll.roll()
+      const rollResult = Number(rolled.result)
+      let label = dataset.label ? `Rolling Hit Location` : ''
+      const locHit = hitLoc.filter(function (value) {
+        let loc = value.split('/')
+        return rollResult >= Number(loc[1]) && rollResult <= Number(loc[2])
+      })
+      let loc = String(locHit).split('/')
+      label += '<br><h2>' + loc[0] + '</h2>'
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label
+      })
     }
   }
 }
