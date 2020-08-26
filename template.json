@@ -59,6 +59,11 @@
           "magicPoints": {
             "mod": 0
           },
+          "tenacity": {
+            "mod": 0,
+            "value": 0,
+            "current": 0
+          },
           "movement": {
             "walk": 6,
             "mod": 0
@@ -76,6 +81,10 @@
             "value": "fresh"
           },
           "encumbrance": {
+            "value": 0,
+            "mod": 0
+          },
+          "armorPenalty": {
             "value": 0,
             "mod": 0
           }
@@ -98,7 +107,8 @@
       "height": "",
       "weight": "",
       "raceCulture": "",
-      "description": "",
+      "journal": "",
+      "abilitiesDesc": "",
       "cult information": "",
       "conditionsAndWounds": ""
     }
@@ -172,7 +182,8 @@
       "templates": ["skill"],
       "magnitude": 0,
       "intensity": 0,
-      "rank": ""
+      "rank": "",
+      "spells": ""
     },
     "passion": {
       "templates": ["skill"]

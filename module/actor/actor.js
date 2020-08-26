@@ -56,6 +56,10 @@ export class ActorMythras extends Actor {
     let equippedArmor = actorData.items.filter(function (value) {
       return value.type === 'armor' && value.data.equipped
     })
+    let armorEncTotal = equippedArmor.reduce((weight, i) => {
+      const enc = Number(i.data.encumbrance) || 0
+      return weight + enc
+    }, 0)
 
     for (let i = 0; i < hitLocations.length; i++) {
       let hitLocArmor = []
@@ -88,6 +92,7 @@ export class ActorMythras extends Actor {
         'data.maxHp': newMaxHp
       })
     }
+    data.attributes.armorPenalty.value = Math.ceil(Number(armorEncTotal) / 5)
 
     data.attributes.actionPoints.value =
       Math.ceil(
@@ -115,7 +120,9 @@ export class ActorMythras extends Actor {
         (Number(data.characteristics.int.value) +
           Number(data.characteristics.dex.value)) /
           2
-      ) + Number(data.attributes.initiativeBonus.mod)
+      ) +
+      Number(data.attributes.initiativeBonus.mod) -
+      Number(data.attributes.armorPenalty.value)
 
     data.attributes.luckPoints.value =
       Math.ceil(Number(data.characteristics.pow.value) / 6) +

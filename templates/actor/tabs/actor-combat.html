@@ -6,8 +6,9 @@
       <div class="tables-left">
 
         <div>
-          <h3>
-            <span>Hit Locations</span><a class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
+          <h3 class="armorLocationHeader">
+            <span>Hit Locations</span><span>Armor Penalty: {{data.attributes.armorPenalty.value}}</span><a
+              class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
               data-label="{{#each actor.hitLocations as |item|}}{{item.name}}/{{item.data.rollRangeStart}}/{{item.data.rollRangeEnd}},{{/each}}">Roll
               1d20</a>
           </h3>

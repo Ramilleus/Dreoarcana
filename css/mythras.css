@@ -327,6 +327,42 @@ div.window-app section.window-content {
   padding: 10px;
 }
 
+.mythras div.abilities {
+  margin: 0;
+  height: calc(100% - 25px);
+}
+
+.mythras div.abilities > h2 {
+  margin-top: 5px;
+  margin-bottom: 13px;
+  color: #191813;
+  border: none;
+  font-size: 21px;
+}
+
+.mythras div.abilities > div {
+  height: 100%;
+  padding: 5px;
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+}
+
+.mythras div.abilities > div h2 {
+  border: 0;
+}
+
+.mythras div.abilities > div .desc {
+  height: 100%;
+  margin-bottom: 0px;
+}
+
+.mythras div.abilities > div .desc .editor {
+  height: 100%;
+}
+
+.mythras div.abilities > div .desc .editor div.tox.tox-tinymce {
+  height: 100% !important;
+}
+
 .mythras div.core {
   width: 100%;
 }
@@ -959,6 +995,19 @@ div.window-app section.window-content {
   -webkit-box-align: start;
   -ms-flex-align: start;
   align-items: flex-start;
+}
+
+.mythras div.combat .combat-tables .armorLocationHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 .mythras div.combat .combat-tables h2 {

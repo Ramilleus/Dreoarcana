@@ -7,6 +7,11 @@ div.combat {
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
+    .armorLocationHeader {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
     h2 {
       border: 0;
     }
