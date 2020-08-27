@@ -381,9 +381,9 @@
             <span>
               Standard Skills
             </span>
-            <a class="add-skills-button item-create" title="Create item" data-type="standardSkill">
+            {{!-- <a class="add-skills-button item-create" title="Create item" data-type="standardSkill">
               +
-            </a>
+            </a> --}}
           </h3>
           <table class="basic-skills-table">
             <thead>
@@ -396,9 +396,9 @@
               <th>
                 Roll
               </th>
-              <th class="delete-column">
+              {{!-- <th class="delete-column">
                 <i class="fas fa-trash"></i>
-              </th>
+              </th> --}}
             </thead>
             <tbody>
               {{#each actor.standardSkills as |item id|}}
@@ -416,11 +416,11 @@
                     {{item.data.totalVal}}%
                   </a>
                 </td>
-                <td>
+                {{!-- <td>
                   <a class="item-control item-delete delete-column" title="Delete Item">
                     <i class="fas fa-trash"></i>
                   </a>
-                </td>
+                </td> --}}
               </tr>
               {{/each}}
             </tbody>
