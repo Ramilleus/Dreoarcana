@@ -3,7 +3,7 @@
     <div class="header-flex">
       <div class="header-fields">
         <h1 class="charname">
-          <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
+          <input id="armorChange_name" name="name" type="text" value="{{item.name}}" placeholder="Name" />
         </h1>
       </div>
     </div>
@@ -30,7 +30,7 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">AP</h3>
-            <input type="text" name="data.ap" value="{{data.ap}}" />
+            <input id="armorChange_ap" type="text" name="data.ap" value="{{data.ap}}" />
           </div>
           <div>/</div>
           <div>
@@ -63,7 +63,7 @@
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">Equipped</h3>
-            <input type="checkbox" name="data.equipped" {{checked data.equipped}} />
+            <input id="armorChange_equipped" type="checkbox" name="data.equipped" {{checked data.equipped}} />
           </div>
         </div>
       </div>

@@ -60,38 +60,6 @@ export class ActorMythras extends Actor {
       const enc = Number(i.data.encumbrance) || 0
       return weight + enc
     }, 0)
-
-    for (let i = 0; i < hitLocations.length; i++) {
-      let hitLocArmor = []
-      let ap = 0
-      equippedArmor.forEach(function (piece, index) {
-        if (
-          piece.data.location === hitLocations[i]._id &&
-          piece.data.equipped
-        ) {
-          hitLocArmor.push(piece.name)
-          ap += Number(piece.data.ap)
-        }
-      })
-      let armorString = hitLocArmor.join(', ')
-
-      let baseHp = Number(hitLocations[i].data.baseHp)
-      let hpMod = Number(data.attributes.hitPointMod.value)
-
-      let newMaxHp = baseHp + hpMod + Number(hitLocations[i].data.maxHpMod)
-
-      // arms are weird
-      if (newMaxHp < 1) {
-        newMaxHp = 1
-      }
-
-      this.updateEmbeddedEntity('OwnedItem', {
-        _id: hitLocations[i]._id,
-        'data.armors': armorString,
-        'data.ap': ap,
-        'data.maxHp': newMaxHp
-      })
-    }
     data.attributes.armorPenalty.value = Math.ceil(Number(armorEncTotal) / 5)
 
     data.attributes.actionPoints.value =

@@ -171,6 +171,32 @@ export class ActorSheetMythras extends ActorSheet {
         _id: armor._id,
         'data.equipped': equipped
       })
+      let hitLoc = this.actor.getOwnedItem(armor.data.data.location)
+      let armors = hitLoc.data.data.armors.split(',')
+      let ap = hitLoc.data.data.ap
+      let attached = {}
+      if (Boolean(equipped)) {
+        if (hitLoc.data.data.attached !== undefined) {
+          attached = hitLoc.data.data.attached
+        }
+        attached[armor._id] = [armor.data.name, armor.data.data.ap]
+        armors.push(armor.data.name)
+        ap += armor.data.data.ap
+      } else {
+        delete attached[armor._id]
+        armors = armors.filter(function (value) {
+          return armor.data.name !== value
+        })
+        ap -= armor.data.data.ap
+      }
+      this.actor.updateEmbeddedEntity('OwnedItem', {
+        _id: hitLoc._id,
+        'data.armors': armors.join(','),
+        'data.ap': ap,
+        'data.attached': attached
+      })
+      hitLoc = this.actor.getOwnedItem(armor.data.data.location)
+      console.log(hitLoc)
     }
 
     if (event.target != null && event.target.id.includes('_hitLoc')) {
@@ -188,10 +214,13 @@ export class ActorSheetMythras extends ActorSheet {
         newFieldValue =
           formData['item.data.' + hitLocField][Number(hitLocIndex)]
       }
+      console.log(updateField)
       this.actor.updateEmbeddedEntity('OwnedItem', {
         _id: hitLoc._id,
         [updateField]: newFieldValue
       })
+    }
+    if (event.target != null && event.target.id.includes('_maxHpMod')) {
     }
 
     return this.actor.update(formData)

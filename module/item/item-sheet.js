@@ -102,6 +102,61 @@ export class MythrasItemSheet extends ItemSheet {
       let fumbled = itemData.data.fumbled
       itemData.data.fumbled = !fumbled
     }
+
+    if (
+      itemType === 'armor' &&
+      this.actor !== null &&
+      event.target != null &&
+      event.target.id.includes('armorChange')
+    ) {
+      let hitLoc = this.actor.getOwnedItem(String(itemData.data.location))
+      let attached = {}
+      if (event.target.id.includes('equipped')) {
+        if (Boolean(formData['data.equipped'])) {
+          if (hitLoc.data.data.attached !== undefined) {
+            attached = hitLoc.data.data.attached
+          }
+          attached[itemData._id] = [itemData.name, itemData.data.ap]
+        } else {
+          attached = hitLoc.data.data.attached
+          delete attached[itemData._id]
+        }
+        let armors = []
+        let ap = 0
+        for (var key in attached) {
+          armors.push(attached[key][0])
+          ap += Number(attached[key][1])
+        }
+
+        this.actor.updateEmbeddedEntity('OwnedItem', {
+          _id: hitLoc._id,
+          'data.armors': armors.join(','),
+          'data.ap': ap,
+          'data.attached': attached
+        })
+      } else if (
+        event.target.id.includes('ap') ||
+        event.target.id.includes('name')
+      ) {
+        if (Boolean(itemData.data.equipped)) {
+          attached = hitLoc.data.data.attached
+          console.log(formData)
+          attached[itemData._id] = [formData['name'], itemData.data.ap]
+          let armors = []
+          let ap = 0
+          for (var key in attached) {
+            armors.push(attached[key][0])
+            ap += Number(attached[key][1])
+          }
+          this.actor.updateEmbeddedEntity('OwnedItem', {
+            _id: hitLoc._id,
+            'data.armors': armors.join(','),
+            'data.ap': ap,
+            'data.attached': attached
+          })
+        }
+      }
+    }
     return this.item.update(formData)
   }
   /* -------------------------------------------- */

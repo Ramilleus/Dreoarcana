@@ -12,7 +12,7 @@
               data-label="{{#each actor.hitLocations as |item|}}{{item.name}}/{{item.data.rollRangeStart}}/{{item.data.rollRangeEnd}},{{/each}}">Roll
               1d20</a>
           </h3>
-          <table class="hitLocation-table">
+          <table id="hitLocation-edit" class="hitLocation-table">
             <thead>
               <th class="hitloc-location-cell">Location</th>
               <th class="hitloc-range-cell">Range</th>
@@ -25,8 +25,8 @@
                     <span>
                       +
                     </span>
-                    <input type="text" name="data.attributes.hitPointMod.mod" class="" onclick="this.select()"
-                      value="{{data.attributes.hitPointMod.mod}}" />
+                    <input id="maxHpMod_all" type="text" name="data.attributes.hitPointMod.mod" class=""
+                      onclick="this.select()" value="{{data.attributes.hitPointMod.mod}}" />
                   </span>
                 </div>
               </th>
@@ -35,7 +35,8 @@
               {{#each actor.hitLocations as |item id|}}
               <tr class="item" data-item-id="{{item._id}}">
                 <td class="hitloc-location-cell">
-                  <input id="{{id}}_{{item._id}}_name_hitLoc" type="text" name="item.name" value="{{item.name}}" />
+                  <input id="{{id}}_{{item._id}}_name_hitLoc" type="text" name="item.name" data-dtype="text"
+                    value="{{item.name}}" />
                 </td>
                 <td class="hitLoc-flex-cell hitloc-range-cell">
                   <input id="{{id}}_{{item._id}}_rollRangeStart_hitLoc" type="text" name="item.data.rollRangeStart"
