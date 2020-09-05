@@ -1,5 +1,5 @@
 /**
- * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
+ * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
  */
 export class ActorMythras extends Actor {
@@ -29,10 +29,8 @@ export class ActorMythras extends Actor {
     super.prepareData()
 
     const actorData = this.data
-    const data = actorData.data
-    const flags = actorData.flags
-    // Make separate methods for each Actor type (character, npc, etc.) to keep
-    // things organized.
+
+    // Prepare character specific data
     if (actorData.type === 'character') this._prepareCharacterData(actorData)
   }
 
@@ -42,18 +40,43 @@ export class ActorMythras extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data
     let items = actorData.items
-    data.attributes.hitPointMod.value =
-      Math.ceil(
-        (Number(data.characteristics.siz.value) +
-          Number(data.characteristics.con.value)) /
-          5
-      ) + Number(data.attributes.hitPointMod.mod)
 
-    let hitLocations = actorData.items.filter(function (value) {
-      return value.type === 'hitLocation'
-    })
+    // Prepare a character's attributes
+    this.prepareAttributes(data, items)
 
-    let equippedArmor = actorData.items.filter(function (value) {
+    // Prepare a character's encumbrance limits
+    this.prepareEncumbrance(data, items)
+
+    // Prepare a character's movement rates
+    this.prepareMovement(data, items)
+
+    // Prepare a character's fatigue recovery time
+    data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(
+      data.attributes.fatigue.value,
+      Number(data.attributes.healingRate.value)
+    )
+
+    // Apply green/red coloring to attributes if they've been increased/decreased
+    this.applyAttrbiuteColoring(data)
+  }
+
+  /**
+   * Calculates and sets a character's attribute values based on characteristics
+   * @param {*} data
+   * @param {*} items
+   */
+  prepareAttributes(data, items) {
+    // Get characteristic values and convert them to Numbers
+    let str = Number(data.characteristics.str.value)
+    let con = Number(data.characteristics.con.value)
+    let siz = Number(data.characteristics.siz.value)
+    let dex = Number(data.characteristics.dex.value)
+    let int = Number(data.characteristics.int.value)
+    let pow = Number(data.characteristics.pow.value)
+    let cha = Number(data.characteristics.cha.value)
+
+    // Armor Penalty
+    let equippedArmor = items.filter(function (value) {
       return value.type === 'armor' && value.data.equipped
     })
     let armorEncTotal = equippedArmor.reduce((weight, i) => {
@@ -62,118 +85,150 @@ export class ActorMythras extends Actor {
     }, 0)
     data.attributes.armorPenalty.value = Math.ceil(Number(armorEncTotal) / 5)
 
-    data.attributes.actionPoints.value =
-      Math.ceil(
-        (Number(data.characteristics.int.value) +
-          Number(data.characteristics.dex.value)) /
-          12
-      ) + Number(data.attributes.actionPoints.mod)
+    // Hit Point Mod
+    let hpModMiscMod = Number(data.attributes.hitPointMod.mod)
+    data.attributes.hitPointMod.value =
+      Math.ceil((siz + con) / 5) + hpModMiscMod
 
+    //Action Point Mod
+    let actionPointsMiscMod = Number(data.attributes.actionPoints.mod)
+    data.attributes.actionPoints.value =
+      Math.ceil((int + dex) / 12) + actionPointsMiscMod
+
+    // Damage Mod
+    let damageModMiscMod = Number(data.attributes.damageMod.mod)
     data.attributes.damageMod.value = this.damageModCalc(
-      Number(data.characteristics.str.value) +
-        Number(data.characteristics.siz.value),
-      Number(data.attributes.damageMod.mod)
+      str + siz,
+      damageModMiscMod
     )
 
-    data.attributes.experienceMod.value =
-      Math.ceil(Number(data.characteristics.cha.value) / 6 - 2) +
-      Number(data.attributes.experienceMod.mod)
+    // Experience Mod
+    let xpModMiscMod = Number(data.attributes.experienceMod.mod)
+    data.attributes.experienceMod.value = Math.ceil(cha / 6 - 2) + xpModMiscMod
 
-    data.attributes.healingRate.value =
-      Math.ceil(Number(data.characteristics.con.value) / 6) +
-      Number(data.attributes.healingRate.mod)
+    // Healing Rate
+    let healingRateMiscMod = Number(data.attributes.healingRate.mod)
+    data.attributes.healingRate.value = Math.ceil(con / 6) + healingRateMiscMod
 
+    // Initiative Bonus
+    let initiativeBonusMiscMod = Number(data.attributes.initiativeBonus.mod)
     data.attributes.initiativeBonus.value =
-      Math.ceil(
-        (Number(data.characteristics.int.value) +
-          Number(data.characteristics.dex.value)) /
-          2
-      ) +
-      Number(data.attributes.initiativeBonus.mod) -
+      Math.ceil((int + dex) / 2) +
+      initiativeBonusMiscMod -
       Number(data.attributes.armorPenalty.value)
 
-    data.attributes.luckPoints.value =
-      Math.ceil(Number(data.characteristics.pow.value) / 6) +
-      Number(data.attributes.luckPoints.mod)
+    // Luck Points
+    let luckPointsMiscMod = Number(data.attributes.luckPoints.mod)
+    data.attributes.luckPoints.value = Math.ceil(pow / 6) + luckPointsMiscMod
 
-    data.attributes.magicPoints.value =
-      Number(data.characteristics.pow.value) +
-      Number(data.attributes.magicPoints.mod)
+    // Magic Points
+    let magicPointsMiscMod = Number(data.attributes.magicPoints.mod)
+    data.attributes.magicPoints.value = pow + magicPointsMiscMod
+  }
 
-    data.attributes.movement.walk = 6 + Number(data.attributes.movement.mod)
+  /**
+   * Calculates and sets a character's encumbrance limits
+   * @param {*} data
+   * @param {*} items
+   */
+  prepareEncumbrance(data, items) {
+    let str = Number(data.characteristics.str.value)
+    data.attributes.encumbrance.burdened = str * 2
+    data.attributes.encumbrance.overloaded = str * 3
+    data.attributes.encumbrance.maxLoad = str * 4
+    data.attributes.encumbrance.value = this.encumbranceCalc(items)
+  }
 
+  /**
+   * Calculates and sets a character's movement rates
+   * @param {*} data
+   * @param {*} items
+   */
+  prepareMovement(data, items) {
+    // Get athletics and swim item objects
+    let athletics = items.find((entry) => entry.name === 'Athletics')
+    let swim = items.find((entry) => entry.name === 'Swim')
+
+    let movementMiscMod = Number(data.attributes.movement.mod)
+
+    // Default walk speed for a human is 6
+    data.attributes.movement.walk = 6 + movementMiscMod
+    let walkSpeed = data.attributes.movement.walk
+
+    // Calculate run speed
     data.attributes.movement.run = this.moveRateCalc(
-      data.attributes.movement.walk,
-      items.find((entry) => entry.name === 'Athletics'),
+      walkSpeed,
+      athletics,
       'run'
     )
 
+    // Calculate sprint speed
     data.attributes.movement.sprint = this.moveRateCalc(
-      data.attributes.movement.walk,
-      items.find((entry) => entry.name === 'Athletics'),
+      walkSpeed,
+      athletics,
       'sprint'
     )
 
+    // Calculate climb speed
     data.attributes.climb.value = this.moveRateCalc(
-      data.attributes.movement.walk,
-      items.find((entry) => entry.name === 'Athletics'),
+      walkSpeed,
+      athletics,
       'climb'
     )
 
-    data.attributes.swim.value = this.moveRateCalc(
-      data.attributes.movement.walk,
-      items.find((entry) => entry.name === 'Swim'),
-      'swim'
-    )
+    // Calculate swim speed
+    data.attributes.swim.value = this.moveRateCalc(walkSpeed, swim, 'swim')
 
+    // Calculate horizontal jump speed
     data.attributes.jump.horizontal = this.moveRateCalc(
       Number(data.height),
-      items.find((entry) => entry.name === 'Athletics'),
+      athletics,
       'hJump'
     )
 
+    // Calculate vertical jump speed
     data.attributes.jump.vertical = this.moveRateCalc(
       Number(data.height),
-      items.find((entry) => entry.name === 'Athletics'),
+      athletics,
       'vJump'
     )
+  }
 
-    data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(
-      data.attributes.fatigue.value,
-      Number(data.attributes.healingRate.value)
-    )
-
-    data.attributes.encumbrance.burdened =
-      Number(data.characteristics.str.value) * 2
-
-    data.attributes.encumbrance.overloaded =
-      Number(data.characteristics.str.value) * 3
-
-    data.attributes.encumbrance.maxLoad =
-      Number(data.characteristics.str.value) * 4
-
-    data.attributes.encumbrance.value = this.encumbranceCalc(actorData)
-
+  /**
+   * Applies green/red coloring to attributes that have been increased/decreased
+   * @param {*} data
+   */
+  applyAttrbiuteColoring(data) {
     for (let key in data.attributes) {
       if (data.attributes[key].mod != null) {
         let mod = Number(data.attributes[key].mod)
         if (mod > 0) {
+          // If an attribute has a positive mod, apply the increased-attribute class (green coloring)
           data.attributes[key].applyClass = 'increased-attribute'
         } else if (mod < 0) {
+          // If an attribute has a negative mod, apply the decreased-attribute class (red coloring)
           data.attributes[key].applyClass = 'decreased-attribute'
         } else {
+          // If an attribute has a 0 mod, apply the no class (default coloring)
           data.attributes[key].applyClass = ''
         }
       }
     }
   }
+
   doesTypeHaveTemplate(type, template) {
     let itemTemplates = game.system.template.Item[type].templates
     if (itemTemplates === undefined) return false
 
     return itemTemplates.includes(template)
   }
-  encumbranceCalc(actorData) {
+
+  /**
+   * Calculates a character's encumbrance based on their physical items
+   * @param {*} items
+   */
+  encumbranceCalc(items) {
+    // List of physical item types. Does not include skills, hit locations, etc.
     const physicalItems = [
       'melee-weapon',
       'ranged-weapon',
@@ -181,23 +236,31 @@ export class ActorMythras extends Actor {
       'equipment',
       'currency'
     ]
-    let encItems = actorData.items.filter(function (value) {
+
+    // Get all of the players owned items that are physical
+    let encItems = items.filter(function (value) {
       return physicalItems.includes(value.type)
     })
-    let totalEnc = 0
-    if (encItems.length > 0) {
-      totalEnc = encItems.reduce((weight, i) => {
-        const q = Number(i.data.quantity) || 0
-        const enc = Number(i.data.encumbrance) || 0
-        if (i.type === 'armor' && i.data.equipped) {
-          return weight + Math.ceil(enc / 2)
-        } else {
-          return weight + enc * q
-        }
-      }, 0)
-    }
-    return totalEnc
+
+    // Sum up and return all of the items' weights
+    return encItems.reduce((totalEnc, i) => {
+      let quantity = Number(i.data.quantity) || 0
+      let enc = Number(i.data.encumbrance) || 0
+      if (i.type === 'armor' && i.data.equipped) {
+        // If an item is equipped armor, only add half of it's enc to total enc
+        return totalEnc + Math.ceil(enc / 2)
+      } else {
+        // Else, add enc * quantity to total enc
+        return totalEnc + enc * quantity
+      }
+    }, 0)
   }
+
+  /**
+   * Calculates a character's recovery time based on their fatigue level and healing rate
+   * @param {*} fatigueLevel
+   * @param {*} healRate
+   */
   recoveryTimeCalc(fatigueLevel, healRate) {
     let levels = {
       fresh: 'Feeling fresh!',
@@ -225,30 +288,43 @@ export class ActorMythras extends Actor {
     }
   }
 
+  /**
+   * Calcalates a character's movement rate for a particular movement type
+   * @param {*} move
+   * @param {*} skill
+   * @param {*} type
+   */
   moveRateCalc(move, skill, type) {
     if (skill === undefined) {
       return move
     }
     let skillVal = Number(skill.data.totalVal)
-    if (type === 'run') {
-      return 3 * (move + Math.floor(skillVal / 50))
-    } else if (type === 'sprint') {
-      return 5 * (move + Math.floor(skillVal / 25))
-    } else if (type === 'climb') {
-      return move
-    } else if (type === 'swim') {
-      return move + Math.floor(skillVal / 20)
-    } else if (type === 'hJump') {
-      return (move * 2 + 100 * Math.floor(skillVal / 20)) / 100
-    } else if (type === 'vJump') {
-      return (Math.floor(move / 2) + 20 * Math.floor(skillVal / 20)) / 100
-    } else {
-      return move
+    switch (type) {
+      case 'run':
+        return 3 * (move + Math.floor(skillVal / 50))
+      case 'sprint':
+        return 5 * (move + Math.floor(skillVal / 25))
+      case 'climb':
+        return move
+      case 'swim':
+        return move + Math.floor(skillVal / 20)
+      case 'hJump':
+        return (move * 2 + 100 * Math.floor(skillVal / 20)) / 100
+      case 'vJump':
+        return (Math.floor(move / 2) + 20 * Math.floor(skillVal / 20)) / 100
+      default:
+        return move
     }
   }
 
+  /**
+   * Calculates a character's damage modifier
+   * @param {*} total
+   * @param {*} stepInc
+   */
   damageModCalc(total, stepInc) {
-    let damageSteps = [
+    // The different possible values for damage mod
+    const damageSteps = [
       '-1d8',
       '-1d6',
       '-1d4',
@@ -268,31 +344,30 @@ export class ActorMythras extends Actor {
     ]
 
     let damMod = ''
-
     let damInfinite = damageSteps.slice(5)
     let infFlag = false
+
+    let index = -1
     if (total < 51) {
-      let index = Math.ceil(total / 5) - 1
-      if (index + stepInc >= damageSteps.length) {
-        infFlag = true
-      } else {
-        damMod = damageSteps[index + stepInc]
-      }
+      index = Math.ceil(total / 5) - 1
     } else if (total + stepInc * 10 < 111) {
-      let index = 9 + Math.ceil((total - 50) / 10)
+      index = 9 + Math.ceil((total - 50) / 10)
+    }
+
+    if (index !== -1) {
       if (index + stepInc >= damageSteps.length) {
         infFlag = true
       } else {
         damMod = damageSteps[index + stepInc]
       }
     }
+
     if (total >= 111 || infFlag) {
       total += stepInc * 10
       let excess = Math.floor(total / 110)
       damMod = excess * 2 + 'd10'
       if (total % 110 != 0)
-        damMod =
-          damMod + '+' + damInfinite[Math.floor((total - 110 * excess) / 10)]
+        damMod += '+' + damInfinite[Math.floor((total - 110 * excess) / 10)]
     }
     return damMod
   }

@@ -10,9 +10,6 @@ div.abilities {
   height: calc(100% - 25px);
   > div {
     height: 100%;
-    h2 {
-      border: 0;
-    }
     padding: 5px;
     border: solid rgba(0, 0, 0, 0.2) 1px;
     .desc {

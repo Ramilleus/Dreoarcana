@@ -1,3 +1,5 @@
+import { updateSkillValues, skillTypes } from './skill-helper.js'
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -22,20 +24,20 @@ export class MythrasItemSheet extends ItemSheet {
   /** @override */
   get template() {
     const path = 'systems/mythras/templates/item'
-    // Return a single sheet for all item types.
-    // return `${path}/item-sheet.html`;
 
-    // Alternatively, you could use the following return statement to do a
-    // unique item sheet by type, like `weapon-sheet.html`.
-    if (
-      this.item.data.type === 'standardSkill' ||
-      this.item.data.type === 'professionalSkill' ||
-      this.item.data.type === 'magicSkill' ||
-      this.item.data.type === 'passion'
-    ) {
+    const itemType = this.item.data.type
+
+    // Return a unique template based on item type
+    if (itemType === 'combatStyle') {
+      // Combat style is considered a skill, but has a unique sheet. This serves as an override
+      return `${path}/item-combatStyle-sheet.html`
+    } else if (skillTypes.includes(itemType)) {
+      // Loads the default skill sheet that applies to all other skills
       return `${path}/item-skill-sheet.html`
+    } else {
+      // Loads a unique sheet for all remaining types (armor, melee-weapon, etc.)
+      return `${path}/item-${itemType}-sheet.html`
     }
-    return `${path}/item-${this.item.data.type}-sheet.html`
   }
 
   /* -------------------------------------------- */
@@ -56,110 +58,126 @@ export class MythrasItemSheet extends ItemSheet {
     sheetBody.css('height', bodyHeight)
     return position
   }
+
   /** @override */
   _updateObject(event, formData) {
     super._updateObject(event, formData)
     const itemData = this.item.data
     const itemType = itemData.type
-    if (
-      itemType === 'standardSkill' ||
-      itemType === 'professionalSkill' ||
-      itemType === 'combatStyle' ||
-      itemType === 'magicSkill' ||
-      itemType === 'passion'
-    ) {
-      if (
-        this.actor != null &&
-        event.target != null &&
-        event.target.id === 'char-change'
-      ) {
-        const actorData = this.actor.data
-        const primChar = Number(
-          actorData.data.characteristics[formData['data.primaryChar']].value
-        )
-        const secondChar = Number(
-          actorData.data.characteristics[formData['data.secondaryChar']].value
-        )
-        itemData.data.baseVal.value = primChar + secondChar
-        itemData.data.totalVal =
-          primChar +
-          secondChar +
-          Number(itemData.data.trainingVal) +
-          Number(itemData.data.miscBonus)
-      }
-      if (event.target != null && event.target.id === 'skill-mod') {
-        itemData.data.totalVal =
-          itemData.data.baseVal.value +
-          Number(formData['data.trainingVal']) +
-          Number(formData['data.miscBonus'])
-      }
-    }
-    if (event.target != null && event.target.id === 'train-check') {
-      let trained = itemData.data.trained
-      itemData.data.trained = !trained
-    }
-    if (event.target != null && event.target.id === 'fumble-check') {
-      let fumbled = itemData.data.fumbled
-      itemData.data.fumbled = !fumbled
-    }
+    const actorData = this.actor ? this.actor.data : {}
 
-    if (
-      itemType === 'armor' &&
-      this.actor !== null &&
-      event.target != null &&
-      event.target.id.includes('armorChange')
-    ) {
-      let hitLoc = this.actor.getOwnedItem(String(itemData.data.location))
-      let attached = {}
-      if (event.target.id.includes('equipped')) {
-        if (Boolean(formData['data.equipped'])) {
-          if (hitLoc.data.data.attached !== undefined) {
-            attached = hitLoc.data.data.attached
-          }
-          attached[itemData._id] = [itemData.name, itemData.data.ap]
-        } else {
-          attached = hitLoc.data.data.attached
-          delete attached[itemData._id]
-        }
-        let armors = []
-        let ap = 0
-        for (var key in attached) {
-          armors.push(attached[key][0])
-          ap += Number(attached[key][1])
-        }
-
-        this.actor.updateEmbeddedEntity('OwnedItem', {
-          _id: hitLoc._id,
-          'data.armors': armors.join(','),
-          'data.ap': ap,
-          'data.attached': attached
-        })
-      } else if (
-        event.target.id.includes('ap') ||
-        event.target.id.includes('name')
-      ) {
-        if (Boolean(itemData.data.equipped)) {
-          attached = hitLoc.data.data.attached
-          console.log(formData)
-          attached[itemData._id] = [formData['name'], itemData.data.ap]
-          let armors = []
-          let ap = 0
-          for (var key in attached) {
-            armors.push(attached[key][0])
-            ap += Number(attached[key][1])
-          }
-          this.actor.updateEmbeddedEntity('OwnedItem', {
-            _id: hitLoc._id,
-            'data.armors': armors.join(','),
-            'data.ap': ap,
-            'data.attached': attached
-          })
-        }
+    if (this.actor != null && event.target != null) {
+      if (skillTypes.includes(itemType)) {
+        this._updateSkill(itemData, actorData, formData, event)
+      } else if (itemType === 'armor') {
+        this._updateArmor(itemData, actorData, formData, event)
       }
     }
     return this.item.update(formData)
   }
-  /* -------------------------------------------- */
+
+  _updateSkill(itemData, actorData, formData, event) {
+    const data = itemData.data
+    switch (event.target.id) {
+      case 'char-change':
+        data.primaryChar = formData['data.primaryChar']
+        data.secondaryChar = formData['data.secondaryChar']
+        updateSkillValues(itemData, actorData)
+        break
+      case 'skill-mod':
+        data.totalVal =
+          data.baseVal.value +
+          Number(formData['data.trainingVal']) +
+          Number(formData['data.miscBonus'])
+        break
+      case 'train-check':
+        let trained = data.trained
+        data.trained = !trained
+        break
+      case 'fumble-check':
+        let fumbled = data.fumbled
+        data.fumbled = !fumbled
+        break
+      default:
+    }
+  }
+
+  _updateArmor(itemData, actorData, formData, event) {
+    const data = itemData.data
+    if (event.target.id.includes('armorChange')) {
+      // Get the hit location the armor is on
+      let hitLoc = this.actor.getOwnedItem(String(data.location))
+
+      // Run if equipped checkbox changes
+      if (event.target.id.includes('equipped')) {
+        this.toggleArmorEquipped(itemData, formData, hitLoc)
+      } else if (
+        event.target.id.includes('ap') ||
+        event.target.id.includes('name')
+      ) {
+        this.updateArmorValues(itemData, formData, hitLoc)
+      }
+    }
+  }
+
+  toggleArmorEquipped(itemData, formData, hitLoc) {
+    const data = itemData.data
+    const id = itemData._id
+    let attached = {}
+    if (hitLoc.data.data.attached !== undefined) {
+      attached = hitLoc.data.data.attached
+    }
+
+    if (Boolean(formData['data.equipped'])) {
+      // If the armor is equipped, add it to list of armors attached to hit location
+      attached[id] = [itemData.name, data.ap]
+    } else {
+      // If the armor is not equipped, remove it from list of armors attached to hit location
+      delete attached[id]
+    }
+
+    // Get new list of armors attached to a hit location and total ap for that location
+    let armors = []
+    let ap = 0
+    for (var key in attached) {
+      armors.push(attached[key][0])
+      ap += Number(attached[key][1])
+    }
+
+    // Update the hit location with the new armor list/ap total
+    this.actor.updateEmbeddedEntity('OwnedItem', {
+      _id: hitLoc._id,
+      'data.armors': armors.join(','),
+      'data.ap': ap,
+      'data.attached': attached
+    })
+  }
+
+  updateArmorValues(itemData, formData, hitLoc) {
+    const data = itemData.data
+    const id = itemData._id
+    let attached = {}
+    if (hitLoc.data.data.attached !== undefined) {
+      attached = hitLoc.data.data.attached
+    }
+
+    if (Boolean(data.equipped)) {
+      attached[id] = [formData['name'], data.ap]
+      let armors = []
+      let ap = 0
+      for (var key in attached) {
+        armors.push(attached[key][0])
+        ap += Number(attached[key][1])
+      }
+
+      this.actor.updateEmbeddedEntity('OwnedItem', {
+        _id: hitLoc._id,
+        'data.armors': armors.join(','),
+        'data.ap': ap,
+        'data.attached': attached
+      })
+    }
+  }
 
   /** @override */
   activateListeners(html) {

@@ -6,24 +6,15 @@ div.notes {
     color: #191813;
     border: none;
     font-size: 21px;
+    border: 0;
   }
   height: calc(100% - 25px);
   > div {
     height: 100%;
     h2 {
-      border: 0;
+      margin: 6px 0;
     }
     padding: 5px;
     border: solid rgba(0, 0, 0, 0.2) 1px;
-    .desc {
-      height: 100%;
-      margin-bottom: 0px;
-      .editor {
-        div.tox.tox-tinymce {
-          height: 100% !important;
-        }
-        height: 100%;
-      }
-    }
   }
 }

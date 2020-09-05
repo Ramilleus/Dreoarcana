@@ -38,6 +38,40 @@ div.window-app section.window-content {
   /* Equal to width of new image */
 }
 
+.desc {
+  height: 100%;
+  margin-bottom: 0px;
+}
+
+.desc .editor {
+  height: 100%;
+}
+
+.desc .editor .editor-content h1 {
+  line-height: 16px;
+  font-size: 28px;
+  height: 28px;
+  padding-top: 2px;
+  margin: 0px 0px 8px;
+}
+
+.desc .editor .editor-content h2 {
+  line-height: 16px;
+  font-size: 21px;
+  height: 21px;
+  margin: 0px 0px 8px;
+}
+
+.desc .editor .editor-content p {
+  font-size: 14px;
+  height: 14px;
+  margin: 7px 0px;
+}
+
+.desc .editor div.tox.tox-tinymce {
+  height: 100% !important;
+}
+
 /* Styles limited to mythras sheets */
 .mythras .window-content {
   padding: 0px;
@@ -346,10 +380,6 @@ div.window-app section.window-content {
   border: solid rgba(0, 0, 0, 0.2) 1px;
 }
 
-.mythras div.abilities > div h2 {
-  border: 0;
-}
-
 .mythras div.abilities > div .desc {
   height: 100%;
   margin-bottom: 0px;
@@ -361,10 +391,6 @@ div.window-app section.window-content {
 
 .mythras div.abilities > div .desc .editor div.tox.tox-tinymce {
   height: 100% !important;
-}
-
-.mythras div.core {
-  width: 100%;
 }
 
 .mythras div.core h2 {
@@ -746,19 +772,11 @@ div.window-app section.window-content {
 }
 
 .mythras div.core .core-skills .skill-tables {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: flex-start;
-}
-
-.mythras div.core .core-skills .skill-tables > div {
-  width: 49.5%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  -webkit-column-gap: 10px;
+  -moz-column-gap: 10px;
+  column-gap: 10px;
 }
 
 .mythras div.core .core-skills .skill-tables > div .add-skills-button {
@@ -952,6 +970,7 @@ div.window-app section.window-content {
   color: #191813;
   border: none;
   font-size: 21px;
+  border: 0;
 }
 
 .mythras div.notes > div {
@@ -961,20 +980,7 @@ div.window-app section.window-content {
 }
 
 .mythras div.notes > div h2 {
-  border: 0;
-}
-
-.mythras div.notes > div .desc {
-  height: 100%;
-  margin-bottom: 0px;
-}
-
-.mythras div.notes > div .desc .editor {
-  height: 100%;
-}
-
-.mythras div.notes > div .desc .editor div.tox.tox-tinymce {
-  height: 100% !important;
+  margin: 6px 0;
 }
 
 .mythras div.combat .damageModCheck {

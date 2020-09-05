@@ -1,5 +1,4 @@
 div.core {
-  width: 100%;
   h2 {
     margin: 0;
     margin-bottom: 8px;
@@ -264,11 +263,10 @@ div.core {
   }
   .core-skills {
     .skill-tables {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 10px;
       > div {
-        width: 49.5%;
         .add-skills-button {
           float: right;
           margin-right: 10px;

@@ -426,56 +426,6 @@
             </tbody>
           </table>
         </div>
-        <div>
-          <h3>
-            <span>
-              Combat Styles
-            </span>
-            <a class="add-skills-button item-create" title="Create item" data-type="combatStyle">
-              +
-            </a>
-          </h3>
-          <table class="basic-skills-table">
-            <thead>
-              <th>
-                Name
-              </th>
-              <th>
-                Base Char
-              </th>
-              <th>
-                Roll
-              </th>
-              <th class="delete-column">
-                <i class="fas fa-trash"></i>
-              </th>
-            </thead>
-            <tbody>
-              {{#each actor.combatStyles as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
-                <td>
-                  <a class="item-name item-control item-edit">
-                    {{item.name}}
-                  </a>
-                </td>
-                <td>
-                  {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar}}
-                </td>
-                <td>
-                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
-                  </a>
-                </td>
-                <td>
-                  <a class="item-control item-delete delete-column" title="Delete Item">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
       </div>
       <div class="tables-right">
         <div>
@@ -512,6 +462,57 @@
                 </td>
                 <td>
                   {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar }}
+                </td>
+                <td>
+                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                    {{item.data.totalVal}}%
+                  </a>
+                </td>
+                <td>
+                  <a class="item-control item-delete delete-column" title="Delete Item">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <h3>
+            <span>
+              Combat Styles
+            </span>
+            <a class="add-skills-button item-create" title="Create item" data-type="combatStyle">
+              +
+            </a>
+          </h3>
+          <table class="basic-skills-table">
+            <thead>
+              <th>
+                Name
+              </th>
+              <th>
+                Base Char
+              </th>
+              <th>
+                Roll
+              </th>
+              <th class="delete-column">
+                <i class="fas fa-trash"></i>
+              </th>
+            </thead>
+            <tbody>
+              {{#each actor.combatStyles as |item id|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
