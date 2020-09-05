@@ -85,13 +85,13 @@ export class MythrasItem extends Item {
     })
     data.armors = armorEquipped.join(', ')
     data.ap = ap
-    data.maxHp =
-      Number(data.baseHp) +
-      Number(actorData.data.attributes.hitPointMod.value) +
-      Number(data.maxHpMod)
-    if (data.maxHp < 1) {
-      data.maxHp = 1
-    }
+    // data.maxHp =
+    //   Number(data.baseHp) +
+    //   Number(actorData.data.attributes.hitPointMod.value) +
+    //   Number(data.maxHpMod)
+    // if (data.maxHp < 1) {
+    //   data.maxHp = 1
+    // }
   }
 
   // /**
