@@ -195,8 +195,6 @@ export class ActorSheetMythras extends ActorSheet {
         'data.ap': ap,
         'data.attached': attached
       })
-      hitLoc = this.actor.getOwnedItem(armor.data.data.location)
-      console.log(hitLoc)
     }
 
     if (event.target != null && event.target.id.includes('_hitLoc')) {
@@ -220,7 +218,34 @@ export class ActorSheetMythras extends ActorSheet {
         [updateField]: newFieldValue
       })
     }
-    if (event.target != null && event.target.id.includes('_maxHpMod')) {
+    if (
+      event.target != null &&
+      (event.target.id.includes('maxHpMod') ||
+        event.target.id.includes('con_characteristic-box') ||
+        event.target.id.includes('siz_characteristic-box'))
+    ) {
+      hitLocations.forEach((hitLoc, index) => {
+        console.log(formData)
+
+        let newHp =
+          Number(hitLoc.data.baseHp) +
+          Math.ceil(
+            (Number(formData['data.characteristics.siz.value']) +
+              Number(formData['data.characteristics.con.value'])) /
+              5
+          ) +
+          Number(formData['data.attributes.hitPointMod.mod']) +
+          Number(formData['item.data.maxHpMod'][index])
+        if (newHp < 1) {
+          newHp = 1
+        }
+        console.log(newHp)
+        this.actor.updateEmbeddedEntity('OwnedItem', {
+          _id: hitLoc._id,
+          'data.maxHp': newHp
+        })
+        console.log(this.actor.getOwnedItem(hitLoc._id))
+      })
     }
 
     return this.actor.update(formData)
