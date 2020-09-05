@@ -124,6 +124,10 @@ export class ActorMythras extends Actor {
     // Magic Points
     let magicPointsMiscMod = Number(data.attributes.magicPoints.mod)
     data.attributes.magicPoints.value = pow + magicPointsMiscMod
+
+    //Tenacity
+    let tenacityMiscMod = Number(data.attributes.tenacity.mod)
+    data.attributes.tenacity.value = pow + tenacityMiscMod
   }
 
   /**
