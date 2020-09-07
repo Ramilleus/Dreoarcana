@@ -76,6 +76,7 @@ export class ActorSheetMythras extends ActorSheet {
         skillsAndPassions.push(i)
       }
     }
+
     // Assign and return
     actorData.gear = gear
     actorData.hitLocations = hitLocations
@@ -99,122 +100,124 @@ export class ActorSheetMythras extends ActorSheet {
     const actor = this.getData().actor
     const skills = actor.skillsAndPassions
     const hitLocations = actor.hitLocations
-    if (
-      event.target != null &&
-      event.target.id.includes('characteristic-box')
-    ) {
-      let affectedChar = event.target.id.slice(0, 3)
-      skills.forEach((skill) => {
-        let primChar = Number(
-          formData['data.characteristics.' + skill.data.primaryChar + '.value']
-        )
-        let secondChar = Number(
-          formData[
-            'data.characteristics.' + skill.data.secondaryChar + '.value'
-          ]
-        )
-        if (
-          skill.data.primaryChar === affectedChar ||
-          skill.data.secondaryChar === affectedChar
-        ) {
-          this.actor.updateEmbeddedEntity('OwnedItem', {
-            _id: skill._id,
-            'data.baseVal.value': primChar + secondChar,
-            'data.totalVal':
-              primChar +
-              secondChar +
-              Number(skill.data.trainingVal) +
-              Number(skill.data.miscBonus)
-          })
-        }
-      })
-    }
-    if (event.target != null && event.target.id.includes('_equipped')) {
-      let armorInfo = event.target.id.split('_')
-      let armor = this.actor.getOwnedItem(armorInfo[1])
-      let equipped = formData['item.data.equipped']
-      if (Array.isArray(equipped)) {
-        equipped = equipped[armorInfo[0]]
-      }
-      this.actor.updateEmbeddedEntity('OwnedItem', {
-        _id: armor._id,
-        'data.equipped': equipped
-      })
-      let hitLoc = this.actor.getOwnedItem(armor.data.data.location)
-      let armors = hitLoc.data.data.armors.split(',')
-      let ap = hitLoc.data.data.ap
-      let attached = {}
-      if (Boolean(equipped)) {
-        if (hitLoc.data.data.attached !== undefined) {
-          attached = hitLoc.data.data.attached
-        }
-        attached[armor._id] = [armor.data.name, armor.data.data.ap]
-        armors.push(armor.data.name)
-        ap += armor.data.data.ap
-      } else {
-        delete attached[armor._id]
-        armors = armors.filter(function (value) {
-          return armor.data.name !== value
+
+    if (event.target != null) {
+      if (event.target.id.includes('characteristic-box')) {
+        let affectedChar = event.target.id.slice(0, 3)
+        skills.forEach((skill) => {
+          let primChar = Number(
+            formData[
+              'data.characteristics.' + skill.data.primaryChar + '.value'
+            ]
+          )
+          let secondChar = Number(
+            formData[
+              'data.characteristics.' + skill.data.secondaryChar + '.value'
+            ]
+          )
+          if (
+            skill.data.primaryChar === affectedChar ||
+            skill.data.secondaryChar === affectedChar
+          ) {
+            this.actor.updateEmbeddedEntity('OwnedItem', {
+              _id: skill._id,
+              'data.baseVal.value': primChar + secondChar,
+              'data.totalVal':
+                primChar +
+                secondChar +
+                Number(skill.data.trainingVal) +
+                Number(skill.data.miscBonus)
+            })
+          }
         })
-        ap -= armor.data.data.ap
       }
-      this.actor.updateEmbeddedEntity('OwnedItem', {
-        _id: hitLoc._id,
-        'data.armors': armors.join(','),
-        'data.ap': ap,
-        'data.attached': attached
-      })
-    }
 
-    if (event.target != null && event.target.id.includes('_hitLoc')) {
-      let fieldInfo = event.target.id.split('_')
-      let hitLocIndex = fieldInfo[0]
-      let hitLoc = this.actor.getOwnedItem(fieldInfo[1])
-      let hitLocField = fieldInfo[2]
-      let updateField = ''
-      let newFieldValue = ''
-      if (hitLocField === 'name') {
-        updateField = 'name'
-        newFieldValue = formData['item.name'][Number(hitLocIndex)]
-      } else {
-        updateField = 'data.' + hitLocField
-        newFieldValue =
-          formData['item.data.' + hitLocField][Number(hitLocIndex)]
-      }
-      console.log(updateField)
-      this.actor.updateEmbeddedEntity('OwnedItem', {
-        _id: hitLoc._id,
-        [updateField]: newFieldValue
-      })
-    }
-    if (
-      event.target != null &&
-      (event.target.id.includes('maxHpMod') ||
-        event.target.id.includes('con_characteristic-box') ||
-        event.target.id.includes('siz_characteristic-box'))
-    ) {
-      hitLocations.forEach((hitLoc, index) => {
-        console.log(formData)
-
-        let newHp =
-          Number(hitLoc.data.baseHp) +
-          Math.ceil(
-            (Number(formData['data.characteristics.siz.value']) +
-              Number(formData['data.characteristics.con.value'])) /
-              5
-          ) +
-          Number(formData['data.attributes.hitPointMod.mod']) +
-          Number(formData['item.data.maxHpMod'][index])
-        if (newHp < 1) {
-          newHp = 1
+      if (event.target.id.includes('_equipped')) {
+        let armorInfo = event.target.id.split('_')
+        let armor = this.actor.getOwnedItem(armorInfo[1])
+        let equipped = formData['item.data.equipped']
+        if (Array.isArray(equipped)) {
+          equipped = equipped[armorInfo[0]]
         }
-        console.log(newHp)
+        this.actor.updateEmbeddedEntity('OwnedItem', {
+          _id: armor._id,
+          'data.equipped': equipped
+        })
+        let hitLoc = this.actor.getOwnedItem(armor.data.data.location)
+        let armors = hitLoc.data.data.armors.split(',')
+        let ap = hitLoc.data.data.ap
+        let attached = {}
+        if (Boolean(equipped)) {
+          if (hitLoc.data.data.attached !== undefined) {
+            attached = hitLoc.data.data.attached
+          }
+          attached[armor._id] = [armor.data.name, armor.data.data.ap]
+          armors.push(armor.data.name)
+          ap += armor.data.data.ap
+        } else {
+          delete attached[armor._id]
+          armors = armors.filter(function (value) {
+            return armor.data.name !== value
+          })
+          ap -= armor.data.data.ap
+        }
         this.actor.updateEmbeddedEntity('OwnedItem', {
           _id: hitLoc._id,
-          'data.maxHp': newHp
+          'data.armors': armors.join(','),
+          'data.ap': ap,
+          'data.attached': attached
         })
-        console.log(this.actor.getOwnedItem(hitLoc._id))
-      })
+      }
+
+      if (event.target.id.includes('_hitLoc')) {
+        let fieldInfo = event.target.id.split('_')
+        let hitLocIndex = fieldInfo[0]
+        let hitLoc = this.actor.getOwnedItem(fieldInfo[1])
+        let hitLocField = fieldInfo[2]
+        let updateField = ''
+        let newFieldValue = ''
+        if (hitLocField === 'name') {
+          updateField = 'name'
+          newFieldValue = formData['item.name'][Number(hitLocIndex)]
+        } else {
+          updateField = 'data.' + hitLocField
+          newFieldValue =
+            formData['item.data.' + hitLocField][Number(hitLocIndex)]
+        }
+        console.log(updateField)
+        this.actor.updateEmbeddedEntity('OwnedItem', {
+          _id: hitLoc._id,
+          [updateField]: newFieldValue
+        })
+      }
+      if (
+        event.target.id.includes('maxHpMod') ||
+        event.target.id.includes('con_characteristic-box') ||
+        event.target.id.includes('siz_characteristic-box')
+      ) {
+        hitLocations.forEach((hitLoc, index) => {
+          console.log(formData)
+
+          let newHp =
+            Number(hitLoc.data.baseHp) +
+            Math.ceil(
+              (Number(formData['data.characteristics.siz.value']) +
+                Number(formData['data.characteristics.con.value'])) /
+                5
+            ) +
+            Number(formData['data.attributes.hitPointMod.mod']) +
+            Number(formData['item.data.maxHpMod'][index])
+          if (newHp < 1) {
+            newHp = 1
+          }
+          console.log(newHp)
+          this.actor.updateEmbeddedEntity('OwnedItem', {
+            _id: hitLoc._id,
+            'data.maxHp': newHp
+          })
+          console.log(this.actor.getOwnedItem(hitLoc._id))
+        })
+      }
     }
 
     return this.actor.update(formData)
