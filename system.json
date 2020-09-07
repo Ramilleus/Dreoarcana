@@ -46,6 +46,6 @@
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/mythras",
   "manifest": "https://gitlab.com/tpaoloni/mythras/raw/master/system.json",
-  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/master/mythras-master.zip",
+  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/v1.0-alpha/mythras-v1.0-alpha.zip",
   "license": "LICENSE.txt"
 }
