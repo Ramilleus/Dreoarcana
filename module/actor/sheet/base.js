@@ -1,3 +1,4 @@
+import { skillTypes } from '../../item/skill-helper.js'
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -48,17 +49,20 @@ export class ActorSheetMythras extends ActorSheet {
     const equipment = []
     const currency = []
     const abilities = []
-    const spells = {
-      0: [],
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: []
+
+    const itemMapper = {
+      hitLocation: hitLocations,
+      standardSkill: standardSkills,
+      professionalSkill: professionalSkills,
+      combatStyle: combatStyles,
+      magicSkill: magicSkills,
+      passion: passions,
+      'melee-weapon': meleeWeapons,
+      'ranged-weapon': rangedWeapons,
+      armor: armor,
+      equipment: equipment,
+      currency: currency,
+      ability: abilities
     }
 
     // Iterate through items, allocating to containers
@@ -66,44 +70,10 @@ export class ActorSheetMythras extends ActorSheet {
     for (let i of sheetData.items) {
       let item = i.data
       i.img = i.img || DEFAULT_TOKEN
-      // Append to gear.
-      if (i.type === 'hitLocation') {
-        hitLocations.push(i)
-      } else if (i.type === 'standardSkill') {
-        standardSkills.push(i)
+
+      itemMapper[i.type].push(i)
+      if (skillTypes.includes(i.type)) {
         skillsAndPassions.push(i)
-      } else if (i.type === 'professionalSkill') {
-        professionalSkills.push(i)
-        skillsAndPassions.push(i)
-      } else if (i.type === 'combatStyle') {
-        combatStyles.push(i)
-        skillsAndPassions.push(i)
-      } else if (i.type === 'magicSkill') {
-        magicSkills.push(i)
-        skillsAndPassions.push(i)
-      } else if (i.type === 'passion') {
-        passions.push(i)
-        skillsAndPassions.push(i)
-      } else if (i.type === 'melee-weapon') {
-        meleeWeapons.push(i)
-      } else if (i.type === 'ranged-weapon') {
-        rangedWeapons.push(i)
-      } else if (i.type === 'armor') {
-        armor.push(i)
-      } else if (i.type === 'equipment') {
-        equipment.push(i)
-      } else if (i.type === 'currency') {
-        currency.push(i)
-      }
-      // Append to features.
-      else if (i.type === 'ability') {
-        abilities.push(i)
-      }
-      // Append to spells.
-      else if (i.type === 'spell') {
-        if (i.data.spellLevel != undefined) {
-          spells[i.data.spellLevel].push(i)
-        }
       }
     }
     // Assign and return
@@ -121,7 +91,6 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.equipment = equipment
     actorData.currency = currency
     actorData.abilities = abilities
-    actorData.spells = spells
   }
 
   /* -------------------------------------------- */
@@ -433,10 +402,11 @@ export class ActorSheetMythras extends ActorSheet {
     const combatEffect = dataLabel[3]
     const traits = dataLabel[4]
     if (dataset.roll) {
+      let damage = dataset.roll
       if (damMod) {
-        dataset.roll += '+' + this.actor.data.data.attributes.damageMod.value
+        damage += '+' + this.actor.data.data.attributes.damageMod.value
       }
-      let roll = new Roll(dataset.roll, this.actor.data.data)
+      let roll = new Roll(damage, this.actor.data.data)
       let label = dataset.label ? `Rolling ${name}` : ''
       label +=
         '<br><strong>Combat-Effects: </strong>' +
@@ -459,10 +429,11 @@ export class ActorSheetMythras extends ActorSheet {
     const damMod = dataLabel[2] === 'true'
     const combatEffect = dataLabel[3]
     if (dataset.roll) {
+      let damage = dataset.roll
       if (damMod) {
-        dataset.roll += '+' + this.actor.data.data.attributes.damageMod.value
+        damage += '+' + this.actor.data.data.attributes.damageMod.value
       }
-      let roll = new Roll(dataset.roll, this.actor.data.data)
+      let roll = new Roll(damage, this.actor.data.data)
       let label = dataset.label ? `Rolling ${name}` : ''
       label += '<br><strong>Combat-Effects: </strong>' + combatEffect
       roll.toMessage({
