@@ -226,96 +226,74 @@ export class ActorSheetMythras extends ActorSheet {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html)
+    const actor = this.actor
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return
 
-    // Add Inventory Item
+    // Add Actor Item
     html.find('.item-create').click(this._onItemCreate.bind(this))
 
-    // Update Inventory Item
+    // Update Actor Item
     html.find('.item-edit').click((ev) => {
       const li = $(ev.currentTarget).parents('.item')
-      const item = this.actor.getOwnedItem(li.data('itemId'))
+      const item = actor.getOwnedItem(li.data('itemId'))
       item.sheet.render(true)
     })
 
-    // Delete Inventory Item
+    // Delete Actor Item
     html.find('.item-delete').click((ev) => {
       const li = $(ev.currentTarget).parents('.item')
-      this.actor.deleteOwnedItem(li.data('itemId'))
+      actor.deleteOwnedItem(li.data('itemId'))
       li.slideUp(200, () => this.render(false))
     })
 
-    // rollableSkill abilities.
+    // Skill roll button listener
     html.find('.rollableSkill').click(this._onRollSkill.bind(this))
 
+    // Melee Weapon roll button listener
     html.find('.rollableMeleeDamage').click(this._onRollMeleeDamage.bind(this))
 
+    // Ranged Weapon roll button listener
     html
       .find('.rollableRangedDamage')
       .click(this._onRollRangedDamage.bind(this))
+
+    // Hit Location roll button listener
     html.find('.roll-hitlocations-button').click(this._onRollHitLoc.bind(this))
 
-    // Current Point Increase/Decrease
-    html.find('#increase-current-lp').click(
-      function (event) {
+    // Actor Current Point increase listeners
+    const pointIncreaseMapping = {
+      '#increase-current-lp': 'currentLuckPoints',
+      '#increase-current-mp': 'currentMagicPoints',
+      '#increase-current-er': 'experienceRolls'
+    }
+    for (const [key, value] of Object.entries(pointIncreaseMapping)) {
+      html.find(key).click(function (event) {
         event.preventDefault()
-        this.actor.update({
-          'data.currentLuckPoints':
-            Number(this.actor.data.data.currentLuckPoints) + 1
+        actor.update({
+          ['data.' + value]: Number(actor.data.data[value]) + 1
         })
-      }.bind(this)
-    )
-    html.find('#increase-current-mp').click(
-      function (event) {
-        event.preventDefault()
-        this.actor.update({
-          'data.currentMagicPoints':
-            Number(this.actor.data.data.currentMagicPoints) + 1
-        })
-      }.bind(this)
-    )
-    html.find('#increase-current-er').click(
-      function (event) {
-        event.preventDefault()
-        this.actor.update({
-          'data.experienceRolls':
-            Number(this.actor.data.data.experienceRolls) + 1
-        })
-      }.bind(this)
-    )
+      })
+    }
 
-    html.find('#decrease-current-lp').click(
-      function (event) {
+    // Actor Current Point decrease listeners
+    const pointDecreaseMapping = {
+      '#decrease-current-lp': 'currentLuckPoints',
+      '#decrease-current-mp': 'currentMagicPoints',
+      '#decrease-current-er': 'experienceRolls'
+    }
+    for (const [key, value] of Object.entries(pointDecreaseMapping)) {
+      html.find(key).click(function (event) {
         event.preventDefault()
-        this.actor.update({
-          'data.currentLuckPoints':
-            Number(this.actor.data.data.currentLuckPoints) - 1
+        actor.update({
+          ['data.' + value]: Number(actor.data.data[value]) - 1
         })
-      }.bind(this)
-    )
-    html.find('#decrease-current-mp').click(
-      function (event) {
-        event.preventDefault()
-        this.actor.update({
-          'data.currentMagicPoints':
-            Number(this.actor.data.data.currentMagicPoints) - 1
-        })
-      }.bind(this)
-    )
-    html.find('#decrease-current-er').click(
-      function (event) {
-        event.preventDefault()
-        this.actor.update({
-          'data.experienceRolls':
-            Number(this.actor.data.data.experienceRolls) - 1
-        })
-      }.bind(this)
-    )
+      })
+    }
 
     // Drag events for macros.
-    if (this.actor.owner) {
+    if (actor.owner) {
       let handler = (ev) => this._onDragItemStart(ev)
       html.find('li.item').each((i, li) => {
         if (li.classList.contains('inventory-header')) return
