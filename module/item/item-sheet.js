@@ -90,14 +90,6 @@ export class MythrasItemSheet extends ItemSheet {
           Number(formData['data.trainingVal']) +
           Number(formData['data.miscBonus'])
         break
-      case 'train-check':
-        let trained = data.trained
-        data.trained = !trained
-        break
-      case 'fumble-check':
-        let fumbled = data.fumbled
-        data.fumbled = !fumbled
-        break
       default:
     }
   }

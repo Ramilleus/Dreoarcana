@@ -40,26 +40,28 @@ Hooks.once('ready', async function () {
 
   // Add Standard Skills and Hit Locations to an Actor when the createActor Hook is triggered
   Hooks.on('createActor', (actor, x, y) => {
-    // Standard Skills
-    game.packs
-      .get('mythras.standardSkill')
-      .getContent()
-      .then((result) => {
-        let chain = Promise.resolve()
-        result.forEach((skill, index) => {
-          chain = chain.then(() => actor.createOwnedItem(skill.data))
+    if (actor.items.size == 0) {
+      // Standard Skills
+      game.packs
+        .get('mythras.standardSkill')
+        .getContent()
+        .then((result) => {
+          let chain = Promise.resolve()
+          result.forEach((skill, index) => {
+            chain = chain.then(() => actor.createOwnedItem(skill.data))
+          })
         })
-      })
-    // Hit Locations
-    game.packs
-      .get('mythras.humanoidHitLocations')
-      .getContent()
-      .then((result) => {
-        let chain = Promise.resolve()
-        result.forEach((hitLoc, index) => {
-          chain = chain.then(() => actor.createOwnedItem(hitLoc.data))
+      // Hit Locations
+      game.packs
+        .get('mythras.humanoidHitLocations')
+        .getContent()
+        .then((result) => {
+          let chain = Promise.resolve()
+          result.forEach((hitLoc, index) => {
+            chain = chain.then(() => actor.createOwnedItem(hitLoc.data))
+          })
         })
-      })
+    }
   })
 })
 

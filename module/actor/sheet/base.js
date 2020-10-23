@@ -100,7 +100,6 @@ export class ActorSheetMythras extends ActorSheet {
     const actor = this.getData().actor
     const skills = actor.skillsAndPassions
     const hitLocations = actor.hitLocations
-
     if (event.target != null) {
       if (event.target.id.includes('characteristic-box')) {
         let affectedChar = event.target.id.slice(0, 3)
@@ -184,7 +183,6 @@ export class ActorSheetMythras extends ActorSheet {
           newFieldValue =
             formData['item.data.' + hitLocField][Number(hitLocIndex)]
         }
-        console.log(updateField)
         this.actor.updateEmbeddedEntity('OwnedItem', {
           _id: hitLoc._id,
           [updateField]: newFieldValue
@@ -196,8 +194,6 @@ export class ActorSheetMythras extends ActorSheet {
         event.target.id.includes('siz_characteristic-box')
       ) {
         hitLocations.forEach((hitLoc, index) => {
-          console.log(formData)
-
           let newHp =
             Number(hitLoc.data.baseHp) +
             Math.ceil(
@@ -210,12 +206,11 @@ export class ActorSheetMythras extends ActorSheet {
           if (newHp < 1) {
             newHp = 1
           }
-          console.log(newHp)
           this.actor.updateEmbeddedEntity('OwnedItem', {
             _id: hitLoc._id,
-            'data.maxHp': newHp
+            'data.maxHp': newHp,
+            'data.maxHpMod': formData['item.data.maxHpMod'][index]
           })
-          console.log(this.actor.getOwnedItem(hitLoc._id))
         })
       }
     }
