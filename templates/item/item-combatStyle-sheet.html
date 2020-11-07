@@ -18,17 +18,17 @@
     <div class="upper-flex">
       <div class="skill-section-left">
         <div class="skill-section">
-          <h3>Base Characteristics</h3>
+          <h3>{{localize 'MYTHRAS.Base_Characteristics'}}</h3>
           <span class="resource">
             <select id="char-change" name="data.primaryChar" data-dtype="String">
               {{#select data.primaryChar}}
-              <option value="str">Strength</option>
-              <option value="con">Constitution</option>
-              <option value="siz">Size</option>
-              <option value="dex">Dexterity</option>
-              <option value="int">Intelligence</option>
-              <option value="pow">Power</option>
-              <option value="cha">Charisma</option>
+              <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
+              <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
+              <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
+              <option value="dex">{{localize 'MYTHRAS.Dexterity'}}</option>
+              <option value="int">{{localize 'MYTHRAS.Intelligence'}}</option>
+              <option value="pow">{{localize 'MYTHRAS.Power'}}</option>
+              <option value="cha">{{localize 'MYTHRAS.Charisma'}}</option>
               {{/select}}
             </select>
           </span>
@@ -36,35 +36,35 @@
           <span class="resource">
             <select id="char-change" name="data.secondaryChar" data-dtype="String">
               {{#select data.secondaryChar}}
-              <option value="str">Strength</option>
-              <option value="con">Constitution</option>
-              <option value="siz">Size</option>
-              <option value="dex">Dexterity</option>
-              <option value="int">Intelligence</option>
-              <option value="pow">Power</option>
-              <option value="cha">Charisma</option>
+              <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
+              <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
+              <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
+              <option value="dex">{{localize 'MYTHRAS.Dexterity'}}</option>
+              <option value="int">{{localize 'MYTHRAS.Intelligence'}}</option>
+              <option value="pow">{{localize 'MYTHRAS.Power'}}</option>
+              <option value="cha">{{localize 'MYTHRAS.Charisma'}}</option>
               {{/select}}
             </select>
           </span>
         </div>
         <div class="skill-section">
-          <h3>Other</h3>
+          <h3>{{localize 'MYTHRAS.Other'}}</h3>
           <div class="other-flex">
             <div>
               <label>
-                <p>ENC Penalty</p>
+                <p>{{localize 'MYTHRAS.ENC_Penalty'}}</p>
               </label>
               <input type="checkbox" class="char-enc" disabled="disabled" checked="" />
             </div>
             <div>
               <label>
-                <p>Trained</p>
+                <p>{{localize 'MYTHRAS.Trained'}}</p>
               </label>
               <input id="train-check" type="checkbox" data="data.trained" {{checked data.trained}} />
             </div>
             <div>
               <label>
-                <p>Fumbled</p>
+                <p>{{localize 'MYTHRAS.Fumbled'}}</p>
               </label>
               <input id="fumble-check" type="checkbox" data="data.fumbled" {{checked data.fumbled}} />
             </div>
@@ -77,13 +77,13 @@
           <div class="improvements-flex">
             <div>
               <label>
-                <p>TRAINING</p>
+                <p>{{localize 'MYTHRAS.TRAINING'}}</p>
               </label>
               <input id="skill-mod" type="text" name="data.trainingVal" value="{{data.trainingVal}}" />%
             </div>
             <div>
               <label>
-                <p>MISC</p>
+                <p>{{localize 'MYTHRAS.MISC'}}</p>
               </label>
               <input id="skill-mod" class="misc-input" type="text" name="data.miscBonus" value="{{data.miscBonus}}" />%
             </div>
@@ -92,12 +92,12 @@
       </div>
     </div>
     <div class="combat-flex">
-      <h3>Weapons</h3>
+      <h3>{{localize 'MYTHRAS.Weapons'}}</h3>
       <input type="text" name="data.weapons" value="{{data.weapons}}" />
-      <h3>Traits</h3>
+      <h3>{{localize 'MYTHRAS.Traits'}}</h3>
       <input type="text" name="data.traits" value="{{data.traits}}" />
     </div>
-    <h2>Description</h2>
+    <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc skill-section" data-group="primary">
       {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
       <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->

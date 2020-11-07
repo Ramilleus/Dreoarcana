@@ -18,30 +18,30 @@
       <div class="equipment-core">
         <div class="equip-core-section">
           <div>
-            <h3 class="core-info">ENC</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.ENC'}}</h3>
             <input type="text" name="data.encumbrance" value="{{data.encumbrance}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
-            <h3 class="core-info">Quantity</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.Quantity'}}</h3>
             <input type="text" name="data.quantity" value="{{data.quantity}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
-            <h3 class="core-info">AP</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.AP'}}</h3>
             <input type="text" name="data.ap" value="{{data.ap}}" />
           </div>
           <div>/</div>
           <div>
-            <h3 class="core-info">HP</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.HP'}}</h3>
             <input type="text" name="data.hp" value="{{data.hp}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
-            <h3 class="core-info">Value</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.Value'}}</h3>
             <input type="text" name="data.value" value="{{data.value}}" />
           </div>
         </div>
@@ -51,50 +51,50 @@
       <div class="weapon-core">
         <div class="weapon-core-section">
           <div class="weapon-piece">
-            <h3 class="core-info">Damage</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.Damage'}}</h3>
             <input type="text" name="data.damage" value="{{data.damage}}" />
           </div>
           <div class="weapon-piece">
-            <h3 class="core-info">DM</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.DM'}}</h3>
             <input type="checkbox" name="data.damageModifier" {{checked data.damageModifier}} />
           </div>
           <div class="weapon-piece">
-            <h3 class="core-info">Size</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.Size'}}</h3>
             <select id="char-change" name="data.size" data-dtype="String">
               {{#select data.size}}
-              <option value="S">Small</option>
-              <option value="M">Medium</option>
-              <option value="L">Large</option>
-              <option value="H">Huge</option>
-              <option value="E">Enormous</option>
-              <option value="BE">Beyond Enormous</option>
+              <option value="S">{{localize 'MYTHRAS.Small'}}</option>
+              <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
+              <option value="L">{{localize 'MYTHRAS.Large'}}</option>
+              <option value="H">{{localize 'MYTHRAS.Huge'}}</option>
+              <option value="E">{{localize 'MYTHRAS.Enormous'}}</option>
+              <option value="BE">{{localize 'MYTHRAS.Beyond_Enormous'}}</option>
               {{/select}}
             </select>
           </div>
           <div class="weapon-piece">
-            <h3 class="core-info">Reach</h3>
+            <h3 class="core-info">{{localize 'MYTHRAS.Reach'}}</h3>
             <select id="char-change" name="data.reach" data-dtype="reach">
               {{#select data.reach}}
-              <option value="T">Touch</option>
-              <option value="S">Short</option>
-              <option value="M">Medium</option>
-              <option value="L">Long</option>
-              <option value="VL">Very Long</option>
+              <option value="T">{{localize 'MYTHRAS.Touch'}}</option>
+              <option value="S">{{localize 'MYTHRAS.Short'}}</option>
+              <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
+              <option value="L">{{localize 'MYTHRAS.Long'}}</option>
+              <option value="VL">{{localize 'MYTHRAS.Very_Long'}}</option>
               {{/select}}
             </select>
           </div>
         </div>
         <div>
-          <h3 class="core-info">Combat Effects</h3>
+          <h3 class="core-info">{{localize 'MYTHRAS.Combat_Effects'}}</h3>
           <input type="text" name="data.combat-effects" value="{{data.combat-effects}}" />
         </div>
         <div>
-          <h3 class="core-info">Traits</h3>
+          <h3 class="core-info">{{localize 'MYTHRAS.Traits'}}</h3>
           <input type="text" name="data.traits" value="{{data.traits}}" />
         </div>
       </div>
     </div>
-    <h2>Description</h2>
+    <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc skill-section" data-group="primary">
       {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
       <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->

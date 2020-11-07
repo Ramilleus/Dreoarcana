@@ -2,46 +2,46 @@
   <div class="core-top-flex">
     <div class="core-personal-info">
       <h2>
-        Information
+        {{localize 'MYTHRAS.Information'}}
       </h2>
       <div class="core-personal-flex">
         <div class="core-personal-left-info">
           <p class="input-label">
-            CAREER
+            {{localize 'MYTHRAS.CAREER'}}
           </p>
           <input type="text" name="data.career" value="{{data.career}}" />
           <p class="input-label">
-            SOCIAL CLASS
+            {{localize 'MYTHRAS.SOCIAL_CLASS'}}
           </p>
           <input type="text" name="data.socialClass" value="{{data.socialClass}}" />
           <p class="input-label">
-            GENDER
+            {{localize 'MYTHRAS.GENDER'}}
           </p>
           <input type="text" name="data.gender" value="{{data.gender}}" />
           <p class="input-label">
-            HANDEDNESS
+            {{localize 'MYTHRAS.HANDEDNESS'}}
           </p>
           <input type="text" name="data.handedness" value="{{data.handedness}}" />
         </div>
         <div class="core-personal-right-info">
           <p class="input-label">
-            HOMELAND
+            {{localize 'MYTHRAS.HOMELAND'}}
           </p>
           <input type="text" name="data.homeland" value="{{data.homeland}}" />
           <p class="input-label">
-            CULTURE
+            {{localize 'MYTHRAS.CULTURE'}}
           </p>
           <input type="text" name="data.raceCulture" value="{{data.raceCulture}}" />
           <div class="age-height-weight-flex">
             <div class="age">
               <p class="input-label">
-                AGE
+                {{localize 'MYTHRAS.AGE'}}
               </p>
               <input type="text" name="data.age" value="{{data.age}}" />
             </div>
             <div class="height">
               <p class="input-label">
-                HEIGHT
+                {{localize 'MYTHRAS.HEIGHT'}}
               </p>
               <input type="text" name="data.height" value="{{data.height}}" />
               <span style="margin-left: -20px; font-size: small;">
@@ -50,52 +50,52 @@
             </div>
             <div class="weight">
               <p class="input-label">
-                WEIGHT
+                {{localize 'MYTHRAS.WEIGHT'}}
               </p>
               <input type="text" name="data.weight" value="{{data.weight}}" />
             </div>
           </div>
           <p class="input-label">
-            FRAME
+            {{localize 'MYTHRAS.FRAME'}}
           </p>
           <input type="text" name="data.frame" value="{{data.frame}}" />
         </div>
       </div>
       <h2>
-        Fatigue
+        {{localize 'MYTHRAS.Fatigue'}}
       </h2>
       <div class="fatigue-container">
         <select class="fatigue-selector" name="data.attributes.fatigue.value" data-dtype="String">
           {{#select data.attributes.fatigue.value}}
           <option value="fresh">
-            Fresh
+            {{localize 'MYTHRAS.Fresh'}}
           </option>
           <option value="winded">
-            Winded
+            {{localize 'MYTHRAS.Winded'}}
           </option>
           <option value="tired">
-            Tired
+            {{localize 'MYTHRAS.Tired'}}
           </option>
           <option value="wearied">
-            Wearied
+            {{localize 'MYTHRAS.Wearied'}}
           </option>
           <option value="exhausted">
-            Exhausted
+            {{localize 'MYTHRAS.Exhausted'}}
           </option>
           <option value="debilitated">
-            Debilitated
+            {{localize 'MYTHRAS.Debilitated'}}
           </option>
           <option value="incapacitated">
-            Incapacitated
+            {{localize 'MYTHRAS.Incapacitated'}}
           </option>
           <option value="semi-conscious">
-            Semi-Conscious
+            {{localize 'MYTHRAS.Semi-Conscious'}}
           </option>
           <option value="comatose">
-            Comatose
+            {{localize 'MYTHRAS.Comatose'}}
           </option>
           <option value="dead">
-            Dead
+            {{localize 'MYTHRAS.Dead'}}
           </option>
           {{/select}}
         </select>
@@ -106,61 +106,61 @@
     </div>
     <div class="core-characteristics-attributes-contianer">
       <h2>
-        Characteristics
+        {{localize 'MYTHRAS.Characteristics'}}
       </h2>
       <div class="core-characteristics">
         <div>
           <input id="str_characteristic-box" name="data.characteristics.str.value" onclick="this.select()"
             value="{{data.characteristics.str.value}}" type="text" />
           <label>
-            STRENGTH
+            {{localize 'MYTHRAS.STRENGTH'}}
           </label>
         </div>
         <div>
           <input id="con_characteristic-box" name="data.characteristics.con.value" onclick="this.select()"
             value="{{data.characteristics.con.value}}" type="text" />
           <label>
-            CONSTITUTION
+            {{localize 'MYTHRAS.CONSTITUTION'}}
           </label>
         </div>
         <div>
           <input id="siz_characteristic-box" name="data.characteristics.siz.value" onclick="this.select()"
             value="{{data.characteristics.siz.value}}" type="text" />
           <label>
-            SIZE
+            {{localize 'MYTHRAS.SIZE'}}
           </label>
         </div>
         <div>
           <input id="dex_characteristic-box" name="data.characteristics.dex.value" onclick="this.select()"
             value="{{data.characteristics.dex.value}}" type="text" />
           <label>
-            DEXTERITY
+            {{localize 'MYTHRAS.DEXTERITY'}}
           </label>
         </div>
         <div>
           <input id="int_characteristic-box" name="data.characteristics.int.value" onclick="this.select()"
             value="{{data.characteristics.int.value}}" type="text" />
           <label>
-            INTELLIGENCE
+            {{localize 'MYTHRAS.INTELLIGENCE'}}
           </label>
         </div>
         <div>
           <input id="pow_characteristic-box" name="data.characteristics.pow.value" onclick="this.select()"
             value="{{data.characteristics.pow.value}}" type="text" />
           <label>
-            POWER
+            {{localize 'MYTHRAS.POWER'}}
           </label>
         </div>
         <div>
           <input id="cha_characteristic-box" name="data.characteristics.cha.value" onclick="this.select()"
             value="{{data.characteristics.cha.value}}" type="text" />
           <label>
-            CHARISMA
+            {{localize 'MYTHRAS.CHARISMA'}}
           </label>
         </div>
       </div>
       <h2>
-        Attributes
+        {{localize 'MYTHRAS.Attributes'}}
       </h2>
       <div class="core-attributes">
         <div>
@@ -179,7 +179,7 @@
               </div>
             </div>
             <p class="attribute-label">
-              ACTION POINTS
+              {{localize 'MYTHRAS.ACTION_POINTS'}}
             </p>
           </div>
           <div class="attribute-container">
@@ -196,7 +196,7 @@
               </div>
             </div>
             <p class="attribute-label">
-              DAMAGE MOD
+              {{localize 'MYTHRAS.DAMAGE_MOD'}}
             </p>
           </div>
           <div class="attribute-container">
@@ -214,7 +214,7 @@
               </div>
             </div>
             <p class="attribute-label">
-              EXPERIENCE MOD
+              {{localize 'MYTHRAS.EXPERIENCE_MOD'}}
             </p>
           </div>
           <div class="attribute-container">
@@ -232,7 +232,7 @@
               </div>
             </div>
             <p class="attribute-label">
-              HEALING RATE
+              {{localize 'MYTHRAS.HEALING_RATE'}}
             </p>
           </div>
           <div class="attribute-container">
@@ -250,7 +250,7 @@
               </div>
             </div>
             <p class="attribute-label">
-              INITIATIVE BONUS
+              {{localize 'MYTHRAS.INITIATIVE_BONUS'}}
             </p>
           </div>
           <div class="attribute-container">
@@ -268,9 +268,8 @@
               </div>
             </div>
             <p class="attribute-label">
-              LUCK
+              {{localize 'MYTHRAS.LUCK_POINTS'}}
               <br />
-              POINTS
             </p>
           </div>
           <div class="attribute-container">
@@ -288,7 +287,7 @@
               </div>
             </div>
             <p class="attribute-label">
-              MAGIC POINTS
+              {{localize 'MYTHRAS.MAGIC_POINTS'}}
             </p>
           </div>
         </div>
@@ -297,7 +296,7 @@
       <div class="movement-container">
         <div>
           <h3>
-            Movement
+            {{localize 'MYTHRAS.Movement'}}
           </h3>
           <div class="movement-mod">
             <span>
@@ -313,7 +312,7 @@
               {{data.attributes.movement.walk}}
             </p>
             <p class="movement-label">
-              WALK
+              {{localize 'MYTHRAS.WALK'}}
             </p>
           </div>
           <div>
@@ -321,7 +320,7 @@
               {{data.attributes.movement.run}}
             </p>
             <p class="movement-label">
-              RUN
+              {{localize 'MYTHRAS.RUN'}}
             </p>
           </div>
           <div>
@@ -329,7 +328,7 @@
               {{data.attributes.movement.sprint}}
             </p>
             <p class="movement-label">
-              SPRINT
+              {{localize 'MYTHRAS.SPRINT'}}
             </p>
           </div>
           <div>
@@ -337,7 +336,7 @@
               {{data.attributes.climb.value}}
             </p>
             <p class="movement-label">
-              CLIMB
+              {{localize 'MYTHRAS.CLIMB'}}
             </p>
           </div>
           <div>
@@ -345,7 +344,7 @@
               {{data.attributes.jump.horizontal}}
             </p>
             <p class="movement-label">
-              H. JUMP
+              {{localize 'MYTHRAS.H._JUMP'}}
             </p>
           </div>
           <div>
@@ -353,7 +352,7 @@
               {{data.attributes.jump.vertical}}
             </p>
             <p class="movement-label">
-              V. JUMP
+              {{localize 'MYTHRAS.V._JUMP'}}
             </p>
           </div>
           <div>
@@ -361,7 +360,7 @@
               {{data.attributes.swim.value}}
             </p>
             <p class="movement-label">
-              SWIM
+              {{localize 'MYTHRAS.SWIM'}}
             </p>
           </div>
         </div>
@@ -372,14 +371,14 @@
   <hr />
   <div class="core-skills">
     <h2>
-      Skills
+      {{localize 'MYTHRAS.Skills'}}
     </h2>
     <div class="skill-tables">
       <div class="tables-left">
         <div>
           <h3>
             <span>
-              Standard Skills
+              {{localize 'MYTHRAS.Standard_Skills'}}
             </span>
             {{!-- <a class="add-skills-button item-create" title="Create item" data-type="standardSkill">
               +
@@ -388,13 +387,13 @@
           <table class="basic-skills-table">
             <thead>
               <th>
-                Name
+                {{localize 'MYTHRAS.Name'}}
               </th>
               <th>
-                Base Char
+                {{localize 'MYTHRAS.Base_Char'}}
               </th>
               <th>
-                Roll
+                {{localize 'MYTHRAS.Roll'}}
               </th>
               {{!-- <th class="delete-column">
                 <i class="fas fa-trash"></i>
@@ -431,7 +430,7 @@
         <div>
           <h3>
             <span>
-              Professional Skills
+              {{localize 'MYTHRAS.Professional_Skills'}}
             </span>
             <a class="add-skills-button item-create" title="Create item" data-type="professionalSkill">
               +
@@ -440,13 +439,13 @@
           <table class="basic-skills-table">
             <thead>
               <th>
-                Name
+                {{localize 'MYTHRAS.Name'}}
               </th>
               <th>
-                Base Char
+                {{localize 'MYTHRAS.Base_Char'}}
               </th>
               <th>
-                Roll
+                {{localize 'MYTHRAS.Roll'}}
               </th>
               <th class="delete-column">
                 <i class="fas fa-trash"></i>
@@ -482,7 +481,7 @@
         <div>
           <h3>
             <span>
-              Combat Styles
+              {{localize 'MYTHRAS.Combat_Styles'}}
             </span>
             <a class="add-skills-button item-create" title="Create item" data-type="combatStyle">
               +
@@ -491,13 +490,13 @@
           <table class="basic-skills-table">
             <thead>
               <th>
-                Name
+                {{localize 'MYTHRAS.Name'}}
               </th>
               <th>
-                Base Char
+                {{localize 'MYTHRAS.Base_Char'}}
               </th>
               <th>
-                Roll
+                {{localize 'MYTHRAS.Roll'}}
               </th>
               <th class="delete-column">
                 <i class="fas fa-trash"></i>
@@ -532,7 +531,7 @@
         <div>
           <h3>
             <span>
-              Magic Skills
+              {{localize 'MYTHRAS.Magic_Skills'}}
             </span>
             <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
               +
@@ -541,13 +540,13 @@
           <table class="basic-skills-table">
             <thead>
               <th>
-                Name
+                {{localize 'MYTHRAS.Name'}}
               </th>
               <th>
-                Base Char
+                {{localize 'MYTHRAS.Base_Char'}}
               </th>
               <th>
-                Roll
+                {{localize 'MYTHRAS.Roll'}}
               </th>
               <th class="delete-column">
                 <i class="fas fa-trash"></i>
@@ -582,7 +581,7 @@
         <div>
           <h3>
             <span>
-              Passions
+              {{localize 'MYTHRAS.Passions'}}
             </span>
             <a class="add-skills-button item-create" title="Create item" data-type="passion">
               +
@@ -591,13 +590,13 @@
           <table class="basic-skills-table">
             <thead>
               <th>
-                Name
+                {{localize 'MYTHRAS.Name'}}
               </th>
               <th>
-                Base Char
+                {{localize 'MYTHRAS.Base_Char'}}
               </th>
               <th>
-                Roll
+                {{localize 'MYTHRAS.Roll'}}
               </th>
               <th class="delete-column">
                 <i class="fas fa-trash"></i>

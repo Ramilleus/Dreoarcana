@@ -5,9 +5,9 @@
       <img class="token-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
       <div class="names">
         <input class="char-name" name="name" type="text" value="{{actor.name}}" placeholder="" />
-        <p class="input-label">CHARACTER NAME</p>
+        <p class="input-label">{{localize 'MYTHRAS.CHARACTER_NAME'}}</p>
         <input class="player-name" name="data.playerName" type="text" value="{{data.playerName}}" placeholder="" />
-        <p class="input-label">PLAYER NAME</p>
+        <p class="input-label">{{localize 'MYTHRAS.PLAYER_NAME'}}</p>
       </div>
     </div>
     <div class="header-stats">
@@ -23,7 +23,7 @@
             <a id="decrease-current-lp">-</a>
           </div>
         </div>
-        <p class="input-label">LUCK POINTS</p>
+        <p class="input-label">{{localize 'MYTHRAS.LUCK_POINTS'}}</p>
       </div>
       <div class="stats-container">
         <div class="number-input-container">
@@ -37,7 +37,7 @@
             <a id="decrease-current-mp">-</a>
           </div>
         </div>
-        <p class="input-label">MAGIC POINTS</p>
+        <p class="input-label">{{localize 'MYTHRAS.MAGIC_POINTS'}}</p>
       </div>
       <div class="stats-container">
         <div class="number-input-container">
@@ -48,7 +48,7 @@
             <a id="decrease-current-er">-</a>
           </div>
         </div>
-        <p class="input-label">EXPERIENCE ROLLS</p>
+        <p class="input-label">{{localize 'MYTHRAS.EXPERIENCE_ROLLS'}}</p>
       </div>
     </div>
   </header>
@@ -59,23 +59,23 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item active" data-tab="core">
-      <div>Character</div>
+      <div>{{localize 'MYTHRAS.Character'}}</div>
     </a>
     <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
     <a class="item" data-tab="combat">
-      <div>Combat</div>
+      <div>{{localize 'MYTHRAS.Combat'}}</div>
     </a>
     <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
     <a class="item" data-tab="abilities">
-      <div>Abilities</div>
+      <div>{{localize 'MYTHRAS.Abilities'}}</div>
     </a>
     <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
     <a class="item" data-tab="equipment">
-      <div>Equipment</div>
+      <div>{{localize 'MYTHRAS.Equipment'}}</div>
     </a>
     <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
     <a class="item" data-tab="notes">
-      <div>Journal</div>
+      <div>{{localize 'MYTHRAS.Journal'}}</div>
     </a>
   </nav>
 
