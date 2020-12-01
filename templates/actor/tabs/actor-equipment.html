@@ -1,32 +1,32 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
   <div class="enc-row">
     <div class="enc-section">
-      <h3 class="enc-tag">Current ENC:</h3> <span class="enc-value">{{data.attributes.encumbrance.value}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Current_ENC'}}:</h3> <span class="enc-value">{{data.attributes.encumbrance.value}}</span>
     </div>
     <div class="enc-section">
-      <h3 class="enc-tag">Normal Cap: </h3> <span class="enc-value">{{data.attributes.encumbrance.burdened}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Normal_Cap'}}: </h3> <span class="enc-value">{{data.attributes.encumbrance.burdened}}</span>
     </div>
     <div class="enc-section">
-      <h3 class="enc-tag">Burdened Cap:</h3> <span class="enc-value">{{data.attributes.encumbrance.overloaded}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Burdened_Cap'}}:</h3> <span class="enc-value">{{data.attributes.encumbrance.overloaded}}</span>
     </div>
     <div class="enc-section">
-      <h3 class="enc-tag">Overloaded Cap:</h3> <span class="enc-value">{{data.attributes.encumbrance.maxLoad}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Overloaded_Cap'}}:</h3> <span class="enc-value">{{data.attributes.encumbrance.maxLoad}}</span>
     </div>
   </div>
   <div class="equipment-tables">
-    <h2>Items</h2>
+    <h2>{{localize 'MYTHRAS.Items'}}</h2>
     <div class="top-equipment-tables">
       <div class="tables-left">
         <div>
           <h3>
-            <span>Equipment</span><a class="add-items-button item-create" title="Create item"
+            <span>{{localize 'MYTHRAS.Equipment'}}</span><a class="add-items-button item-create" title="Create item"
               data-type="equipment">+</a>
           </h3>
           <table class="equipment-table">
             <thead>
-              <th>Name</th>
-              <th>ENC</th>
-              <th>Quantity</th>
+              <th>{{localize 'MYTHRAS.Name'}}</th>
+              <th>{{localize 'MYTHRAS.ENC'}}</th>
+              <th>{{localize 'MYTHRAS.Quantity'}}</th>
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
@@ -53,15 +53,15 @@
       <div class="tables-right">
         <div>
           <h3>
-            <span>Currency and Wealth</span><a class="add-items-button item-create" title="Create item"
+            <span>{{localize 'MYTHRAS.Currency_and_Wealth'}}</span><a class="add-items-button item-create" title="Create item"
               data-type="currency">+</a>
           </h3>
           <table class="currency-table">
             <thead>
-              <th>Name</th>
-              <th>Value</th>
-              <th>ENC</th>
-              <th>Quantity</th>
+              <th>{{localize 'MYTHRAS.Name'}}</th>
+              <th>{{localize 'MYTHRAS.Value'}}</th>
+              <th>{{localize 'MYTHRAS.ENC'}}</th>
+              <th>{{localize 'MYTHRAS.Quantity'}}</th>
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
@@ -90,18 +90,18 @@
       </div>
     </div>
 
-    <h2>Armor</h2>
+    <h2>{{localize 'MYTHRAS.Armor'}}</h2>
     <div>
       <h3>
-        <span>Armor</span><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a>
+        <span>{{localize 'MYTHRAS.Armor'}}</span><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a>
       </h3>
       <table class="armor-table">
         <thead>
-          <th>Name</th>
-          <th>Location</th>
-          <th>Equipped</th>
-          <th>Encumbrance</th>
-          <th>AP/HP</th>
+          <th>{{localize 'MYTHRAS.Name'}}</th>
+          <th>{{localize 'MYTHRAS.Location'}}</th>
+          <th>{{localize 'MYTHRAS.Equipped'}}</th>
+          <th>{{localize 'MYTHRAS.Encumbrance'}}</th>
+          <th>{{localize 'MYTHRAS.AP/HP'}}</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
@@ -132,20 +132,20 @@
       </table>
     </div>
 
-    <h2>Weapons</h2>
+    <h2>{{localize 'MYTHRAS.Weapons'}}</h2>
     <div>
       <h3>
-        <span>Melee Weapons</span><a class="add-equipment-button item-create" title="Create item"
+        <span>{{localize 'MYTHRAS.Melee_Weapons'}}</span><a class="add-equipment-button item-create" title="Create item"
           data-type="melee-weapon">+</a>
       </h3>
       <table class="weapons-table">
         <thead>
-          <th>Name</th>
-          <th>Damage</th>
-          <th>DM</th>
-          <th>Size</th>
-          <th>Reach</th>
-          <th>AP/HP</th>
+          <th>{{localize 'MYTHRAS.Name'}}</th>
+          <th>{{localize 'MYTHRAS.Damage'}}</th>
+          <th>{{localize 'MYTHRAS.DM'}}</th>
+          <th>{{localize 'MYTHRAS.Size'}}</th>
+          <th>{{localize 'MYTHRAS.Reach'}}</th>
+          <th>{{localize 'MYTHRAS.AP/HP'}}</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
@@ -182,19 +182,19 @@
       </table>
       <hr />
       <h3>
-        <span>Ranged Weapons</span><a class="add-equipment-button item-create" title="Create item"
+        <span>{{localize 'MYTHRAS.Ranged_Weapons'}}</span><a class="add-equipment-button item-create" title="Create item"
           data-type="ranged-weapon">+</a>
       </h3>
       <table class="weapons-table">
         <thead>
-          <th>Name</th>
-          <th>Damage</th>
-          <th>DM</th>
-          <th>Force</th>
-          <th>Impale Size</th>
-          <th>Range</th>
-          <th>Load</th>
-          <th>Ammo</th>
+          <th>{{localize 'MYTHRAS.Name'}}</th>
+          <th>{{localize 'MYTHRAS.Damage'}}</th>
+          <th>{{localize 'MYTHRAS.DM'}}</th>
+          <th>{{localize 'MYTHRAS.Force'}}</th>
+          <th>{{localize 'MYTHRAS.Impale_Size'}}</th>
+          <th>{{localize 'MYTHRAS.Range'}}</th>
+          <th>{{localize 'MYTHRAS.Load'}}</th>
+          <th>{{localize 'MYTHRAS.Ammo'}}</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>

@@ -1,26 +1,26 @@
 <div class="tab combat" data-group="primary" data-tab="combat">
   <div class="combat-tables">
 
-    <h2>Combat</h2>
+    <h2>{{localize 'MYTHRAS.Combat'}}</h2>
     <div class="top-combat-tables">
       <div class="tables-left">
 
         <div>
           <h3 class="armorLocationHeader">
-            <span>Hit Locations</span><span>Armor Penalty: {{data.attributes.armorPenalty.value}}</span><a
+            <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}: {{data.attributes.armorPenalty.value}}</span><a
               class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
               data-label="{{#each actor.hitLocations as |item|}}{{item.name}}/{{item.data.rollRangeStart}}/{{item.data.rollRangeEnd}},{{/each}}">Roll
               1d20</a>
           </h3>
           <table id="hitLocation-edit" class="hitLocation-table">
             <thead>
-              <th class="hitloc-location-cell">Location</th>
-              <th class="hitloc-range-cell">Range</th>
-              <th class="hitloc-armor-cell">Armor</th>
-              <th class="hitloc-ap-cell">AP</th>
+              <th class="hitloc-location-cell">{{localize 'MYTHRAS.Location'}}</th>
+              <th class="hitloc-range-cell">{{localize 'MYTHRAS.Range2'}}</th>
+              <th class="hitloc-armor-cell">{{localize 'MYTHRAS.Armor'}}</th>
+              <th class="hitloc-ap-cell">{{localize 'MYTHRAS.AP'}}</th>
               <th class="hitloc-hp-cell ">
                 <div class="hitLoc-flex-cell">
-                  <p class="hit-loc-text">HP</p>
+                  <p class="hit-loc-text">{{localize 'MYTHRAS.HP'}}</p>
                   <span class="max-hp-mod">
                     <span>
                       +
@@ -72,18 +72,18 @@
       <div class="tables-right">
         <div>
           <h3>
-            <span>Resistances</span>
+            <span>{{localize 'MYTHRAS.Resistances'}}</span>
           </h3>
           <table class="resistances-table">
             <thead>
               <th>
-                Name
+                {{localize 'MYTHRAS.Name'}}
               </th>
               <th>
-                Base Char
+                {{localize 'MYTHRAS.Base_Char'}}
               </th>
               <th>
-                Roll
+                {{localize 'MYTHRAS.Roll'}}
               </th>
             </thead>
             <tbody>
@@ -160,7 +160,7 @@
         </div>
         <div>
           <h3>
-            <span>Wounds and Conditions</span>
+            <span>{{localize 'MYTHRAS.Wounds_and_Conditions'}}</span>
           </h3>
           <textarea name="data.conditionsAndWounds">{{data.conditionsAndWounds}}</textarea>
         </div>
@@ -169,7 +169,7 @@
     <div>
       <h3>
         <span>
-          Combat Styles
+          {{localize 'MYTHRAS.Combat_Styles'}}
         </span>
         <a class="add-skills-button item-create" title="Create item" data-type="combatStyle">
           +
@@ -178,19 +178,19 @@
       <table class="basic-skills-table">
         <thead>
           <th>
-            Name
+            {{localize 'MYTHRAS.Name'}}
           </th>
           <th>
-            Base Char
+            {{localize 'MYTHRAS.Base_Char'}}
           </th>
           <th>
-            Traits
+            {{localize 'MYTHRAS.Traits'}}
           </th>
           <th>
-            Weapons
+            {{localize 'MYTHRAS.Weapons'}}
           </th>
           <th>
-            Roll
+            {{localize 'MYTHRAS.Roll'}}
           </th>
           <th class="delete-column">
             <i class="fas fa-trash"></i>
@@ -229,12 +229,12 @@
       </table>
     </div>
     <h2>
-      Weapons
+      {{localize 'MYTHRAS.Weapons'}}
     </h2>
     <div>
       <h3>
         <span>
-          Melee Weapons
+          {{localize 'MYTHRAS.Melee_Weapons'}}
         </span>
         <a class="add-equipment-button item-create" title="Create item" data-type="melee-weapon">
           +
@@ -243,22 +243,22 @@
       <table class="weapons-table">
         <thead>
           <th>
-            Name
+            {{localize 'MYTHRAS.Name'}}
           </th>
           <th>
-            Damage
+            {{localize 'MYTHRAS.Damage'}}
           </th>
           <th>
-            DM
+            {{localize 'MYTHRAS.DM'}}
           </th>
           <th>
-            Size
+            {{localize 'MYTHRAS.Size'}}
           </th>
           <th>
-            Reach
+            {{localize 'MYTHRAS.Reach'}}
           </th>
           <th>
-            AP/HP
+            {{localize 'MYTHRAS.AP/HP'}}
           </th>
           <th class="delete-column">
             <i class="fas fa-trash"></i>
@@ -303,7 +303,7 @@
       <hr />
       <h3>
         <span>
-          Ranged Weapons
+          {{localize 'MYTHRAS.Ranged_Weapons'}}
         </span>
         <a class="add-equipment-button item-create" title="Create item" data-type="ranged-weapon">
           +
@@ -312,28 +312,28 @@
       <table class="weapons-table">
         <thead>
           <th>
-            Name
+            {{localize 'MYTHRAS.Name'}}
           </th>
           <th>
-            Damage
+            {{localize 'MYTHRAS.Damage'}}
           </th>
           <th>
-            DM
+            {{localize 'MYTHRAS.DM'}}
           </th>
           <th>
-            Force
+            {{localize 'MYTHRAS.Force'}}
           </th>
           <th>
-            Impale Size
+            {{localize 'MYTHRAS.Impale_Size'}}
           </th>
           <th>
-            Range
+            {{localize 'MYTHRAS.Range'}}
           </th>
           <th>
-            Load
+            {{localize 'MYTHRAS.Load'}}
           </th>
           <th>
-            Ammo
+            {{localize 'MYTHRAS.Ammo'}}
           </th>
           <th class="delete-column">
             <i class="fas fa-trash"></i>
