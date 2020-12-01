@@ -358,13 +358,12 @@ export class ActorSheetMythras extends ActorSheet {
       diffRolled.forEach((rollStr, index) => {
         contentString += rollStr + diffGrades[index] + '<br>'
       })
-      let chatData = {
+      roll.toMessage({
         user: game.user._id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,
         content: contentString
-      }
-      ChatMessage.create(chatData)
+      })
     }
   }
   _onRollMeleeDamage(event) {
