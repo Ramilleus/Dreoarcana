@@ -150,8 +150,13 @@ export class ActorMythras extends Actor {
    */
   prepareMovement(data, items) {
     // Get athletics and swim item objects
-    let athletics = items.find((entry) => entry.name === 'Athletics')
-    let swim = items.find((entry) => entry.name === 'Swim')
+    console.log(game)
+    let athletics = items.find(
+      (entry) => entry.name === game.i18n.localize('MYTHRAS.Athletics')
+    )
+    let swim = items.find(
+      (entry) => entry.name === game.i18n.localize('MYTHRAS.Swim')
+    )
 
     let movementMiscMod = Number(data.attributes.movement.mod)
 

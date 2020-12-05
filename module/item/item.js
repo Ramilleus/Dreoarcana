@@ -42,7 +42,7 @@ export class MythrasItem extends Item {
     if (data.baseVal.init === 0) {
       updateSkillValues(itemData, actorData)
       // Set the base skill value initialization flag to 1, this way, this code only gets run once
-      data.baseVal.init = 1
+      data.baseVal.init = 0
     }
   }
 

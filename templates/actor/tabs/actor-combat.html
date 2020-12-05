@@ -7,8 +7,9 @@
 
         <div>
           <h3 class="armorLocationHeader">
-            <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}: {{data.attributes.armorPenalty.value}}</span><a
-              class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
+            <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}:
+              {{data.attributes.armorPenalty.value}}</span><a class="roll-hitlocations-button" title="Roll 1d20"
+              data-roll="1d20"
               data-label="{{#each actor.hitLocations as |item|}}{{item.name}}/{{item.data.rollRangeStart}}/{{item.data.rollRangeEnd}},{{/each}}">Roll
               1d20</a>
           </h3>
@@ -95,10 +96,11 @@
                   </a>
                 </td>
                 <td>
-                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="1d100"
+                    data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -112,10 +114,11 @@
                   </a>
                 </td>
                 <td>
-                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="1d100"
+                    data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -129,10 +132,11 @@
                   </a>
                 </td>
                 <td>
-                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="1d100"
+                    data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -146,10 +150,11 @@
                   </a>
                 </td>
                 <td>
-                  {{toUpperCase item.data.primaryChar}} + {{ toUpperCase item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
                 </td>
                 <td>
-                  <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+                  <a class="skill-val rollableSkill" data-roll="1d100"
+                    data-label="{{item.name}},{{item.data.totalVal}}">
                     {{item.data.totalVal}}%
                   </a>
                 </td>
@@ -205,7 +210,7 @@
               </a>
             </td>
             <td>
-              {{toUpperCase item.data.primaryChar}} + {{toUpperCase item.data.secondaryChar}}
+              {{localizeSkillAbbrev item.data.primaryChar}} + {{localizeSkillAbbrev item.data.secondaryChar}}
             </td>
             <td>
               {{item.data.traits}}
@@ -214,7 +219,7 @@
               {{item.data.weapons}}
             </td>
             <td>
-              <a class="skill-val rollableSkill" data-roll="d100" data-label="{{item.name}},{{item.data.totalVal}}">
+              <a class="skill-val rollableSkill" data-roll="1d100" data-label="{{item.name}},{{item.data.totalVal}}">
                 {{item.data.totalVal}}%
               </a>
             </td>

@@ -48,6 +48,11 @@ Hooks.once('ready', async function () {
         .then((result) => {
           let chain = Promise.resolve()
           result.forEach((skill, index) => {
+            if (game.i18n) {
+              skill.data.name = game.i18n.localize(
+                'MYTHRAS.' + skill.data.name.replace(/ /g, '_')
+              )
+            }
             chain = chain.then(() => actor.createOwnedItem(skill.data))
           })
         })
@@ -58,6 +63,11 @@ Hooks.once('ready', async function () {
         .then((result) => {
           let chain = Promise.resolve()
           result.forEach((hitLoc, index) => {
+            if (game.i18n) {
+              hitLoc.data.name = game.i18n.localize(
+                'MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_')
+              )
+            }
             chain = chain.then(() => actor.createOwnedItem(hitLoc.data))
           })
         })
@@ -66,10 +76,22 @@ Hooks.once('ready', async function () {
 })
 
 function registerHandlebarsHelpers() {
-  Handlebars.registerHelper('toUpperCase', function (str) {
+  Handlebars.registerHelper('localizeSkillAbbrev', function (str) {
+    if (game.i18n) {
+      return game.i18n.localize('MYTHRAS.' + str.toUpperCase())
+    }
     return str.toUpperCase()
   })
+  Handlebars.registerHelper('localizeSkillName', function (str) {
+    if (game.i18n) {
+      return game.i18n.localize('MYTHRAS.' + str.replace(/ /g, '_'))
+    }
+    return str
+  })
   Handlebars.registerHelper('findItemByName', function (items, itemName) {
+    if (game.i18n) {
+      itemName = game.i18n.localize('MYTHRAS.' + itemName.replace(/ /g, '_'))
+    }
     return items.find((entry) => entry.name === itemName)
   })
 }
