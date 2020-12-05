@@ -2,9 +2,9 @@
   "name": "mythras",
   "title": "Mythras",
   "description": "The Mythras system for FoundryVTT!",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "minimumCoreVersion": "0.6.2",
-  "compatibleCoreVersion": "0.7.5",
+  "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
   "author": "Jonathan Karkour and Tom Paoloni",
   "esmodules": ["mythras.js"],
@@ -51,6 +51,6 @@
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/mythras",
   "manifest": "https://gitlab.com/tpaoloni/mythras/raw/master/system.json",
-  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.1.1/mythras-0.1.1.zip",
+  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.1.2/mythras-0.1.2.zip",
   "license": "LICENSE.txt"
 }
