@@ -150,7 +150,6 @@ export class ActorMythras extends Actor {
    */
   prepareMovement(data, items) {
     // Get athletics and swim item objects
-    console.log(game)
     let athletics = items.find(
       (entry) => entry.name === game.i18n.localize('MYTHRAS.Athletics')
     )
