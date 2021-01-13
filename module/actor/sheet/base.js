@@ -177,11 +177,11 @@ export class ActorSheetMythras extends ActorSheet {
         let newFieldValue = ''
         if (hitLocField === 'name') {
           updateField = 'name'
-          newFieldValue = formData['item.name'][Number(hitLocIndex)]
+          newFieldValue = formData['item.data.name'][Number(hitLocIndex)]
         } else {
           updateField = 'data.' + hitLocField
           newFieldValue =
-            formData['item.data.' + hitLocField][Number(hitLocIndex)]
+            formData['item.data.data.' + hitLocField][Number(hitLocIndex)]
         }
         this.actor.updateEmbeddedEntity('OwnedItem', {
           _id: hitLoc._id,
@@ -195,21 +195,21 @@ export class ActorSheetMythras extends ActorSheet {
       ) {
         hitLocations.forEach((hitLoc, index) => {
           let newHp =
-            Number(hitLoc.data.baseHp) +
+            Number(hitLoc.data.data.baseHp) +
             Math.ceil(
               (Number(formData['data.characteristics.siz.value']) +
                 Number(formData['data.characteristics.con.value'])) /
                 5
             ) +
             Number(formData['data.attributes.hitPointMod.mod']) +
-            Number(formData['item.data.maxHpMod'][index])
+            Number(formData['item.data.data.maxHpMod'][index])
           if (newHp < 1) {
             newHp = 1
           }
           this.actor.updateEmbeddedEntity('OwnedItem', {
-            _id: hitLoc._id,
+            _id: hitLoc.data._id,
             'data.maxHp': newHp,
-            'data.maxHpMod': formData['item.data.maxHpMod'][index]
+            'data.maxHpMod': formData['item.data.data.maxHpMod'][index]
           })
         })
       }
