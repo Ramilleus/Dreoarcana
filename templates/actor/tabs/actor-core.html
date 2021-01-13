@@ -401,19 +401,19 @@
             </thead>
             <tbody>
               {{#each actor.standardSkills as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} +
-                  {{localizeSkillAbbrev item.data.secondaryChar}} </td>
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} +
+                  {{localizeSkillAbbrev item.data.data.secondaryChar}} </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
                 {{!-- <td>
@@ -454,19 +454,20 @@
             </thead>
             <tbody>
               {{#each actor.professionalSkills as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{localizeSkillAbbrev item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
+                  item.data.data.secondaryChar }}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
                 <td>
@@ -506,19 +507,20 @@
             </thead>
             <tbody>
               {{#each actor.combatStyles as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{localizeSkillAbbrev item.data.secondaryChar}}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
+                  item.data.data.secondaryChar}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
                 <td>
@@ -557,19 +559,20 @@
             </thead>
             <tbody>
               {{#each actor.magicSkills as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{localizeSkillAbbrev item.data.secondaryChar}}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
+                  item.data.data.secondaryChar}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
                 <td>
@@ -608,19 +611,20 @@
             </thead>
             <tbody>
               {{#each actor.passions as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{localizeSkillAbbrev item.data.secondaryChar}}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
+                  item.data.data.secondaryChar}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
                 <td>

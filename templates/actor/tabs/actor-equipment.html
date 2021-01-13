@@ -1,16 +1,20 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
   <div class="enc-row">
     <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Current_ENC'}}:</h3> <span class="enc-value">{{data.attributes.encumbrance.value}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Current_ENC'}}:</h3> <span
+        class="enc-value">{{data.attributes.encumbrance.value}}</span>
     </div>
     <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Normal_Cap'}}: </h3> <span class="enc-value">{{data.attributes.encumbrance.burdened}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Normal_Cap'}}: </h3> <span
+        class="enc-value">{{data.attributes.encumbrance.burdened}}</span>
     </div>
     <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Burdened_Cap'}}:</h3> <span class="enc-value">{{data.attributes.encumbrance.overloaded}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Burdened_Cap'}}:</h3> <span
+        class="enc-value">{{data.attributes.encumbrance.overloaded}}</span>
     </div>
     <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Overloaded_Cap'}}:</h3> <span class="enc-value">{{data.attributes.encumbrance.maxLoad}}</span>
+      <h3 class="enc-tag">{{localize 'MYTHRAS.Overloaded_Cap'}}:</h3> <span
+        class="enc-value">{{data.attributes.encumbrance.maxLoad}}</span>
     </div>
   </div>
   <div class="equipment-tables">
@@ -31,15 +35,15 @@
             </thead>
             <tbody>
               {{#each actor.equipment as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
-                  <a class="item-name item-control item-edit">{{item.name}}</a>
+                  <a class="item-name item-control item-edit">{{item.data.name}}</a>
                 </td>
                 <td>
-                  {{item.data.encumbrance}}
+                  {{item.data.data.encumbrance}}
                 </td>
                 <td>
-                  {{item.data.quantity}}
+                  {{item.data.data.quantity}}
                 </td>
                 <td>
                   <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -53,8 +57,8 @@
       <div class="tables-right">
         <div>
           <h3>
-            <span>{{localize 'MYTHRAS.Currency_and_Wealth'}}</span><a class="add-items-button item-create" title="Create item"
-              data-type="currency">+</a>
+            <span>{{localize 'MYTHRAS.Currency_and_Wealth'}}</span><a class="add-items-button item-create"
+              title="Create item" data-type="currency">+</a>
           </h3>
           <table class="currency-table">
             <thead>
@@ -66,18 +70,18 @@
             </thead>
             <tbody>
               {{#each actor.currency as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
-                  <a class="item-name item-control item-edit">{{item.name}}</a>
+                  <a class="item-name item-control item-edit">{{item.data.name}}</a>
                 </td>
                 <td>
-                  {{item.data.value}}
+                  {{item.data.data.value}}
                 </td>
                 <td>
-                  {{item.data.encumbrance}}
+                  {{item.data.data.encumbrance}}
                 </td>
                 <td>
-                  {{item.data.quantity}}
+                  {{item.data.data.quantity}}
                 </td>
                 <td>
                   <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -93,7 +97,8 @@
     <h2>{{localize 'MYTHRAS.Armor'}}</h2>
     <div>
       <h3>
-        <span>{{localize 'MYTHRAS.Armor'}}</span><a class="add-equipment-button item-create" title="Create item" data-type="armor">+</a>
+        <span>{{localize 'MYTHRAS.Armor'}}</span><a class="add-equipment-button item-create" title="Create item"
+          data-type="armor">+</a>
       </h3>
       <table class="armor-table">
         <thead>
@@ -106,22 +111,22 @@
         </thead>
         <tbody>
           {{#each actor.armor as |item id|}}
-          <tr class="item" data-item-id="{{item._id}}">
+          <tr class="item" data-item-id="{{item.data._id}}">
             <td>
-              <a class="item-name item-control item-edit">{{item.name}}</a>
+              <a class="item-name item-control item-edit">{{item.data.name}}</a>
             </td>
             <td>
-              {{item.data.locationName}}
+              {{item.data.data.locationName}}
             </td>
             <td>
-              <input id="{{id}}_{{item._id}}_equipped" type="checkbox" name="item.data.equipped"
-                {{checked item.data.equipped}} />
+              <input id="{{id}}_{{item.data._id}}_equipped" type="checkbox" name="item.data.data.equipped" {{checked
+                item.data.data.equipped}} />
             </td>
             <td>
-              {{item.data.encumbrance}}
+              {{item.data.data.encumbrance}}
             </td>
             <td>
-              {{item.data.ap}} / {{item.data.hp}}
+              {{item.data.data.ap}} / {{item.data.data.hp}}
             </td>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -150,28 +155,28 @@
         </thead>
         <tbody>
           {{#each actor.meleeWeapons as |item id|}}
-          <tr class="item" data-item-id="{{item._id}}">
+          <tr class="item" data-item-id="{{item.data._id}}">
             <td>
-              <a class="item-name item-control item-edit">{{item.name}}</a>
+              <a class="item-name item-control item-edit">{{item.data.name}}</a>
             </td>
             <td>
-              <a class="rollableMeleeDamage" data-roll="{{item.data.damage}}"
-                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}},{{item.data.traits}}">
-                {{item.data.damage}}
+              <a class="rollableMeleeDamage" data-roll="{{item.data.data.damage}}"
+                data-label="{{item.data.name}},{{item.data.data.damage}},{{item.data.data.damageModifier}},{{item.data.data.combat-effects}},{{item.data.data.traits}}">
+                {{item.data.data.damage}}
               </a>
             </td>
             <td>
-              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
-                {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier" {{checked
+                data.damageModifier}} />
             </td>
             <td>
-              {{item.data.size}}
+              {{item.data.data.size}}
             </td>
             <td>
-              {{item.data.reach}}
+              {{item.data.data.reach}}
             </td>
             <td>
-              {{item.data.ap}} / {{item.data.hp}}
+              {{item.data.data.ap}} / {{item.data.data.hp}}
             </td>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -182,8 +187,8 @@
       </table>
       <hr />
       <h3>
-        <span>{{localize 'MYTHRAS.Ranged_Weapons'}}</span><a class="add-equipment-button item-create" title="Create item"
-          data-type="ranged-weapon">+</a>
+        <span>{{localize 'MYTHRAS.Ranged_Weapons'}}</span><a class="add-equipment-button item-create"
+          title="Create item" data-type="ranged-weapon">+</a>
       </h3>
       <table class="weapons-table">
         <thead>
@@ -199,34 +204,34 @@
         </thead>
         <tbody>
           {{#each actor.rangedWeapons as |item id|}}
-          <tr class="item" data-item-id="{{item._id}}">
+          <tr class="item" data-item-id="{{item.data._id}}">
             <td>
-              <a class="item-name item-control item-edit">{{item.name}}</a>
+              <a class="item-name item-control item-edit">{{item.data.name}}</a>
             </td>
             <td>
-              <a class="rollableRangedDamage" data-roll="{{item.data.damage}}"
-                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}}">
-                {{item.data.damage}}
+              <a class="rollableRangedDamage" data-roll="{{item.data.data.damage}}"
+                data-label="{{item.data.name}},{{item.data.data.damage}},{{item.data.data.damageModifier}},{{item.data.data.combat-effects}}">
+                {{item.data.data.damage}}
               </a>
             </td>
             <td>
-              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
-                {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier" {{checked
+                data.damageModifier}} />
             </td>
             <td>
-              {{item.data.force}}
+              {{item.data.data.force}}
             </td>
             <td>
-              {{item.data.impale-size}}
+              {{item.data.data.impale-size}}
             </td>
             <td>
-              {{item.data.range.close}}/{{item.data.range.effective}}/{{item.data.range.long}}
+              {{item.data.data.range.close}}/{{item.data.data.range.effective}}/{{item.data.data.range.long}}
             </td>
             <th>
-              {{item.data.load}}
+              {{item.data.data.load}}
             </th>
             <th>
-              {{item.data.ammo}}
+              {{item.data.data.ammo}}
             </th>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>

@@ -10,7 +10,7 @@
             <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}:
               {{data.attributes.armorPenalty.value}}</span><a class="roll-hitlocations-button" title="Roll 1d20"
               data-roll="1d20"
-              data-label="{{#each actor.hitLocations as |item|}}{{item.name}}/{{item.data.rollRangeStart}}/{{item.data.rollRangeEnd}},{{/each}}">Roll
+              data-label="{{#each actor.hitLocations as |item|}}{{item.data.name}}/{{item.data.data.rollRangeStart}}/{{item.data.data.rollRangeEnd}},{{/each}}">Roll
               1d20</a>
           </h3>
           <table id="hitLocation-edit" class="hitLocation-table">
@@ -34,34 +34,34 @@
             </thead>
             <tbody>
               {{#each actor.hitLocations as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td class="hitloc-location-cell">
-                  <input id="{{id}}_{{item._id}}_name_hitLoc" type="text" name="item.name" data-dtype="text"
-                    value="{{item.name}}" />
+                  <input id="{{id}}_{{item.data._id}}_name_hitLoc" type="text" name="item.data.name" data-dtype="text"
+                    value="{{item.data.name}}" />
                 </td>
                 <td class="hitLoc-flex-cell hitloc-range-cell">
-                  <input id="{{id}}_{{item._id}}_rollRangeStart_hitLoc" type="text" name="item.data.rollRangeStart"
-                    value="{{item.data.rollRangeStart}}" />
+                  <input id="{{id}}_{{item.data._id}}_rollRangeStart_hitLoc" type="text"
+                    name="item.data.data.rollRangeStart" value="{{item.data.data.rollRangeStart}}" />
                   <p class="hit-loc-text">-</p>
-                  <input id="{{id}}_{{item._id}}_rollRangeEnd_hitLoc" type="text" name="item.data.rollRangeEnd"
-                    value="{{item.data.rollRangeEnd}}" />
+                  <input id="{{id}}_{{item.data._id}}_rollRangeEnd_hitLoc" type="text"
+                    name="item.data.data.rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
                 </td>
                 <td class="hitloc-armor-cell">
-                  {{item.data.armors}}
+                  {{item.data.data.armors}}
                 </td>
                 <td class="hitloc-ap-cell">
-                  <p class="hit-loc-text">{{item.data.ap}}</p>
+                  <p class="hit-loc-text">{{item.data.data.ap}}</p>
                 </td>
                 <td class="hitLoc-flex-cell hitloc-hp-cell">
-                  <input id="{{id}}_{{item._id}}_currentHp_hitLoc" type="text" name="item.data.currentHp"
-                    value="{{item.data.currentHp}}" />
-                  <p class="max-hp"> / {{item.data.maxHp}}</p>
+                  <input id="{{id}}_{{item.data.data._id}}_currentHp_hitLoc" type="text" name="item.data.data.currentHp"
+                    value="{{item.data.data.currentHp}}" />
+                  <p class="max-hp"> / {{item.data.data.maxHp}}</p>
                   <div class="max-hp-mod">
                     <span>
                       +
                     </span>
-                    <input id="{{id}}_{{item._id}}_maxHpMod_hitLoc" type="text" name="item.data.maxHpMod" class=""
-                      onclick="this.select()" value="{{item.data.maxHpMod}}" />
+                    <input id="{{id}}_{{item.data._id}}_maxHpMod_hitLoc" type="text" name="item.data.data.maxHpMod"
+                      class="" onclick="this.select()" value="{{item.data.data.maxHpMod}}" />
                   </div>
                 </td>
               </tr>
@@ -89,73 +89,77 @@
             </thead>
             <tbody>
               {{#with (findItemByName actor.standardSkills "Brawn") as |item|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{ localizeSkillAbbrev
+                  item.data.data.secondaryChar }}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
               </tr>
               {{/with}}
               {{#with (findItemByName actor.standardSkills "Endurance") as |item|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{ localizeSkillAbbrev
+                  item.data.data.secondaryChar }}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
               </tr>
               {{/with}}
               {{#with (findItemByName actor.standardSkills "Evade") as |item|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{ localizeSkillAbbrev
+                  item.data.data.secondaryChar }}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
               </tr>
               {{/with}}
               {{#with (findItemByName actor.standardSkills "Willpower") as |item|}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.name}}
+                    {{item.data.name}}
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.primaryChar}} + {{ localizeSkillAbbrev item.data.secondaryChar }}
+                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{ localizeSkillAbbrev
+                  item.data.data.secondaryChar }}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.name}},{{item.data.totalVal}}">
-                    {{item.data.totalVal}}%
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    {{item.data.data.totalVal}}%
                   </a>
                 </td>
               </tr>
@@ -203,24 +207,25 @@
         </thead>
         <tbody>
           {{#each actor.combatStyles as |item id|}}
-          <tr class="item" data-item-id="{{item._id}}">
+          <tr class="item" data-item-id="{{item.data._id}}">
             <td>
               <a class="item-name item-control item-edit">
-                {{item.name}}
+                {{item.data.name}}
               </a>
             </td>
             <td>
-              {{localizeSkillAbbrev item.data.primaryChar}} + {{localizeSkillAbbrev item.data.secondaryChar}}
+              {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev item.data.data.secondaryChar}}
             </td>
             <td>
-              {{item.data.traits}}
+              {{item.data.data.traits}}
             </td>
             <td>
-              {{item.data.weapons}}
+              {{item.data.data.weapons}}
             </td>
             <td>
-              <a class="skill-val rollableSkill" data-roll="1d100" data-label="{{item.name}},{{item.data.totalVal}}">
-                {{item.data.totalVal}}%
+              <a class="skill-val rollableSkill" data-roll="1d100"
+                data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                {{item.data.data.totalVal}}%
               </a>
             </td>
             <td>
@@ -271,30 +276,30 @@
         </thead>
         <tbody>
           {{#each actor.meleeWeapons as |item id|}}
-          <tr class="item" data-item-id="{{item._id}}">
+          <tr class="item" data-item-id="{{item.data._id}}">
             <td>
               <a class="item-name item-control item-edit">
-                {{item.name}}
+                {{item.data.name}}
               </a>
             </td>
             <td>
-              <a class="rollableMeleeDamage" data-roll="{{item.data.damage}}"
-                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}},{{item.data.traits}}">
-                {{item.data.damage}}
+              <a class="rollableMeleeDamage" data-roll="{{item.data.data.damage}}"
+                data-label="{{item.data.name}},{{item.data.data.damage}},{{item.data.data.damageModifier}},{{item.data.data.combat-effects}},{{item.data.data.traits}}">
+                {{item.data.data.damage}}
               </a>
             </td>
             <td>
-              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
-                {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier" {{checked
+                data.damageModifier}} />
             </td>
             <td>
-              {{item.data.size}}
+              {{item.data.data.size}}
             </td>
             <td>
-              {{item.data.reach}}
+              {{item.data.data.reach}}
             </td>
             <td>
-              {{item.data.ap}} / {{item.data.hp}}
+              {{item.data.data.ap}} / {{item.data.data.hp}}
             </td>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item">
@@ -346,36 +351,36 @@
         </thead>
         <tbody>
           {{#each actor.rangedWeapons as |item id|}}
-          <tr class="item" data-item-id="{{item._id}}">
+          <tr class="item" data-item-id="{{item.data._id}}">
             <td>
               <a class="item-name item-control item-edit">
-                {{item.name}}
+                {{item.data.name}}
               </a>
             </td>
             <td>
-              <a class="rollableRangedDamage" data-roll="{{item.data.damage}}"
-                data-label="{{item.name}},{{item.data.damage}},{{item.data.damageModifier}},{{item.data.combat-effects}}">
-                {{item.data.damage}}
+              <a class="rollableRangedDamage" data-roll="{{item.data.data.damage}}"
+                data-label="{{item.data.name}},{{item.data.data.damage}},{{item.data.data.damageModifier}},{{item.data.data.combat-effects}}">
+                {{item.data.data.damage}}
               </a>
             </td>
             <td>
-              <input class="damageModCheck" type="checkbox" name="data.damageModifier"
-                {{checked data.damageModifier}} />
+              <input class="damageModCheck" type="checkbox" name="data.damageModifier" {{checked
+                data.damageModifier}} />
             </td>
             <td>
-              {{item.data.force}}
+              {{item.data.data.force}}
             </td>
             <td>
-              {{item.data.impale-size}}
+              {{item.data.data.impale-size}}
             </td>
             <td>
-              {{item.data.range.close}}/{{item.data.range.effective}}/{{item.data.range.long }}
+              {{item.data.data.range.close}}/{{item.data.data.range.effective}}/{{item.data.data.range.long }}
             </td>
             <th>
-              {{item.data.load}}
+              {{item.data.data.load}}
             </th>
             <th>
-              {{item.data.ammo}}
+              {{item.data.data.ammo}}
             </th>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item">

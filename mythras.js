@@ -77,8 +77,10 @@ Hooks.once('ready', async function () {
 
 function registerHandlebarsHelpers() {
   Handlebars.registerHelper('localizeSkillAbbrev', function (str) {
-    if (game.i18n) {
+    if (game.i18n && str !== undefined) {
       return game.i18n.localize('MYTHRAS.' + str.toUpperCase())
+    } else if (str == undefined) {
+      return str
     }
     return str.toUpperCase()
   })

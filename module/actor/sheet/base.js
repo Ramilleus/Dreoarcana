@@ -67,9 +67,9 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
-    for (let i of sheetData.items) {
+    for (let i of this.actor.items.values()) {
       let item = i.data
-      i.img = i.img || DEFAULT_TOKEN
+      //i.img = i.img || DEFAULT_TOKEN
 
       itemMapper[i.type].push(i)
       if (skillTypes.includes(i.type)) {
@@ -134,7 +134,7 @@ export class ActorSheetMythras extends ActorSheet {
       if (event.target.id.includes('_equipped')) {
         let armorInfo = event.target.id.split('_')
         let armor = this.actor.getOwnedItem(armorInfo[1])
-        let equipped = formData['item.data.equipped']
+        let equipped = formData['item.data.data.equipped']
         if (Array.isArray(equipped)) {
           equipped = equipped[armorInfo[0]]
         }
