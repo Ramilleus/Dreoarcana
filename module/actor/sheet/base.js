@@ -79,8 +79,17 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Assign and return
     actorData.gear = gear
+    hitLocations.sort(function (a, b) {
+      return a.data.sort - b.data.sort
+    })
     actorData.hitLocations = hitLocations
+    standardSkills.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
     actorData.standardSkills = standardSkills
+    professionalSkills.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
     actorData.professionalSkills = professionalSkills
     actorData.combatStyles = combatStyles
     actorData.magicSkills = magicSkills

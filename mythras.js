@@ -39,8 +39,8 @@ Hooks.once('ready', async function () {
   Hooks.on('hotbarDrop', (bar, data, slot) => createMythrasMacro(data, slot))
 
   // Add Standard Skills and Hit Locations to an Actor when the createActor Hook is triggered
-  Hooks.on('createActor', (actor, x, y) => {
-    if (actor.items.size == 0) {
+  Hooks.on('createActor', (actor, options, userID, x, y) => {
+    if (actor.items.size == 0 && userID === game.user._id) {
       // Standard Skills
       game.packs
         .get('mythras.standardSkill')
@@ -68,7 +68,7 @@ Hooks.once('ready', async function () {
                 'MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_')
               )
             }
-            chain = chain.then(() => actor.createOwnedItem(hitLoc.data))
+            chain = chain.then(() => actor.createOwnedItem(hitLoc))
           })
         })
     }
