@@ -270,6 +270,7 @@ export class ActorSheetMythras extends ActorSheet {
     const pointIncreaseMapping = {
       '#increase-current-lp': 'currentLuckPoints',
       '#increase-current-mp': 'currentMagicPoints',
+      '#increase-current-ap': 'currentActionPoints',
       '#increase-current-er': 'experienceRolls'
     }
     for (const [key, value] of Object.entries(pointIncreaseMapping)) {
@@ -285,6 +286,7 @@ export class ActorSheetMythras extends ActorSheet {
     const pointDecreaseMapping = {
       '#decrease-current-lp': 'currentLuckPoints',
       '#decrease-current-mp': 'currentMagicPoints',
+      '#decrease-current-ap': 'currentActionPoints',
       '#decrease-current-er': 'experienceRolls'
     }
     for (const [key, value] of Object.entries(pointDecreaseMapping)) {
