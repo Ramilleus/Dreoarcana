@@ -91,6 +91,7 @@
         },
         "currentLuckPoints": 2,
         "currentMagicPoints": 11,
+        "currentActionPoints": 2,
         "experienceRolls": 0
       },
       "humanoid": {}

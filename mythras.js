@@ -2,12 +2,14 @@
 import { registerActors, registerItems } from './module/register-sheets.js'
 import { MythrasItem } from './module/item/item.js'
 import { ActorMythras } from './module/actor/actor.js'
+import { CombatMythras } from './module/combat-mythras.js'
 import loadPartials from './module/templates.js'
 
 Hooks.once('init', async function () {
   game.mythras = {
     ActorMythras,
-    MythrasItem
+    MythrasItem,
+    CombatMythras
   }
 
   /**
@@ -22,6 +24,7 @@ Hooks.once('init', async function () {
   // Define custom Entity classes
   CONFIG.Actor.entityClass = ActorMythras
   CONFIG.Item.entityClass = MythrasItem
+  CONFIG.Combat.entityClass = CombatMythras;
 
   // Register sheet application classes
   registerActors()

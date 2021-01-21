@@ -14,6 +14,20 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
+            <input class="action-points" name="data.currentActionPoints" onclick="this.select()" type="text"
+              value="{{data.currentActionPoints}}" placeholder="" />
+            <p class="point-total">/{{data.attributes.actionPoints.value}}</p>
+          </div>
+          <div class="plus-minus-buttons">
+            <a id="increase-current-ap">+</a>
+            <a id="decrease-current-ap">-</a>
+          </div>
+        </div>
+        <p class="input-label">{{localize 'MYTHRAS.ACTION_POINTS'}}</p>
+      </div>
+      <div class="stats-container">
+        <div class="number-input-container">
+          <div>
             <input class="luck-points" name="data.currentLuckPoints" onclick="this.select()" type="text"
               value="{{data.currentLuckPoints}}" placeholder="" />
             <p class="point-total">/{{data.attributes.luckPoints.value}}</p>
