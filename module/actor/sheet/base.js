@@ -1,4 +1,5 @@
 import { skillTypes } from '../../item/skill-helper.js'
+import { fatigueInfo } from '../actor-helper.js'
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -80,16 +81,13 @@ export class ActorSheetMythras extends ActorSheet {
     // Assign and return
     actorData.gear = gear
     hitLocations.sort(function (a, b) {
-      return a.data.sort - b.data.sort
+      return a.data.data.rollRangeStart - b.data.data.rollRangeStart
     })
     actorData.hitLocations = hitLocations
     standardSkills.sort(function (a, b) {
       return a.data.name.localeCompare(b.data.name)
     })
     actorData.standardSkills = standardSkills
-    professionalSkills.sort(function (a, b) {
-      return a.data.name.localeCompare(b.data.name)
-    })
     actorData.professionalSkills = professionalSkills
     actorData.combatStyles = combatStyles
     actorData.magicSkills = magicSkills
@@ -359,19 +357,67 @@ export class ActorSheetMythras extends ActorSheet {
       'Formidable: ',
       'Herculean: '
     ]
+    let fatigueValue = this.actor.data.data.attributes.fatigue.value
+    let fatigueMessage = `<strong>Fatigue Modifier:</strong> ${fatigueInfo[fatigueValue]['Skill Grade']}`
 
     if (dataset.roll) {
       let roll = new Roll(dataset.roll, this.actor.data.data)
       let label = dataset.label ? `Rolling ${dataLabel[0]}` : ''
       const rolled = roll.roll()
-      let diffRolled = diffNames.map(function (x) {
-        return '<strong>' + x + '</strong>' + rolled.result + ' <b>≤</b> '
+      let contentString = `<h4>${fatigueMessage}</h4><p>
+      <table>
+       <tr>
+         <th>Difficulty</th>
+         <th>Roll</th>
+         <th>    </th>
+         <th>Skill %</th>
+         <th>Result</th>
+         
+       </tr>`
+      let i = 0
+      diffNames.forEach((name, index) => {
+        let resultString = ''
+        if (rolled.result >= 95) {
+          if (
+            rolled.result == 100 ||
+            (rolled.result == 99 && diffGrades[index] <= 100)
+          ) {
+            resultString =
+              " <span style='color:darkred;'> <b>FUMBLE!</b></span>"
+          } else {
+            resultString = " <span style='color:red;'> <b>FAILURE!</b></span>"
+          }
+        } else if (rolled.result <= 5) {
+          if (
+            rolled.result == 1 ||
+            rolled.result <= Math.ceil(diffGrades[index] * 0.1)
+          ) {
+            resultString =
+              " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
+          } else {
+            resultString = " <span style='color:green;'> <b>SUCCESS!</b></span>"
+          }
+        } else {
+          if (rolled.result <= Math.ceil(diffGrades[index] * 0.1)) {
+            resultString =
+              " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
+          } else {
+            resultString = `${
+              rolled.result <= diffGrades[index]
+                ? " <span style='color:green;'> <b>SUCCESS!</b></span>"
+                : " <span style='color:red;'> <b>FAILURE!</b></span>"
+            }`
+          }
+        }
+        contentString += `<tr>
+        <td><b>${name}</b></td>
+        <td>[[${rolled.result}]]</td> 
+        <td> ≤ </td>
+        <td>[[${diffGrades[index]}]]</td>
+        <td>${resultString}</td>
+      </tr>`
       })
-      let contentString =
-        '<h3><strong>Roll: ' + rolled.result + '</strong></h3>'
-      diffRolled.forEach((rollStr, index) => {
-        contentString += rollStr + diffGrades[index] + '<br>'
-      })
+      contentString += `</table></p>`
       roll.toMessage({
         user: game.user._id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),

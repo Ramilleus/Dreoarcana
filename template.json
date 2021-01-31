@@ -75,7 +75,8 @@
             "mod": 0
           },
           "swim": {
-            "mod": 0
+            "mod": 0,
+            "base": 6
           },
           "fatigue": {
             "value": "fresh"

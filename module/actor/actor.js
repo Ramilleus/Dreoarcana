@@ -1,3 +1,4 @@
+import { fatigueInfo } from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
@@ -40,7 +41,6 @@ export class ActorMythras extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data
     let items = actorData.items
-
     // Prepare a character's attributes
     this.prepareAttributes(data, items)
 
@@ -91,9 +91,13 @@ export class ActorMythras extends Actor {
       Math.ceil((siz + con) / 5) + hpModMiscMod
 
     //Action Point Mod
-    let actionPointsMiscMod = Number(data.attributes.actionPoints.mod)
-    data.attributes.actionPoints.value =
-      Math.ceil((int + dex) / 12) + actionPointsMiscMod
+    data.attributes.actionPoints.value = Math.ceil((int + dex) / 12)
+    let actionPointsMiscMod =
+      Number(data.attributes.actionPoints.mod) +
+      fatigueInfo[data.attributes.fatigue.value].ActionPoints(
+        data.attributes.actionPoints.value
+      )
+    data.attributes.actionPoints.value += actionPointsMiscMod
 
     // Damage Mod
     let damageModMiscMod = Number(data.attributes.damageMod.mod)
@@ -111,11 +115,14 @@ export class ActorMythras extends Actor {
     data.attributes.healingRate.value = Math.ceil(con / 6) + healingRateMiscMod
 
     // Initiative Bonus
-    let initiativeBonusMiscMod = Number(data.attributes.initiativeBonus.mod)
-    data.attributes.initiativeBonus.value =
-      Math.ceil((int + dex) / 2) +
-      initiativeBonusMiscMod -
-      Number(data.attributes.armorPenalty.value)
+    data.attributes.initiativeBonus.value = Math.ceil((int + dex) / 2)
+    let initiativeBonusMiscMod =
+      Number(data.attributes.initiativeBonus.mod) +
+      fatigueInfo[data.attributes.fatigue.value].Initiative(
+        data.attributes.initiativeBonus.value
+      )
+    data.attributes.initiativeBonus.value +=
+      initiativeBonusMiscMod - Number(data.attributes.armorPenalty.value)
 
     // Luck Points
     let luckPointsMiscMod = Number(data.attributes.luckPoints.mod)
@@ -136,11 +143,17 @@ export class ActorMythras extends Actor {
    * @param {*} items
    */
   prepareEncumbrance(data, items) {
+    const formatter = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    })
     let str = Number(data.characteristics.str.value)
     data.attributes.encumbrance.burdened = str * 2
     data.attributes.encumbrance.overloaded = str * 3
     data.attributes.encumbrance.maxLoad = str * 4
-    data.attributes.encumbrance.value = this.encumbranceCalc(items)
+    data.attributes.encumbrance.value = formatter.format(
+      this.encumbranceCalc(items)
+    )
   }
 
   /**
@@ -157,7 +170,11 @@ export class ActorMythras extends Actor {
       (entry) => entry.name === game.i18n.localize('MYTHRAS.Swim')
     )
 
-    let movementMiscMod = Number(data.attributes.movement.mod)
+    let movementMiscMod =
+      Number(data.attributes.movement.mod) +
+      fatigueInfo[data.attributes.fatigue.value].Movement(
+        data.attributes.movement.walk
+      )
 
     // Default walk speed for a human is 6
     data.attributes.movement.walk = 6 + movementMiscMod
