@@ -88,6 +88,9 @@ export class ActorSheetMythras extends ActorSheet {
       return a.data.name.localeCompare(b.data.name)
     })
     actorData.standardSkills = standardSkills
+    professionalSkills.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
     actorData.professionalSkills = professionalSkills
     actorData.combatStyles = combatStyles
     actorData.magicSkills = magicSkills
@@ -243,10 +246,32 @@ export class ActorSheetMythras extends ActorSheet {
       item.sheet.render(true)
     })
 
+    // html.find('.skill-alpha-sort').click((ev) => {
+    //   let data = this.getData()
+    //   if (ev.currentTarget.id == 'professional-alpha-sort') {
+    //   }
+    // })
+
     // Delete Actor Item
     html.find('.item-delete').click((ev) => {
       const li = $(ev.currentTarget).parents('.item')
-      actor.deleteOwnedItem(li.data('itemId'))
+      let item = actor.getOwnedItem(li.data('itemId'))
+      new Dialog({
+        title: 'Delete',
+        content: `Are you sure you want to delete ${item.data.name}`,
+        buttons: {
+          ok: {
+            label: 'Yes',
+            callback: async (html) => {
+              actor.deleteOwnedItem(li.data('itemId'))
+            }
+          },
+          cancel: {
+            label: 'Cancel'
+          }
+        }
+      }).render(true)
+      //actor.deleteOwnedItem(li.data('itemId'))
       li.slideUp(200, () => this.render(false))
     })
 
@@ -430,19 +455,17 @@ export class ActorSheetMythras extends ActorSheet {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
-    const dataLabel = dataset.label.split(',')
-    const name = dataLabel[0]
-    const weaponDam = dataLabel[1]
-    const damMod = dataLabel[2] === 'true'
-    const combatEffect = dataLabel[3]
-    const traits = dataLabel[4]
+    const weapon = this.actor.getOwnedItem(dataset.label)
+    const damMod = weapon.data.data.damageModifier
+    const combatEffect = weapon.data.data['combat-effects']
+    const traits = weapon.data.data.traits
     if (dataset.roll) {
       let damage = dataset.roll
       if (damMod) {
         damage += '+' + this.actor.data.data.attributes.damageMod.value
       }
       let roll = new Roll(damage, this.actor.data.data)
-      let label = dataset.label ? `Rolling ${name}` : ''
+      let label = dataset.label ? `Rolling ${weapon.data.name}` : ''
       label +=
         '<br><strong>Combat-Effects: </strong>' +
         combatEffect +
@@ -458,11 +481,10 @@ export class ActorSheetMythras extends ActorSheet {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
-    const dataLabel = dataset.label.split(',')
-    const name = dataLabel[0]
-    const weaponDam = dataLabel[1]
-    const damMod = dataLabel[2] === 'true'
-    const combatEffect = dataLabel[3]
+    const weapon = this.actor.getOwnedItem(dataset.label)
+    const name = weapon.data.name
+    const damMod = weapon.data.data.damageModifier
+    const combatEffect = weapon.data.data['combat-effects']
     if (dataset.roll) {
       let damage = dataset.roll
       if (damMod) {

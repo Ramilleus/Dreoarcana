@@ -30,6 +30,7 @@ export class ActorMythras extends Actor {
     super.prepareData()
 
     const actorData = this.data
+    console.log(this)
 
     // Prepare character specific data
     if (actorData.type === 'character') this._prepareCharacterData(actorData)
