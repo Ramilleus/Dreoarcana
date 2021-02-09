@@ -20,11 +20,10 @@ Hooks.once('init', async function () {
     formula: '1d10 + @attributes.initiativeBonus.value',
     decimals: 2
   }
-
   // Define custom Entity classes
   CONFIG.Actor.entityClass = ActorMythras
   CONFIG.Item.entityClass = MythrasItem
-  CONFIG.Combat.entityClass = CombatMythras;
+  CONFIG.Combat.entityClass = CombatMythras
 
   // Register sheet application classes
   registerActors()

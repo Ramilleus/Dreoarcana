@@ -30,7 +30,6 @@ export class ActorMythras extends Actor {
     super.prepareData()
 
     const actorData = this.data
-    console.log(this)
 
     // Prepare character specific data
     if (actorData.type === 'character') this._prepareCharacterData(actorData)
@@ -170,7 +169,7 @@ export class ActorMythras extends Actor {
     let swim = items.find(
       (entry) => entry.name === game.i18n.localize('MYTHRAS.Swim')
     )
-
+    let ap = Number(data.attributes.armorPenalty.value)
     let movementMiscMod =
       Number(data.attributes.movement.mod) +
       fatigueInfo[data.attributes.fatigue.value].Movement(
@@ -182,18 +181,12 @@ export class ActorMythras extends Actor {
     let walkSpeed = data.attributes.movement.walk
 
     // Calculate run speed
-    data.attributes.movement.run = this.moveRateCalc(
-      walkSpeed,
-      athletics,
-      'run'
-    )
+    data.attributes.movement.run =
+      this.moveRateCalc(walkSpeed, athletics, 'run') - ap
 
     // Calculate sprint speed
-    data.attributes.movement.sprint = this.moveRateCalc(
-      walkSpeed,
-      athletics,
-      'sprint'
-    )
+    data.attributes.movement.sprint =
+      this.moveRateCalc(walkSpeed, athletics, 'sprint') - ap
 
     // Calculate climb speed
     data.attributes.climb.value = this.moveRateCalc(
@@ -324,7 +317,12 @@ export class ActorMythras extends Actor {
     if (skill === undefined) {
       return move
     }
-    let skillVal = Number(skill.data.totalVal)
+    let actor = this.data.data
+    let skillVal =
+      Number(skill.data.trainingVal) +
+      Number(skill.data.miscBonus) +
+      Number(actor.characteristics.dex.value) +
+      Number(actor.characteristics.str.value)
     switch (type) {
       case 'run':
         return 3 * (move + Math.floor(skillVal / 50))
