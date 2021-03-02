@@ -1,6 +1,7 @@
 <form class="{{cssClass}} skill-sheet flexcol" autocomplete="off">
   <header class="sheet-header">
     <div class="header-flex">
+      <img class="token-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
       <div class="header-fields">
         <h1 class="charname">
           <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
@@ -60,15 +61,15 @@
               <label>
                 <p>{{localize 'MYTHRAS.Trained'}}</p>
               </label>
-              <input id="train-check" type="checkbox" data="data.trained" name="data.trained"
-                {{checked data.trained}} />
+              <input id="train-check" type="checkbox" data="data.trained" name="data.trained" {{checked
+                data.trained}} />
             </div>
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.Fumbled'}}</p>
               </label>
-              <input id="fumble-check" type="checkbox" data="data.fumbled" name="data.fumbled"
-                {{checked data.fumbled}} />
+              <input id="fumble-check" type="checkbox" data="data.fumbled" name="data.fumbled" {{checked
+                data.fumbled}} />
             </div>
           </div>
         </div>

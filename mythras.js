@@ -75,6 +75,58 @@ Hooks.once('ready', async function () {
         })
     }
   })
+
+  Hooks.on('preCreateOwnedItem', (parentId, itemData, options) => {
+    switch (itemData.type) {
+      case 'equipment':
+        itemData.img = 'icons/svg/chest.svg'
+        break
+      case 'armor':
+        itemData.img = 'icons/svg/shield.svg'
+        break
+      case 'melee-weapon':
+        itemData.img = 'icons/svg/sword.svg'
+        break
+      case 'ranged-weapon':
+        itemData.img = 'icons/svg/sword.svg'
+        break
+      case 'currency':
+        itemData.img = 'icons/svg/coins.svg'
+        break
+      case 'combatStyle':
+        itemData.img = 'icons/svg/combat.svg'
+        break
+      default:
+        itemData.img = 'icons/svg/book.svg'
+        break
+    }
+  })
+
+  Hooks.on('preCreateItem', (parentId, itemData, options) => {
+    switch (itemData.type) {
+      case 'equipment':
+        itemData.img = 'icons/svg/chest.svg'
+        break
+      case 'armor':
+        itemData.img = 'icons/svg/shield.svg'
+        break
+      case 'melee-weapon':
+        itemData.img = 'icons/svg/sword.svg'
+        break
+      case 'ranged-weapon':
+        itemData.img = 'icons/svg/sword.svg'
+        break
+      case 'currency':
+        itemData.img = 'icons/svg/coins.svg'
+        break
+      case 'combatStyle':
+        itemData.img = 'icons/svg/combat.svg'
+        break
+      default:
+        itemData.img = 'icons/svg/book.svg'
+        break
+    }
+  })
 })
 
 function registerHandlebarsHelpers() {
