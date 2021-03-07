@@ -36,7 +36,8 @@
         },
         "attributes": {
           "actionPoints": {
-            "mod": 0
+            "mod": 0,
+            "value": 2
           },
           "damageMod": {
             "mod": 0
@@ -54,15 +55,16 @@
             "mod": 0
           },
           "luckPoints": {
-            "mod": 0
+            "mod": 0,
+            "value": 2
           },
           "magicPoints": {
-            "mod": 0
+            "mod": 0,
+            "value": 11
           },
           "tenacity": {
             "mod": 0,
-            "value": 0,
-            "current": 0
+            "value": 0
           },
           "movement": {
             "walk": 6,

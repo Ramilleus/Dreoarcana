@@ -14,9 +14,9 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="action-points" name="data.currentActionPoints" onclick="this.select()" type="text"
-              value="{{data.currentActionPoints}}" placeholder="" />
-            <p class="point-total">/{{data.attributes.actionPoints.value}}</p>
+            <input class="action-points" name="data.attributes.actionPoints.value" onclick="this.select()" type="text"
+              value="{{data.attributes.actionPoints.value}}" placeholder="" />
+            <p class="point-total">/{{data.attributes.actionPoints.max}}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-ap">+</a>
@@ -28,9 +28,9 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="luck-points" name="data.currentLuckPoints" onclick="this.select()" type="text"
-              value="{{data.currentLuckPoints}}" placeholder="" />
-            <p class="point-total">/{{data.attributes.luckPoints.value}}</p>
+            <input class="luck-points" name="data.attributes.luckPoints.value" onclick="this.select()" type="text"
+              value="{{data.attributes.luckPoints.value}}" placeholder="" />
+            <p class="point-total">/{{data.attributes.luckPoints.max}}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-lp">+</a>
@@ -42,9 +42,9 @@
       <div class="stats-container">
         <div class="number-input-container">
           <div>
-            <input class="magic-points" name="data.currentMagicPoints" onclick="this.select()" type="text"
-              value="{{data.currentMagicPoints}}" placeholder="" />
-            <p class="point-total">/{{data.attributes.magicPoints.value}}</p>
+            <input class="magic-points" name="data.attributes.magicPoints.value" onclick="this.select()" type="text"
+              value="{{data.attributes.magicPoints.value}}" placeholder="" />
+            <p class="point-total">/{{data.attributes.magicPoints.max}}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-mp">+</a>

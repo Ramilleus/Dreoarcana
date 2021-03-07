@@ -291,33 +291,47 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Actor Current Point increase listeners
     const pointIncreaseMapping = {
-      '#increase-current-lp': 'currentLuckPoints',
-      '#increase-current-mp': 'currentMagicPoints',
-      '#increase-current-ap': 'currentActionPoints',
+      '#increase-current-lp': 'luckPoints',
+      '#increase-current-mp': 'magicPoints',
+      '#increase-current-ap': 'actionPoints',
       '#increase-current-er': 'experienceRolls'
     }
     for (const [key, value] of Object.entries(pointIncreaseMapping)) {
       html.find(key).click(function (event) {
         event.preventDefault()
-        actor.update({
-          ['data.' + value]: Number(actor.data.data[value]) + 1
-        })
+        if (value == 'experienceRolls') {
+          actor.update({
+            ['data.' + value]: Number(actor.data.data[value]) + 1
+          })
+        } else {
+          actor.update({
+            ['data.attributes.' + value + '.value']:
+              Number(actor.data.data.attributes[value].value) + 1
+          })
+        }
       })
     }
 
-    // Actor Current Point decrease listeners
+    // Actor Current Point decrease listenerss
     const pointDecreaseMapping = {
-      '#decrease-current-lp': 'currentLuckPoints',
-      '#decrease-current-mp': 'currentMagicPoints',
-      '#decrease-current-ap': 'currentActionPoints',
+      '#decrease-current-lp': 'luckPoints',
+      '#decrease-current-mp': 'magicPoints',
+      '#decrease-current-ap': 'actionPoints',
       '#decrease-current-er': 'experienceRolls'
     }
     for (const [key, value] of Object.entries(pointDecreaseMapping)) {
       html.find(key).click(function (event) {
         event.preventDefault()
-        actor.update({
-          ['data.' + value]: Number(actor.data.data[value]) - 1
-        })
+        if (value == 'experienceRolls') {
+          actor.update({
+            ['data.' + value]: Number(actor.data.data[value]) - 1
+          })
+        } else {
+          actor.update({
+            ['data.attributes.' + value + '.value']:
+              Number(actor.data.data.attributes[value].value) - 1
+          })
+        }
       })
     }
 

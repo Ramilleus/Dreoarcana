@@ -75,9 +75,31 @@ export class ActorMythras extends Actor {
     let pow = Number(data.characteristics.pow.value)
     let cha = Number(data.characteristics.cha.value)
 
+    let armor = items.filter(function (value) {
+      return value.type === 'armor'
+    })
+    let hitLoc = items.filter(function (value) {
+      return value.type === 'hitLocation'
+    })
+    // Fix for strange MEG importer bug
+    // TODO: Should move into mythras.js with a hook on sheet opening or fix the actual problem, lol
+    armor.forEach((armorVal) => {
+      if (
+        armorVal.data.location === 'Unequipped' &&
+        armorVal.data.locationName.length > 0
+      ) {
+        let hitLocId = hitLoc.filter(function (hitVal) {
+          return hitVal.name === armorVal.data.locationName
+        })
+        this.updateEmbeddedEntity('OwnedItem', {
+          _id: armorVal._id,
+          'data.location': hitLocId[0]._id
+        })
+      }
+    })
     // Armor Penalty
-    let equippedArmor = items.filter(function (value) {
-      return value.type === 'armor' && value.data.equipped
+    let equippedArmor = armor.filter(function (value) {
+      return value.data.equipped
     })
     let armorEncTotal = equippedArmor.reduce((weight, i) => {
       const enc = Number(i.data.encumbrance) || 0
@@ -91,13 +113,13 @@ export class ActorMythras extends Actor {
       Math.ceil((siz + con) / 5) + hpModMiscMod
 
     //Action Point Mod
-    data.attributes.actionPoints.value = Math.ceil((int + dex) / 12)
+    data.attributes.actionPoints.max = Math.ceil((int + dex) / 12)
     let actionPointsMiscMod =
       Number(data.attributes.actionPoints.mod) +
       fatigueInfo[data.attributes.fatigue.value].ActionPoints(
-        data.attributes.actionPoints.value
+        data.attributes.actionPoints.max
       )
-    data.attributes.actionPoints.value += actionPointsMiscMod
+    data.attributes.actionPoints.max += actionPointsMiscMod
 
     // Damage Mod
     let damageModMiscMod = Number(data.attributes.damageMod.mod)
@@ -126,15 +148,15 @@ export class ActorMythras extends Actor {
 
     // Luck Points
     let luckPointsMiscMod = Number(data.attributes.luckPoints.mod)
-    data.attributes.luckPoints.value = Math.ceil(pow / 6) + luckPointsMiscMod
+    data.attributes.luckPoints.max = Math.ceil(pow / 6) + luckPointsMiscMod
 
     // Magic Points
     let magicPointsMiscMod = Number(data.attributes.magicPoints.mod)
-    data.attributes.magicPoints.value = pow + magicPointsMiscMod
+    data.attributes.magicPoints.max = pow + magicPointsMiscMod
 
     //Tenacity
     let tenacityMiscMod = Number(data.attributes.tenacity.mod)
-    data.attributes.tenacity.value = pow + tenacityMiscMod
+    data.attributes.tenacity.max = pow + tenacityMiscMod
   }
 
   /**

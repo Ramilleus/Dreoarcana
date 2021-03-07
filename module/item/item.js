@@ -57,6 +57,12 @@ export class MythrasItem extends Item {
     data.hitLoc = actorData.items.filter(function (value) {
       return value.type === 'hitLocation'
     })
+    if (data.location === 'Unequipped' && data.locationName.length > 0) {
+      let hitlocID = data.hitLoc.filter(function (value) {
+        return value.name === data.locationName
+      })
+      data.location = hitlocID[0]._id
+    }
     let hitLocName = data.hitLoc.filter(function (value) {
       return value._id === data.location
     })
@@ -76,6 +82,7 @@ export class MythrasItem extends Item {
     let armors = actorData.items.filter(function (value) {
       return value.type === 'armor'
     })
+
     let armorEquipped = []
     let ap = 0
     armors.forEach(function (piece, index) {

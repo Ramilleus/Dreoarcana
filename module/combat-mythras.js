@@ -25,7 +25,7 @@ export class CombatMythras extends Combat {
         skip
       )
         continue
-      if (t.actor?.data.data.currentActionPoints < 1) continue
+      if (t.actor?.data.data.attributes.actionPoints.value < 1) continue
 
       // Update the encounter
       const advanceTime = CONFIG.time.turnTime
@@ -45,8 +45,8 @@ export class CombatMythras extends Combat {
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
       t.actor?.update({
-        ['data.currentActionPoints']: Number(
-          t.actor.data.data.attributes['actionPoints'].value
+        ['data.attributes.actionPoints.value']: Number(
+          t.actor.data.data.attributes['actionPoints'].max
         )
       })
     }
