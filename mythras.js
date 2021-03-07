@@ -77,57 +77,36 @@ Hooks.once('ready', async function () {
   })
 
   Hooks.on('preCreateOwnedItem', (parentId, itemData, options) => {
-    switch (itemData.type) {
-      case 'equipment':
-        itemData.img = 'icons/svg/chest.svg'
-        break
-      case 'armor':
-        itemData.img = 'icons/svg/shield.svg'
-        break
-      case 'melee-weapon':
-        itemData.img = 'icons/svg/sword.svg'
-        break
-      case 'ranged-weapon':
-        itemData.img = 'icons/svg/sword.svg'
-        break
-      case 'currency':
-        itemData.img = 'icons/svg/coins.svg'
-        break
-      case 'combatStyle':
-        itemData.img = 'icons/svg/combat.svg'
-        break
-      default:
-        itemData.img = 'icons/svg/book.svg'
-        break
+    if (itemData.type !== 'hitLocation') {
+      itemData.img = getItemImage(itemData.type)
     }
   })
 
   Hooks.on('preCreateItem', (parentId, itemData, options) => {
-    switch (itemData.type) {
-      case 'equipment':
-        itemData.img = 'icons/svg/chest.svg'
-        break
-      case 'armor':
-        itemData.img = 'icons/svg/shield.svg'
-        break
-      case 'melee-weapon':
-        itemData.img = 'icons/svg/sword.svg'
-        break
-      case 'ranged-weapon':
-        itemData.img = 'icons/svg/sword.svg'
-        break
-      case 'currency':
-        itemData.img = 'icons/svg/coins.svg'
-        break
-      case 'combatStyle':
-        itemData.img = 'icons/svg/combat.svg'
-        break
-      default:
-        itemData.img = 'icons/svg/book.svg'
-        break
+    if (itemData.type !== 'hitLocation') {
+      itemData.img = getItemImage(itemData.type)
     }
   })
 })
+
+function getItemImage(itemType) {
+  switch (itemType) {
+    case 'equipment':
+      return 'icons/svg/chest.svg'
+    case 'armor':
+      return 'icons/svg/shield.svg'
+    case 'melee-weapon':
+      return 'icons/svg/sword.svg'
+    case 'ranged-weapon':
+      return 'icons/svg/sword.svg'
+    case 'currency':
+      return 'icons/svg/coins.svg'
+    case 'combatStyle':
+      return 'icons/svg/combat.svg'
+    default:
+      return 'icons/svg/book.svg'
+  }
+}
 
 function registerHandlebarsHelpers() {
   Handlebars.registerHelper('localizeSkillAbbrev', function (str) {
