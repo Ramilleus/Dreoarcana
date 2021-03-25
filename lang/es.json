@@ -9,7 +9,6 @@
   "MYTHRAS.Abilities": "Capacidades",
   "MYTHRAS.Equipment": "Equipo",
   "MYTHRAS.Journal": "Diario",
-
   "MYTHRAS.Information": "Información",
   "MYTHRAS.CAREER": "CARRERA",
   "MYTHRAS.HOMELAND": "PATRIA",
@@ -21,7 +20,6 @@
   "MYTHRAS.WEIGHT": "PESO",
   "MYTHRAS.HANDEDNESS": "MANO HÁBIL",
   "MYTHRAS.FRAME": "COMPLEXIÓN",
-
   "MYTHRAS.Fatigue": "Fatiga",
   "MYTHRAS.Fresh": "Fresco",
   "MYTHRAS.Winded": "Fatigado",
@@ -33,7 +31,10 @@
   "MYTHRAS.Semi-Conscious": "Semi-consciente",
   "MYTHRAS.Comatose": "Comatoso",
   "MYTHRAS.Dead": "Muerto",
-
+  "MYTHRAS.freshmsg": "¡Estás descansado!",
+  "MYTHRAS.deadmsg": "Abandona toda esperanza.",
+  "MYTHRAS.minrecovermsg": "Minutos hasta estar fresco.",
+  "MYTHRAS.hoursrecovermsg": "Horas hasta estar fresco.",
   "MYTHRAS.Characteristics": "Características",
   "MYTHRAS.STRENGTH": "FUERZA",
   "MYTHRAS.CONSTITUTION": "CONSTITUCIÓN",
@@ -49,15 +50,13 @@
   "MYTHRAS.INT": "INT",
   "MYTHRAS.POW": "POD",
   "MYTHRAS.CHA": "CAR",
-
   "MYTHRAS.Attributes": "Atributos",
   "MYTHRAS.ACTION_POINTS": "PUNTOS ACCIÓN",
   "MYTHRAS.DAMAGE_MOD": "MOD. DAÑO",
-  "MYTHRAS.EXPERIENCE_MOD": "MOD. ESPERIENCIA",
+  "MYTHRAS.EXPERIENCE_MOD": "MOD. EXPERIENCIA",
   "MYTHRAS.HEALING_RATE": "RITMO CURACIÓN",
   "MYTHRAS.INITIATIVE_BONUS": "BONO DE INICIATIVA",
   "MYTHRAS.LUCK_POINTS2": "PUNTOS SUERTE",
-
   "MYTHRAS.Movement": "Movimiento",
   "MYTHRAS.WALK": "ANDAR",
   "MYTHRAS.RUN": "CORRER",
@@ -66,7 +65,6 @@
   "MYTHRAS.H._JUMP": "SALTO H.",
   "MYTHRAS.V._JUMP": "SALTO V.",
   "MYTHRAS.SWIM": "NADAR",
-
   "MYTHRAS.Skills": "Habilidades",
   "MYTHRAS.Standard_Skills": "Habilidades Básicas",
   "MYTHRAS.Name": "Nombre",
@@ -94,17 +92,14 @@
   "MYTHRAS.Swim": "Nadar",
   "MYTHRAS.Unarmed": "Pelea",
   "MYTHRAS.Willpower": "Voluntad",
-
   "MYTHRAS.Professional_Skills": "Habilidades Profesionales",
   "MYTHRAS.Combat_Styles": "Estilos de Combate",
   "MYTHRAS.Magic_Skills": "Habilidades Mágicas",
   "MYTHRAS.Passions": "Pasiones",
-
   "MYTHRAS.New_professionalSkill": "Nueva Habilidad Profesional",
   "MYTHRAS.New_combatStyle": "Nuevo Estilo de Combate",
   "MYTHRAS.New_magicSkill": "Nueva Habilidad Mágica",
   "MYTHRAS.New_passion": "Nueva Pasión",
-
   "MYTHRAS.Hit_Locations": "Localizaciones",
   "MYTHRAS.Armor_Penalty": "Penalización por Armadura",
   "MYTHRAS.Location": "Localización",
@@ -119,9 +114,7 @@
   "MYTHRAS.Right_Arm": "Brazo Derecho",
   "MYTHRAS.Left_Arm": "Brazo Izquierdo",
   "MYTHRAS.Head": "Cabeza",
-
   "MYTHRAS.Resistances": "Resistencias",
-
   "MYTHRAS.Wounds_and_Conditions": "Heridas y Aflicciones",
   "MYTHRAS.Traits": "Rasgos",
   "MYTHRAS.Weapons": "Armas",
@@ -134,20 +127,18 @@
   "MYTHRAS.Ranged_Weapons": "Armas a Distancia",
   "MYTHRAS.Force": "Potencia",
   "MYTHRAS.Impale_Size": "Tamaño de Empalamiento",
-  "MYTHRAS.Load": "Carga",
+  "MYTHRAS.Load": "Recarga",
   "MYTHRAS.Ammo": "Munición",
-
   "MYTHRAS.New_melee-weapon": "Nueva Arma Cuerpo a Cuerpo",
   "MYTHRAS.New_ranged-weapon": "Nueva Arma a Distancia",
   "MYTHRAS.New_armor": "Nueva Armadura",
-  "MYTHRAS.New_equipment": "Nueva Equipo",
+  "MYTHRAS.New_equipment": "Nuevo Equipo",
   "MYTHRAS.New_currency": "Nueva Moneda",
-
   "MYTHRAS.Current_ENC": "CAR Actual",
   "MYTHRAS.Normal_Cap": "Ligero",
   "MYTHRAS.Burdened_Cap": "Cargado",
   "MYTHRAS.Overloaded_Cap": "Sobrecargado",
-  "MYTHRAS.Items": "Ítems",
+  "MYTHRAS.Items": "Objetos",
   "MYTHRAS.ENC": "CAR",
   "MYTHRAS.Quantity": "Cantidad",
   "MYTHRAS.Currency_and_Wealth": "Dinero y Riquezas",
@@ -166,7 +157,6 @@
   "MYTHRAS.Charisma": "Carisma",
   "MYTHRAS.Other": "Otro",
   "MYTHRAS.ENC_Penalty": "Penalización por Carga",
-
   "MYTHRAS.Trained": "Entrenada",
   "MYTHRAS.Fumbled": "Pifiada",
   "MYTHRAS.TRAINING": "Entrenada",
@@ -185,5 +175,22 @@
   "MYTHRAS.Range2": "Rango",
   "MYTHRAS.Close": "Cercano",
   "MYTHRAS.Effective": "Efectivo",
-  "MYTHRAS.Spell_Level": "Nivel del Hechizo"
+  "MYTHRAS.Spell_Level": "Nivel del Hechizo",
+  "MYTHRAS.Difficulty": "Dificultad",
+  "MYTHRAS.Skill": "Habilidad",
+  "MYTHRAS.very_easy_dif": "Muy fácil",
+  "MYTHRAS.easy_dif": "Fácil",
+  "MYTHRAS.standard_dif": "Normal",
+  "MYTHRAS.hard_dif": "Difícil",
+  "MYTHRAS.formidable_dif": "Formidable",
+  "MYTHRAS.herculean_dif": "Hercúleo",
+  "MYTHRAS.Rolling": "Tirada de",
+  "MYTHRAS.Result": "Resultado",
+  "MYTHRAS.roll_result": "Resultado",
+  "MYTHRAS.Rolling_Location": "Determinando la localización",
+  "MYTHRAS.Roll2": "Tira",
+  "MYTHRAS.FUMBLE!": "¡Pifia!",
+  "MYTHRAS.FAILURE!": "¡Fallo!",
+  "MYTHRAS.SUCCESS!": "¡Éxito!",
+  "MYTHRAS.CRITICAL!": "¡Crítico!"
 }
