@@ -60,3 +60,10 @@ export const fatigueInfo = {
     ActionPoints: (ActionPoints) => -ActionPoints
   }
 }
+
+export function doesTypeHaveTemplate(type, template) {
+  let itemTemplates = game.system.template.Item[type].templates
+  if (itemTemplates === undefined) return false
+
+  return itemTemplates.includes(template)
+}
