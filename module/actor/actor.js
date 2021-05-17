@@ -315,17 +315,31 @@ export class ActorMythras extends Actor {
       comatose: 48,
       dead: 'There is no hope.'
     }
+    if (game.i18n) {
+      levels.fresh = game.i18n.localize('MYTHRAS.freshmsg')
+      levels.dead = game.i18n.localize('MYTHRAS.deadmsg')
+    }
+
+    let recoveryMsg = ' ';
     if (healRate < 1) healRate = 1
     if (fatigueLevel == 'fresh') {
       return levels[fatigueLevel]
     } else if (fatigueLevel == 'dead') {
       return levels[fatigueLevel]
     } else if (fatigueLevel == 'winded') {
+      recoveryMsg = ' minutes until Fresh.'
+      if (game.i18n) {
+        recoveryMsg = game.i18n.localize('MYTHRAS.minrecovermsg');
+      }
       return (
-        Math.ceil(levels[fatigueLevel] / healRate) + ' minutes until Fresh.'
+        Math.ceil(levels[fatigueLevel] / healRate) + recoveryMsg
       )
     } else {
-      return Math.ceil(levels[fatigueLevel] / healRate) + ' hours until Fresh'
+      recoveryMsg = ' hours until Fresh'
+      if (game.i18n) {
+        recoveryMsg = game.i18n.localize('MYTHRAS.hoursrecovermsg');
+      }
+      return Math.ceil(levels[fatigueLevel] / healRate) + recoveryMsg
     }
   }
 

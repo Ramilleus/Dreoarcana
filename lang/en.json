@@ -9,7 +9,6 @@
   "MYTHRAS.Abilities": "Abilities",
   "MYTHRAS.Equipment": "Equipment",
   "MYTHRAS.Journal": "Journal",
-
   "MYTHRAS.Information": "Information",
   "MYTHRAS.CAREER": "CAREER",
   "MYTHRAS.SOCIAL_CLASS": "SOCIAL CLASS",
@@ -32,7 +31,6 @@
   "MYTHRAS.Semi-Conscious": "Semi-Conscious",
   "MYTHRAS.Comatose": "Comatose",
   "MYTHRAS.Dead": "Dead",
-
   "MYTHRAS.Characteristics": "Characteristics",
   "MYTHRAS.STRENGTH": "STRENGTH",
   "MYTHRAS.CONSTITUTION": "CONSTITUTION",
@@ -48,7 +46,6 @@
   "MYTHRAS.INT": "INT",
   "MYTHRAS.POW": "POW",
   "MYTHRAS.CHA": "CHA",
-
   "MYTHRAS.Attributes": "Attributes",
   "MYTHRAS.ACTION_POINTS": "ACTION POINTS",
   "MYTHRAS.DAMAGE_MOD": "DAMAGE MOD",
@@ -64,7 +61,6 @@
   "MYTHRAS.H._JUMP": "H. JUMP",
   "MYTHRAS.V._JUMP": "V. JUMP",
   "MYTHRAS.SWIM": "SWIM",
-
   "MYTHRAS.Skills": "Skills",
   "MYTHRAS.Standard_Skills": "Standard Skills",
   "MYTHRAS.Name": "Name",
@@ -92,17 +88,14 @@
   "MYTHRAS.Swim": "Swim",
   "MYTHRAS.Unarmed": "Unarmed",
   "MYTHRAS.Willpower": "Willpower",
-
   "MYTHRAS.Professional_Skills": "Professional Skills",
   "MYTHRAS.Combat_Styles": "Combat Styles",
   "MYTHRAS.Magic_Skills": "Magic Skills",
   "MYTHRAS.Passions": "Passions",
-
   "MYTHRAS.New_professionalSkill": "New Professional Skill",
   "MYTHRAS.New_combatStyle": "New Combat Style",
   "MYTHRAS.New_magicSkill": "New Magic Skill",
   "MYTHRAS.New_passion": "New Passion",
-
   "MYTHRAS.Hit_Locations": "Hit Locations",
   "MYTHRAS.Armor_Penalty": "Armor Penalty",
   "MYTHRAS.Location": "Location",
@@ -117,18 +110,14 @@
   "MYTHRAS.Right_Arm": "Right Arm",
   "MYTHRAS.Left_Arm": "Left Arm",
   "MYTHRAS.Head": "Head",
-
   "MYTHRAS.Resistances": "Resistances",
-
   "MYTHRAS.Wounds_and_Conditions": "Wounds and Conditions",
   "MYTHRAS.Traits": "Traits",
-
   "MYTHRAS.New_melee-weapon": "New Melee Weapon",
   "MYTHRAS.New_ranged-weapon": "New Ranged Weapon",
   "MYTHRAS.New_armor": "New Armor",
   "MYTHRAS.New_equipment": "New Equipment",
   "MYTHRAS.New_currency": "New Currency",
-
   "MYTHRAS.Weapons": "Weapons",
   "MYTHRAS.Melee_Weapons": "Melee Weapons",
   "MYTHRAS.Damage": "Damage",
@@ -182,5 +171,21 @@
   "MYTHRAS.Range2": "Range",
   "MYTHRAS.Close": "Close",
   "MYTHRAS.Effective": "Effective",
-  "MYTHRAS.Spell_Level": "Spell_Level"
+  "MYTHRAS.Spell_Level": "Spell_Level",
+  "MYTHRAS.Difficulty": "Difficulty",
+  "MYTHRAS.Skill": "Skill",
+  "MYTHRAS.very_easy_dif": "Very Easy",
+  "MYTHRAS.easy_dif": "Easy",
+  "MYTHRAS.standard_dif": "Standard",
+  "MYTHRAS.hard_dif": "Gard",
+  "MYTHRAS.formidable_dif": "Formidable",
+  "MYTHRAS.herculean_dif": "Herculean",
+  "MYTHRAS.Rolling": "Rolling",
+  "MYTHRAS.roll_result": "Roll",
+  "MYTHRAS.Rolling_Location": "Rolling Hit Location",
+  "MYTHRAS.Roll2": "Roll",
+  "MYTHRAS.FUMBLE!": "¡Pifia!",
+  "MYTHRAS.FAILURE!": "¡Fallo!",
+  "MYTHRAS.SUCCESS!": "¡Éxito!",
+  "MYTHRAS.CRITICAL!": "¡Crítico!"
 }
