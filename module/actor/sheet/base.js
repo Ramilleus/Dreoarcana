@@ -376,12 +376,7 @@ export class ActorSheetMythras extends ActorSheet {
     return this.actor.createOwnedItem(itemData)
   }
 
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onRollSkill(event) {
+  _rollSkillAlt(event){
     event.preventDefault()
     let skills = this.actor.items.filter(function (value) {
       return doesTypeHaveTemplate(value.data.type, "skill")
@@ -389,6 +384,38 @@ export class ActorSheetMythras extends ActorSheet {
     let skillSelect = `<select id="skill-mod">`
     skills.forEach((skill, index) => {
     skillSelect+= `<option value="${skill.data.name},${skill.data.data.totalVal}">${skill.data.name}</option>`
+    })
+    skillSelect+='</select>'
+    if(event.ctrlKey){
+      new Dialog({
+        title: "Epic Dropdown Test",
+        content: skillSelect,
+        buttons: {
+          ok: {
+            label: "Roll",
+            callback: async (html) => {
+              console.log(html.find("#skill-mod")[0].value)
+            },
+          },
+          cancel: {
+            label: "Cancel",
+          },
+        },
+      }).render(true);
+    }
+  }
+  /**
+   * Handle clickable rolls.
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  _onRollSkill(event) {
+    event.preventDefault()
+    const element = event.currentTarget
+    const dataset = element.dataset
+    const dataLabel = dataset.label.split(',')
+    const diffGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
+      return Math.ceil(x * Number(dataLabel[1]))
     })
     let diffNames = [
       'Very Easy: ',
@@ -398,7 +425,6 @@ export class ActorSheetMythras extends ActorSheet {
       'Formidable: ',
       'Herculean: '
     ]
-
     if (game.i18n) {
       diffNames = [
         game.i18n.localize('MYTHRAS.very_easy_dif') + ': ',
@@ -409,7 +435,6 @@ export class ActorSheetMythras extends ActorSheet {
         game.i18n.localize('MYTHRAS.herculean_dif') + ': '
       ]
     }
-
     let fatigueValue = this.actor.data.data.attributes.fatigue.value
     let fatigueMessage = `<strong>Fatigue Modifier:</strong> ${fatigueInfo[fatigueValue]['Skill Grade']}`
 
@@ -464,7 +489,7 @@ export class ActorSheetMythras extends ActorSheet {
             resultString = " <span style='color:red;'> <b>FAILURE!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:darkred;'> <b>" + game.i18n.localize('MYTHRAS.FAILURE!') + "</b></span>"
+                " <span style='color:red;'> <b>" + game.i18n.localize('MYTHRAS.FAILURE!') + "</b></span>"
             }
           }
         } else if (rolled.result <= 5) {
@@ -476,13 +501,13 @@ export class ActorSheetMythras extends ActorSheet {
               " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:darkred;'> <b>" + game.i18n.localize('MYTHRAS.CRITICAL!') + "</b></span>"
+                " <span style='color:goldenrod;'> <b>" + game.i18n.localize('MYTHRAS.CRITICAL!') + "</b></span>"
             }
           } else {
             resultString = " <span style='color:green;'> <b>SUCCESS!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:darkred;'> <b>" + game.i18n.localize('MYTHRAS.SUCCESS!') + "</b></span>"
+                " <span style='color:green;'> <b>" + game.i18n.localize('MYTHRAS.SUCCESS!') + "</b></span>"
             }
           }
         } else {
@@ -491,7 +516,7 @@ export class ActorSheetMythras extends ActorSheet {
               " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:darkred;'> <b>" + game.i18n.localize('MYTHRAS.CRITICAL!') + "</b></span>"
+                " <span style='color:goldenrod;'> <b>" + game.i18n.localize('MYTHRAS.CRITICAL!') + "</b></span>"
             }
 
           } else {
@@ -509,15 +534,15 @@ export class ActorSheetMythras extends ActorSheet {
             }
           }
         }
-        contentString += `< tr >
-                <td><b>${name}</b></td>
-                <td>[[${rolled.result}]]</td>
-                <td> ≤ </td>
-                <td>[[${diffGrades[index]}]]</td>
-                <td>${resultString}</td>
-      </tr > `
+        contentString += `<tr>
+        <td><b>${name}</b></td>
+        <td>[[${rolled.result}]]</td>
+        <td> ≤ </td>
+        <td>[[${diffGrades[index]}]]</td>
+        <td>${resultString}</td>
+        </tr> `
       })
-      contentString += `</table ></p > `
+      contentString += `</table></p>`
       roll.toMessage({
         user: game.user._id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),

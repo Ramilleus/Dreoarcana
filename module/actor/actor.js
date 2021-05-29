@@ -316,8 +316,8 @@ export class ActorMythras extends Actor {
       dead: 'There is no hope.'
     }
     if (game.i18n) {
-      levels.fresh = game.i18n.localize('MYTHRAS.freshmsg')
-      levels.dead = game.i18n.localize('MYTHRAS.deadmsg')
+      levels.fresh = game.i18n.localize('MYTHRAS.Fresh')
+      levels.dead = game.i18n.localize('MYTHRAS.Dead')
     }
 
     let recoveryMsg = ' ';
