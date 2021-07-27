@@ -73,7 +73,7 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/mythras",
-  "manifest": "http://gitlab.com/tpaoloni/mythras/-/raw/0.1.7/system.json",
+  "manifest": "http://gitlab.com/tpaoloni/mythras/-/raw/0.1.6/system.json",
   "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.1.7/mythras-0.1.7.zip",
   "license": "LICENSE.txt"
 }
