@@ -129,31 +129,35 @@ export class ActorSheetMythras extends ActorSheet {
             skill.data.data.primaryChar === affectedChar ||
             skill.data.data.secondaryChar === affectedChar
           ) {
-            this.actor.updateEmbeddedEntity('OwnedItem', {
-              _id: skill._id,
-              'data.data.baseVal.value': primChar + secondChar,
-              'data.data.totalVal':
-                primChar +
-                secondChar +
-                Number(skill.data.data.trainingVal) +
-                Number(skill.data.data.miscBonus)
-            })
+            this.actor.updateEmbeddedDocuments('Item', [
+              {
+                _id: skill.id,
+                'data.data.baseVal.value': primChar + secondChar,
+                'data.data.totalVal':
+                  primChar +
+                  secondChar +
+                  Number(skill.data.data.trainingVal) +
+                  Number(skill.data.data.miscBonus)
+              }
+            ])
           }
         })
       }
 
       if (event.target.id.includes('_equipped')) {
         let armorInfo = event.target.id.split('_')
-        let armor = this.actor.getOwnedItem(armorInfo[1])
+        let armor = this.actor.items.get(armorInfo[1])
         let equipped = formData['item.data.data.equipped']
         if (Array.isArray(equipped)) {
           equipped = equipped[armorInfo[0]]
         }
-        this.actor.updateEmbeddedEntity('OwnedItem', {
-          _id: armor._id,
-          'data.equipped': equipped
-        })
-        let hitLoc = this.actor.getOwnedItem(armor.data.data.location)
+        this.actor.updateEmbeddedDocuments('Item', [
+          {
+            _id: armor.id,
+            'data.equipped': equipped
+          }
+        ])
+        let hitLoc = this.actor.items.get(armor.data.data.location)
         let armors = hitLoc.data.data.armors.split(',')
         let ap = hitLoc.data.data.ap
         let attached = {}
@@ -161,28 +165,30 @@ export class ActorSheetMythras extends ActorSheet {
           if (hitLoc.data.data.attached !== undefined) {
             attached = hitLoc.data.data.attached
           }
-          attached[armor._id] = [armor.data.name, armor.data.data.ap]
+          attached[armor.id] = [armor.data.name, armor.data.data.ap]
           armors.push(armor.data.name)
           ap += armor.data.data.ap
         } else {
-          delete attached[armor._id]
+          delete attached[armor.id]
           armors = armors.filter(function (value) {
             return armor.data.name !== value
           })
           ap -= armor.data.data.ap
         }
-        this.actor.updateEmbeddedEntity('OwnedItem', {
-          _id: hitLoc._id,
-          'data.armors': armors.join(','),
-          'data.ap': ap,
-          'data.attached': attached
-        })
+        this.actor.updateEmbeddedDocuments('Item', [
+          {
+            _id: hitLoc.id,
+            'data.armors': armors.join(','),
+            'data.ap': ap,
+            'data.attached': attached
+          }
+        ])
       }
 
       if (event.target.id.includes('_hitLoc')) {
         let fieldInfo = event.target.id.split('_')
         let hitLocIndex = fieldInfo[0]
-        let hitLoc = this.actor.getOwnedItem(fieldInfo[1])
+        let hitLoc = this.actor.items.get(fieldInfo[1])
         let hitLocField = fieldInfo[2]
         let updateField = ''
         let newFieldValue = ''
@@ -194,10 +200,12 @@ export class ActorSheetMythras extends ActorSheet {
           newFieldValue =
             formData['item.data.data.' + hitLocField][Number(hitLocIndex)]
         }
-        this.actor.updateEmbeddedEntity('OwnedItem', {
-          _id: hitLoc._id,
-          [updateField]: newFieldValue
-        })
+        this.actor.updateEmbeddedDocuments('Item', [
+          {
+            _id: hitLoc.id,
+            [updateField]: newFieldValue
+          }
+        ])
       }
       if (
         event.target.id.includes('maxHpMod') ||
@@ -210,18 +218,20 @@ export class ActorSheetMythras extends ActorSheet {
             Math.ceil(
               (Number(formData['data.characteristics.siz.value']) +
                 Number(formData['data.characteristics.con.value'])) /
-              5
+                5
             ) +
             Number(formData['data.attributes.hitPointMod.mod']) +
             Number(formData['item.data.data.maxHpMod'][index])
           if (newHp < 1) {
             newHp = 1
           }
-          this.actor.updateEmbeddedEntity('OwnedItem', {
-            _id: hitLoc.data._id,
-            'data.maxHp': newHp,
-            'data.maxHpMod': formData['item.data.data.maxHpMod'][index]
-          })
+          this.actor.updateEmbeddedDocuments('Item', [
+            {
+              _id: hitLoc.data.id,
+              'data.maxHp': newHp,
+              'data.maxHpMod': formData['item.data.data.maxHpMod'][index]
+            }
+          ])
         })
       }
     }
@@ -243,7 +253,7 @@ export class ActorSheetMythras extends ActorSheet {
     // Update Actor Item
     html.find('.item-edit').click((ev) => {
       const li = $(ev.currentTarget).parents('.item')
-      const item = actor.getOwnedItem(li.data('itemId'))
+      const item = actor.items.get(li.data('itemId'))
       item.sheet.render(true)
     })
 
@@ -256,7 +266,7 @@ export class ActorSheetMythras extends ActorSheet {
     // Delete Actor Item
     html.find('.item-delete').click((ev) => {
       const li = $(ev.currentTarget).parents('.item')
-      let item = actor.getOwnedItem(li.data('itemId'))
+      let item = actor.items.get(li.data('itemId'))
       new Dialog({
         title: 'Delete',
         content: `Are you sure you want to delete ${item.data.name}`,
@@ -264,7 +274,7 @@ export class ActorSheetMythras extends ActorSheet {
           ok: {
             label: 'Yes',
             callback: async (html) => {
-              actor.deleteOwnedItem(li.data('itemId'))
+              item.delete()
             }
           },
           cancel: {
@@ -272,7 +282,6 @@ export class ActorSheetMythras extends ActorSheet {
           }
         }
       }).render(true)
-      //actor.deleteOwnedItem(li.data('itemId'))
       li.slideUp(200, () => this.render(false))
     })
 
@@ -337,7 +346,7 @@ export class ActorSheetMythras extends ActorSheet {
     }
 
     // Drag events for macros.
-    if (actor.owner) {
+    if (actor.isOwner) {
       let handler = (ev) => this._onDragItemStart(ev)
       html.find('li.item').each((i, li) => {
         if (li.classList.contains('inventory-header')) return
@@ -373,35 +382,35 @@ export class ActorSheetMythras extends ActorSheet {
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.data['type']
     // Finally, create the item!
-    return this.actor.createOwnedItem(itemData)
+    return Item.create(itemData, { parent: this.actor })
   }
 
-  _rollSkillAlt(event){
+  _rollSkillAlt(event) {
     event.preventDefault()
     let skills = this.actor.items.filter(function (value) {
-      return doesTypeHaveTemplate(value.data.type, "skill")
+      return doesTypeHaveTemplate(value.data.type, 'skill')
     })
     let skillSelect = `<select id="skill-mod">`
     skills.forEach((skill, index) => {
-    skillSelect+= `<option value="${skill.data.name},${skill.data.data.totalVal}">${skill.data.name}</option>`
+      skillSelect += `<option value="${skill.data.name},${skill.data.data.totalVal}">${skill.data.name}</option>`
     })
-    skillSelect+='</select>'
-    if(event.ctrlKey){
+    skillSelect += '</select>'
+    if (event.ctrlKey) {
       new Dialog({
-        title: "Epic Dropdown Test",
+        title: 'Epic Dropdown Test',
         content: skillSelect,
         buttons: {
           ok: {
-            label: "Roll",
+            label: 'Roll',
             callback: async (html) => {
-              console.log(html.find("#skill-mod")[0].value)
-            },
+              console.log(html.find('#skill-mod')[0].value)
+            }
           },
           cancel: {
-            label: "Cancel",
-          },
-        },
-      }).render(true);
+            label: 'Cancel'
+          }
+        }
+      }).render(true)
     }
   }
   /**
@@ -442,7 +451,9 @@ export class ActorSheetMythras extends ActorSheet {
       let roll = new Roll(dataset.roll, this.actor.data.data)
       let label = dataset.label ? `Rolling ${dataLabel[0]}` : ''
       if (game.i18n) {
-        label = dataset.label ? game.i18n.localize('MYTHRAS.Rolling') + ` ${dataLabel[0]}` : ''
+        label = dataset.label
+          ? game.i18n.localize('MYTHRAS.Rolling') + ` ${dataLabel[0]}`
+          : ''
       }
 
       const rolled = roll.roll()
@@ -470,7 +481,6 @@ export class ActorSheetMythras extends ActorSheet {
          </tr>`
       }
 
-
       let i = 0
       diffNames.forEach((name, index) => {
         let resultString = ''
@@ -483,13 +493,17 @@ export class ActorSheetMythras extends ActorSheet {
               " <span style='color:darkred;'> <b>FUMBLE!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:darkred;'> <b>" + game.i18n.localize('MYTHRAS.FUMBLE!') + "</b></span>"
+                " <span style='color:darkred;'> <b>" +
+                game.i18n.localize('MYTHRAS.FUMBLE!') +
+                '</b></span>'
             }
           } else {
             resultString = " <span style='color:red;'> <b>FAILURE!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:red;'> <b>" + game.i18n.localize('MYTHRAS.FAILURE!') + "</b></span>"
+                " <span style='color:red;'> <b>" +
+                game.i18n.localize('MYTHRAS.FAILURE!') +
+                '</b></span>'
             }
           }
         } else if (rolled.result <= 5) {
@@ -501,13 +515,17 @@ export class ActorSheetMythras extends ActorSheet {
               " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:goldenrod;'> <b>" + game.i18n.localize('MYTHRAS.CRITICAL!') + "</b></span>"
+                " <span style='color:goldenrod;'> <b>" +
+                game.i18n.localize('MYTHRAS.CRITICAL!') +
+                '</b></span>'
             }
           } else {
             resultString = " <span style='color:green;'> <b>SUCCESS!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:green;'> <b>" + game.i18n.localize('MYTHRAS.SUCCESS!') + "</b></span>"
+                " <span style='color:green;'> <b>" +
+                game.i18n.localize('MYTHRAS.SUCCESS!') +
+                '</b></span>'
             }
           }
         } else {
@@ -516,21 +534,26 @@ export class ActorSheetMythras extends ActorSheet {
               " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
             if (game.i18n) {
               resultString =
-                " <span style='color:goldenrod;'> <b>" + game.i18n.localize('MYTHRAS.CRITICAL!') + "</b></span>"
+                " <span style='color:goldenrod;'> <b>" +
+                game.i18n.localize('MYTHRAS.CRITICAL!') +
+                '</b></span>'
             }
-
           } else {
             resultString = `${
               rolled.result <= diffGrades[index]
                 ? " <span style='color:green;'> <b>SUCCESS!</b></span>"
                 : " <span style='color:red;'> <b>FAILURE!</b></span>"
-              }`
+            }`
             if (game.i18n) {
               resultString = `${
                 rolled.result <= diffGrades[index]
-                  ? " <span style='color:green;'> <b>" + game.i18n.localize('MYTHRAS.SUCCESS!') + "</b></span>"
-                  : " <span style='color:red;'> <b>" + game.i18n.localize('MYTHRAS.FAILURE!') + "</b></span>"
-                } `
+                  ? " <span style='color:green;'> <b>" +
+                    game.i18n.localize('MYTHRAS.SUCCESS!') +
+                    '</b></span>'
+                  : " <span style='color:red;'> <b>" +
+                    game.i18n.localize('MYTHRAS.FAILURE!') +
+                    '</b></span>'
+              } `
             }
           }
         }
@@ -544,7 +567,7 @@ export class ActorSheetMythras extends ActorSheet {
       })
       contentString += `</table></p>`
       roll.toMessage({
-        user: game.user._id,
+        user: game.user.id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,
         content: contentString
@@ -555,7 +578,7 @@ export class ActorSheetMythras extends ActorSheet {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
-    const weapon = this.actor.getOwnedItem(dataset.label)
+    const weapon = this.actor.items.get(dataset.label)
     const damMod = weapon.data.data.damageModifier
     const combatEffect = weapon.data.data['combat-effects']
     const traits = weapon.data.data.traits
@@ -573,11 +596,17 @@ export class ActorSheetMythras extends ActorSheet {
         traits
 
       if (game.i18n) {
-        label = dataset.label ? `${game.i18n.localize('MYTHRAS.Rolling')} ${weapon.data.name} ` : ''
+        label = dataset.label
+          ? `${game.i18n.localize('MYTHRAS.Rolling')} ${weapon.data.name} `
+          : ''
         label +=
-          '<br><strong>' + game.i18n.localize('MYTHRAS.Combat_Effects') + '</strong>' +
+          '<br><strong>' +
+          game.i18n.localize('MYTHRAS.Combat_Effects') +
+          '</strong>' +
           combatEffect +
-          '<br><strong>' + game.i18n.localize('MYTHRAS.Traits') + ': </strong>' +
+          '<br><strong>' +
+          game.i18n.localize('MYTHRAS.Traits') +
+          ': </strong>' +
           traits
       }
 
@@ -591,7 +620,7 @@ export class ActorSheetMythras extends ActorSheet {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
-    const weapon = this.actor.getOwnedItem(dataset.label)
+    const weapon = this.actor.items.get(dataset.label)
     const name = weapon.data.name
     const damMod = weapon.data.data.damageModifier
     const combatEffect = weapon.data.data['combat-effects']
@@ -604,10 +633,15 @@ export class ActorSheetMythras extends ActorSheet {
       let label = dataset.label ? `Rolling ${name} ` : ''
       label += '<br><strong>Combat-Effects: </strong>' + combatEffect
       if (game.i18n) {
-        let label = dataset.label ? `${game.i18n.localize('MYTHRAS.Rolling')} ${name} ` : ''
-        label += '<br><strong>' + game.i18n.localize('MYTHRAS.Combat_Effects') + ': </strong>' + combatEffect
+        let label = dataset.label
+          ? `${game.i18n.localize('MYTHRAS.Rolling')} ${name} `
+          : ''
+        label +=
+          '<br><strong>' +
+          game.i18n.localize('MYTHRAS.Combat_Effects') +
+          ': </strong>' +
+          combatEffect
       }
-
 
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -626,7 +660,9 @@ export class ActorSheetMythras extends ActorSheet {
       const rollResult = Number(rolled.result)
       let label = dataset.label ? `Rolling Hit Location` : ''
       if (game.i18n) {
-        label = dataset.label ? game.i18n.localize('MYTHRAS.Rolling_Location') : ''
+        label = dataset.label
+          ? game.i18n.localize('MYTHRAS.Rolling_Location')
+          : ''
       }
 
       const locHit = hitLoc.filter(function (value) {

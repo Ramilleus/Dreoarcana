@@ -9,41 +9,41 @@
           <p class="input-label">
             {{localize 'MYTHRAS.CAREER'}}
           </p>
-          <input type="text" name="data.career" value="{{data.career}}" />
+          <input type="text" name="data.career" value="{{data.data.career}}" />
           <p class="input-label">
             {{localize 'MYTHRAS.SOCIAL_CLASS'}}
           </p>
-          <input type="text" name="data.socialClass" value="{{data.socialClass}}" />
+          <input type="text" name="data.socialClass" value="{{data.data.socialClass}}" />
           <p class="input-label">
             {{localize 'MYTHRAS.GENDER'}}
           </p>
-          <input type="text" name="data.gender" value="{{data.gender}}" />
+          <input type="text" name="data.gender" value="{{data.data.gender}}" />
           <p class="input-label">
             {{localize 'MYTHRAS.HANDEDNESS'}}
           </p>
-          <input type="text" name="data.handedness" value="{{data.handedness}}" />
+          <input type="text" name="data.handedness" value="{{data.data.handedness}}" />
         </div>
         <div class="core-personal-right-info">
           <p class="input-label">
             {{localize 'MYTHRAS.HOMELAND'}}
           </p>
-          <input type="text" name="data.homeland" value="{{data.homeland}}" />
+          <input type="text" name="data.homeland" value="{{data.data.homeland}}" />
           <p class="input-label">
             {{localize 'MYTHRAS.CULTURE'}}
           </p>
-          <input type="text" name="data.raceCulture" value="{{data.raceCulture}}" />
+          <input type="text" name="data.raceCulture" value="{{data.data.raceCulture}}" />
           <div class="age-height-weight-flex">
             <div class="age">
               <p class="input-label">
                 {{localize 'MYTHRAS.AGE'}}
               </p>
-              <input type="text" name="data.age" value="{{data.age}}" />
+              <input type="text" name="data.age" value="{{data.data.age}}" />
             </div>
             <div class="height">
               <p class="input-label">
                 {{localize 'MYTHRAS.HEIGHT'}}
               </p>
-              <input type="text" name="data.height" value="{{data.height}}" />
+              <input type="text" name="data.height" value="{{data.data.height}}" />
               <span style="margin-left: -20px; font-size: small;">
                 cm
               </span>
@@ -52,13 +52,13 @@
               <p class="input-label">
                 {{localize 'MYTHRAS.WEIGHT'}}
               </p>
-              <input type="text" name="data.weight" value="{{data.weight}}" />
+              <input type="text" name="data.weight" value="{{data.data.weight}}" />
             </div>
           </div>
           <p class="input-label">
             {{localize 'MYTHRAS.FRAME'}}
           </p>
-          <input type="text" name="data.frame" value="{{data.frame}}" />
+          <input type="text" name="data.frame" value="{{data.data.frame}}" />
         </div>
       </div>
       <h2>
@@ -66,7 +66,7 @@
       </h2>
       <div class="fatigue-container">
         <select class="fatigue-selector" name="data.attributes.fatigue.value" data-dtype="String">
-          {{#select data.attributes.fatigue.value}}
+          {{#select data.data.attributes.fatigue.value}}
           <option value="fresh">
             {{localize 'MYTHRAS.Fresh'}}
           </option>
@@ -100,7 +100,7 @@
           {{/select}}
         </select>
         <p>
-          {{data.attributes.fatigue.recoveryTime}}
+          {{data.data.attributes.fatigue.recoveryTime}}
         </p>
       </div>
     </div>
@@ -111,49 +111,49 @@
       <div class="core-characteristics">
         <div>
           <input id="str_characteristic-box" name="data.characteristics.str.value" onclick="this.select()"
-            value="{{data.characteristics.str.value}}" type="text" />
+            value="{{data.data.characteristics.str.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.STRENGTH'}}
           </label>
         </div>
         <div>
           <input id="con_characteristic-box" name="data.characteristics.con.value" onclick="this.select()"
-            value="{{data.characteristics.con.value}}" type="text" />
+            value="{{data.data.characteristics.con.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.CONSTITUTION'}}
           </label>
         </div>
         <div>
           <input id="siz_characteristic-box" name="data.characteristics.siz.value" onclick="this.select()"
-            value="{{data.characteristics.siz.value}}" type="text" />
+            value="{{data.data.characteristics.siz.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.SIZE'}}
           </label>
         </div>
         <div>
           <input id="dex_characteristic-box" name="data.characteristics.dex.value" onclick="this.select()"
-            value="{{data.characteristics.dex.value}}" type="text" />
+            value="{{data.data.characteristics.dex.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.DEXTERITY'}}
           </label>
         </div>
         <div>
           <input id="int_characteristic-box" name="data.characteristics.int.value" onclick="this.select()"
-            value="{{data.characteristics.int.value}}" type="text" />
+            value="{{data.data.characteristics.int.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.INTELLIGENCE'}}
           </label>
         </div>
         <div>
           <input id="pow_characteristic-box" name="data.characteristics.pow.value" onclick="this.select()"
-            value="{{data.characteristics.pow.value}}" type="text" />
+            value="{{data.data.characteristics.pow.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.POWER'}}
           </label>
         </div>
         <div>
           <input id="cha_characteristic-box" name="data.characteristics.cha.value" onclick="this.select()"
-            value="{{data.characteristics.cha.value}}" type="text" />
+            value="{{data.data.characteristics.cha.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.CHARISMA'}}
           </label>
@@ -166,16 +166,16 @@
         <div>
           <div class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.actionPoints.max" class="{{data.attributes.actionPoints.applyClass}}">
-                {{data.attributes.actionPoints.max}}
+              <p name="data.attributes.actionPoints.max" class="{{data.data.attributes.actionPoints.applyClass}}">
+                {{data.data.attributes.actionPoints.max}}
               </p>
               <div>
                 <span>
                   +
                 </span>
                 <input type="text" name="data.attributes.actionPoints.mod"
-                  class="{{data.attributes.actionPoints.applyClass}}" onclick="this.select()"
-                  value="{{data.attributes.actionPoints.mod}}" />
+                  class="{{data.data.attributes.actionPoints.applyClass}}" onclick="this.select()"
+                  value="{{data.data.attributes.actionPoints.mod}}" />
               </div>
             </div>
             <p class="attribute-label">
@@ -184,15 +184,16 @@
           </div>
           <div class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.damageMod.value" class="{{data.attributes.damageMod.applyClass}}">
-                {{data.attributes.damageMod.value}}
+              <p name="data.attributes.damageMod.value" class="{{data.data.attributes.damageMod.applyClass}}">
+                {{data.data.attributes.damageMod.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.damageMod.mod" class="{{data.attributes.damageMod.applyClass}}"
-                  onclick="this.select()" value="{{data.attributes.damageMod.mod}}" />
+                <input type="text" name="data.attributes.damageMod.mod"
+                  class="{{data.data.attributes.damageMod.applyClass}}" onclick="this.select()"
+                  value="{{data.data.attributes.damageMod.mod}}" />
               </div>
             </div>
             <p class="attribute-label">
@@ -201,16 +202,16 @@
           </div>
           <div class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.experienceMod.value" class="{{data.attributes.experienceMod.applyClass}}">
-                {{data.attributes.experienceMod.value}}
+              <p name="data.attributes.experienceMod.value" class="{{data.data.attributes.experienceMod.applyClass}}">
+                {{data.data.attributes.experienceMod.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
                 <input type="text" name="data.attributes.experienceMod.mod"
-                  class="{{data.attributes.experienceMod.applyClass}}" onclick="this.select()"
-                  value="{{data.attributes.experienceMod.mod}}" />
+                  class="{{data.data.attributes.experienceMod.applyClass}}" onclick="this.select()"
+                  value="{{data.data.attributes.experienceMod.mod}}" />
               </div>
             </div>
             <p class="attribute-label">
@@ -219,16 +220,16 @@
           </div>
           <div class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.healingRate.value" class="{{data.attributes.healingRate.applyClass}}">
-                {{data.attributes.healingRate.value}}
+              <p name="data.attributes.healingRate.value" class="{{data.data.attributes.healingRate.applyClass}}">
+                {{data.data.attributes.healingRate.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
                 <input type="text" name="data.attributes.healingRate.mod"
-                  class="{{data.attributes.healingRate.applyClass}}" onclick="this.select()"
-                  value="{{data.attributes.healingRate.mod}}" />
+                  class="{{data.data.attributes.healingRate.applyClass}}" onclick="this.select()"
+                  value="{{data.data.attributes.healingRate.mod}}" />
               </div>
             </div>
             <p class="attribute-label">
@@ -237,16 +238,17 @@
           </div>
           <div class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.initiativeBonus.value" class="{{data.attributes.initiativeBonus.applyClass}}">
-                {{data.attributes.initiativeBonus.value}}
+              <p name="data.attributes.initiativeBonus.value"
+                class="{{data.data.attributes.initiativeBonus.applyClass}}">
+                {{data.data.attributes.initiativeBonus.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
                 <input type="text" name="data.attributes.initiativeBonus.mod"
-                  class="{{data.attributes.initiativeBonus.applyClass}}" onclick="this.select()"
-                  value="{{data.attributes.initiativeBonus.mod}}" />
+                  class="{{data.data.attributes.initiativeBonus.applyClass}}" onclick="this.select()"
+                  value="{{data.data.attributes.initiativeBonus.mod}}" />
               </div>
             </div>
             <p class="attribute-label">
@@ -255,16 +257,16 @@
           </div>
           <div class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.luckPoints.max" class="{{data.attributes.luckPoints.applyClass}}">
-                {{data.attributes.luckPoints.max}}
+              <p name="data.attributes.luckPoints.max" class="{{data.data.attributes.luckPoints.applyClass}}">
+                {{data.data.attributes.luckPoints.max}}
               </p>
               <div>
                 <span>
                   +
                 </span>
                 <input type="text" name="data.attributes.luckPoints.mod"
-                  class="{{data.attributes.luckPoints.applyClass}}" onclick="this.select()"
-                  value="{{data.attributes.luckPoints.mod}}" />
+                  class="{{data.data.attributes.luckPoints.applyClass}}" onclick="this.select()"
+                  value="{{data.data.attributes.luckPoints.mod}}" />
               </div>
             </div>
             <p class="attribute-label">
@@ -274,16 +276,16 @@
           </div>
           <div class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.magicPoints.max" class="{{data.attributes.magicPoints.applyClass}}">
-                {{data.attributes.magicPoints.max}}
+              <p name="data.attributes.magicPoints.max" class="{{data.data.attributes.magicPoints.applyClass}}">
+                {{data.data.attributes.magicPoints.max}}
               </p>
               <div>
                 <span>
                   +
                 </span>
                 <input type="text" name="data.attributes.magicPoints.mod"
-                  class="{{data.attributes.magicPoints.applyClass}}" onclick="this.select()"
-                  value="{{data.attributes.magicPoints.mod}}" />
+                  class="{{data.data.attributes.magicPoints.applyClass}}" onclick="this.select()"
+                  value="{{data.data.attributes.magicPoints.mod}}" />
               </div>
             </div>
             <p class="attribute-label">
@@ -302,62 +304,62 @@
             <span>
               +
             </span>
-            <input type="text" name="data.attributes.movement.mod" class="{{data.attributes.movement.applyClass}}"
-              onclick="this.select()" value="{{data.attributes.movement.mod}}" />
+            <input type="text" name="data.attributes.movement.mod" class="{{data.data.attributes.movement.applyClass}}"
+              onclick="this.select()" value="{{data.data.attributes.movement.mod}}" />
           </div>
         </div>
         <div class="movement-inner-container">
           <div>
-            <p class="{{data.attributes.movement.applyClass}}">
-              {{data.attributes.movement.walk}}
+            <p class="{{data.data.attributes.movement.applyClass}}">
+              {{data.data.attributes.movement.walk}}
             </p>
             <p class="movement-label">
               {{localize 'MYTHRAS.WALK'}}
             </p>
           </div>
           <div>
-            <p class="{{data.attributes.movement.applyClass}}">
-              {{data.attributes.movement.run}}
+            <p class="{{data.data.attributes.movement.applyClass}}">
+              {{data.data.attributes.movement.run}}
             </p>
             <p class="movement-label">
               {{localize 'MYTHRAS.RUN'}}
             </p>
           </div>
           <div>
-            <p class="{{data.attributes.movement.applyClass}}">
-              {{data.attributes.movement.sprint}}
+            <p class="{{data.data.attributes.movement.applyClass}}">
+              {{data.data.attributes.movement.sprint}}
             </p>
             <p class="movement-label">
               {{localize 'MYTHRAS.SPRINT'}}
             </p>
           </div>
           <div>
-            <p class="{{data.attributes.movement.applyClass}}">
-              {{data.attributes.climb.value}}
+            <p class="{{data.data.attributes.movement.applyClass}}">
+              {{data.data.attributes.climb.value}}
             </p>
             <p class="movement-label">
               {{localize 'MYTHRAS.CLIMB'}}
             </p>
           </div>
           <div>
-            <p class="{{data.attributes.movement.applyClass}}">
-              {{data.attributes.jump.horizontal}}
+            <p class="{{data.data.attributes.movement.applyClass}}">
+              {{data.data.attributes.jump.horizontal}}
             </p>
             <p class="movement-label">
               {{localize 'MYTHRAS.H._JUMP'}}
             </p>
           </div>
           <div>
-            <p class="{{data.attributes.movement.applyClass}}">
-              {{data.attributes.jump.vertical}}
+            <p class="{{data.data.attributes.movement.applyClass}}">
+              {{data.data.attributes.jump.vertical}}
             </p>
             <p class="movement-label">
               {{localize 'MYTHRAS.V._JUMP'}}
             </p>
           </div>
           <div>
-            <p class="{{data.attributes.movement.applyClass}}">
-              {{data.attributes.swim.value}}
+            <p class="{{data.data.attributes.movement.applyClass}}">
+              {{data.data.attributes.swim.value}}
             </p>
             <p class="movement-label">
               {{localize 'MYTHRAS.SWIM'}}

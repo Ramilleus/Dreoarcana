@@ -19,30 +19,30 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.ENC'}}</h3>
-            <input type="text" name="data.encumbrance" value="{{data.encumbrance}}" />
+            <input type="text" name="data.encumbrance" value="{{data.data.encumbrance}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Quantity'}}</h3>
-            <input type="text" name="data.quantity" value="{{data.quantity}}" />
+            <input type="text" name="data.quantity" value="{{data.data.quantity}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.AP'}}</h3>
-            <input type="text" name="data.ap" value="{{data.ap}}" />
+            <input type="text" name="data.ap" value="{{data.data.ap}}" />
           </div>
           <div>/</div>
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.HP'}}</h3>
-            <input type="text" name="data.hp" value="{{data.hp}}" />
+            <input type="text" name="data.hp" value="{{data.data.hp}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Value'}}</h3>
-            <input type="text" name="data.value" value="{{data.value}}" />
+            <input type="text" name="data.value" value="{{data.data.value}}" />
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
     <h2>Description</h2>
     <div class="desc skill-section" data-group="primary">
       {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-      <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
+      <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
     </div>
   </section>
 

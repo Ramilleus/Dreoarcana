@@ -8,9 +8,9 @@
         <div>
           <h3 class="armorLocationHeader">
             <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}:
-              {{data.attributes.armorPenalty.value}}</span><a class="roll-hitlocations-button" title="Roll 1d20"
+              {{data.data.attributes.armorPenalty.value}}</span><a class="roll-hitlocations-button" title="Roll 1d20"
               data-roll="1d20"
-              data-label="{{#each actor.hitLocations as |item|}}{{item.name}}/{{item.data.rollRangeStart}}/{{item.data.rollRangeEnd}},{{/each}}">
+              data-label="{{#each actor.hitLocations as |item|}}{{item.data.name}}/{{item.data.data.rollRangeStart}}/{{item.data.data.rollRangeEnd}},{{/each}}">
               {{localize 'MYTHRAS.Roll2'}} 1d20</a>
           </h3>
           <table id="hitLocation-edit" class="hitLocation-table">
@@ -27,7 +27,7 @@
                       +
                     </span>
                     <input id="maxHpMod_all" type="text" name="data.attributes.hitPointMod.mod" class=""
-                      onclick="this.select()" value="{{data.attributes.hitPointMod.mod}}" />
+                      onclick="this.select()" value="{{data.data.attributes.hitPointMod.mod}}" />
                   </span>
                 </div>
               </th>
@@ -171,7 +171,7 @@
           <h3>
             <span>{{localize 'MYTHRAS.Wounds_and_Conditions'}}</span>
           </h3>
-          <textarea name="data.conditionsAndWounds">{{data.conditionsAndWounds}}</textarea>
+          <textarea name="data.conditionsAndWounds">{{data.data.conditionsAndWounds}}</textarea>
         </div>
       </div>
     </div>

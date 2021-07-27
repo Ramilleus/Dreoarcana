@@ -7,7 +7,7 @@
           <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
         </h1>
       </div>
-      <h1>{{data.totalVal}}</h1>
+      <h1>{{data.data.totalVal}}</h1>
     </div>
   </header>
 
@@ -22,7 +22,7 @@
           <h3>{{localize 'MYTHRAS.Base_Characteristics'}}</h3>
           <span class="resource">
             <select id="char-change" name="data.primaryChar" data-dtype="String">
-              {{#select data.primaryChar}}
+              {{#select data.data.primaryChar}}
               <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
               <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
               <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
@@ -36,7 +36,7 @@
           <span>+</span>
           <span class="resource">
             <select id="char-change" name="data.secondaryChar" data-dtype="String">
-              {{#select data.secondaryChar}}
+              {{#select data.data.secondaryChar}}
               <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
               <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
               <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
@@ -82,13 +82,14 @@
               <label>
                 <p>{{localize 'MYTHRAS.TRAINING'}}</p>
               </label>
-              <input id="skill-mod" type="text" name="data.trainingVal" value="{{data.trainingVal}}" />%
+              <input id="skill-mod" type="text" name="data.trainingVal" value="{{data.data.trainingVal}}" />%
             </div>
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.MISC'}}</p>
               </label>
-              <input id="skill-mod" class="misc-input" type="text" name="data.miscBonus" value="{{data.miscBonus}}" />%
+              <input id="skill-mod" class="misc-input" type="text" name="data.miscBonus"
+                value="{{data.data.miscBonus}}" />%
             </div>
           </div>
         </div>
@@ -97,7 +98,7 @@
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc skill-section" data-group="primary">
       {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-      <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
+      <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
     </div>
   </section>
 

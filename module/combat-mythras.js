@@ -44,9 +44,9 @@ export class CombatMythras extends Combat {
 
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
-      t.actor?.update({
+      t._actor.update({
         ['data.attributes.actionPoints.value']: Number(
-          t.actor.data.data.attributes['actionPoints'].max
+          t._actor.data.data.attributes['actionPoints'].max
         )
       })
     }

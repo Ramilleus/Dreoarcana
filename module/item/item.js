@@ -54,20 +54,22 @@ export class MythrasItem extends Item {
    */
   _prepareArmorData(itemData, actorData) {
     const data = itemData.data
-    data.hitLoc = actorData.items.filter(function (value) {
-      return value.type === 'hitLocation'
-    })
-    if (data.location === 'Unequipped' && data.locationName.length > 0) {
-      let hitlocID = data.hitLoc.filter(function (value) {
-        return value.name === data.locationName
+    if (actorData != undefined) {
+      data.hitLoc = actorData.items.filter(function (value) {
+        return value.type === 'hitLocation'
       })
-      data.location = hitlocID[0]._id
-    }
-    let hitLocName = data.hitLoc.filter(function (value) {
-      return value._id === data.location
-    })
-    if (hitLocName.length > 0) {
-      data.locationName = hitLocName[0].name
+      if (data.location === 'Unequipped' && data.locationName.length > 0) {
+        let hitlocID = data.hitLoc.filter(function (value) {
+          return value.name === data.locationName
+        })
+        data.location = hitlocID[0].id
+      }
+      let hitLocName = data.hitLoc.filter(function (value) {
+        return value.id === data.location
+      })
+      if (hitLocName.length > 0) {
+        data.locationName = hitLocName[0].name
+      }
     }
   }
 
@@ -79,32 +81,34 @@ export class MythrasItem extends Item {
   _prepareHitLocationData(itemData, actorData) {
     const data = itemData.data
     const id = itemData._id
-    let armors = actorData.items.filter(function (value) {
-      return value.type === 'armor'
-    })
+    if (actorData != undefined) {
+      let armors = actorData.items.filter(function (value) {
+        return value.type === 'armor'
+      })
 
-    let armorEquipped = []
-    let ap = 0
-    armors.forEach(function (piece, index) {
-      if (piece.data.location === id && piece.data.equipped) {
-        armorEquipped.push(piece.name)
-        ap += Number(piece.data.ap)
-      }
-    })
-    data.armors = armorEquipped.join(', ')
-    data.ap = ap
-    if (data.maxHp == 0) {
-      data.maxHp =
-        Number(data.baseHp) +
-        Math.ceil(
-          (Number(actorData.data.characteristics.siz.value) +
-            Number(actorData.data.characteristics.con.value)) /
-            5
-        ) +
-        Number(actorData.data.attributes.hitPointMod.mod) +
-        Number(data.maxHpMod)
-      if (data.maxHp < 1) {
-        data.maxHp = 1
+      let armorEquipped = []
+      let ap = 0
+      armors.forEach(function (piece, index) {
+        if (piece.data.data.location === id && piece.data.data.equipped) {
+          armorEquipped.push(piece.name)
+          ap += Number(piece.data.data.ap)
+        }
+      })
+      data.armors = armorEquipped.join(', ')
+      data.ap = ap
+      if (data.maxHp == 0) {
+        data.maxHp =
+          Number(data.baseHp) +
+          Math.ceil(
+            (Number(actorData.data.characteristics.siz.value) +
+              Number(actorData.data.characteristics.con.value)) /
+              5
+          ) +
+          Number(actorData.data.attributes.hitPointMod.mod) +
+          Number(data.maxHpMod)
+        if (data.maxHp < 1) {
+          data.maxHp = 1
+        }
       }
     }
   }

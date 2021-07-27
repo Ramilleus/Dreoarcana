@@ -98,7 +98,7 @@ export class MythrasItemSheet extends ItemSheet {
     const data = itemData.data
     if (event.target.id.includes('armorChange')) {
       // Get the hit location the armor is on
-      let hitLoc = this.actor.getOwnedItem(String(data.location))
+      let hitLoc = this.actor.items.get(String(data.location))
       // Run if equipped checkbox changes
       if (event.target.id.includes('equipped')) {
         this.toggleArmorEquipped(itemData, formData, hitLoc)
@@ -137,7 +137,7 @@ export class MythrasItemSheet extends ItemSheet {
 
     // Update the hit location with the new armor list/ap total
     this.actor.updateEmbeddedEntity('OwnedItem', {
-      _id: hitLoc._id,
+      _id: hitLoc.id,
       'data.armors': armors.join(','),
       'data.ap': ap,
       'data.attached': attached
@@ -162,7 +162,7 @@ export class MythrasItemSheet extends ItemSheet {
       }
 
       this.actor.updateEmbeddedEntity('OwnedItem', {
-        _id: hitLoc._id,
+        _id: hitLoc.id,
         'data.armors': armors.join(','),
         'data.ap': ap,
         'data.attached': attached
