@@ -134,6 +134,7 @@ export class MythrasItemSheet extends ItemSheet {
       armors.push(attached[key][0])
       ap += Number(attached[key][1])
     }
+    ap = Math.max(ap, hitLoc.data.data.naturalArmor)
 
     // Update the hit location with the new armor list/ap total
     this.actor.updateEmbeddedEntity('OwnedItem', {
@@ -160,6 +161,7 @@ export class MythrasItemSheet extends ItemSheet {
         armors.push(attached[key][0])
         ap += Number(attached[key][1])
       }
+      ap = Math.max(ap, hitLoc.data.data.naturalArmor)
 
       this.actor.updateEmbeddedEntity('OwnedItem', {
         _id: hitLoc._id,

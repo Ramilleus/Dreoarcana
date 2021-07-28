@@ -92,7 +92,7 @@ export class MythrasItem extends Item {
       }
     })
     data.armors = armorEquipped.join(', ')
-    data.ap = ap
+    data.ap = Math.max(ap, data.naturalArmor)
     if (data.maxHp == 0) {
       data.maxHp =
         Number(data.baseHp) +
