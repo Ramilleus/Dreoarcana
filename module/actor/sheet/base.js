@@ -178,7 +178,7 @@ export class ActorSheetMythras extends ActorSheet {
         this.actor.updateEmbeddedDocuments('Item', [
           {
             _id: hitLoc.id,
-            'data.armors': armors.join(','),
+            'data.armors': armors.join(' '),
             'data.ap': ap,
             'data.attached': attached
           }
@@ -228,8 +228,8 @@ export class ActorSheetMythras extends ActorSheet {
           this.actor.updateEmbeddedDocuments('Item', [
             {
               _id: hitLoc.data.id,
-              'data.maxHp': newHp,
-              'data.maxHpMod': formData['item.data.data.maxHpMod'][index]
+              'data.data.maxHp': newHp,
+              'data.data.maxHpMod': formData['item.data.data.maxHpMod'][index]
             }
           ])
         })
@@ -267,6 +267,7 @@ export class ActorSheetMythras extends ActorSheet {
     html.find('.item-delete').click((ev) => {
       const li = $(ev.currentTarget).parents('.item')
       let item = actor.items.get(li.data('itemId'))
+
       new Dialog({
         title: 'Delete',
         content: `Are you sure you want to delete ${item.data.name}`,
@@ -402,9 +403,7 @@ export class ActorSheetMythras extends ActorSheet {
         buttons: {
           ok: {
             label: 'Roll',
-            callback: async (html) => {
-              console.log(html.find('#skill-mod')[0].value)
-            }
+            callback: async (html) => {}
           },
           cancel: {
             label: 'Cancel'

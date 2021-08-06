@@ -91,10 +91,12 @@ export class ActorMythras extends Actor {
         let hitLocId = hitLoc.filter(function (hitVal) {
           return hitVal.name === armorVal.data.locationName
         })
-        this.updateEmbeddedEntity('OwnedItem', {
-          _id: armorVal.id,
-          'data.location': hitLocId[0].id
-        })
+        this.updateEmbeddedDocuments('Item', [
+          {
+            _id: armorVal.id,
+            'data.location': hitLocId[0].id
+          }
+        ])
       }
     })
     // Armor Penalty

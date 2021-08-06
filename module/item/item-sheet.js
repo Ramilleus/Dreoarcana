@@ -136,12 +136,14 @@ export class MythrasItemSheet extends ItemSheet {
     }
 
     // Update the hit location with the new armor list/ap total
-    this.actor.updateEmbeddedEntity('OwnedItem', {
-      _id: hitLoc.id,
-      'data.armors': armors.join(','),
-      'data.ap': ap,
-      'data.attached': attached
-    })
+    this.actor.updateEmbeddedDocuments('Item', [
+      {
+        _id: hitLoc.id,
+        'data.data.armors': armors.join(','),
+        'data.data.ap': ap,
+        'data.data.attached': attached
+      }
+    ])
   }
 
   updateArmorValues(itemData, formData, hitLoc) {
@@ -161,12 +163,14 @@ export class MythrasItemSheet extends ItemSheet {
         ap += Number(attached[key][1])
       }
 
-      this.actor.updateEmbeddedEntity('OwnedItem', {
-        _id: hitLoc.id,
-        'data.armors': armors.join(','),
-        'data.ap': ap,
-        'data.attached': attached
-      })
+      this.actor.updateEmbeddedDocuments('Item', [
+        {
+          _id: hitLoc.id,
+          'data.data.armors': armors.join(','),
+          'data.data.ap': ap,
+          'data.data.attached': attached
+        }
+      ])
     }
   }
 

@@ -57,7 +57,7 @@
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.DM'}}</h3>
-            <input type="checkbox" name="data.damageModifier" {{checked data.damageModifier}} />
+            <input type="checkbox" name="data.damageModifier" {{checked data.data.damageModifier}} />
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Force'}}</h3>
@@ -121,7 +121,7 @@
     </div>
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc skill-section" data-group="primary">
-      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+      {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
       <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
     </div>
   </section>
