@@ -36,15 +36,15 @@
               {{#each actor.hitLocations as |item id|}}
               <tr class="item" data-item-id="{{item.data._id}}">
                 <td class="hitloc-location-cell">
-                  <input id="{{id}}_{{item.data.id}}_name_hitLoc" type="text" name="item.data.name" data-dtype="text"
+                  <input id="{{id}}_{{item.data._id}}_name_hitLoc" type="text" name="item.data.name" data-dtype="text"
                     value="{{item.data.name}}" />
                 </td>
                 <td class="hitLoc-flex-cell hitloc-range-cell">
-                  <input id="{{id}}_{{item.data.id}}_rollRangeStart_hitLoc" type="text"
+                  <input id="{{id}}_{{item.data._id}}_rollRangeStart_hitLoc" type="text"
                     name="item.data.data.rollRangeStart" value="{{item.data.data.rollRangeStart}}" />
                   <p class="hit-loc-text">-</p>
-                  <input id="{{id}}_{{item.data.id}}_rollRangeEnd_hitLoc" type="text" name="item.data.data.rollRangeEnd"
-                    value="{{item.data.data.rollRangeEnd}}" />
+                  <input id="{{id}}_{{item.data._id}}_rollRangeEnd_hitLoc" type="text"
+                    name="item.data.data.rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
                 </td>
                 <td class="hitloc-armor-cell">
                   {{item.data.data.armors}}
@@ -59,14 +59,14 @@
 
                 </td>
                 <td class="hitLoc-flex-cell hitloc-hp-cell">
-                  <input id="{{id}}_{{item.data.id}}_currentHp_hitLoc" type="number" name="item.data.data.currentHp"
+                  <input id="{{id}}_{{item.data._id}}_currentHp_hitLoc" type="number" name="item.data.data.currentHp"
                     value="{{item.data.data.currentHp}}" />
                   <p class="max-hp"> / {{item.data.data.maxHp}}</p>
                   <div class="max-hp-mod">
                     <span>
                       +
                     </span>
-                    <input id="{{id}}_{{item.data.id}}_maxHpMod_hitLoc" type="text" name="item.data.data.maxHpMod"
+                    <input id="{{id}}_{{item.data._id}}_maxHpMod_hitLoc" type="text" name="item.data.data.maxHpMod"
                       class="" onclick="this.select()" value="{{item.data.data.maxHpMod}}" />
                   </div>
                 </td>
