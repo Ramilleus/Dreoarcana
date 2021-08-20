@@ -2,9 +2,9 @@
   "name": "mythras",
   "title": "Mythras",
   "description": "The Mythras system for FoundryVTT!",
-  "version": "0.1.6",
-  "minimumCoreVersion": "0.6.2",
-  "compatibleCoreVersion": "0.7.10",
+  "version": "0.1.9",
+  "minimumCoreVersion": "0.8.2",
+  "compatibleCoreVersion": "0.8.8",
   "templateVersion": 2,
   "author": "Jonathan Karkour and Tom Paoloni",
   "esmodules": ["mythras.js"],
@@ -33,10 +33,10 @@
       "entity": "Item"
     },
     {
-      "name": "encounterGenerator",
-      "label": "Encounter Generator",
+      "name": "mythrasMacros",
+      "label": "Mythras Macros",
       "system": "mythras",
-      "path": "./packs/encounter-generator.db",
+      "path": "./packs/mythras-macros.db",
       "entity": "Macro"
     }
   ],
@@ -62,17 +62,18 @@
       "path": "lang/swe.json"
     },
     {
-      "lang": "ptbr",
+      "lang": "pt-br",
       "name": "Brazilian Portuguese",
       "path": "lang/ptbr.json"
     }
   ],
+  "socket": true,
   "gridDistance": 5,
   "gridUnits": "m",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/mythras",
-  "manifest": "https://gitlab.com/tpaoloni/mythras/raw/master/system.json",
-  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.1.6/mythras-0.1.6.zip",
+  "manifest": "http://gitlab.com/tpaoloni/mythras/-/raw/0.1.9/system.json",
+  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.1.9/mythras-0.1.9.zip",
   "license": "LICENSE.txt"
 }

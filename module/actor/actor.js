@@ -91,18 +91,20 @@ export class ActorMythras extends Actor {
         let hitLocId = hitLoc.filter(function (hitVal) {
           return hitVal.name === armorVal.data.locationName
         })
-        this.updateEmbeddedEntity('OwnedItem', {
-          _id: armorVal._id,
-          'data.location': hitLocId[0]._id
-        })
+        this.updateEmbeddedDocuments('Item', [
+          {
+            _id: armorVal.id,
+            'data.location': hitLocId[0].id
+          }
+        ])
       }
     })
     // Armor Penalty
     let equippedArmor = armor.filter(function (value) {
-      return value.data.equipped
+      return value.data.data.equipped
     })
     let armorEncTotal = equippedArmor.reduce((weight, i) => {
-      const enc = Number(i.data.encumbrance) || 0
+      const enc = Number(i.data.data.encumbrance) || 0
       return weight + enc
     }, 0)
     data.attributes.armorPenalty.value = Math.ceil(Number(armorEncTotal) / 5)
@@ -186,10 +188,10 @@ export class ActorMythras extends Actor {
   prepareMovement(data, items) {
     // Get athletics and swim item objects
     let athletics = items.find(
-      (entry) => entry.name === game.i18n.localize('MYTHRAS.Athletics')
+      (entry) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
     )
     let swim = items.find(
-      (entry) => entry.name === game.i18n.localize('MYTHRAS.Swim')
+      (entry) => entry.data.name === game.i18n.localize('MYTHRAS.Swim')
     )
     let ap = Number(data.attributes.armorPenalty.value)
     let movementMiscMod =
@@ -197,7 +199,6 @@ export class ActorMythras extends Actor {
       fatigueInfo[data.attributes.fatigue.value].Movement(
         data.attributes.movement.walk
       )
-
     // Default walk speed for a human is 6
     data.attributes.movement.walk = 6 + movementMiscMod
     let walkSpeed = data.attributes.movement.walk
@@ -282,12 +283,11 @@ export class ActorMythras extends Actor {
     let encItems = items.filter(function (value) {
       return physicalItems.includes(value.type)
     })
-
     // Sum up and return all of the items' weights
     return encItems.reduce((totalEnc, i) => {
-      let quantity = Number(i.data.quantity) || 0
-      let enc = Number(i.data.encumbrance) || 0
-      if (i.type === 'armor' && i.data.equipped) {
+      let quantity = Number(i.data.data.quantity) || 0
+      let enc = Number(i.data.data.encumbrance) || 0
+      if (i.data.type === 'armor' && i.data.data.equipped) {
         // If an item is equipped armor, only add half of it's enc to total enc
         return totalEnc + Math.ceil(enc / 2)
       } else {
@@ -320,7 +320,7 @@ export class ActorMythras extends Actor {
       levels.dead = game.i18n.localize('MYTHRAS.Dead')
     }
 
-    let recoveryMsg = ' ';
+    let recoveryMsg = ' '
     if (healRate < 1) healRate = 1
     if (fatigueLevel == 'fresh') {
       return levels[fatigueLevel]
@@ -329,15 +329,13 @@ export class ActorMythras extends Actor {
     } else if (fatigueLevel == 'winded') {
       recoveryMsg = ' minutes until Fresh.'
       if (game.i18n) {
-        recoveryMsg = game.i18n.localize('MYTHRAS.minrecovermsg');
+        recoveryMsg = game.i18n.localize('MYTHRAS.minrecovermsg')
       }
-      return (
-        Math.ceil(levels[fatigueLevel] / healRate) + recoveryMsg
-      )
+      return Math.ceil(levels[fatigueLevel] / healRate) + recoveryMsg
     } else {
       recoveryMsg = ' hours until Fresh'
       if (game.i18n) {
-        recoveryMsg = game.i18n.localize('MYTHRAS.hoursrecovermsg');
+        recoveryMsg = game.i18n.localize('MYTHRAS.hoursrecovermsg')
       }
       return Math.ceil(levels[fatigueLevel] / healRate) + recoveryMsg
     }
@@ -355,8 +353,8 @@ export class ActorMythras extends Actor {
     }
     let actor = this.data.data
     let skillVal =
-      Number(skill.data.trainingVal) +
-      Number(skill.data.miscBonus) +
+      Number(skill.data.data.trainingVal) +
+      Number(skill.data.data.miscBonus) +
       Number(actor.characteristics.dex.value) +
       Number(actor.characteristics.str.value)
     switch (type) {

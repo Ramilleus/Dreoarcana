@@ -21,9 +21,9 @@ Hooks.once('init', async function () {
     decimals: 2
   }
   // Define custom Entity classes
-  CONFIG.Actor.entityClass = ActorMythras
-  CONFIG.Item.entityClass = MythrasItem
-  CONFIG.Combat.entityClass = CombatMythras
+  CONFIG.Actor.documentClass = ActorMythras
+  CONFIG.Item.documentClass = MythrasItem
+  CONFIG.Combat.documentClass = CombatMythras
 
   // Register sheet application classes
   registerActors()
@@ -42,11 +42,11 @@ Hooks.once('ready', async function () {
 
   // Add Standard Skills and Hit Locations to an Actor when the createActor Hook is triggered
   Hooks.on('createActor', (actor, options, userID, x, y) => {
-    if (actor.items.size == 0 && userID === game.user._id) {
+    if (actor.items.size == 0 && userID === game.user.id) {
       // Standard Skills
       game.packs
         .get('mythras.standardSkill')
-        .getContent()
+        .getDocuments()
         .then((result) => {
           let chain = Promise.resolve()
           result.forEach((skill, index) => {
@@ -55,13 +55,13 @@ Hooks.once('ready', async function () {
                 'MYTHRAS.' + skill.data.name.replace(/ /g, '_')
               )
             }
-            chain = chain.then(() => actor.createOwnedItem(skill.data))
+            chain = chain.then(() => Item.create(skill.data, { parent: actor }))
           })
         })
       // Hit Locations
       game.packs
         .get('mythras.humanoidHitLocations')
-        .getContent()
+        .getDocuments()
         .then((result) => {
           let chain = Promise.resolve()
           result.forEach((hitLoc, index) => {
@@ -70,7 +70,9 @@ Hooks.once('ready', async function () {
                 'MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_')
               )
             }
-            chain = chain.then(() => actor.createOwnedItem(hitLoc))
+            chain = chain.then(() =>
+              Item.create(hitLoc.data, { parent: actor })
+            )
           })
         })
     }

@@ -6,7 +6,8 @@
       <div class="names">
         <input class="char-name" name="name" type="text" value="{{actor.name}}" placeholder="" />
         <p class="input-label">{{localize 'MYTHRAS.CHARACTER_NAME'}}</p>
-        <input class="player-name" name="data.playerName" type="text" value="{{data.playerName}}" placeholder="" />
+        <input class="player-name" name="data.playerName" type="text" value="{{data.data.data.playerName}}"
+          placeholder="" />
         <p class="input-label">{{localize 'MYTHRAS.PLAYER_NAME'}}</p>
       </div>
     </div>
@@ -15,8 +16,8 @@
         <div class="number-input-container">
           <div>
             <input class="action-points" name="data.attributes.actionPoints.value" onclick="this.select()" type="text"
-              value="{{data.attributes.actionPoints.value}}" placeholder="" />
-            <p class="point-total">/{{data.attributes.actionPoints.max}}</p>
+              value="{{data.data.attributes.actionPoints.value}}" placeholder="" />
+            <p class="point-total">/{{data.data.attributes.actionPoints.max}}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-ap">+</a>
@@ -29,8 +30,8 @@
         <div class="number-input-container">
           <div>
             <input class="luck-points" name="data.attributes.luckPoints.value" onclick="this.select()" type="text"
-              value="{{data.attributes.luckPoints.value}}" placeholder="" />
-            <p class="point-total">/{{data.attributes.luckPoints.max}}</p>
+              value="{{data.data.attributes.luckPoints.value}}" placeholder="" />
+            <p class="point-total">/{{data.data.attributes.luckPoints.max}}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-lp">+</a>
@@ -43,8 +44,8 @@
         <div class="number-input-container">
           <div>
             <input class="magic-points" name="data.attributes.magicPoints.value" onclick="this.select()" type="text"
-              value="{{data.attributes.magicPoints.value}}" placeholder="" />
-            <p class="point-total">/{{data.attributes.magicPoints.max}}</p>
+              value="{{data.data.attributes.magicPoints.value}}" placeholder="" />
+            <p class="point-total">/{{data.data.attributes.magicPoints.max}}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-mp">+</a>
@@ -56,7 +57,7 @@
       <div class="stats-container">
         <div class="number-input-container">
           <input class="experience-rolls" name="data.experienceRolls" onclick="this.select()" type="text"
-            value="{{data.experienceRolls}}" placeholder="" />
+            value="{{data.data.experienceRolls}}" placeholder="" />
           <div class="plus-minus-buttons">
             <a id="increase-current-er">+</a>
             <a id="decrease-current-er">-</a>

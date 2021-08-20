@@ -98,7 +98,7 @@ export class MythrasItemSheet extends ItemSheet {
     const data = itemData.data
     if (event.target.id.includes('armorChange')) {
       // Get the hit location the armor is on
-      let hitLoc = this.actor.getOwnedItem(String(data.location))
+      let hitLoc = this.actor.items.get(String(data.location))
       // Run if equipped checkbox changes
       if (event.target.id.includes('equipped')) {
         this.toggleArmorEquipped(itemData, formData, hitLoc)
@@ -137,12 +137,14 @@ export class MythrasItemSheet extends ItemSheet {
     ap = Math.max(ap, hitLoc.data.data.naturalArmor)
 
     // Update the hit location with the new armor list/ap total
-    this.actor.updateEmbeddedEntity('OwnedItem', {
-      _id: hitLoc._id,
-      'data.armors': armors.join(','),
-      'data.ap': ap,
-      'data.attached': attached
-    })
+    this.actor.updateEmbeddedDocuments('Item', [
+      {
+        _id: hitLoc.id,
+        'data.data.armors': armors.join(','),
+        'data.data.ap': ap,
+        'data.data.attached': attached
+      }
+    ])
   }
 
   updateArmorValues(itemData, formData, hitLoc) {
@@ -163,12 +165,14 @@ export class MythrasItemSheet extends ItemSheet {
       }
       ap = Math.max(ap, hitLoc.data.data.naturalArmor)
 
-      this.actor.updateEmbeddedEntity('OwnedItem', {
-        _id: hitLoc._id,
-        'data.armors': armors.join(','),
-        'data.ap': ap,
-        'data.attached': attached
-      })
+      this.actor.updateEmbeddedDocuments('Item', [
+        {
+          _id: hitLoc.id,
+          'data.data.armors': armors.join(','),
+          'data.data.ap': ap,
+          'data.data.attached': attached
+        }
+      ])
     }
   }
 

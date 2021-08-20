@@ -19,30 +19,30 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.ENC'}}</h3>
-            <input type="text" name="data.encumbrance" value="{{data.encumbrance}}" />
+            <input type="text" name="data.encumbrance" value="{{data.data.encumbrance}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Quantity'}}</h3>
-            <input type="text" name="data.quantity" value="{{data.quantity}}" />
+            <input type="text" name="data.quantity" value="{{data.data.quantity}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.AP'}}</h3>
-            <input id="armorChange_ap" type="text" name="data.ap" value="{{data.ap}}" />
+            <input id="armorChange_ap" type="text" name="data.ap" value="{{data.data.ap}}" />
           </div>
           <div>/</div>
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.HP'}}</h3>
-            <input type="text" name="data.hp" value="{{data.hp}}" />
+            <input type="text" name="data.hp" value="{{data.data.hp}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Value'}}</h3>
-            <input type="text" name="data.value" value="{{data.value}}" />
+            <input type="text" name="data.value" value="{{data.data.value}}" />
           </div>
         </div>
       </div>
@@ -53,26 +53,26 @@
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Armor_Location'}}</h3>
             <select name="data.location" data-dtype="String">
-              {{#select data.location}} {{#each data.hitLoc as |loc|}}
-              <option value="{{loc._id}}">{{loc.name}}</option>
+              {{#select data.data.location}} {{#each data.data.hitLoc as |loc|}}
+              <option value="{{loc.id}}">{{loc.name}}</option>
               {{/each}} {{/select}}
             </select>
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Type'}}</h3>
-            <input type="text" name="data.type" value="{{data.type}}" />
+            <input type="text" name="data.type" value="{{data.data.type}}" />
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Equipped'}}</h3>
-            <input id="armorChange_equipped" type="checkbox" name="data.equipped" {{checked data.equipped}} />
+            <input id="armorChange_equipped" type="checkbox" name="data.equipped" {{checked data.data.equipped}} />
           </div>
         </div>
       </div>
     </div>
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc skill-section" data-group="primary">
-      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-      <!--<textarea class="editor" name="data.description">{{data.description}}</textarea>-->
+      {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+      <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
     </div>
   </section>
 
