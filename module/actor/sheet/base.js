@@ -152,11 +152,12 @@ export class ActorSheetMythras extends ActorSheet {
           equipped = equipped[armorInfo[0]]
         }
         this.actor.updateEmbeddedDocuments('Item', [
-        {
-          _id: armor.id,
-          'data.equipped': equipped
-        })
-      ]}
+          {
+            _id: armor.id,
+            'data.equipped': equipped
+          }
+        ])
+      }
 
       if (event.target.id.includes('_hitLoc')) {
         let fieldInfo = event.target.id.split('_')

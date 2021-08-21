@@ -1207,6 +1207,10 @@ div.window-app section.window-content {
   width: 80px;
 }
 
+.mythras div.combat .combat-tables .top-combat-tables > div > div .hitloc-naturalArmor-cell {
+  width: 40px;
+}
+
 .mythras div.combat .combat-tables .top-combat-tables > div > div .delete-column {
   width: 20px;
 }
