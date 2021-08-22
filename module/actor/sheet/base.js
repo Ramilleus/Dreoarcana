@@ -157,32 +157,6 @@ export class ActorSheetMythras extends ActorSheet {
             'data.equipped': equipped
           }
         ])
-        let hitLoc = this.actor.items.get(armor.data.data.location)
-        let armors = hitLoc.data.data.armors.split(',')
-        let ap = hitLoc.data.data.ap
-        let attached = {}
-        if (Boolean(equipped)) {
-          if (hitLoc.data.data.attached !== undefined) {
-            attached = hitLoc.data.data.attached
-          }
-          attached[armor.id] = [armor.data.name, armor.data.data.ap]
-          armors.push(armor.data.name)
-          ap += armor.data.data.ap
-        } else {
-          delete attached[armor.id]
-          armors = armors.filter(function (value) {
-            return armor.data.name !== value
-          })
-          ap -= armor.data.data.ap
-        }
-        this.actor.updateEmbeddedDocuments('Item', [
-          {
-            _id: hitLoc.id,
-            'data.armors': armors.join(' '),
-            'data.ap': ap,
-            'data.attached': attached
-          }
-        ])
       }
 
       if (event.target.id.includes('_hitLoc')) {
