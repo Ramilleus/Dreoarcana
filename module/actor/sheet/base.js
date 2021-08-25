@@ -274,10 +274,62 @@ export class ActorSheetMythras extends ActorSheet {
     // Hit Location roll button listener
     html.find('.roll-hitlocations-button').click(this._onRollHitLoc.bind(this))
 
+    //Actor Point Minimizer
+    // const pointToggle = [
+    //   '#toggle-lp',
+    //   '#toggle-mp',
+    //   '#toggle-tp',
+    //   '#toggle-ap',
+    //   '#toggle-er'
+    // ]
+    // pointToggle.forEach((value) => {
+    //   html.find(value).click(function (event) {
+    //     event.preventDefault()
+    //     const label = document.querySelector(value)
+    //     const parent = label.parentNode
+    //     const bubble = parent.querySelector('.number-input-container')
+    //     if (bubble.classList.contains('hidden')) {
+    //       bubble.classList.remove('hidden')
+    //       label.classList.remove('sideways-text')
+    //     } else {
+    //       bubble.classList.add('hidden')
+    //       label.classList.add('sideways-text')
+    //     }
+    //   })
+    // })
+    const pointToggleMap = {
+      '#toggle-lp': 'luckPoints',
+      '#toggle-mp': 'magicPoints',
+      '#toggle-tp': 'tenacity',
+      '#toggle-ap': 'actionPoints',
+      '#toggle-er': 'experienceRoll'
+    }
+    for (const [key, value] of Object.entries(pointToggleMap)) {
+      html.find(key).click(function (event) {
+        event.preventDefault()
+        const label = document.querySelector(key)
+        const parent = label.parentNode
+        const bubble = parent.querySelector('.number-input-container')
+        if (bubble.classList.contains('hidden')) {
+          actor.update({
+            ['data.attributes.' + value + '.minimize']: 0
+          })
+          // bubble.classList.remove('hidden')
+          // label.classList.remove('sideways-text')
+        } else {
+          actor.update({
+            ['data.attributes.' + value + '.minimize']: 1
+          })
+          // bubble.classList.add('hidden')
+          // label.classList.add('sideways-text')
+        }
+      })
+    }
     // Actor Current Point increase listeners
     const pointIncreaseMapping = {
       '#increase-current-lp': 'luckPoints',
       '#increase-current-mp': 'magicPoints',
+      '#increase-current-tp': 'tenacity',
       '#increase-current-ap': 'actionPoints',
       '#increase-current-er': 'experienceRolls'
     }
@@ -301,6 +353,7 @@ export class ActorSheetMythras extends ActorSheet {
     const pointDecreaseMapping = {
       '#decrease-current-lp': 'luckPoints',
       '#decrease-current-mp': 'magicPoints',
+      '#decrease-current-tp': 'tenacity',
       '#decrease-current-ap': 'actionPoints',
       '#decrease-current-er': 'experienceRolls'
     }

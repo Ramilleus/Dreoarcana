@@ -202,9 +202,9 @@ div.window-app section.window-content {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 150px;
   flex: 0 0 150px;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
 }
 
 .mythras header.actor-sheet-header .header-stats input {
@@ -244,6 +244,11 @@ div.window-app section.window-content {
   height: 28px;
 }
 
+.mythras header.actor-sheet-header .header-stats .input-label span:hover {
+  text-shadow: white 1px 0 10px;
+  cursor: pointer;
+}
+
 .mythras header.actor-sheet-header .header-stats .stats-container {
   height: 100px;
   display: -webkit-box;
@@ -259,6 +264,10 @@ div.window-app section.window-content {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+.mythras header.actor-sheet-header .header-stats .stats-container .hidden {
+  display: none !important;
 }
 
 .mythras header.actor-sheet-header .header-stats .stats-container .number-input-container {
@@ -288,6 +297,31 @@ div.window-app section.window-content {
 
 .mythras header.actor-sheet-header .header-stats .stats-container .number-input-container .plus-minus-buttons a:active {
   color: #ddd;
+}
+
+.mythras header.actor-sheet-header .header-stats .sideways-text {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  -webkit-writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+  height: 100px;
+  width: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.mythras header.actor-sheet-header .header-stats .sideways-text span {
+  width: 15px;
+  display: block;
 }
 
 .mythras .tabs > * {
@@ -1208,6 +1242,11 @@ div.window-app section.window-content {
 }
 
 .mythras div.combat .combat-tables .top-combat-tables > div > div .hitloc-naturalArmor-cell {
+  text-align: center;
+  width: 80px;
+}
+
+.mythras div.combat .combat-tables .top-combat-tables > div > div .hitloc-naturalArmor-cell input {
   width: 40px;
 }
 

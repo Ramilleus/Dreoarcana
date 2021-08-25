@@ -48,32 +48,32 @@ Hooks.once('ready', async function () {
         .get('mythras.standardSkill')
         .getDocuments()
         .then((result) => {
-          let chain = Promise.resolve()
+          let skillArray = []
           result.forEach((skill, index) => {
             if (game.i18n) {
               skill.data.name = game.i18n.localize(
                 'MYTHRAS.' + skill.data.name.replace(/ /g, '_')
               )
             }
-            chain = chain.then(() => Item.create(skill.data, { parent: actor }))
+            skillArray.push(skill.data)
           })
+          actor.createEmbeddedDocuments('Item', skillArray)
         })
       // Hit Locations
       game.packs
         .get('mythras.humanoidHitLocations')
         .getDocuments()
         .then((result) => {
-          let chain = Promise.resolve()
+          let hitLocArray = []
           result.forEach((hitLoc, index) => {
             if (game.i18n) {
               hitLoc.data.name = game.i18n.localize(
                 'MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_')
               )
             }
-            chain = chain.then(() =>
-              Item.create(hitLoc.data, { parent: actor })
-            )
+            hitLocArray.push(hitLoc.data)
           })
+          actor.createEmbeddedDocuments('Item', hitLocArray)
         })
     }
   })

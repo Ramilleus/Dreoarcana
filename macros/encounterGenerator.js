@@ -327,6 +327,7 @@ async function createActor(skollEnemy, folder) {
         rollRangeStart: rollRangeStart,
         rollRangeEnd: rollRangeEnd,
         baseHp: baseHp,
+        naturalArmor: hitLocation.ap,
         maxHp: 0,
         currentHp: currentHp
       }
@@ -335,24 +336,6 @@ async function createActor(skollEnemy, folder) {
         name: name,
         type: type,
         data: data
-      })
-
-      let armorName = name + ' Armor'
-      let enc =
-        skollEnemy.attributes['strike_rank'].includes('-0') ||
-        hitLocation.ap === 0
-          ? 0
-          : hitLocation.ap - 1
-      let armorData = {
-        ap: hitLocation.ap,
-        encumbrance: enc,
-        locationName: name,
-        equipped: false
-      }
-      actorItems.push({
-        name: armorName,
-        type: 'armor',
-        data: armorData
       })
     })
   })
@@ -459,23 +442,20 @@ async function createActor(skollEnemy, folder) {
     }).then((actor) => {
       // May need to add armor to the actor here since hitlocs exists here (or add another promise to the chain after the actor create one? i dunno)
       // Testing that hitlocs exist here
-      let locations = actor.items.filter(function (value) {
-        return value.type === 'hitLocation'
-      })
-      let armor = actor.items.filter(function (value) {
-        return value.type === 'armor'
-      })
-      armor.forEach((a) => {
-        let armorLoc = locations.filter(function (value) {
-          return value.data.name === a.data.data.locationName
+      let skollmod = skollEnemy.attributes.strike_rank
+      let mod = 0
+      if (skollmod.includes('-')) {
+        let splitArray = skollmod.split('-')
+        mod = '-' + splitArray[splitArray.length - 1].split(')')[0]
+      } else if (skollmod.includes('+')) {
+        let splitArray = skollmod.split('+')
+        mod = splitArray[splitArray.length - 1].split(')')[0]
+      }
+      if (mod !== 0) {
+        actor.update({
+          ['data.attributes.initiativeBonus.mod']: Number(mod)
         })
-        actor.updateEmbeddedDocuments('Item', [
-          {
-            _id: a.id,
-            'data.location': armorLoc[0].data.id
-          }
-        ])
-      })
+      }
     })
   })
 }

@@ -152,10 +152,10 @@ div.combat {
           .hitloc-hp-cell {
             width: 100px;
           }
-          .hitloc-ap-cell {
-            // display: flex;
-            // flex-direction: row;
-          }
+          // .hitloc-ap-cell {
+          //   // display: flex;
+          //   // flex-direction: row;
+          // }
           .hitloc-apbonus-cell {
             display: flex;
             width: 30px;
@@ -163,7 +163,14 @@ div.combat {
           .hitloc-range-cell {
             width: 80px;
           }
+          .hitloc-naturalArmor-cell {
+            text-align: center;
+            width: 80px;
 
+            input {
+              width: 40px;
+            }
+          }
           .delete-column {
             width: 20px;
           }

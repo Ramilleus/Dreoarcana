@@ -37,7 +37,8 @@
         "attributes": {
           "actionPoints": {
             "mod": 0,
-            "value": 2
+            "value": 2,
+            "minimize": 0
           },
           "damageMod": {
             "mod": 0
@@ -56,15 +57,18 @@
           },
           "luckPoints": {
             "mod": 0,
-            "value": 2
+            "value": 2,
+            "minimize": 0
           },
           "magicPoints": {
             "mod": 0,
-            "value": 11
+            "value": 11,
+            "minimize": 0
           },
           "tenacity": {
             "mod": 0,
-            "value": 0
+            "value": 11,
+            "minimize": 0
           },
           "movement": {
             "walk": 6,
@@ -90,6 +94,9 @@
           "armorPenalty": {
             "value": 0,
             "mod": 0
+          },
+          "experienceRoll": {
+            "minimize": 0
           }
         },
         "currentLuckPoints": 2,

@@ -13,7 +13,7 @@
     </div>
     <div class="header-stats">
       <div class="stats-container">
-        <div class="number-input-container">
+        <div class="number-input-container {{#if data.data.attributes.actionPoints.minimize}}hidden{{/if}}">
           <div>
             <input class="action-points" name="data.attributes.actionPoints.value" onclick="this.select()" type="text"
               value="{{data.data.attributes.actionPoints.value}}" placeholder="" />
@@ -24,10 +24,12 @@
             <a id="decrease-current-ap">-</a>
           </div>
         </div>
-        <p class="input-label">{{localize 'MYTHRAS.ACTION_POINTS'}}</p>
+        <p class="input-label {{#if data.data.attributes.actionPoints.minimize}}sideways-text{{/if}}" id="toggle-ap">
+          <span>{{localize 'MYTHRAS.ACTION_POINTS'}}</span>
+        </p>
       </div>
       <div class="stats-container">
-        <div class="number-input-container">
+        <div class="number-input-container {{#if data.data.attributes.luckPoints.minimize}}hidden{{/if}}">
           <div>
             <input class="luck-points" name="data.attributes.luckPoints.value" onclick="this.select()" type="text"
               value="{{data.data.attributes.luckPoints.value}}" placeholder="" />
@@ -38,10 +40,12 @@
             <a id="decrease-current-lp">-</a>
           </div>
         </div>
-        <p class="input-label">{{localize 'MYTHRAS.LUCK_POINTS'}}</p>
+        <p class="input-label {{#if data.data.attributes.luckPoints.minimize}}sideways-text{{/if}}" id="toggle-lp">
+          <span>{{localize 'MYTHRAS.LUCK_POINTS'}}</span>
+        </p>
       </div>
       <div class="stats-container">
-        <div class="number-input-container">
+        <div class="number-input-container {{#if data.data.attributes.magicPoints.minimize}}hidden{{/if}}">
           <div>
             <input class="magic-points" name="data.attributes.magicPoints.value" onclick="this.select()" type="text"
               value="{{data.data.attributes.magicPoints.value}}" placeholder="" />
@@ -52,10 +56,30 @@
             <a id="decrease-current-mp">-</a>
           </div>
         </div>
-        <p class="input-label">{{localize 'MYTHRAS.MAGIC_POINTS'}}</p>
+        <p class="input-label {{#if data.data.attributes.magicPoints.minimize}}sideways-text{{/if}}" id="toggle-mp">
+          <span>{{localize 'MYTHRAS.MAGIC_POINTS'}}</span>
+        </p>
       </div>
+
       <div class="stats-container">
-        <div class="number-input-container">
+        <div class="number-input-container {{#if data.data.attributes.tenacity.minimize}}hidden{{/if}}">
+          <div>
+            <input class="tenacity-points" name="data.attributes.tenacity.value" onclick="this.select()" type="text"
+              value="{{data.data.attributes.tenacity.value}}" placeholder="" />
+            <p class="point-total">/{{data.data.attributes.tenacity.max}}</p>
+          </div>
+          <div class="plus-minus-buttons">
+            <a id="increase-current-tp">+</a>
+            <a id="decrease-current-tp">-</a>
+          </div>
+        </div>
+        <p class="input-label {{#if data.data.attributes.tenacity.minimize}}sideways-text{{/if}}" id="toggle-tp">
+          <span>TENACITY</span>
+        </p>
+      </div>
+
+      <div class="stats-container">
+        <div class="number-input-container {{#if data.data.attributes.experienceRoll.minimize}}hidden{{/if}}">
           <input class="experience-rolls" name="data.experienceRolls" onclick="this.select()" type="text"
             value="{{data.data.experienceRolls}}" placeholder="" />
           <div class="plus-minus-buttons">
@@ -63,7 +87,8 @@
             <a id="decrease-current-er">-</a>
           </div>
         </div>
-        <p class="input-label">{{localize 'MYTHRAS.EXPERIENCE_ROLLS'}}</p>
+        <p class="input-label {{#if data.data.attributes.experienceRoll.minimize}}sideways-text{{/if}}" id="toggle-er">
+          <span>{{localize 'MYTHRAS.EXPERIENCE_ROLLS'}}</span></p>
       </div>
     </div>
   </header>

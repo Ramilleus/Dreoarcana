@@ -17,7 +17,7 @@
             <thead>
               <th class="hitloc-location-cell">{{localize 'MYTHRAS.Location'}}</th>
               <th class="hitloc-range-cell">{{localize 'MYTHRAS.Range2'}}</th>
-              <th class="hitloc-naturalArmor-cell">Natural Armor</th>
+              <th class="hitloc-naturalArmor-cell">Natural AP</th>
               <th class="hitloc-armor-cell">{{localize 'MYTHRAS.Armor'}}</th>
               <th class="hitloc-ap-cell">{{localize 'MYTHRAS.AP'}}</th>
               <th class="hitloc-hp-cell ">
@@ -47,10 +47,9 @@
                   <input id="{{id}}_{{item.data._id}}_rollRangeEnd_hitLoc" type="text"
                     name="item.data.data.rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
                 </td>
-                <td class="hitloc-naturalArmor-cell">
+                <td class="hitloc-flex-cell hitloc-naturalArmor-cell">
                   <input id="{{id}}_{{item.data._id}}_naturalArmor_hitLoc" type="text"
-                         name="item.data.data.naturalArmor" data-dtype="text"
-                         value="{{item.data.data.naturalArmor}}" />
+                    name="item.data.data.naturalArmor" data-dtype="text" value="{{item.data.data.naturalArmor}}" />
                 </td>
                 <td class="hitloc-armor-cell">
                   {{item.data.data.armors}}
