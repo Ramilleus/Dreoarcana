@@ -2,14 +2,18 @@
 import { registerActors, registerItems } from './module/register-sheets.js'
 import { MythrasItem } from './module/item/item.js'
 import { ActorMythras } from './module/actor/actor.js'
-import { CombatMythras } from './module/combat-mythras.js'
+import { CombatMythras } from './module/combat/combat-mythras.js'
+import { MythrasCombatTracker } from './module/combat/combat-tracker.js'
+import { MythrasCombatTrackerConfig } from './module/combat/combat-config.js'
 import loadPartials from './module/templates.js'
 
 Hooks.once('init', async function () {
   game.mythras = {
     ActorMythras,
     MythrasItem,
-    CombatMythras
+    CombatMythras,
+    MythrasCombatTracker,
+    MythrasCombatTrackerConfig
   }
 
   /**
@@ -24,6 +28,7 @@ Hooks.once('init', async function () {
   CONFIG.Actor.documentClass = ActorMythras
   CONFIG.Item.documentClass = MythrasItem
   CONFIG.Combat.documentClass = CombatMythras
+  CONFIG.ui.combat = MythrasCombatTracker
 
   // Register sheet application classes
   registerActors()
@@ -51,9 +56,11 @@ Hooks.once('ready', async function () {
           let skillArray = []
           result.forEach((skill, index) => {
             if (game.i18n) {
-              skill.data.name = game.i18n.localize(
-                'MYTHRAS.' + skill.data.name.replace(/ /g, '_')
-              )
+              skill.data.update({
+                name: game.i18n.localize(
+                  'MYTHRAS.' + skill.data.name.replace(/ /g, '_')
+                )
+              })
             }
             skillArray.push(skill.data)
           })
@@ -67,9 +74,11 @@ Hooks.once('ready', async function () {
           let hitLocArray = []
           result.forEach((hitLoc, index) => {
             if (game.i18n) {
-              hitLoc.data.name = game.i18n.localize(
-                'MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_')
-              )
+              hitLoc.data.update({
+                name: game.i18n.localize(
+                  'MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_')
+                )
+              })
             }
             hitLocArray.push(hitLoc.data)
           })

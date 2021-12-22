@@ -3,6 +3,15 @@
  * @extends {Combat}
  */
 export class CombatMythras extends Combat {
+  prepareData() {
+    super.prepareData()
+  }
+  async startCombat() {
+    await this.setupTurns()
+    await this.setFlag('mythras', 'cycle', 0)
+    return super.startCombat()
+  }
+
   /**
    * Advance the combat to the next turn
    * @return {Promise<Combat>}
@@ -10,8 +19,13 @@ export class CombatMythras extends Combat {
   async nextTurn() {
     let turn = this.turn
     let skip = this.settings.skipDefeated
-
+    let reduceAP = this.settings.reduceAP
+    let newMTurn = this.getFlag('mythras', 'cycle')
     let l = this.turns.length
+    if (turn == l - 1) {
+      newMTurn++
+      this.setFlag('mythras', 'cycle', newMTurn)
+    }
     for (let i = 0; i < l; i++) {
       // Determine the next turn number
       let next = (turn + i + 1) % l
@@ -26,12 +40,21 @@ export class CombatMythras extends Combat {
       )
         continue
       if (t.actor?.data.data.attributes.actionPoints.value < 1) continue
+      if (reduceAP) {
+        let c = this.turns[turn]
+        c.actor.update({
+          ['data.attributes.actionPoints.value']:
+            Number(c.actor.data.data.attributes.actionPoints.value) - 1
+        })
+      }
 
       // Update the encounter
+
       const advanceTime = CONFIG.time.turnTime
       this.update({ round: this.round, turn: next }, { advanceTime })
       return
     }
+
     return this.nextRound()
   }
 
@@ -41,12 +64,12 @@ export class CombatMythras extends Combat {
    */
   async nextRound() {
     let turn = 0
-
+    this.setFlag('mythras', 'cycle', 0)
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
-      t._actor.update({
+      t.actor.update({
         ['data.attributes.actionPoints.value']: Number(
-          t._actor.data.data.attributes['actionPoints'].max
+          t.actor.data.data.attributes['actionPoints'].max
         )
       })
     }
@@ -69,6 +92,13 @@ export class CombatMythras extends Combat {
     let advanceTime =
       Math.max(this.turns.length - this.data.turn, 1) * CONFIG.time.turnTime
     advanceTime += CONFIG.time.roundTime
-    return this.update({ round: this.round + 1, turn: turn }, { advanceTime })
+
+    return this.update(
+      {
+        round: this.round + 1,
+        turn: turn
+      },
+      { advanceTime }
+    )
   }
 }

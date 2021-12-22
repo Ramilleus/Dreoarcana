@@ -8,7 +8,9 @@ import { doesTypeHaveTemplate } from '../actor-helper.js'
 export class ActorSheetMythras extends ActorSheet {
   /** @override */
   static get defaultOptions() {
-    return super.defaultOptions
+    return mergeObject(super.defaultOptions, {
+      dragDrop: [{ dragSelector: ['.item'], dropSelector: null }]
+    })
   }
 
   /* -------------------------------------------- */
@@ -201,7 +203,7 @@ export class ActorSheetMythras extends ActorSheet {
           }
           this.actor.updateEmbeddedDocuments('Item', [
             {
-              _id: hitLoc.data.id,
+              _id: hitLoc.id,
               'data.data.maxHp': newHp,
               'data.data.maxHpMod': formData['item.data.data.maxHpMod'][index]
             }
@@ -506,99 +508,107 @@ export class ActorSheetMythras extends ActorSheet {
          
          </tr>`
       }
-
-      let i = 0
-      diffNames.forEach((name, index) => {
-        let resultString = ''
-        if (rolled.result >= 95) {
-          if (
-            rolled.result == 100 ||
-            (rolled.result == 99 && diffGrades[index] <= 100)
-          ) {
-            resultString =
-              " <span style='color:darkred;'> <b>FUMBLE!</b></span>"
-            if (game.i18n) {
-              resultString =
-                " <span style='color:darkred;'> <b>" +
-                game.i18n.localize('MYTHRAS.FUMBLE!') +
-                '</b></span>'
-            }
-          } else {
-            resultString = " <span style='color:red;'> <b>FAILURE!</b></span>"
-            if (game.i18n) {
-              resultString =
-                " <span style='color:red;'> <b>" +
-                game.i18n.localize('MYTHRAS.FAILURE!') +
-                '</b></span>'
-            }
-          }
-        } else if (rolled.result <= 5) {
-          if (
-            rolled.result == 1 ||
-            rolled.result <= Math.ceil(diffGrades[index] * 0.1)
-          ) {
-            resultString =
-              " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
-            if (game.i18n) {
-              resultString =
-                " <span style='color:goldenrod;'> <b>" +
-                game.i18n.localize('MYTHRAS.CRITICAL!') +
-                '</b></span>'
-            }
-          } else {
-            resultString = " <span style='color:green;'> <b>SUCCESS!</b></span>"
-            if (game.i18n) {
-              resultString =
-                " <span style='color:green;'> <b>" +
-                game.i18n.localize('MYTHRAS.SUCCESS!') +
-                '</b></span>'
-            }
-          }
-        } else {
-          if (rolled.result <= Math.ceil(diffGrades[index] * 0.1)) {
-            resultString =
-              " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
-            if (game.i18n) {
-              resultString =
-                " <span style='color:goldenrod;'> <b>" +
-                game.i18n.localize('MYTHRAS.CRITICAL!') +
-                '</b></span>'
-            }
-          } else {
-            resultString = `${
-              rolled.result <= diffGrades[index]
-                ? " <span style='color:green;'> <b>SUCCESS!</b></span>"
-                : " <span style='color:red;'> <b>FAILURE!</b></span>"
-            }`
-            if (game.i18n) {
-              resultString = `${
-                rolled.result <= diffGrades[index]
-                  ? " <span style='color:green;'> <b>" +
-                    game.i18n.localize('MYTHRAS.SUCCESS!') +
-                    '</b></span>'
-                  : " <span style='color:red;'> <b>" +
-                    game.i18n.localize('MYTHRAS.FAILURE!') +
-                    '</b></span>'
-              } `
-            }
-          }
-        }
-        contentString += `<tr>
-        <td><b>${name}</b></td>
-        <td>[[${rolled.result}]]</td>
-        <td> ≤ </td>
-        <td>[[${diffGrades[index]}]]</td>
-        <td>${resultString}</td>
-        </tr> `
-      })
-      contentString += `</table></p>`
-      roll.toMessage({
-        user: game.user.id,
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label,
-        content: contentString
+      rolled.then((result) => {
+        contentString = this.rollTableString(
+          diffNames,
+          diffGrades,
+          result,
+          contentString
+        )
+        contentString += `</table></p>`
+        roll.toMessage({
+          user: game.user.id,
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flavor: label,
+          content: contentString
+        })
       })
     }
+  }
+  rollTableString(diffNames, diffGrades, rolled, contentString) {
+    diffNames.forEach((name, index) => {
+      let resultString = ''
+      if (rolled.result >= 95) {
+        if (
+          rolled.result == 100 ||
+          (rolled.result == 99 && diffGrades[index] <= 100)
+        ) {
+          resultString = " <span style='color:darkred;'> <b>FUMBLE!</b></span>"
+          if (game.i18n) {
+            resultString =
+              " <span style='color:darkred;'> <b>" +
+              game.i18n.localize('MYTHRAS.FUMBLE!') +
+              '</b></span>'
+          }
+        } else {
+          resultString = " <span style='color:red;'> <b>FAILURE!</b></span>"
+          if (game.i18n) {
+            resultString =
+              " <span style='color:red;'> <b>" +
+              game.i18n.localize('MYTHRAS.FAILURE!') +
+              '</b></span>'
+          }
+        }
+      } else if (rolled.result <= 5) {
+        if (
+          rolled.result == 1 ||
+          rolled.result <= Math.ceil(diffGrades[index] * 0.1)
+        ) {
+          resultString =
+            " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
+          if (game.i18n) {
+            resultString =
+              " <span style='color:goldenrod;'> <b>" +
+              game.i18n.localize('MYTHRAS.CRITICAL!') +
+              '</b></span>'
+          }
+        } else {
+          resultString = " <span style='color:green;'> <b>SUCCESS!</b></span>"
+          if (game.i18n) {
+            resultString =
+              " <span style='color:green;'> <b>" +
+              game.i18n.localize('MYTHRAS.SUCCESS!') +
+              '</b></span>'
+          }
+        }
+      } else {
+        if (rolled.result <= Math.ceil(diffGrades[index] * 0.1)) {
+          resultString =
+            " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
+          if (game.i18n) {
+            resultString =
+              " <span style='color:goldenrod;'> <b>" +
+              game.i18n.localize('MYTHRAS.CRITICAL!') +
+              '</b></span>'
+          }
+        } else {
+          resultString = `${
+            rolled.result <= diffGrades[index]
+              ? " <span style='color:green;'> <b>SUCCESS!</b></span>"
+              : " <span style='color:red;'> <b>FAILURE!</b></span>"
+          }`
+          if (game.i18n) {
+            resultString = `${
+              rolled.result <= diffGrades[index]
+                ? " <span style='color:green;'> <b>" +
+                  game.i18n.localize('MYTHRAS.SUCCESS!') +
+                  '</b></span>'
+                : " <span style='color:red;'> <b>" +
+                  game.i18n.localize('MYTHRAS.FAILURE!') +
+                  '</b></span>'
+            } `
+          }
+        }
+      }
+      contentString += `<tr>
+      <td><b>${name}</b></td>
+      <td>[[${rolled.result}]]</td>
+      <td> ≤ </td>
+      <td>[[${diffGrades[index]}]]</td>
+      <td>${resultString}</td>
+      </tr> `
+    })
+    return contentString
   }
   _onRollMeleeDamage(event) {
     event.preventDefault()
@@ -608,6 +618,8 @@ export class ActorSheetMythras extends ActorSheet {
     const damMod = weapon.data.data.damageModifier
     const combatEffect = weapon.data.data['combat-effects']
     const traits = weapon.data.data.traits
+    const size = weapon.data.data.size
+    const reach = weapon.data.data.reach
     if (dataset.roll) {
       let damage = dataset.roll
       if (damMod) {
@@ -626,9 +638,13 @@ export class ActorSheetMythras extends ActorSheet {
           ? `${game.i18n.localize('MYTHRAS.Rolling')} ${weapon.data.name} `
           : ''
         label +=
+          '<br><strong>Size: </strong>' +
+          size +
+          '&#8195;<strong>Reach: </strong>' +
+          reach +
           '<br><strong>' +
           game.i18n.localize('MYTHRAS.Combat_Effects') +
-          '</strong>' +
+          ': </strong>' +
           combatEffect +
           '<br><strong>' +
           game.i18n.localize('MYTHRAS.Traits') +
@@ -650,6 +666,7 @@ export class ActorSheetMythras extends ActorSheet {
     const name = weapon.data.name
     const damMod = weapon.data.data.damageModifier
     const combatEffect = weapon.data.data['combat-effects']
+    const force = weapon.data.data.force
     if (dataset.roll) {
       let damage = dataset.roll
       if (damMod) {
@@ -657,12 +674,18 @@ export class ActorSheetMythras extends ActorSheet {
       }
       let roll = new Roll(damage, this.actor.data.data)
       let label = dataset.label ? `Rolling ${name} ` : ''
-      label += '<br><strong>Combat-Effects: </strong>' + combatEffect
+      label +=
+        '<br><strong>Force: </strong>' +
+        force +
+        '<br><strong>Combat-Effects: </strong>' +
+        combatEffect
       if (game.i18n) {
         let label = dataset.label
           ? `${game.i18n.localize('MYTHRAS.Rolling')} ${name} `
           : ''
         label +=
+          '<br><strong>Force: </strong>' +
+          force +
           '<br><strong>' +
           game.i18n.localize('MYTHRAS.Combat_Effects') +
           ': </strong>' +
@@ -683,23 +706,25 @@ export class ActorSheetMythras extends ActorSheet {
     if (dataset.roll) {
       let roll = new Roll(dataset.roll, this.actor.data.data)
       const rolled = roll.roll()
-      const rollResult = Number(rolled.result)
       let label = dataset.label ? `Rolling Hit Location` : ''
       if (game.i18n) {
         label = dataset.label
           ? game.i18n.localize('MYTHRAS.Rolling_Location')
           : ''
       }
-
-      const locHit = hitLoc.filter(function (value) {
-        let loc = value.split('/')
-        return rollResult >= Number(loc[1]) && rollResult <= Number(loc[2])
-      })
-      let loc = String(locHit).split('/')
-      label += '<br><h2>' + loc[0] + '</h2>'
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
+      rolled.then((result) => {
+        const locHit = hitLoc.filter(function (value) {
+          let loc = value.split('/')
+          return (
+            result.result >= Number(loc[1]) && result.result <= Number(loc[2])
+          )
+        })
+        let loc = String(locHit).split('/')
+        label += '<br><h2>' + loc[0] + '</h2>'
+        roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flavor: label
+        })
       })
     }
   }

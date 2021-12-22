@@ -9,7 +9,11 @@ export default function () {
     'systems/mythras/templates/actor/tabs/actor-combat.html',
     'systems/mythras/templates/actor/tabs/actor-abilities.html',
     'systems/mythras/templates/actor/tabs/actor-equipment.html',
-    'systems/mythras/templates/actor/tabs/actor-notes.html'
+    'systems/mythras/templates/actor/tabs/actor-notes.html',
+
+    // Combat partials
+    'systems/mythras/templates/combat/combat-tracker.html',
+    'systems/mythras/templates/combat/combat-config.html'
   ]
   return loadTemplates(templatePaths)
 }
