@@ -190,5 +190,12 @@
   "MYTHRAS.FUMBLE!": "¡Pifia!",
   "MYTHRAS.FAILURE!": "¡Fallo!",
   "MYTHRAS.SUCCESS!": "¡Éxito!",
-  "MYTHRAS.CRITICAL!": "¡Crítico!"
+  "MYTHRAS.CRITICAL!": "¡Crítico!",
+  "MYTHRAS.Carried": "Portado",
+  "MYTHRAS.Storage": "Contenedor",
+  "MYTHRAS.Storages": "Contenedores",
+  "MYTHRAS.New_storage": "Nuevo Contenedor",
+  "MYTHRAS.No_Storage": "Equipado",
+  "MYTHRAS.Max_ENC": "Max. Car",
+  "MYTHRAS.Max_Encumbrance": "Max. Carga"
 }

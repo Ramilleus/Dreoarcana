@@ -21,38 +21,44 @@
     <h2>{{localize 'MYTHRAS.Items'}}</h2>
     <div class="top-equipment-tables">
       <div class="tables-left">
-        <div>
-          <h3>
-            <span>{{localize 'MYTHRAS.Equipment'}}</span><a class="add-items-button item-create" title="Create item"
-              data-type="equipment">+</a>
-          </h3>
-          <table class="equipment-table">
-            <thead>
-              <th>{{localize 'MYTHRAS.Name'}}</th>
-              <th>{{localize 'MYTHRAS.ENC'}}</th>
-              <th>{{localize 'MYTHRAS.Quantity'}}</th>
-              <th class="delete-column"><i class="fas fa-trash"></i></th>
-            </thead>
-            <tbody>
-              {{#each actor.equipment as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
-                <td>
-                  <a class="item-name item-control item-edit">{{item.data.name}}</a>
-                </td>
-                <td>
-                  {{item.data.data.encumbrance}}
-                </td>
-                <td>
-                  {{item.data.data.quantity}}
-                </td>
-                <td>
-                  <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
+	    <div>
+	      <h3>
+	        <span>{{localize 'MYTHRAS.Storage'}}</span><a class="add-items-button item-create" title="Create item"
+	          data-type="storage">+</a>
+	      </h3>
+	      <table class="storage-table">
+	        <thead>
+	          <th>{{localize 'MYTHRAS.Name'}}</th>
+	          <th>{{localize 'MYTHRAS.Carried'}}</th>
+	          <th>{{localize 'MYTHRAS.ENC'}}</th>
+	          <th>{{localize 'MYTHRAS.Value'}}</th>
+	        </div>
+	          <th class="delete-column"><i class="fas fa-trash"></i></th>
+	        </thead>
+	        <tbody>
+	          {{#each actor.storages as |item id|}}
+	          <tr class="item" data-item-id="{{item.data._id}}">
+	            <td>
+	              <a class="item-name item-control item-edit">{{item.data.name}}</a>
+	            </td>
+	            <td>
+	              <input id="{{id}}_{{item.data._id}}_carried" type="checkbox" name="item.{{item.data._id}}.carried" {{checked
+	                item.data.data.carried}} />
+	            </td>
+	            <td>
+	              {{item.data.data.encumbrance}} {{#if data.data.formattedCE}}(+{{data.data.formattedCE}}/{{item.data.data.maxEncumbrance}}){{/if}}
+	            </td>
+	            <td>
+	              {{item.data.data.value}} {{#if data.data.formattedCV}}(+{{data.data.formattedCV}}){{/if}}
+	            </td>
+	            <td>
+	              <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+	            </td>
+	          </tr>
+	          {{/each}}
+	        </tbody>
+	      </table>
+	    </div>
       </div>
       <div class="tables-right">
         <div>
@@ -92,6 +98,51 @@
           </table>
         </div>
       </div>
+    </div>
+
+    <div>
+      <h3>
+        <span>{{localize 'MYTHRAS.Equipment'}}</span><a class="add-equipment-button item-create" title="Create item"
+          data-type="equipment">+</a>
+      </h3>
+      <table class="equipment-table">
+        <thead>
+          <th>{{localize 'MYTHRAS.Name'}}</th>
+          <th>{{localize 'MYTHRAS.ENC'}}</th>
+          <th>{{localize 'MYTHRAS.Quantity'}}</th>
+          <th>{{localize 'MYTHRAS.AP/HP'}}</th>
+          <th>{{localize 'MYTHRAS.Value'}}</th>
+          <th>{{localize 'MYTHRAS.Storage'}}</th>
+          <th class="delete-column"><i class="fas fa-trash"></i></th>
+        </thead>
+        <tbody>
+          {{#each actor.equipment as |item id|}}
+          <tr class="item" data-item-id="{{item.data._id}}">
+            <td>
+              <a class="item-name item-control item-edit">{{item.data.name}}</a>
+            </td>
+            <td>
+              {{item.data.data.encumbrance}}
+            </td>
+            <td>
+              {{item.data.data.quantity}}
+            </td>
+            <td>
+              {{item.data.data.ap}} / {{item.data.data.hp}}
+            </td>
+            <td>
+              {{item.data.data.value}}
+            </td>
+            <td>
+              {{item.data.data.storageName}}{{#if (eq item.data.data.storage 'Unknown')}}{{localize 'MYTHRAS.No_Storage'}}{{/if}}
+            </td>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
 
     <h2>{{localize 'MYTHRAS.Armor'}}</h2>

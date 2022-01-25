@@ -1,4 +1,4 @@
-import { fatigueInfo } from './actor-helper.js'
+import { fatigueInfo, physicalItems, formatter } from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
@@ -44,6 +44,9 @@ export class ActorMythras extends Actor {
     // Prepare a character's attributes
     this.prepareAttributes(data, items)
 
+	//prepare a character storage content info
+	this.prepareStoragesContentInfo(items)
+	
     // Prepare a character's encumbrance limits
     this.prepareEncumbrance(data, items)
 
@@ -74,7 +77,7 @@ export class ActorMythras extends Actor {
     let int = Number(data.characteristics.int.value)
     let pow = Number(data.characteristics.pow.value)
     let cha = Number(data.characteristics.cha.value)
-
+	
     let armor = items.filter(function (value) {
       return value.type === 'armor'
     })
@@ -167,10 +170,6 @@ export class ActorMythras extends Actor {
    * @param {*} items
    */
   prepareEncumbrance(data, items) {
-    const formatter = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2
-    })
     let str = Number(data.characteristics.str.value)
     data.attributes.encumbrance.burdened = str * 2
     data.attributes.encumbrance.overloaded = str * 3
@@ -179,7 +178,30 @@ export class ActorMythras extends Actor {
       this.encumbranceCalc(items)
     )
   }
+  
+  /**
+   * Calculates and sets a character's content encumbrance and value inside each storage
+   * @param {*} items
+   */
+  prepareStoragesContentInfo(items) {
+    let storedItems = items.filter(function (value) {
+      return physicalItems.includes(value.type)
+    })
 
+	storedItems.forEach((thing) => {
+	  let storage = items.find((item)=> item.id === thing.data.data.storage)
+	  if(storage !== undefined && storage.id != thing.id) {
+		let qty = Number(thing.data.data.quantity) || 0
+		let enc = Number(storage.data.data.contentEncumbrance) + Number(thing.data.data.encumbrance) * qty
+		let val = Number(storage.data.data.contentValue) + Number(thing.data.data.value) * qty
+		storage.data.data.contentEncumbrance = enc || 0
+		storage.data.data.contentValue = val || 0
+		storage.data.data.formattedCE = formatter.format(enc)
+		storage.data.data.formattedCV = formatter.format(val)
+	  }
+	})
+  }
+  
   /**
    * Calculates and sets a character's movement rates
    * @param {*} data
@@ -270,15 +292,6 @@ export class ActorMythras extends Actor {
    * @param {*} items
    */
   encumbranceCalc(items) {
-    // List of physical item types. Does not include skills, hit locations, etc.
-    const physicalItems = [
-      'melee-weapon',
-      'ranged-weapon',
-      'armor',
-      'equipment',
-      'currency'
-    ]
-
     // Get all of the players owned items that are physical
     let encItems = items.filter(function (value) {
       return physicalItems.includes(value.type)
@@ -287,12 +300,23 @@ export class ActorMythras extends Actor {
     return encItems.reduce((totalEnc, i) => {
       let quantity = Number(i.data.data.quantity) || 0
       let enc = Number(i.data.data.encumbrance) || 0
+      let carriedStorage = 1
+      if(i.data.type === 'storage') {
+		 carriedStorage = Number(i.data.data.carried) || 0
+	  }
+      if(i.data.data.storage !== undefined) {
+	     let itemStorage = items.get(i.data.data.storage)
+	     if(itemStorage !== undefined && itemStorage != i.id) {
+ 	       carriedStorage = Number(itemStorage.data.data.carried) && carriedStorage
+	     }
+      }
+
       if (i.data.type === 'armor' && i.data.data.equipped) {
         // If an item is equipped armor, only add half of it's enc to total enc
-        return totalEnc + Math.ceil(enc / 2)
+        return totalEnc + Math.ceil(enc / 2) * carriedStorage
       } else {
         // Else, add enc * quantity to total enc
-        return totalEnc + enc * quantity
+        return totalEnc + enc * quantity * carriedStorage
       }
     }, 0)
   }

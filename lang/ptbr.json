@@ -182,5 +182,12 @@
   "MYTHRAS.Range2": "Alcance",
   "MYTHRAS.Close": "Perto",
   "MYTHRAS.Effective": "Efetivo",
-  "MYTHRAS.Spell_Level": "Nível da Magia"
+  "MYTHRAS.Spell_Level": "Nível da Magia",
+  "MYTHRAS.Carried": "Carried",
+  "MYTHRAS.Storage": "Storage",
+  "MYTHRAS.Storages": "Storages",
+  "MYTHRAS.New_storage": "New Storage",
+  "MYTHRAS.No_Storage": "Equipped",
+  "MYTHRAS.Max_ENC": "Max. ENC",
+  "MYTHRAS.Max_Encumbrance": "Max. Encumbrance"
 }

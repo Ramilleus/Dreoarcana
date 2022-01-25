@@ -1,4 +1,5 @@
 import { updateSkillValues, skillTypes } from './skill-helper.js'
+import { physicalItems } from '../actor/actor-helper.js'
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -28,6 +29,15 @@ export class MythrasItem extends Item {
       } else if (itemType === 'hitLocation') {
         // Prepare hit location data is item is hit location
         this._prepareHitLocationData(itemData, actorData)
+      } else if (itemType === 'storage') {
+        // Prepare storage data is item is storage
+        this._prepareStorageData(itemData, actorData)
+      }
+      if(physicalItems.includes(itemType)) {
+		let storageList = actorData.items.filter((item) => { 
+			return item.type == 'storage'
+		})        
+		this._prepareStorageList(itemData, storageList)
       }
     }
   }
@@ -45,6 +55,46 @@ export class MythrasItem extends Item {
 
       data.baseVal.init = 1
     }
+  }
+
+  /**
+   * Prepare data specific to storage items
+   * @param {*} itemData
+   * @param {*} actorData
+   */
+  _prepareStorageData(itemData, actorData) {
+    itemData.data.contentEncumbrance = 0
+    itemData.data.contentValue = 0
+    itemData.data.storageName = ""
+    if(itemData.data.storage !== undefined) {
+		let storage = actorData.items.find((item) => item.id === itemData.data.storage)
+		if(storage !== undefined) {
+			itemData.data.carried = storage.data.data.carried
+		}
+	}
+  }
+
+  /**
+   * Prepare data specific to storage list
+   * @param {*} itemData
+   * @param {*} storageList
+   */
+  _prepareStorageList(itemData, storageList) {
+	if(storageList != undefined) {
+    	let storageName = ""
+		let storage = storageList.find((item) => item.id === itemData.data.storage)
+		if (storage != undefined) {
+			storageName = storage.name
+		}
+		if(itemData.type === 'storage') {
+			let otherStorages = storageList.filter((item) => item.id !== itemData._id)
+			itemData.data.storageList = otherStorages
+		}
+		else {
+			itemData.data.storageList = storageList
+		}
+		itemData.data.storageName = storageName
+	}
   }
 
   /**

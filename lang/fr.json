@@ -182,5 +182,12 @@
   "MYTHRAS.Range2": "Portée",
   "MYTHRAS.Close": "Courte",
   "MYTHRAS.Effective": "Efficace",
-  "MYTHRAS.Spell_Level": "Niveau de Sort"
+  "MYTHRAS.Spell_Level": "Niveau de Sort",
+  "MYTHRAS.Carried": "Carried",
+  "MYTHRAS.Storage": "Storage",
+  "MYTHRAS.Storages": "Storages",
+  "MYTHRAS.New_storage": "New Storage",
+  "MYTHRAS.No_Storage": "Equipped",
+  "MYTHRAS.Max_ENC": "Max. ENC",
+  "MYTHRAS.Max_Encumbrance": "Max. Encumbrance"
 }

@@ -182,5 +182,12 @@
   "MYTHRAS.Range2": "Räckvidd",
   "MYTHRAS.Close": "Nära",
   "MYTHRAS.Effective": "Gällande",
-  "MYTHRAS.Spell_Level": "Besvärjelsenivå"
+  "MYTHRAS.Spell_Level": "Besvärjelsenivå",
+  "MYTHRAS.Carried": "Carried",
+  "MYTHRAS.Storage": "Storage",
+  "MYTHRAS.Storages": "Storages",
+  "MYTHRAS.New_storage": "New Storage",
+  "MYTHRAS.No_Storage": "Equipped",
+  "MYTHRAS.Max_ENC": "Max. ENC",
+  "MYTHRAS.Max_Encumbrance": "Max. Encumbrance"
 }

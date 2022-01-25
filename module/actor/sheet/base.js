@@ -53,7 +53,8 @@ export class ActorSheetMythras extends ActorSheet {
     const equipment = []
     const currency = []
     const abilities = []
-
+	const storages = []
+	
     const itemMapper = {
       hitLocation: hitLocations,
       standardSkill: standardSkills,
@@ -66,9 +67,11 @@ export class ActorSheetMythras extends ActorSheet {
       armor: armor,
       equipment: equipment,
       currency: currency,
-      ability: abilities
+      ability: abilities,
+      storage: storages
     }
 
+	let x = 0
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
     for (let i of this.actor.items.values()) {
@@ -105,6 +108,7 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.equipment = equipment
     actorData.currency = currency
     actorData.abilities = abilities
+    actorData.storages = storages
   }
 
   /* -------------------------------------------- */
@@ -157,6 +161,21 @@ export class ActorSheetMythras extends ActorSheet {
           {
             _id: armor.id,
             'data.equipped': equipped
+          }
+        ])
+      }
+
+      if (event.target.id.includes('_carried')) {
+        let thingInfo = event.target.id.split('_')
+        let thing = this.actor.items.get(thingInfo[1])
+        let carried = formData['item.'+thing.id+'.carried']
+        if (Array.isArray(carried)) {
+          carried = carried[thingInfo[0]]
+        }
+        this.actor.updateEmbeddedDocuments('Item', [
+          {
+            _id: thing.id,
+            'data.carried': carried
           }
         ])
       }
