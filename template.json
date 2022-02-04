@@ -102,7 +102,12 @@
         "currentLuckPoints": 2,
         "currentMagicPoints": 11,
         "currentActionPoints": 2,
-        "experienceRolls": 0
+        "experienceRolls": 0,
+        "canUseFolkMagic": false,
+        "canUseAnimism": false,
+        "canUseMysticism": false,
+        "canUseSorcery": false,
+        "canUseTheism": false
       },
       "humanoid": {}
     },
@@ -139,7 +144,8 @@
       "currency",
       "ability",
       "spell",
-      "storage"
+      "storage",
+      "cultBrotherhood"
     ],
     "templates": {
       "base": {
@@ -253,6 +259,15 @@
     "spell": {
       "templates": ["base"],
       "spellLevel": 1
+    },
+    "cultBrotherhood": {
+      "templates": ["base"],
+      "rankName0": "Common",
+      "rankName1": "Dedicated",
+      "rankName2": "Proven",
+      "rankName3": "Overseer",
+      "rankName4": "Leader",
+      "currentRank": 0
     }
   }
 }

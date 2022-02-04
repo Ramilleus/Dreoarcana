@@ -1,5 +1,69 @@
 div.abilities {
   margin: 0;
+
+  .abilities-tables {
+    .bottom-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;
+
+      .desc.abilities-desc {
+        height: 100%;
+        flex-grow: 1;
+        border: solid rgba(0, 0, 0, 0.2) 1px;
+        .editor {
+            height: 100%
+        }
+      }
+
+      .ability-table {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-grow: 1.2;
+
+        h2 {
+          border: 0;
+        }
+        > div {
+          .add-cult-button {
+            float: right;
+            margin-right: 8px;
+            font-size: 1.2em;
+          }
+          margin-bottom: 20px;
+          border: solid rgba(0, 0, 0, 0.2) 1px;
+          padding: 5px;
+          h3 {
+            margin-bottom: 0px;
+            color: #840701;
+          }
+          table {
+            margin: 0;
+            background: none;
+            border: none;
+          }
+          th {
+            text-align: left;
+          }
+          thead {
+            background: none;
+            color: black;
+            text-shadow: none;
+           }
+          .delete-column {
+            width: 20px;
+          }
+         }
+       }
+    }
+  }
+/*
   > h2 {
     margin-top: 5px;
     margin-bottom: 13px;
@@ -23,4 +87,5 @@ div.abilities {
       }
     }
   }
+ */
 }

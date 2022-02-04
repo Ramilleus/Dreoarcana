@@ -2,11 +2,52 @@
   <h2>
     {{localize 'MYTHRAS.Abilities'}}
   </h2>
-  <div>
-    <div class="desc" data-group="primary" data-tab="abilities">
-      {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
-      owner=owner
-      editable=editable }}
+  <div class="abilities-tables">
+
+    <div class="bottom-row">
+      <div class="ability-table">
+        <div>
+          <h3>
+            <span>{{localize 'MYTHRAS.Cults_Brotherhoods'}}</span>
+            <a class="add-cult-button item-create" title="{{localize 'MYTHRAS.Create'}}" data-type="cultBrotherhood">
+              +
+            </a>
+          </h3>
+          <table>
+            <thead>
+              <th>{{localize 'MYTHRAS.Name'}}</th>
+              <th>{{localize 'MYTHRAS.Rank'}}</th>
+              <th class="delete-column">
+              <i class="fas fa-trash"></i>
+            </th>
+            </thead>
+            <tbody>
+            {{#each actor.cults as |item id|}}
+            <tr class="item" data-item-id="{{item.data._id}}">
+              <td>
+                <a class="item-name item-control item-edit">{{item.data.name}}</a>
+              </td>
+              <td>{{item.data.data.rank}} </td>
+              <td>
+                <a class="item-control item-delete delete-column" title="Delete Item">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="desc abilities-desc" data-group="primary" data-tab="abilities">
+        {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
+        owner=owner
+        editable=editable }}
+      </div>
+
     </div>
+
   </div>
+
 </div>
