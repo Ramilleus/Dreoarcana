@@ -189,5 +189,16 @@
   "MYTHRAS.New_storage": "New Storage",
   "MYTHRAS.No_Storage": "Equipped",
   "MYTHRAS.Max_ENC": "Max. ENC",
-  "MYTHRAS.Max_Encumbrance": "Max. Encumbrance"
+  "MYTHRAS.Max_Encumbrance": "Max. Encumbrance",
+  "MYTHRAS.Cults_Brotherhoods": "Cults & Brotherhoods",
+  "MYTHRAS.Rank": "Rank",
+  "MYTHRAS.Ranks": "Ranks",
+  "MYTHRAS.Rank_Name0": "Common",
+  "MYTHRAS.Rank_Name1": "Dedicated",
+  "MYTHRAS.Rank_Name2": "Proven",
+  "MYTHRAS.Rank_Name3": "Overseer",
+  "MYTHRAS.Rank_Name4": "Leader",
+  "MYTHRAS.Current_Rank": "Current Rank",
+  "MYTHRAS.Create": "Crete",
+  "MYTHRAS.New_cultBrotherhood": "Cult/Brotherhood"
 }

@@ -197,5 +197,16 @@
   "MYTHRAS.New_storage": "Nuevo Contenedor",
   "MYTHRAS.No_Storage": "Equipado",
   "MYTHRAS.Max_ENC": "Max. Car",
-  "MYTHRAS.Max_Encumbrance": "Max. Carga"
+  "MYTHRAS.Max_Encumbrance": "Max. Carga",
+  "MYTHRAS.Cults_Brotherhoods": "Cultos y Hermandades",
+  "MYTHRAS.Rank": "Rango",
+  "MYTHRAS.Ranks": "Rangos",
+  "MYTHRAS.Rank_Name0": "Miembro Común",
+  "MYTHRAS.Rank_Name1": "Miembro Dedicado",
+  "MYTHRAS.Rank_Name2": "Miembro Probado",
+  "MYTHRAS.Rank_Name3": "Supervisor",
+  "MYTHRAS.Rank_Name4": "Líder",
+  "MYTHRAS.Current_Rank": "Rango Actual",
+  "MYTHRAS.Create": "Crear",
+  "MYTHRAS.New_cultBrotherhood": "Culto/Hermandad"
 }

@@ -54,6 +54,7 @@ export class ActorSheetMythras extends ActorSheet {
     const currency = []
     const abilities = []
 	const storages = []
+	const cults = []
 	
     const itemMapper = {
       hitLocation: hitLocations,
@@ -68,7 +69,8 @@ export class ActorSheetMythras extends ActorSheet {
       equipment: equipment,
       currency: currency,
       ability: abilities,
-      storage: storages
+      storage: storages,
+      cultBrotherhood: cults
     }
 
 	let x = 0
@@ -109,6 +111,7 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.currency = currency
     actorData.abilities = abilities
     actorData.storages = storages
+    actorData.cults = cults
   }
 
   /* -------------------------------------------- */
