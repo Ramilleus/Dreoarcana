@@ -102,12 +102,7 @@
         "currentLuckPoints": 2,
         "currentMagicPoints": 11,
         "currentActionPoints": 2,
-        "experienceRolls": 0,
-        "canUseFolkMagic": false,
-        "canUseAnimism": false,
-        "canUseMysticism": false,
-        "canUseSorcery": false,
-        "canUseTheism": false
+        "experienceRolls": 0
       },
       "humanoid": {}
     },
@@ -145,7 +140,8 @@
       "ability",
       "spell",
       "storage",
-      "cultBrotherhood"
+      "cultBrotherhood",
+      "magicType"
     ],
     "templates": {
       "base": {
@@ -204,12 +200,25 @@
       "traits": "",
       "weapons": ""
     },
+    "magicType": {
+      "templates": ["base"],
+      "singleSkillId": "",
+      "multipleSkillIds": [],
+      "intensity": {
+        "min": 0,
+        "max": 0,
+        "base": 0
+      },
+      "magnitude": {
+        "min": 0,
+        "max": 0,
+        "base": 0
+      },
+      "spells": ""
+    },
     "magicSkill": {
       "templates": ["skill"],
-      "magnitude": 0,
-      "intensity": 0,
-      "rank": "",
-      "spells": ""
+      "cultRank": ""
     },
     "passion": {
       "templates": ["skill"]

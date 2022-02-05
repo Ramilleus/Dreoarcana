@@ -50,11 +50,14 @@ export class MythrasItem extends Item {
    */
   _prepareSkillData(itemData, actorData) {
     const data = itemData.data
+    const cults = actorData.items.filter((item)=> item.data.type === 'cultBrotherhood')
     if (data.baseVal.init === 0) {
       updateSkillValues(itemData, actorData)
       // Set the base skill value initialization flag to 1, this way, this code only gets run once
-
       data.baseVal.init = 1
+      if(itemData.type === 'magicSkill') {
+        itemData.cults = cults
+      }
     }
   }
 

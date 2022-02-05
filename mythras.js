@@ -127,6 +127,8 @@ function getItemImage(itemType) {
       return 'icons/svg/hanging-sign.svg'
     case 'magicSkill':
       return 'icons/svg/daze.svg'
+    case 'magicType':
+      return 'icons/svg/aura.svg'
     default:
       return 'icons/svg/book.svg'
   }
