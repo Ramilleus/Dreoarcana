@@ -27,17 +27,17 @@ export class MythrasItem extends Item {
         // Prepare armor data if item is armor
         this._prepareArmorData(itemData, actorData)
       } else if (itemType === 'hitLocation') {
-        // Prepare hit location data is item is hit location
+        // Prepare hit location data if item is hit location
         this._prepareHitLocationData(itemData, actorData)
       } else if (itemType === 'storage') {
-        // Prepare storage data is item is storage
+        // Prepare storage data if item is storage
         this._prepareStorageData(itemData, actorData)
       }
-      if(actorData!== undefined && actorData.items!== undefined 
+      if(actorData!== undefined && actorData.items!== undefined
          && physicalItems.includes(itemType)) {
-		let storageList = actorData.items.filter((item) => { 
+		let storageList = actorData.items.filter((item) => {
 			return item.type == 'storage'
-		})        
+		})
 		this._prepareStorageList(itemData, storageList)
       }
     }
@@ -50,14 +50,14 @@ export class MythrasItem extends Item {
    */
   _prepareSkillData(itemData, actorData) {
     const data = itemData.data
-    const cults = actorData.items.filter((item)=> item.data.type === 'cultBrotherhood')
     if (data.baseVal.init === 0) {
       updateSkillValues(itemData, actorData)
       // Set the base skill value initialization flag to 1, this way, this code only gets run once
       data.baseVal.init = 1
-      if(itemData.type === 'magicSkill') {
-        itemData.cults = cults
-      }
+    }
+    if(itemData.type === 'magicSkill' && actorData !== undefined && actorData.items !==  undefined) {
+      const cults = actorData.items.filter((item)=> item.data.type === 'cultBrotherhood')
+      itemData.data.cults = cults
     }
   }
 

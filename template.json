@@ -218,7 +218,7 @@
     },
     "magicSkill": {
       "templates": ["skill"],
-      "cultRank": ""
+      "cultId": ""
     },
     "passion": {
       "templates": ["skill"]
