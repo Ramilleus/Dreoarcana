@@ -32,6 +32,9 @@ export class MythrasItem extends Item {
       } else if (itemType === 'storage') {
         // Prepare storage data if item is storage
         this._prepareStorageData(itemData, actorData)
+      } else if (itemType === 'cultBrotherhood') {
+        // Prepare cult/brotherhood data if item is cultBrotherhood
+        this._prepareCultBrotherhoodData(itemData, actorData)
       }
       if(actorData!== undefined && actorData.items!== undefined
          && physicalItems.includes(itemType)) {
@@ -55,9 +58,244 @@ export class MythrasItem extends Item {
       // Set the base skill value initialization flag to 1, this way, this code only gets run once
       data.baseVal.init = 1
     }
-    if(itemData.type === 'magicSkill' && actorData !== undefined && actorData.items !==  undefined) {
+    if(itemData.type === 'magicSkill') {
+      this._prepareMagicSkillData(itemData, actorData)
+    }
+  }
+
+  /**
+   * Prepare data specific to magic skills
+   * @param {*} itemData
+   * @param {*} actorData
+   */
+  _prepareMagicSkillData(itemData, actorData) {
+    const data = itemData.data
+    let cultRank = 0
+    let chaValue = 0
+    let powValue = 0
+    if(actorData !== undefined && actorData.items !==  undefined) {
       const cults = actorData.items.filter((item)=> item.data.type === 'cultBrotherhood')
-      itemData.data.cults = cults
+      data.cults = cults
+      if(data.cultId !== undefined) {
+        const theCult = cults.find((item) => item.id === data.cultId)
+        if(theCult !== undefined) {
+            cultRank = Number(theCult.data.data.currentRank)
+        }
+      }
+      chaValue = Number(actorData.data.characteristics["cha"].value)
+      powValue = Number(actorData.data.characteristics["pow"].value)
+    }
+    switch (data.skillType) {
+        case "TR":
+            this._setTRMagicValues(data, data.totalVal)
+            break;
+        case "BI":
+            this._setBIMagicValues(data, data.totalVal, cultRank, chaValue)
+            break;
+        case "ME":
+            this._setMEMagicValues(data, data.totalVal)
+            break;
+        case "MY":
+            this._setMYMagicValues(data, data.totalVal)
+            break;
+        case "IN":
+            this._setINMagicValues(data, data.totalVal)
+            break;
+        case "SH":
+            this._setSHMagicValues(data, data.totalVal)
+            break;
+        case "DE":
+            this._setDEMagicValues(data, data.totalVal, cultRank, powValue)
+            break;
+        case "EX":
+            this._setEXMagicValues(data, data.totalVal)
+            break;
+        default:
+            this._setFMMagicValues(data, data.totalVal)
+            break;
+    }
+  }
+
+  /**
+   * Set value for Folk Magic magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   */
+  _setFMMagicValues(data, skillValue) {
+    data.intensity = {min: 1, max: 1, base: 1}
+    data.magnitude = {min: 1, max: 1, base: 1}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = 0
+    data.hasMaximums = true
+  }
+
+  /**
+   * Set value for Trance magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   */
+  _setTRMagicValues(data, skillValue) {
+    data.intensity = {min: 0, max: 0, base: 0}
+    data.magnitude = {min: 0, max: 0, base: 0}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = 0
+    data.hasMaximums = false
+  }
+
+  /**
+   * Set value for Binding magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   * @param {*} cult rank
+   * @param {*} charisma Value
+   */
+  _setBIMagicValues(data, skillValue, cultRank, chaValue) {
+    data.intensity = {min: 0, max: 0, base: 0}
+    data.magnitude = {min: 0, max: 0, base: 0}
+    data.spiritBounded.max = Math.ceil(chaValue * cultRank / 4)
+    data.maxSpiritBoundedPow = Math.ceil(skillValue * 3/10)
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = 0
+    data.hasMaximums = true
+  }
+
+  /**
+   * Set value for Mediation magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   */
+  _setMEMagicValues(data, skillValue) {
+    data.intensity = {min: 0, max: 0, base: 0}
+    data.magnitude = {min: 0, max: 0, base: 0}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = Math.ceil(skillValue / 10)
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = 0
+    data.hasMaximums = true
+  }
+
+  /**
+   * Set value for Mysticism magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   */
+  _setMYMagicValues(data, skillValue) {
+    data.intensity = {min: 0, max: 0, base: 0}
+    data.magnitude = {min: 0, max: 0, base: 0}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = Math.ceil(skillValue / 20)
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = 0
+    data.hasMaximums = true
+  }
+
+  /**
+   * Set value for Invocation magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   */
+  _setINMagicValues(data, skillValue) {
+    data.intensity = {min: 1, max: Math.ceil(skillValue / 10), base: Math.ceil(skillValue / 10)}
+    data.magnitude = {min: 0, max: 0, base: 0}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = 0
+    data.hasMaximums = true
+  }
+
+  /**
+   * Set value for Shaping magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   */
+  _setSHMagicValues(data, skillValue) {
+    data.intensity = {min: 0, max: 0, base: 0}
+    data.magnitude = {min: 1, max: Math.ceil(skillValue / 10), base: 1}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = Math.ceil(skillValue / 10)
+    data.devotionalPool.max = 0
+    data.hasMaximums = true
+  }
+
+  /**
+   * Set value for Devotion magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   * @param {*} cult rank
+   * @param {*} power Value
+   */
+  _setDEMagicValues(data, skillValue, cultRank, powValue) {
+    data.intensity = {min: Math.ceil(skillValue / 10), max: Math.ceil(skillValue / 10), base: Math.ceil(skillValue / 10)}
+    data.magnitude = {min: Math.ceil(skillValue / 10), max: Math.ceil(skillValue / 10), base: Math.ceil(skillValue / 10)}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = Math.ceil(powValue * cultRank / 4)
+    data.hasMaximums = true
+  }
+
+  /**
+   * Set value for Exhort magic skill
+   * @param {*} itemData data
+   * @param {*} skillValue
+   */
+  _setEXMagicValues(data, skillValue) {
+    data.intensity = {min: 0, max: 0, base: 0}
+    data.magnitude = {min: 0, max: 0, base: 0}
+    data.spiritBounded.max = 0
+    data.maxSpiritBoundedPow = 0
+    data.maxIndividualTalentIntensity = 0
+    data.combinedTalentIntensity.max = 0
+    data.maxShapingPoints = 0
+    data.devotionalPool.max = 0
+    data.hasMaximums = false
+  }
+
+  /**
+   * Prepare data specific to cults/brotherhoods
+   * @param {*} itemData
+   * @param {*} actorData
+   */
+  _prepareCultBrotherhoodData(itemData, actorData) {
+    const data = itemData.data
+    switch (data.currentRank) {
+        case 4:
+          data.currentRankName = data.rankName4
+          break
+        case 3:
+          data.currentRankName = data.rankName3
+          break
+        case 2:
+          data.currentRankName = data.rankName2
+          break
+        case 1:
+          data.currentRankName = data.rankName1
+          break
+        default:
+          data.currentRankName = data.rankName0
+          break
     }
   }
 
