@@ -281,16 +281,16 @@ export class MythrasItem extends Item {
   _prepareCultBrotherhoodData(itemData, actorData) {
     const data = itemData.data
     switch (data.currentRank) {
-        case 4:
+        case "4":
           data.currentRankName = data.rankName4
           break
-        case 3:
+        case "3":
           data.currentRankName = data.rankName3
           break
-        case 2:
+        case "2":
           data.currentRankName = data.rankName2
           break
-        case 1:
+        case "1":
           data.currentRankName = data.rankName1
           break
         default:
