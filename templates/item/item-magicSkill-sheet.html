@@ -66,11 +66,22 @@
                 <option value="EX">{{localize 'MYTHRAS.Exhort'}}</option>
                 {{/select}}
               </select>
+            {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
+            {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
+            {{/unless}}
+            {{#unless (eq data.data.maxShapingPoints 0) }}
+            {{localize 'MYTHRAS.Shaping_Points'}}={{data.data.maxShapingPoints}}
+            {{/unless}}
+            {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
+            {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{data.data.maxSpiritBoundedPow}}
+            {{/unless}}
           </span>
         </div>
 
         <div class="skill-section">
           <h3>{{localize 'MYTHRAS.Cult_Brotherhood'}}</h3>
+          {{#unless (eq data.data.devotionalPool.max 0) }}
+          {{/unless}}
           <span class="resource">
               <select name="data.cultId" data-dtype="String">
                 {{#select data.data.cultId}}
@@ -80,6 +91,12 @@
                 {{/each}}
                 {{/select}}
               </select>
+          {{#unless (eq data.data.devotionalPool.max 0) }}
+          {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
+          {{/unless}}
+          {{#unless (eq data.data.spiritBounded.max 0) }}
+          {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
+          {{/unless}}
           </span>
         </div>
 
@@ -126,67 +143,21 @@
               <input id="skill-mod" class="misc-input" type="text" name="data.miscBonus"
                 value="{{data.data.miscBonus}}" />%
             </div>
-          </div>
-        </div>
-
-        {{#if data.data.hasMaximums}}
-        <div class="skill-section">
-          <div>
-            <h4>{{localize 'MYTHRAS.Maximums'}}</h4>
-          </div>
-          <div class="magic-flex">
             {{#unless (eq data.data.intensity.max 0) }}
             <div>
-              <label><p>{{localize 'MYTHRAS.Intensity'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.intensity.max}}"/>
+              <label><p>{{localize 'MYTHRAS.Intensity'}}</p>
+                <input class="misc-input" type="text" disabled="disabled" value="{{data.data.intensity.max}}"/></label><span style="color:transparent !important">%</span>
             </div>
             {{/unless}}
             {{#unless (eq data.data.magnitude.max 0) }}
             <div>
               <label><p>{{localize 'MYTHRAS.Magnitude'}}</p></label>
               <input class="misc-input" type="text" disabled="disabled"
-                     value="{{data.data.magnitude.max}}"/>
-            </div>
-            {{/unless}}
-            {{#unless (eq data.data.spiritBounded.max 0) }}
-            <div>
-              <label><p>{{localize 'MYTHRAS.Spirits_Bounded'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.spiritBounded.max}}"/>
-            </div>
-            {{/unless}}
-            {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
-            <div>
-              <label><p>{{localize 'MYTHRAS.Spirit_Bounded_Pow'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.maxSpiritBoundedPow}}"/>
-            </div>
-            {{/unless}}
-            {{#unless (eq data.data.maxIndividualTalentIntensity 0) }}
-            <div>
-              <label><p>{{localize 'MYTHRAS.Individual_Talent_Intensity'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.maxIndividualTalentIntensity}}"/>
-            </div>
-            {{/unless}}
-            {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
-            <div>
-              <label><p>{{localize 'MYTHRAS.Combined_Talent_Intensity'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.combinedTalentIntensity.max}}"/>
-            </div>
-            {{/unless}}
-            {{#unless (eq data.data.maxShapingPoints 0) }}
-            <div>
-              <label><p>{{localize 'MYTHRAS.Shaping_Points'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.maxShapingPoints}}"/>
-            </div>
-            {{/unless}}
-            {{#unless (eq data.data.devotionalPool.max 0) }}
-            <div>
-              <label><p>{{localize 'MYTHRAS.Devotional_Pool'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.devotionalPool.max}}"/>
+                     value="{{data.data.magnitude.max}}"/><span style="color:transparent !important">%</span>
             </div>
             {{/unless}}
           </div>
         </div>
-        {{/if}}
 
       </div>
     </div>

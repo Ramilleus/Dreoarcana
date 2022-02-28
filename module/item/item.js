@@ -126,11 +126,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: 1, max: 1, base: 1}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = 0
     data.devotionalPool.max = 0
-    data.hasMaximums = true
   }
 
   /**
@@ -143,11 +141,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: 0, max: 0, base: 0}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = 0
     data.devotionalPool.max = 0
-    data.hasMaximums = false
   }
 
   /**
@@ -162,11 +158,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: 0, max: 0, base: 0}
     data.spiritBounded.max = Math.ceil(chaValue * cultRank / 4)
     data.maxSpiritBoundedPow = Math.ceil(skillValue * 3/10)
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = 0
     data.devotionalPool.max = 0
-    data.hasMaximums = true
   }
 
   /**
@@ -179,11 +173,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: 0, max: 0, base: 0}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = Math.ceil(skillValue / 10)
     data.maxShapingPoints = 0
     data.devotionalPool.max = 0
-    data.hasMaximums = true
   }
 
   /**
@@ -192,15 +184,13 @@ export class MythrasItem extends Item {
    * @param {*} skillValue
    */
   _setMYMagicValues(data, skillValue) {
-    data.intensity = {min: 0, max: 0, base: 0}
+    data.intensity = {min: 1, max: Math.ceil(skillValue / 20), base: 1}
     data.magnitude = {min: 0, max: 0, base: 0}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = Math.ceil(skillValue / 20)
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = 0
     data.devotionalPool.max = 0
-    data.hasMaximums = true
   }
 
   /**
@@ -213,11 +203,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: 0, max: 0, base: 0}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = 0
     data.devotionalPool.max = 0
-    data.hasMaximums = true
   }
 
   /**
@@ -230,11 +218,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: 1, max: Math.ceil(skillValue / 10), base: 1}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = Math.ceil(skillValue / 10)
     data.devotionalPool.max = 0
-    data.hasMaximums = true
   }
 
   /**
@@ -249,11 +235,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: Math.ceil(skillValue / 10), max: Math.ceil(skillValue / 10), base: Math.ceil(skillValue / 10)}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = 0
     data.devotionalPool.max = Math.ceil(powValue * cultRank / 4)
-    data.hasMaximums = true
   }
 
   /**
@@ -266,11 +250,9 @@ export class MythrasItem extends Item {
     data.magnitude = {min: 0, max: 0, base: 0}
     data.spiritBounded.max = 0
     data.maxSpiritBoundedPow = 0
-    data.maxIndividualTalentIntensity = 0
     data.combinedTalentIntensity.max = 0
     data.maxShapingPoints = 0
     data.devotionalPool.max = 0
-    data.hasMaximums = false
   }
 
   /**

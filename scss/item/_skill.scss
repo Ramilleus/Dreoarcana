@@ -110,23 +110,6 @@
           background-color: rgba(0, 0, 0, 0.1);
         }
       }
-      .magic-flex {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: flex-start;
-        input {
-          width: 50px;
-          margin-bottom: 8px;
-          border-radius: 0;
-          border-bottom: solid rgba(0, 0, 0, 0.5) 1px;
-          background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        input:hover {
-          background-color: rgba(0, 0, 0, 0.1);
-        }
-      }
       .combat-flex {
         flex: 0;
         input:hover {
