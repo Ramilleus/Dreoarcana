@@ -1,8 +1,8 @@
 <div class="tab abilities" data-group="primary" data-tab="abilities">
-  <h2>
-    {{localize 'MYTHRAS.Abilities'}}
-  </h2>
   <div class="abilities-tables">
+    <h2>
+      {{localize 'MYTHRAS.Abilities'}}
+    </h2>
     <div>
       <h3>
             <span>
@@ -18,10 +18,13 @@
           {{localize 'MYTHRAS.Name'}}
         </th>
         <th>
-          {{localize 'MYTHRAS.Cult'}}
+          {{localize 'MYTHRAS.Intensity'}}
         </th>
         <th>
-          {{localize 'MYTHRAS.Info'}}
+          {{localize 'MYTHRAS.Magnitude'}}
+        </th>
+        <th>
+          {{localize 'MYTHRAS.Other'}}
         </th>
         <th>
           {{localize 'MYTHRAS.Roll'}}
@@ -39,12 +42,31 @@
             </a>
           </td>
           <td>
-            {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
-            item.data.data.secondaryChar}}
+            {{#unless (eq data.data.intensity.max 0) }}
+            {{data.data.intensity.max}}
+            {{/unless}}
           </td>
           <td>
-            {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
-            item.data.data.secondaryChar}}
+            {{#unless (eq data.data.magnitude.max 0) }}
+            {{data.data.magnitude.max}}
+            {{/unless}}
+          </td>
+          <td>
+            {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
+            {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
+            {{/unless}}
+            {{#unless (eq data.data.maxShapingPoints 0) }}
+            {{localize 'MYTHRAS.Shaping_Points'}}={{data.data.maxShapingPoints}}
+            {{/unless}}
+            {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
+            {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{data.data.maxSpiritBoundedPow}} <br/>
+            {{/unless}}
+            {{#unless (eq data.data.spiritBounded.max 0) }}
+            {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
+            {{/unless}}
+            {{#unless (eq data.data.devotionalPool.max 0) }}
+            {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
+            {{/unless}}
           </td>
           <td>
             <a class="skill-val rollableSkill" data-roll="1d100"
@@ -63,13 +85,8 @@
       </table>
     </div>
 
-    <div class="bottom-row">
-      <div class="desc abilities-desc" data-group="primary" data-tab="abilities">
-        {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
-        owner=owner
-        editable=editable }}
-      </div>
-
+    <div class="desc abilities-desc" data-group="primary" data-tab="abilities">{{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
+      owner=owner editable=editable }}
     </div>
 
   </div>
