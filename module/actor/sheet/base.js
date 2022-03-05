@@ -101,6 +101,9 @@ export class ActorSheetMythras extends ActorSheet {
     })
     actorData.professionalSkills = professionalSkills
     actorData.combatStyles = combatStyles
+    magicSkills.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
     actorData.magicSkills = magicSkills
     actorData.passions = passions
     actorData.skillsAndPassions = skillsAndPassions
@@ -110,7 +113,13 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.equipment = equipment
     actorData.currency = currency
     actorData.abilities = abilities
+    storages.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
     actorData.storages = storages
+    cults.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
     actorData.cults = cults
   }
 
