@@ -68,9 +68,9 @@ export class ActorSheetMythras extends ActorSheet {
       armor: armor,
       equipment: equipment,
       currency: currency,
-      ability: abilities,
       storage: storages,
-      cultBrotherhood: cults
+      cultBrotherhood: cults,
+      ability: abilities
     }
 
 	let x = 0
