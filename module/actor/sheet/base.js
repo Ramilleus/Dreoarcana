@@ -53,8 +53,8 @@ export class ActorSheetMythras extends ActorSheet {
     const equipment = []
     const currency = []
 	const cults = []
-    const abilities = []
 	const storages = []
+    const abilities = []
 
     const itemMapper = {
       hitLocation: hitLocations,
