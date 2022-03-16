@@ -123,6 +123,10 @@ function getItemImage(itemType) {
       return 'icons/svg/combat.svg'
     case 'storage':
       return 'icons/svg/chest.svg'
+    case 'cultBrotherhood':
+      return 'icons/svg/hanging-sign.svg'
+    case 'magicSkill':
+      return 'icons/svg/daze.svg'
     default:
       return 'icons/svg/book.svg'
   }

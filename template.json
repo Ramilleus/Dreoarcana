@@ -139,7 +139,8 @@
       "currency",
       "ability",
       "spell",
-      "storage"
+      "storage",
+      "cultBrotherhood"
     ],
     "templates": {
       "base": {
@@ -200,10 +201,32 @@
     },
     "magicSkill": {
       "templates": ["skill"],
-      "magnitude": 0,
-      "intensity": 0,
-      "rank": "",
-      "spells": ""
+      "skillType": "FM",
+      "intensity": {
+        "min": 0,
+        "max": 0,
+        "base": 0
+      },
+      "magnitude": {
+        "min": 0,
+        "max": 0,
+        "base": 0
+      },
+      "spiritBounded": {
+        "max": 0,
+        "used": 0
+      },
+      "maxSpiritBoundedPow": 0,
+      "combinedTalentIntensity": {
+        "max": 0,
+        "used": 0
+      },
+      "maxShapingPoints": 0,
+      "devotionalPool": {
+        "max": 0,
+        "used": 0
+      },
+      "cultId": ""
     },
     "passion": {
       "templates": ["skill"]
@@ -253,6 +276,16 @@
     "spell": {
       "templates": ["base"],
       "spellLevel": 1
+    },
+    "cultBrotherhood": {
+      "templates": ["base"],
+      "rankName0": "Common",
+      "rankName1": "Dedicated",
+      "rankName2": "Proven",
+      "rankName3": "Overseer",
+      "rankName4": "Leader",
+      "currentRank": 0,
+      "currentRankName": "Common"
     }
   }
 }

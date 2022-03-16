@@ -28,6 +28,10 @@ export class MythrasItemSheet extends ItemSheet {
     const itemType = this.item.data.type
 
     // Return a unique template based on item type
+    if (itemType === 'magicSkill') {
+      // A magic skill   is considered a skill, but has a unique sheet. This serves as an override
+      return `${path}/item-magicSkill-sheet.html`
+    }
     if (itemType === 'combatStyle') {
       // Combat style is considered a skill, but has a unique sheet. This serves as an override
       return `${path}/item-combatStyle-sheet.html`
