@@ -52,10 +52,10 @@ export class ActorSheetMythras extends ActorSheet {
     const armor = []
     const equipment = []
     const currency = []
-    const abilities = []
 	const storages = []
 	const cults = []
-	
+    const abilities = []
+
     const itemMapper = {
       hitLocation: hitLocations,
       standardSkill: standardSkills,
@@ -112,7 +112,6 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.armor = armor
     actorData.equipment = equipment
     actorData.currency = currency
-    actorData.abilities = abilities
     storages.sort(function (a, b) {
       return a.data.name.localeCompare(b.data.name)
     })
@@ -121,6 +120,7 @@ export class ActorSheetMythras extends ActorSheet {
       return a.data.name.localeCompare(b.data.name)
     })
     actorData.cults = cults
+    actorData.abilities = abilities
   }
 
   /* -------------------------------------------- */
