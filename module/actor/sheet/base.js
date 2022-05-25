@@ -52,6 +52,8 @@ export class ActorSheetMythras extends ActorSheet {
     const armor = []
     const equipment = []
     const currency = []
+	const cults = []
+	const storages = []
     const abilities = []
     const spells = []
 
@@ -67,10 +69,13 @@ export class ActorSheetMythras extends ActorSheet {
       armor: armor,
       equipment: equipment,
       currency: currency,
+      storage: storages,
+      cultBrotherhood: cults,
       ability: abilities,
       spell: spells
     }
 
+	let x = 0
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
     for (let i of this.actor.items.values()) {
@@ -98,6 +103,9 @@ export class ActorSheetMythras extends ActorSheet {
     })
     actorData.professionalSkills = professionalSkills
     actorData.combatStyles = combatStyles
+    magicSkills.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
     actorData.magicSkills = magicSkills
     actorData.passions = passions
     actorData.skillsAndPassions = skillsAndPassions
@@ -106,6 +114,14 @@ export class ActorSheetMythras extends ActorSheet {
     actorData.armor = armor
     actorData.equipment = equipment
     actorData.currency = currency
+    storages.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
+    actorData.storages = storages
+    cults.sort(function (a, b) {
+      return a.data.name.localeCompare(b.data.name)
+    })
+    actorData.cults = cults
     actorData.abilities = abilities
     actorData.spells = spells
     spells.sort(function (a, b) {
@@ -164,6 +180,21 @@ export class ActorSheetMythras extends ActorSheet {
           {
             _id: armor.id,
             'data.equipped': equipped
+          }
+        ])
+      }
+
+      if (event.target.id.includes('_carried')) {
+        let thingInfo = event.target.id.split('_')
+        let thing = this.actor.items.get(thingInfo[1])
+        let carried = formData['item.'+thing.id+'.carried']
+        if (Array.isArray(carried)) {
+          carried = carried[thingInfo[0]]
+        }
+        this.actor.updateEmbeddedDocuments('Item', [
+          {
+            _id: thing.id,
+            'data.carried': carried
           }
         ])
       }

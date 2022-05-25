@@ -98,12 +98,19 @@ Hooks.once('ready', async function () {
       itemData.img = getItemImage(itemData.type)
     }
   })
+
+  Hooks.on('createItem', (document, options, parentId) => {
+    if (document.data.type !== 'hitLocation') {
+      document.data.img = getItemImage(document.data.type)
+    }
+  })
+  
 })
 
 function getItemImage(itemType) {
   switch (itemType) {
     case 'equipment':
-      return 'icons/svg/chest.svg'
+      return 'icons/svg/item-bag.svg'
     case 'armor':
       return 'icons/svg/shield.svg'
     case 'melee-weapon':
@@ -114,6 +121,12 @@ function getItemImage(itemType) {
       return 'icons/svg/coins.svg'
     case 'combatStyle':
       return 'icons/svg/combat.svg'
+    case 'storage':
+      return 'icons/svg/chest.svg'
+    case 'cultBrotherhood':
+      return 'icons/svg/hanging-sign.svg'
+    case 'magicSkill':
+      return 'icons/svg/daze.svg'
     default:
       return 'icons/svg/book.svg'
   }

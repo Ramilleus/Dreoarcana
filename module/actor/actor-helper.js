@@ -1,3 +1,18 @@
+// List of physical item types. Does not include skills, hit locations, etc.
+export const physicalItems = [
+  'melee-weapon',
+  'ranged-weapon',
+  'armor',
+  'equipment',
+  'currency',
+  'storage'
+]
+
+export const formatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2
+})
+
 export const fatigueInfo = {
   fresh: {
     'Skill Grade': 'Normal Difficulty',

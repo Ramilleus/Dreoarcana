@@ -644,6 +644,50 @@
             </tbody>
           </table>
         </div>
+
+        <div>
+          <h3>
+            <span>
+              {{localize 'MYTHRAS.Cults_Brotherhoods'}}
+            </span>
+            <a class="add-skills-button item-create" title="Create item" data-type="cultBrotherhood">
+              +
+            </a>
+          </h3>
+          <table class="basic-skills-table">
+            <thead>
+            <th>
+              {{localize 'MYTHRAS.Name'}}
+            </th>
+            <th>
+              {{localize 'MYTHRAS.Rank'}}
+            </th>
+            <th class="delete-column">
+              <i class="fas fa-trash"></i>
+            </th>
+            </thead>
+            <tbody>
+            {{#each actor.cults as |item id|}}
+            <tr class="item" data-item-id="{{item.data._id}}">
+              <td>
+                <a class="item-name item-control item-edit">
+                  {{item.data.name}}
+                </a>
+              </td>
+              <td>
+                {{item.data.data.currentRankName}}
+              </td>
+              <td>
+                <a class="item-control item-delete delete-column" title="Delete Item">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
   </div>

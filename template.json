@@ -138,7 +138,9 @@
       "equipment",
       "currency",
       "ability",
-      "spell"
+      "spell",
+      "storage",
+      "cultBrotherhood"
     ],
     "templates": {
       "base": {
@@ -166,8 +168,15 @@
         "ap": 0,
         "currentAp": 0,
         "hp": 0,
-        "currentHp": 0
+        "currentHp": 0,
+        "storage": "Unknown",
+        "storageList": []
       }
+    },
+    "storage": {
+	    "templates": ["item"],
+        "maxEncumbrance": 0,
+        "carried": false
     },
     "hitLocation": {
       "rollRangeStart": 0,
@@ -192,10 +201,32 @@
     },
     "magicSkill": {
       "templates": ["skill"],
-      "magnitude": 0,
-      "intensity": 0,
-      "rank": "",
-      "spells": ""
+      "skillType": "FM",
+      "intensity": {
+        "min": 0,
+        "max": 0,
+        "base": 0
+      },
+      "magnitude": {
+        "min": 0,
+        "max": 0,
+        "base": 0
+      },
+      "spiritBounded": {
+        "max": 0,
+        "used": 0
+      },
+      "maxSpiritBoundedPow": 0,
+      "combinedTalentIntensity": {
+        "max": 0,
+        "used": 0
+      },
+      "maxShapingPoints": 0,
+      "devotionalPool": {
+        "max": 0,
+        "used": 0
+      },
+      "cultId": ""
     },
     "passion": {
       "templates": ["skill"]
@@ -246,6 +277,16 @@
       "templates": ["base"],
       "spellLevel": 1,
       "source": ""
+    },
+    "cultBrotherhood": {
+      "templates": ["base"],
+      "rankName0": "Common",
+      "rankName1": "Dedicated",
+      "rankName2": "Proven",
+      "rankName3": "Overseer",
+      "rankName4": "Leader",
+      "currentRank": 0,
+      "currentRankName": "Common"
     }
   }
 }
