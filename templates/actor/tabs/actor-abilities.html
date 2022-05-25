@@ -1,12 +1,63 @@
 <div class="tab abilities" data-group="primary" data-tab="abilities">
-  <h2>
-    {{localize 'MYTHRAS.Abilities'}}
-  </h2>
+  <div class="tab-header-container">
+    <h2>
+      {{localize 'MYTHRAS.Abilities'}}
+    </h2>
+    <h2>{{localize 'MYTHRAS.Spells'}}</h2>
+  </div>
   <div>
     <div class="desc" data-group="primary" data-tab="abilities">
-      {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
-      owner=owner
-      editable=editable }}
+      <div class="two-column-flex-container">
+        <div class="ability-desc-container">
+          {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
+          owner=owner
+          editable=editable }}
+        </div>
+        <div class="spell-list-container">
+          <h3>
+            <span>
+              {{localize 'MYTHRAS.Spells'}}
+            </span>
+            <select id="spellFilter">
+              <option>All</option>
+            </select>
+            <a class="add-skills-button item-create" title="Create item" data-type="spell">
+              +
+            </a>
+          </h3>
+          <table class="spell-list-table">
+            <thead>
+              <th>
+                {{localize 'MYTHRAS.Name'}}
+              </th>
+              <th>
+                {{localize 'MYTHRAS.Source'}}
+              </th>
+              <th class="delete-column">
+                <i class="fas fa-trash"></i>
+              </th>
+            </thead>
+            <tbody>
+              {{#each actor.spells as |item id|}}
+              <tr class="item active" data-item-id="{{item.data._id}}" data-item-source="{{item.data.data.source}}">
+                <td class="item-profile">
+                  <img class="item-img" src="{{item.img}}">
+                  <a class="item-name item-control item-edit">
+                    {{item.data.name}}
+                  </a>
+                </td>
+                <td>{{item.data.data.source}}</td>
+                <td>
+                  <a class="item-control item-delete delete-column" title="Delete Item">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
