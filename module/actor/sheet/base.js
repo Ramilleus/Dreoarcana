@@ -55,6 +55,7 @@ export class ActorSheetMythras extends ActorSheet {
 	const cults = []
 	const storages = []
     const abilities = []
+    const spells = []
 
     const itemMapper = {
       hitLocation: hitLocations,
@@ -70,7 +71,8 @@ export class ActorSheetMythras extends ActorSheet {
       currency: currency,
       storage: storages,
       cultBrotherhood: cults,
-      ability: abilities
+      ability: abilities,
+      spell: spells
     }
 
 	let x = 0
@@ -121,6 +123,11 @@ export class ActorSheetMythras extends ActorSheet {
     })
     actorData.cults = cults
     actorData.abilities = abilities
+    actorData.spells = spells
+    spells.sort(function (a, b) {
+      return a.data.data.source.localeCompare(b.data.data.source)
+    })
+
   }
 
   /* -------------------------------------------- */
@@ -263,6 +270,9 @@ export class ActorSheetMythras extends ActorSheet {
       const item = actor.items.get(li.data('itemId'))
       item.sheet.render(true)
     })
+
+    html.find('#spellFilter').click(this._filterSpells.bind(this))
+    this._createSpellFilterOptions()
 
     // html.find('.skill-alpha-sort').click((ev) => {
     //   let data = this.getData()
@@ -757,6 +767,37 @@ export class ActorSheetMythras extends ActorSheet {
           flavor: label
         })
       })
+    }
+  }
+  async _filterSpells(event) {
+    event.preventDefault()
+    let filterBy = event.currentTarget.value
+    for (let item of [...document.querySelectorAll('.spell-list-table .item')]) {
+        switch (filterBy) {
+          case 'All':
+            item.classList.add('active')
+            break
+
+          case `${filterBy}`:
+            item.dataset.itemSource !== `${filterBy}` ? item.classList.remove('active') : item.classList.add('active')
+            break
+        }
+    }
+  }
+  _createSpellFilterOptions() {
+    for (let spell of this.actor.items.filter(i => i.type === 'spell')) {
+      let isDuplicate = [...document.querySelectorAll('[data-source]')].some(i => i.dataset.source == spell.data.data.source)
+      
+      switch (isDuplicate) {
+        case true:
+          break
+
+        case false: 
+          let option = document.createElement('option')
+          option.dataset.source = spell.data.data.source
+          option.innerHTML = `${spell.data.data.source}`
+          document.querySelector('#spellFilter').append(option)
+      }
     }
   }
 }

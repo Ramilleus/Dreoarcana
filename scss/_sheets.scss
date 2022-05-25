@@ -17,6 +17,23 @@
   padding: 5px;
 }
 
+.tab-header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: auto !important;
+  h2 {
+    text-decoration: none;
+  }
+}
+
+.two-column-flex-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
 ::-webkit-scrollbar {
   background: #eeeeee;
   width: 8px;

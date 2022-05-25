@@ -6,8 +6,7 @@
       <div class="names">
         <input class="char-name" name="name" type="text" value="{{actor.name}}" placeholder="" />
         <p class="input-label">{{localize 'MYTHRAS.CHARACTER_NAME'}}</p>
-        <input class="player-name" name="data.playerName" type="text" value="{{data.data.data.playerName}}"
-          placeholder="" />
+        <input class="player-name" name="data.playerName" type="text" value="{{data.data.playerName}}" placeholder="" />
         <p class="input-label">{{localize 'MYTHRAS.PLAYER_NAME'}}</p>
       </div>
     </div>
@@ -88,7 +87,8 @@
           </div>
         </div>
         <p class="input-label {{#if data.data.attributes.experienceRoll.minimize}}sideways-text{{/if}}" id="toggle-er">
-          <span>{{localize 'MYTHRAS.EXPERIENCE_ROLLS'}}</span></p>
+          <span>{{localize 'MYTHRAS.EXPERIENCE_ROLLS'}}</span>
+        </p>
       </div>
     </div>
   </header>
