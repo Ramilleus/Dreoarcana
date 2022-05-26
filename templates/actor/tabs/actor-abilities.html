@@ -1,83 +1,83 @@
 <div class="tab abilities" data-group="primary" data-tab="abilities">
   <div class="abilities-tables">
-    <div>
+    <div class="abilities-table">
       <h3>
-            <span>
-              {{localize 'MYTHRAS.Magic_Skills'}}
-            </span>
+        <span>
+          {{localize 'MYTHRAS.Magic_Skills'}}
+        </span>
         <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
           +
         </a>
       </h3>
       <table class="ability-table">
         <thead>
-        <th>
-          {{localize 'MYTHRAS.Name'}}
-        </th>
-        <th>
-          {{localize 'MYTHRAS.Intensity'}}
-        </th>
-        <th>
-          {{localize 'MYTHRAS.Magnitude'}}
-        </th>
-        <th>
-          {{localize 'MYTHRAS.Other'}}
-        </th>
-        <th>
-          {{localize 'MYTHRAS.Roll'}}
-        </th>
-        <th class="delete-column">
-          <i class="fas fa-trash"></i>
-        </th>
+          <th>
+            {{localize 'MYTHRAS.Name'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Intensity'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Magnitude'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Other'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Roll'}}
+          </th>
+          <th class="delete-column">
+            <i class="fas fa-trash"></i>
+          </th>
         </thead>
         <tbody>
-        {{#each actor.magicSkills as |item id|}}
-        <tr class="item" data-item-id="{{item.data._id}}">
-          <td>
-            <a class="item-name item-control item-edit">
-              {{item.data.name}}
-            </a>
-          </td>
-          <td>
-            {{#unless (eq data.data.intensity.max 0) }}
-            {{data.data.intensity.max}}
-            {{/unless}}
-          </td>
-          <td>
-            {{#unless (eq data.data.magnitude.max 0) }}
-            {{data.data.magnitude.max}}
-            {{/unless}}
-          </td>
-          <td>
-            {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
-            {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
-            {{/unless}}
-            {{#unless (eq data.data.maxShapingPoints 0) }}
-            {{localize 'MYTHRAS.Shaping_Points'}}={{data.data.maxShapingPoints}}
-            {{/unless}}
-            {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
-            {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{data.data.maxSpiritBoundedPow}} <br/>
-            {{/unless}}
-            {{#unless (eq data.data.spiritBounded.max 0) }}
-            {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
-            {{/unless}}
-            {{#unless (eq data.data.devotionalPool.max 0) }}
-            {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
-            {{/unless}}
-          </td>
-          <td>
-            <a class="skill-val rollableSkill" data-roll="1d100"
-               data-label="{{item.data.name}},{{item.data.data.totalVal}}">
-              {{item.data.data.totalVal}}%
-            </a>
-          </td>
-          <td>
-            <a class="item-control item-delete delete-column" title="Delete Item">
-              <i class="fas fa-trash"></i>
-            </a>
-          </td>
-        </tr>
-        {{/each}}
+          {{#each actor.magicSkills as |item id|}}
+          <tr class="item" data-item-id="{{item.data._id}}">
+            <td>
+              <a class="item-name item-control item-edit">
+                {{item.data.name}}
+              </a>
+            </td>
+            <td>
+              {{#unless (eq data.data.intensity.max 0) }}
+              {{data.data.intensity.max}}
+              {{/unless}}
+            </td>
+            <td>
+              {{#unless (eq data.data.magnitude.max 0) }}
+              {{data.data.magnitude.max}}
+              {{/unless}}
+            </td>
+            <td>
+              {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
+              {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
+              {{/unless}}
+              {{#unless (eq data.data.maxShapingPoints 0) }}
+              {{localize 'MYTHRAS.Shaping_Points'}}={{data.data.maxShapingPoints}}
+              {{/unless}}
+              {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
+              {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{data.data.maxSpiritBoundedPow}} <br />
+              {{/unless}}
+              {{#unless (eq data.data.spiritBounded.max 0) }}
+              {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
+              {{/unless}}
+              {{#unless (eq data.data.devotionalPool.max 0) }}
+              {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
+              {{/unless}}
+            </td>
+            <td>
+              <a class="skill-val rollableSkill" data-roll="1d100"
+                data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                {{item.data.data.totalVal}}%
+              </a>
+            </td>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {{/each}}
         </tbody>
       </table>
     </div>
@@ -87,7 +87,7 @@
       </h2>
       <h2>{{localize 'MYTHRAS.Spells'}}</h2>
     </div>
-    <div>
+    <div class="abilities-table">
       <div class="desc" data-group="primary" data-tab="abilities">
         <div class="two-column-flex-container">
           <div class="ability-desc-container">
