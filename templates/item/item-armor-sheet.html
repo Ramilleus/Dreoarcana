@@ -16,6 +16,21 @@
   <section class="sheet-body flexcol">
     <div class="equip-section">
       <div class="equipment-core">
+		<div class="equip-core-section">
+			<div>
+				<h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
+				<select name="data.storage" data-dtype="String">
+				    <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
+				    {{#unless data.data.equipped}}
+				    {{#select data.data.storage}}
+					{{#each data.data.storageList as |bag|}}
+					<option value="{{bag.id}}">{{bag.name}}</option>
+					{{/each}} 
+					{{/select}}
+					{{/unless}}
+				</select>
+			</div>
+		</div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.ENC'}}</h3>

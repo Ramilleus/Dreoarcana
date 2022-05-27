@@ -1,12 +1,146 @@
 <div class="tab abilities" data-group="primary" data-tab="abilities">
-  <h2>
-    {{localize 'MYTHRAS.Abilities'}}
-  </h2>
-  <div>
-    <div class="desc" data-group="primary" data-tab="abilities">
-      {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
-      owner=owner
-      editable=editable }}
+  <div class="abilities-tables">
+    <div class="abilities-table">
+      <h3>
+        <span>
+          {{localize 'MYTHRAS.Magic_Skills'}}
+        </span>
+        <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
+          +
+        </a>
+      </h3>
+      <table class="ability-table">
+        <thead>
+          <th>
+            {{localize 'MYTHRAS.Name'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Intensity'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Magnitude'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Other'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Roll'}}
+          </th>
+          <th class="delete-column">
+            <i class="fas fa-trash"></i>
+          </th>
+        </thead>
+        <tbody>
+          {{#each actor.magicSkills as |item id|}}
+          <tr class="item" data-item-id="{{item.data._id}}">
+            <td>
+              <a class="item-name item-control item-edit">
+                {{item.data.name}}
+              </a>
+            </td>
+            <td>
+              {{#unless (eq data.data.intensity.max 0) }}
+              {{data.data.intensity.max}}
+              {{/unless}}
+            </td>
+            <td>
+              {{#unless (eq data.data.magnitude.max 0) }}
+              {{data.data.magnitude.max}}
+              {{/unless}}
+            </td>
+            <td>
+              {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
+              {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
+              {{/unless}}
+              {{#unless (eq data.data.maxShapingPoints 0) }}
+              {{localize 'MYTHRAS.Shaping_Points'}}={{data.data.maxShapingPoints}}
+              {{/unless}}
+              {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
+              {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{data.data.maxSpiritBoundedPow}} <br />
+              {{/unless}}
+              {{#unless (eq data.data.spiritBounded.max 0) }}
+              {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
+              {{/unless}}
+              {{#unless (eq data.data.devotionalPool.max 0) }}
+              {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
+              {{/unless}}
+            </td>
+            <td>
+              <a class="skill-val rollableSkill" data-roll="1d100"
+                data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                {{item.data.data.totalVal}}%
+              </a>
+            </td>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-header-container">
+      <h2>
+        {{localize 'MYTHRAS.Abilities'}}
+      </h2>
+      <h2>{{localize 'MYTHRAS.Spells'}}</h2>
+    </div>
+    <div class="abilities-table">
+      <div class="desc" data-group="primary" data-tab="abilities">
+        <div class="two-column-flex-container">
+          <div class="ability-desc-container">
+            {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
+            owner=owner
+            editable=editable }}
+          </div>
+          <div class="spell-list-container">
+            <h3>
+              <span>
+                {{localize 'MYTHRAS.Spells'}}
+              </span>
+              <select id="spellFilter">
+                <option>All</option>
+              </select>
+              <a class="add-skills-button item-create" title="Create item" data-type="spell">
+                +
+              </a>
+            </h3>
+            <table class="spell-list-table">
+              <thead>
+                <th>
+                  {{localize 'MYTHRAS.Name'}}
+                </th>
+                <th>
+                  {{localize 'MYTHRAS.Source'}}
+                </th>
+                <th class="delete-column">
+                  <i class="fas fa-trash"></i>
+                </th>
+              </thead>
+              <tbody>
+                {{#each actor.spells as |item id|}}
+                <tr class="item active" data-item-id="{{item.data._id}}" data-item-source="{{item.data.data.source}}">
+                  <td class="item-profile">
+                    <img class="item-img" src="{{item.img}}">
+                    <a class="item-name item-control item-edit">
+                      {{item.data.name}}
+                    </a>
+                  </td>
+                  <td>{{item.data.data.source}}</td>
+                  <td>
+                    <a class="item-control item-delete delete-column" title="Delete Item">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
