@@ -1,12 +1,10 @@
 {
   "name": "mythras",
   "version": "1.0.0",
-  "description": "CSS compiler for the Mythras system",
+  "description": "Mythras system JS and CSS Utilities",
   "scripts": {
-    "build": "gulp",
-    "compile": "gulp css",
-    "watch": "gulp",
-    "gulp": "gulp",
+    "watch-css": "sass --watch scss/mythras.scss css/mythras.css",
+    "build-css": "sass scss/mythras.scss css/mythras.css",
     "format": "prettier --write \"**/*.js\" \"**/*.scss\" \"**/*.json\""
   },
   "browserslist": [
@@ -15,13 +13,8 @@
   "author": "John Doe",
   "license": "MIT",
   "private": true,
-  "dependencies": {
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5"
-  },
   "devDependencies": {
-    "prettier": "2.0.5"
+    "prettier": "2.0.5",
+    "sass": "^1.52.1"
   }
 }
