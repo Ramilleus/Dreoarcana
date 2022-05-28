@@ -113,31 +113,38 @@ div.window-app section.window-content {
   border: 0 !important;
   padding: 0 !important;
 }
-.mythras .flex-table-container > div {
+.mythras .flex-table-container > .tables-left,
+.mythras .flex-table-container .tables-right {
   width: 49.5%;
 }
-.mythras .flex-table-container > div .add-items-button {
+.mythras .flex-table-container > .tables-left .add-items-button,
+.mythras .flex-table-container .tables-right .add-items-button {
   float: right;
   margin-right: 8px;
   font-size: 1.2em;
 }
-.mythras .flex-table-container > div div {
+.mythras .flex-table-container > .tables-left > div,
+.mythras .flex-table-container .tables-right > div {
   border: solid rgba(0, 0, 0, 0.2) 1px;
   padding: 5px;
 }
-.mythras .flex-table-container > div div table {
+.mythras .flex-table-container > .tables-left > div table,
+.mythras .flex-table-container .tables-right > div table {
   background: none;
   border: none;
 }
-.mythras .flex-table-container > div div th {
+.mythras .flex-table-container > .tables-left > div th,
+.mythras .flex-table-container .tables-right > div th {
   text-align: left;
 }
-.mythras .flex-table-container > div div thead {
+.mythras .flex-table-container > .tables-left > div thead,
+.mythras .flex-table-container .tables-right > div thead {
   background: none;
   color: black;
   text-shadow: none;
 }
-.mythras .flex-table-container > div div .delete-column {
+.mythras .flex-table-container > .tables-left > div .delete-column,
+.mythras .flex-table-container .tables-right > div .delete-column {
   width: 20px;
 }
 .mythras header.actor-sheet-header {
@@ -373,74 +380,103 @@ div.window-app section.window-content {
 .mythras div.abilities .spell-list-table .active {
   display: table-row;
 }
-.mythras div.abilities .abilities-tables {
+.mythras div.abilities .abilities-sections {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: flex-start;
   border: 0;
   height: 100%;
 }
-.mythras div.abilities .abilities-tables h2 {
+.mythras div.abilities .abilities-sections h2 {
   border: 0;
 }
-.mythras div.abilities .abilities-tables .add-skills-button {
+.mythras div.abilities .abilities-sections .add-skills-button {
   float: right;
   margin-right: 8px;
   font-size: 1.2em;
   color: #840701;
 }
-.mythras div.abilities .abilities-tables h2 {
-  width: 100%;
-}
-.mythras div.abilities .abilities-tables > .tab-header-container {
-  width: 100%;
-}
-.mythras div.abilities .abilities-tables > .abilities-table {
+.mythras div.abilities .abilities-sections > .section-large {
   flex: 1;
+}
+.mythras div.abilities .abilities-sections > .section {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.mythras div.abilities .abilities-sections > .section .mythras-table {
+  width: 100%;
+  height: 100%;
   border: solid rgba(0, 0, 0, 0.2) 1px;
   padding: 5px;
 }
-.mythras div.abilities .abilities-tables > .abilities-table table {
+.mythras div.abilities .abilities-sections > .section .mythras-table h3 {
+  flex: 0;
+  color: #840701;
+}
+.mythras div.abilities .abilities-sections > .section .mythras-table table {
   margin: 0;
   background: none;
   border: none;
 }
-.mythras div.abilities .abilities-tables > .abilities-table table .hitLoc-flex-cell {
+.mythras div.abilities .abilities-sections > .section .mythras-table table .hitLoc-flex-cell {
   display: flex;
   justify-content: center;
   flex-direction: row;
 }
-.mythras div.abilities .abilities-tables > .abilities-table table .hitLoc-flex-cell input {
+.mythras div.abilities .abilities-sections > .section .mythras-table table .hitLoc-flex-cell input {
   width: 25px;
   text-align: center;
 }
-.mythras div.abilities .abilities-tables > .abilities-table th {
+.mythras div.abilities .abilities-sections > .section .mythras-table th {
   text-align: left;
 }
-.mythras div.abilities .abilities-tables > .abilities-table thead {
+.mythras div.abilities .abilities-sections > .section .mythras-table thead {
   background: none;
   color: black;
   text-shadow: none;
 }
-.mythras div.abilities .abilities-tables > .abilities-table .delete-column {
+.mythras div.abilities .abilities-sections > .section .mythras-table .delete-column {
   width: 20px;
 }
-.mythras div.abilities .abilities-tables > div {
+.mythras div.abilities .abilities-sections > .section .mythras-table .table-header-flex {
+  display: flex;
+}
+.mythras div.abilities .abilities-sections > .section .mythras-table .table-header-flex .title {
+  flex: 1;
+  color: #840701;
+}
+.mythras div.abilities .abilities-sections > .section .mythras-table .table-header-flex select {
+  margin-right: 10px;
+}
+.mythras div.abilities .abilities-sections > .section .flex-table-container {
   height: 100%;
-  padding: 5px;
-  border: solid rgba(0, 0, 0, 0.2) 1px;
+  flex: 1;
 }
-.mythras div.abilities .abilities-tables > div .desc {
-  margin-bottom: 0px;
+.mythras div.abilities .abilities-sections > .section .flex-table-container .tables-left {
+  padding-right: 5px;
+  max-width: 400px;
+  height: 100%;
 }
-.mythras div.abilities .abilities-tables > div .desc .editor {
+.mythras div.abilities .abilities-sections > .section .flex-table-container .tables-right {
+  padding-left: 5px;
+  flex: 1;
+  height: 100%;
+}
+.mythras div.abilities .abilities-sections > .section .other-abilities {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.mythras div.abilities .abilities-sections > .section .other-abilities h3 {
+  flex: 0;
+  color: #840701;
+}
+.mythras div.abilities .abilities-sections > .section .other-abilities .editor {
+  flex: 1;
   height: 100%;
   width: 100%;
 }
-.mythras div.abilities .abilities-tables > div .desc .editor div.tox.tox-tinymce {
+.mythras div.abilities .abilities-sections > .section .other-abilities .editor div.tox.tox-tinymce {
   height: 100% !important;
 }
 .mythras div.core h2 {
@@ -982,7 +1018,6 @@ div.window-app section.window-content {
 }
 .mythras .skill-sheet .sheet-header {
   flex: 0;
-  height: 68px;
 }
 .mythras .skill-sheet .sheet-body {
   padding: 0px 10px;
@@ -1149,7 +1184,6 @@ div.window-app section.window-content {
 }
 .mythras .item-sheet .sheet-header {
   flex: 0;
-  height: 68px;
 }
 .mythras .item-sheet .sheet-body {
   padding: 0px 10px;
