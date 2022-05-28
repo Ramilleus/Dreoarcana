@@ -695,9 +695,6 @@ div.window-app section.window-content {
 .mythras div.equipment .damageModCheck {
   pointer-events: none;
 }
-.mythras div.equipment .equippedCheck {
-  pointer-events: none;
-}
 .mythras div.equipment .enc-row {
   display: flex;
   align-items: row;

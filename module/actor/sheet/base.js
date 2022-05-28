@@ -52,8 +52,8 @@ export class ActorSheetMythras extends ActorSheet {
     const armor = []
     const equipment = []
     const currency = []
-	const cults = []
-	const storages = []
+    const cults = []
+    const storages = []
     const abilities = []
     const spells = []
 
@@ -75,7 +75,7 @@ export class ActorSheetMythras extends ActorSheet {
       spell: spells
     }
 
-	let x = 0
+    let x = 0
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
     for (let i of this.actor.items.values()) {
@@ -127,7 +127,6 @@ export class ActorSheetMythras extends ActorSheet {
     spells.sort(function (a, b) {
       return a.data.data.source.localeCompare(b.data.data.source)
     })
-
   }
 
   /* -------------------------------------------- */
@@ -170,9 +169,12 @@ export class ActorSheetMythras extends ActorSheet {
       }
 
       if (event.target.id.includes('_equipped')) {
+        console.log(event.target.id)
         let armorInfo = event.target.id.split('_')
+        console.log(armorInfo)
         let armor = this.actor.items.get(armorInfo[1])
-        let equipped = formData['item.data.data.equipped']
+        let equipped = formData['item.' + armor.id + '.equipped']
+        console.log(formData)
         if (Array.isArray(equipped)) {
           equipped = equipped[armorInfo[0]]
         }
@@ -187,7 +189,7 @@ export class ActorSheetMythras extends ActorSheet {
       if (event.target.id.includes('_carried')) {
         let thingInfo = event.target.id.split('_')
         let thing = this.actor.items.get(thingInfo[1])
-        let carried = formData['item.'+thing.id+'.carried']
+        let carried = formData['item.' + thing.id + '.carried']
         if (Array.isArray(carried)) {
           carried = carried[thingInfo[0]]
         }
@@ -772,27 +774,33 @@ export class ActorSheetMythras extends ActorSheet {
   async _filterSpells(event) {
     event.preventDefault()
     let filterBy = event.currentTarget.value
-    for (let item of [...document.querySelectorAll('.spell-list-table .item')]) {
-        switch (filterBy) {
-          case 'All':
-            item.classList.add('active')
-            break
+    for (let item of [
+      ...document.querySelectorAll('.spell-list-table .item')
+    ]) {
+      switch (filterBy) {
+        case 'All':
+          item.classList.add('active')
+          break
 
-          case `${filterBy}`:
-            item.dataset.itemSource !== `${filterBy}` ? item.classList.remove('active') : item.classList.add('active')
-            break
-        }
+        case `${filterBy}`:
+          item.dataset.itemSource !== `${filterBy}`
+            ? item.classList.remove('active')
+            : item.classList.add('active')
+          break
+      }
     }
   }
   _createSpellFilterOptions() {
-    for (let spell of this.actor.items.filter(i => i.type === 'spell')) {
-      let isDuplicate = [...document.querySelectorAll('[data-source]')].some(i => i.dataset.source == spell.data.data.source)
-      
+    for (let spell of this.actor.items.filter((i) => i.type === 'spell')) {
+      let isDuplicate = [...document.querySelectorAll('[data-source]')].some(
+        (i) => i.dataset.source == spell.data.data.source
+      )
+
       switch (isDuplicate) {
         case true:
           break
 
-        case false: 
+        case false:
           let option = document.createElement('option')
           option.dataset.source = spell.data.data.source
           option.innerHTML = `${spell.data.data.source}`
