@@ -169,12 +169,9 @@ export class ActorSheetMythras extends ActorSheet {
       }
 
       if (event.target.id.includes('_equipped')) {
-        console.log(event.target.id)
         let armorInfo = event.target.id.split('_')
-        console.log(armorInfo)
         let armor = this.actor.items.get(armorInfo[1])
         let equipped = formData['item.' + armor.id + '.equipped']
-        console.log(formData)
         if (Array.isArray(equipped)) {
           equipped = equipped[armorInfo[0]]
         }
