@@ -89,12 +89,6 @@ div.window-app section.window-content {
 .mythras .tab-header-container h2 {
   text-decoration: none;
 }
-.mythras .two-column-flex-container {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: 100%;
-}
 .mythras ::-webkit-scrollbar {
   background: #eeeeee;
   width: 8px;
@@ -111,6 +105,40 @@ div.window-app section.window-content {
 }
 .mythras .decreased-attribute {
   color: #c11f1f;
+}
+.mythras .flex-table-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 0 !important;
+  padding: 0 !important;
+}
+.mythras .flex-table-container > div {
+  width: 49.5%;
+}
+.mythras .flex-table-container > div .add-items-button {
+  float: right;
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+.mythras .flex-table-container > div div {
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+  padding: 5px;
+}
+.mythras .flex-table-container > div div table {
+  background: none;
+  border: none;
+}
+.mythras .flex-table-container > div div th {
+  text-align: left;
+}
+.mythras .flex-table-container > div div thead {
+  background: none;
+  color: black;
+  text-shadow: none;
+}
+.mythras .flex-table-container > div div .delete-column {
+  width: 20px;
 }
 .mythras header.actor-sheet-header {
   display: flex;
@@ -356,6 +384,15 @@ div.window-app section.window-content {
 .mythras div.abilities .abilities-tables h2 {
   border: 0;
 }
+.mythras div.abilities .abilities-tables .add-skills-button {
+  float: right;
+  margin-right: 8px;
+  font-size: 1.2em;
+  color: #840701;
+}
+.mythras div.abilities .abilities-tables h2 {
+  width: 100%;
+}
 .mythras div.abilities .abilities-tables > .tab-header-container {
   width: 100%;
 }
@@ -365,20 +402,6 @@ div.window-app section.window-content {
   margin-bottom: 20px;
   border: solid rgba(0, 0, 0, 0.2) 1px;
   padding: 5px;
-}
-.mythras div.abilities .abilities-tables > .abilities-table .add-skills-button {
-  float: right;
-  margin-right: 8px;
-  font-size: 1.2em;
-}
-.mythras div.abilities .abilities-tables > .abilities-table .add-skill-button {
-  float: right;
-  margin-right: 8px;
-  font-size: 1.2em;
-}
-.mythras div.abilities .abilities-tables > .abilities-table h3 {
-  margin-bottom: 0px;
-  color: #840701;
 }
 .mythras div.abilities .abilities-tables > .abilities-table table {
   margin: 0;
@@ -756,40 +779,6 @@ div.window-app section.window-content {
   text-shadow: none;
 }
 .mythras div.equipment .equipment-tables > div .delete-column {
-  width: 20px;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border: 0;
-  padding: 0;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables > div {
-  width: 49.5%;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables > div .add-items-button {
-  float: right;
-  margin-right: 8px;
-  font-size: 1.2em;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables > div div {
-  border: solid rgba(0, 0, 0, 0.2) 1px;
-  padding: 5px;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables > div div table {
-  background: none;
-  border: none;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables > div div th {
-  text-align: left;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables > div div thead {
-  background: none;
-  color: black;
-  text-shadow: none;
-}
-.mythras div.equipment .equipment-tables .top-equipment-tables > div div .delete-column {
   width: 20px;
 }
 .mythras div.notes {

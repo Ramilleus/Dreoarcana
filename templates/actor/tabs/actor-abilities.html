@@ -1,14 +1,14 @@
 <div class="tab abilities" data-group="primary" data-tab="abilities">
   <div class="abilities-tables">
+    <h2>
+      <span>
+        {{localize 'MYTHRAS.Magic_Skills'}}
+      </span>
+      <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
+        +
+      </a>
+    </h2>
     <div class="abilities-table">
-      <h3>
-        <span>
-          {{localize 'MYTHRAS.Magic_Skills'}}
-        </span>
-        <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
-          +
-        </a>
-      </h3>
       <table class="ability-table">
         <thead>
           <th>
@@ -81,15 +81,12 @@
         </tbody>
       </table>
     </div>
-    <div class="tab-header-container">
-      <h2>
-        {{localize 'MYTHRAS.Abilities'}}
-      </h2>
-      <h2>{{localize 'MYTHRAS.Spells'}}</h2>
-    </div>
+    <h2>
+      {{localize 'MYTHRAS.Abilities'}}
+    </h2>
     <div class="abilities-table">
       <div class="desc" data-group="primary" data-tab="abilities">
-        <div class="two-column-flex-container">
+        <div class="flex-table-container">
           <div class="ability-desc-container">
             {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
             owner=owner
