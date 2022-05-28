@@ -20,10 +20,6 @@
 
   {{! Sheet Body }}
   <section class="sheet-body">
-    {{! Description Tab }}
-    <div class="desc tab" data-group="primary" data-tab="description">
-      {{ editor content=data.data.description target='data.description' button=true owner=owner editable=editable }}
-    </div>
 
     {{! Attributes Tab }}
     <div class="tab attributes" data-group="primary" data-tab="attributes">
@@ -40,6 +36,10 @@
         </label>
         <input type="text" name="data.source" value="{{data.data.source}}">
       </div>
+    </div>
+    {{! Description Tab }}
+    <div class="desc tab" data-group="primary" data-tab="description">
+      {{ editor content=data.data.description target='data.description' button=true owner=owner editable=editable }}
     </div>
   </section>
 </form>
