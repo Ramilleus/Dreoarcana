@@ -276,7 +276,9 @@
     "spell": {
       "templates": ["base"],
       "spellLevel": 1,
-      "source": ""
+      "sourceList": [],
+      "source": "Uncategorized",
+      "sourceID": ""
     },
     "cultBrotherhood": {
       "templates": ["base"],
