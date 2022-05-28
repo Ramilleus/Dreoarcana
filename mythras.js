@@ -104,7 +104,6 @@ Hooks.once('ready', async function () {
       document.data.img = getItemImage(document.data.type)
     }
   })
-  
 })
 
 function getItemImage(itemType) {

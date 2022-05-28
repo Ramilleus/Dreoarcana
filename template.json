@@ -174,9 +174,9 @@
       }
     },
     "storage": {
-	    "templates": ["item"],
-        "maxEncumbrance": 0,
-        "carried": false
+      "templates": ["item"],
+      "maxEncumbrance": 0,
+      "carried": false
     },
     "hitLocation": {
       "rollRangeStart": 0,
