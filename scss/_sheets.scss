@@ -54,14 +54,15 @@
   align-items: flex-start;
   border: 0 !important;
   padding: 0 !important;
-  > div {
+  > .tables-left,
+  .tables-right {
     width: 49.5%;
     .add-items-button {
       float: right;
       margin-right: 8px;
       font-size: 1.2em;
     }
-    div {
+    > div {
       border: solid rgba(0, 0, 0, 0.2) 1px;
       padding: 5px;
       table {
