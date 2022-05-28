@@ -364,6 +364,7 @@ div.window-app section.window-content {
   border-bottom: 1px solid black;
 }
 .mythras div.abilities .spell-list-table .item-img {
+  background-color: rgba(0, 0, 0, 0.4);
   height: 20px;
   width: 20px;
 }
@@ -1010,43 +1011,47 @@ div.window-app section.window-content {
   font-family: "Amethysta";
   height: 62px;
 }
-.mythras .skill-sheet {
+.mythras .item-sheet {
   min-width: 400px;
 }
-.mythras .skill-sheet h2 {
+.mythras .item-sheet .token-img {
+  flex: 0 0 64px;
+}
+.mythras .item-sheet h2 {
+  flex: 0;
+  margin-top: 15px;
+}
+.mythras .item-sheet .sheet-header {
   flex: 0;
 }
-.mythras .skill-sheet .sheet-header {
-  flex: 0;
-}
-.mythras .skill-sheet .sheet-body {
+.mythras .item-sheet .sheet-body {
   padding: 0px 10px;
 }
-.mythras .skill-sheet input:focus {
+.mythras .item-sheet input:focus {
   outline: none;
   outline-style: none;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.mythras .skill-sheet input {
+.mythras .item-sheet input {
   border: 0;
 }
-.mythras .skill-sheet select {
+.mythras .item-sheet select {
   border: 0;
   border-radius: 0;
   background-color: rgba(0, 0, 0, 0.05);
 }
-.mythras .skill-sheet select:hover {
+.mythras .item-sheet select:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.mythras .skill-sheet select:focus {
+.mythras .item-sheet select:focus {
   outline: none;
   outline-style: none;
   -webkit-box-shadow: none;
   box-shadow: none;
   background-color: rgba(0, 0, 0, 0.1);
 }
-.mythras .skill-sheet .header-flex {
+.mythras .item-sheet .header-flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1055,7 +1060,7 @@ div.window-app section.window-content {
   box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
   padding: 10px;
 }
-.mythras .skill-sheet .header-flex > h1 {
+.mythras .item-sheet .header-flex > h1 {
   text-align: right;
   color: white;
   font-family: "Amethysta";
@@ -1063,10 +1068,10 @@ div.window-app section.window-content {
   font-size: 2.5em;
   flex: 1;
 }
-.mythras .skill-sheet .header-flex h1 {
+.mythras .item-sheet .header-flex h1 {
   flex: 1;
 }
-.mythras .skill-sheet .header-flex h1 input {
+.mythras .item-sheet .header-flex h1 input {
   width: 100%;
   margin: 0px;
   color: white;
@@ -1077,11 +1082,30 @@ div.window-app section.window-content {
   background-color: rgba(0, 0, 0, 0);
   text-shadow: 0px 0px 6px black;
 }
-.mythras .skill-sheet .header-flex h1 input:focus {
+.mythras .item-sheet .header-flex h1 input:focus {
   background-color: rgba(255, 255, 255, 0.05);
 }
-.mythras .skill-sheet .header-flex h1 input:hover {
+.mythras .item-sheet .header-flex h1 input:hover {
   background-color: rgba(255, 255, 255, 0.05);
+}
+.mythras .item-sheet .desc {
+  height: 100%;
+  margin-bottom: 0px;
+}
+.mythras .item-sheet .desc .editor {
+  height: 100%;
+}
+.mythras .item-sheet .desc .editor div.tox.tox-tinymce {
+  height: 100% !important;
+}
+.mythras .item-sheet .token-img {
+  border-radius: 0;
+  width: 64px;
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 0;
+  box-shadow: 0px 0px 6px 2px rgba(53, 40, 40, 0.4);
+  margin-right: 10px;
 }
 .mythras .skill-sheet .upper-flex {
   flex: 0;
@@ -1120,16 +1144,6 @@ div.window-app section.window-content {
 .mythras .skill-sheet .upper-flex .skill-section .combat-flex input:focus {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.mythras .skill-sheet .upper-flex .skill-section .desc.skill-section {
-  height: 100%;
-  margin-bottom: 0px;
-}
-.mythras .skill-sheet .upper-flex .skill-section .desc.skill-section .editor {
-  height: 100%;
-}
-.mythras .skill-sheet .upper-flex .skill-section .desc.skill-section .editor div.tox.tox-tinymce {
-  height: 100% !important;
-}
 .mythras .skill-sheet .upper-flex .skill-section .other-flex {
   display: flex;
   justify-content: space-around;
@@ -1142,16 +1156,6 @@ div.window-app section.window-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.mythras .skill-sheet .desc.skill-section {
-  height: 100%;
-  margin-bottom: 0px;
-}
-.mythras .skill-sheet .desc.skill-section .editor {
-  height: 100%;
-}
-.mythras .skill-sheet .desc.skill-section .editor div.tox.tox-tinymce {
-  height: 100% !important;
 }
 .mythras .skill-sheet .skill-section {
   margin-bottom: 10px;
@@ -1166,184 +1170,110 @@ div.window-app section.window-content {
   width: 75px;
   margin-left: 5px;
 }
-.mythras .skill-sheet .token-img {
-  border-radius: 0;
-  width: 64px;
-  height: 64px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 0;
-  box-shadow: 0px 0px 6px 2px rgba(53, 40, 40, 0.4);
-  margin-right: 10px;
+.mythras .equipment-sheet .header-flex {
+  justify-content: flex-start;
 }
-.mythras .item-sheet {
-  min-width: 400px;
-}
-.mythras .item-sheet h2 {
-  flex: 0;
-  margin-top: 15px;
-}
-.mythras .item-sheet .sheet-header {
-  flex: 0;
-}
-.mythras .item-sheet .sheet-body {
-  padding: 0px 10px;
-}
-.mythras .item-sheet input:focus {
-  outline: none;
-  outline-style: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.mythras .item-sheet input {
-  border: 0;
-}
-.mythras .item-sheet select {
-  border: 0;
-  border-radius: 0;
-  background-color: rgba(0, 0, 0, 0.05);
-}
-.mythras .item-sheet select:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.mythras .item-sheet select:focus {
-  outline: none;
-  outline-style: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.mythras .item-sheet .header-flex {
-  display: flex;
-  align-items: center;
-  background: url("../assets/sheet/header-background-pattern.jpg");
-  background-repeat: repeat;
-  box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
-  padding: 10px;
-}
-.mythras .item-sheet .header-flex > h1 {
-  text-align: right;
-  color: white;
-  font-family: "Amethysta";
-  margin: 0px;
-  font-size: 2.5em;
-  flex: 1;
-}
-.mythras .item-sheet .header-flex h1 {
-  flex: 1;
-}
-.mythras .item-sheet .header-flex h1 input {
-  width: 100%;
-  margin: 0px;
-  color: white;
-  border: 0;
-  border-bottom: solid white 1px;
-  border-radius: 0;
-  font-family: "Fanwood";
-  background-color: rgba(0, 0, 0, 0);
-  text-shadow: 0px 0px 6px black;
-}
-.mythras .item-sheet .header-flex h1 input:focus {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-.mythras .item-sheet .header-flex h1 input:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-.mythras .item-sheet .equipment-core {
+.mythras .equipment-sheet .equipment-core {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.mythras .item-sheet .equipment-core .equip-core-section {
+.mythras .equipment-sheet .equipment-core .equip-core-section {
   display: flex;
   flex-direction: row;
 }
-.mythras .item-sheet .equipment-core .equip-core-section div {
+.mythras .equipment-sheet .equipment-core .equip-core-section div {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.mythras .item-sheet .equipment-core .core-info {
+.mythras .equipment-sheet .equipment-core .core-info {
   font-size: 1em;
 }
-.mythras .item-sheet .equipment-core input {
+.mythras .equipment-sheet .equipment-core input {
   text-align: center;
   width: 40px;
   height: 20px;
 }
-.mythras .item-sheet .weapon-core {
+.mythras .equipment-sheet .weapon-core {
   display: flex;
   flex-direction: row;
   flex-direction: column;
   justify-content: space-between;
 }
-.mythras .item-sheet .weapon-core .weapon-core-section {
+.mythras .equipment-sheet .weapon-core .weapon-core-section {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
-.mythras .item-sheet .weapon-core .weapon-core-section .weapon-piece {
+.mythras .equipment-sheet .weapon-core .weapon-core-section .weapon-piece {
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.mythras .item-sheet .weapon-core .weapon-core-section .weapon-piece input {
+.mythras .equipment-sheet .weapon-core .weapon-core-section .weapon-piece input {
   text-align: center;
 }
-.mythras .item-sheet .weapon-core .weapon-core-section .weapon-piece .range-info {
+.mythras .equipment-sheet .weapon-core .weapon-core-section .weapon-piece .range-info {
   display: flex;
   flex-direction: row;
 }
-.mythras .item-sheet .weapon-core .weapon-core-section .weapon-piece .range-info input {
+.mythras .equipment-sheet .weapon-core .weapon-core-section .weapon-piece .range-info input {
   width: 40px;
 }
-.mythras .item-sheet .weapon-core .weapon-core-section .weapon-piece .range-info .range-piece {
+.mythras .equipment-sheet .weapon-core .weapon-core-section .weapon-piece .range-info .range-piece {
   font-size: 0.8em;
 }
-.mythras .item-sheet .weapon-core .core-info {
+.mythras .equipment-sheet .weapon-core .core-info {
   font-size: 1em;
 }
-.mythras .item-sheet .equip-section {
+.mythras .equipment-sheet .equip-section {
   border-bottom: solid 1px rgb(192, 192, 192);
   padding: 15px 5px;
   flex: 0;
 }
-.mythras .item-sheet .cult-section {
+.mythras .cult-sheet .cult-section {
   border-bottom: solid 1px rgb(192, 192, 192);
   padding: 15px 5px;
   flex: 0;
   display: flex;
   flex-direction: column;
 }
-.mythras .item-sheet .cult-core {
+.mythras .cult-sheet .cult-core {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.mythras .item-sheet .cult-core .cult-core-section {
+.mythras .cult-sheet .cult-core .cult-core-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
-.mythras .item-sheet .desc.skill-section {
-  height: 100%;
-  margin-bottom: 0px;
+.mythras .spell-sheet {
+  display: flex;
+  flex-direction: column;
 }
-.mythras .item-sheet .desc.skill-section .editor {
-  height: 100%;
+.mythras .spell-sheet .sheet-body {
+  height: unset;
+  flex: 1;
 }
-.mythras .item-sheet .desc.skill-section .editor div.tox.tox-tinymce {
-  height: 100% !important;
+.mythras .spell-sheet .header-flex {
+  justify-content: flex-start;
 }
-.mythras .item-sheet .token-img {
-  border-radius: 0;
-  width: 64px;
-  height: 64px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 0;
-  box-shadow: 0px 0px 6px 2px rgba(53, 40, 40, 0.4);
-  margin-right: 10px;
+.mythras .spell-sheet .spell-core {
+  padding: 5px;
+  width: 100%;
+}
+.mythras .spell-sheet .spell-core .spell-core-section {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+.mythras .spell-sheet .spell-core .spell-core-section select {
+  display: block;
 }
 
 /*# sourceMappingURL=mythras.css.map */

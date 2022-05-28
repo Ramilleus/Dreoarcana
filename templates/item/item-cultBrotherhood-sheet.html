@@ -1,4 +1,4 @@
-<form class="{{cssClass}} item-sheet flexcol" autocomplete="off">
+<form class="{{cssClass}} item-sheet cult-sheet flexcol" autocomplete="off">
     <header class="sheet-header">
         <div class="header-flex">
             <img class="token-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
@@ -28,23 +28,23 @@
                 <div class="cult-core-section">
                     <div>
                         <h4>{{localize 'MYTHRAS.Rank_Name4'}}</h4>
-                        <input type="text" name="data.rankName4" value="{{data.data.rankName4}}"/>
+                        <input type="text" name="data.rankName4" value="{{data.data.rankName4}}" />
                         <h4>{{localize 'MYTHRAS.Rank_Name1'}}</h4>
-                        <input type="text" name="data.rankName1" value="{{data.data.rankName1}}"/>
+                        <input type="text" name="data.rankName1" value="{{data.data.rankName1}}" />
                     </div>
                 </div>
                 <div class="cult-core-section">
                     <div>
                         <h4>{{localize 'MYTHRAS.Rank_Name3'}}</h4>
-                        <input type="text" name="data.rankName3" value="{{data.data.rankName3}}"/>
+                        <input type="text" name="data.rankName3" value="{{data.data.rankName3}}" />
                         <h4>{{localize 'MYTHRAS.Rank_Name0'}}</h4>
-                        <input type="text" name="data.rankName0" value="{{data.data.rankName0}}"/>
+                        <input type="text" name="data.rankName0" value="{{data.data.rankName0}}" />
                     </div>
                 </div>
                 <div class="cult-core-section">
                     <div>
                         <h4>{{localize 'MYTHRAS.Rank_Name2'}}</h4>
-                        <input type="text" name="data.rankName2" value="{{data.data.rankName2}}"/>
+                        <input type="text" name="data.rankName2" value="{{data.data.rankName2}}" />
                         <h4>{{localize 'MYTHRAS.Current_Rank'}}</h4>
                         <select name="data.currentRank" data-dtype="String">
                             {{#select data.data.currentRank}}
@@ -61,7 +61,7 @@
         </div>
 
         <h2>Description</h2>
-        <div class="desc skill-section" data-group="primary">
+        <div class="desc" data-group="primary">
             {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
             <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
         </div>

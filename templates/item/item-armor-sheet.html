@@ -1,4 +1,4 @@
-<form class="{{cssClass}} item-sheet flexcol" autocomplete="off">
+<form class="{{cssClass}} item-sheet equipment-sheet flexcol" autocomplete="off">
   <header class="sheet-header">
     <div class="header-flex">
       <img class="token-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="50" width="50" />
@@ -16,21 +16,21 @@
   <section class="sheet-body flexcol">
     <div class="equip-section">
       <div class="equipment-core">
-		<div class="equip-core-section">
-			<div>
-				<h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
-				<select name="data.storage" data-dtype="String">
-				    <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
-				    {{#unless data.data.equipped}}
-				    {{#select data.data.storage}}
-					{{#each data.data.storageList as |bag|}}
-					<option value="{{bag.id}}">{{bag.name}}</option>
-					{{/each}} 
-					{{/select}}
-					{{/unless}}
-				</select>
-			</div>
-		</div>
+        <div class="equip-core-section">
+          <div>
+            <h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
+            <select name="data.storage" data-dtype="String">
+              <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
+              {{#unless data.data.equipped}}
+              {{#select data.data.storage}}
+              {{#each data.data.storageList as |bag|}}
+              <option value="{{bag.id}}">{{bag.name}}</option>
+              {{/each}}
+              {{/select}}
+              {{/unless}}
+            </select>
+          </div>
+        </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.ENC'}}</h3>
@@ -85,7 +85,7 @@
       </div>
     </div>
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
-    <div class="desc skill-section" data-group="primary">
+    <div class="desc" data-group="primary">
       {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
       <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
     </div>

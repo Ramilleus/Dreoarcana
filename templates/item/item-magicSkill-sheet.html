@@ -1,4 +1,4 @@
-<form class="{{cssClass}} skill-sheet flexcol" autocomplete="off">
+<form class="{{cssClass}} item-sheet skill-sheet flexcol" autocomplete="off">
   <header class="sheet-header">
     <div class="header-flex">
       <img class="token-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
@@ -52,20 +52,20 @@
         <div class="skill-section">
           <h3>{{localize 'MYTHRAS.Magic_Skill_Type'}}</h3>
           <span class="resource">
-              <select name="data.skillType" data-dtype="String">
-                {{#select data.data.skillType}}
-                <option value=""></option>
-                <option value="FM">{{localize 'MYTHRAS.Folk_Magic'}}</option>
-                <option value="TR">{{localize 'MYTHRAS.Trance'}}</option>
-                <option value="BI">{{localize 'MYTHRAS.Binding'}}</option>
-                <option value="ME">{{localize 'MYTHRAS.Meditation'}}</option>
-                <option value="MY">{{localize 'MYTHRAS.Mysticism'}}</option>
-                <option value="IN">{{localize 'MYTHRAS.Invocation'}}</option>
-                <option value="SH">{{localize 'MYTHRAS.Shaping'}}</option>
-                <option value="DE">{{localize 'MYTHRAS.Devotion'}}</option>
-                <option value="EX">{{localize 'MYTHRAS.Exhort'}}</option>
-                {{/select}}
-              </select>
+            <select name="data.skillType" data-dtype="String">
+              {{#select data.data.skillType}}
+              <option value=""></option>
+              <option value="FM">{{localize 'MYTHRAS.Folk_Magic'}}</option>
+              <option value="TR">{{localize 'MYTHRAS.Trance'}}</option>
+              <option value="BI">{{localize 'MYTHRAS.Binding'}}</option>
+              <option value="ME">{{localize 'MYTHRAS.Meditation'}}</option>
+              <option value="MY">{{localize 'MYTHRAS.Mysticism'}}</option>
+              <option value="IN">{{localize 'MYTHRAS.Invocation'}}</option>
+              <option value="SH">{{localize 'MYTHRAS.Shaping'}}</option>
+              <option value="DE">{{localize 'MYTHRAS.Devotion'}}</option>
+              <option value="EX">{{localize 'MYTHRAS.Exhort'}}</option>
+              {{/select}}
+            </select>
             {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
             {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
             {{/unless}}
@@ -83,20 +83,20 @@
           {{#unless (eq data.data.devotionalPool.max 0) }}
           {{/unless}}
           <span class="resource">
-              <select name="data.cultId" data-dtype="String">
-                {{#select data.data.cultId}}
-                <option value=""></option>
-                {{#each data.data.cults as |cult|}}
-                <option value="{{cult.id}}">{{cult.name}}</option>
-                {{/each}}
-                {{/select}}
-              </select>
-          {{#unless (eq data.data.devotionalPool.max 0) }}
-          {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
-          {{/unless}}
-          {{#unless (eq data.data.spiritBounded.max 0) }}
-          {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
-          {{/unless}}
+            <select name="data.cultId" data-dtype="String">
+              {{#select data.data.cultId}}
+              <option value=""></option>
+              {{#each data.data.cults as |cult|}}
+              <option value="{{cult.id}}">{{cult.name}}</option>
+              {{/each}}
+              {{/select}}
+            </select>
+            {{#unless (eq data.data.devotionalPool.max 0) }}
+            {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
+            {{/unless}}
+            {{#unless (eq data.data.spiritBounded.max 0) }}
+            {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
+            {{/unless}}
           </span>
         </div>
 
@@ -145,15 +145,19 @@
             </div>
             {{#unless (eq data.data.intensity.max 0) }}
             <div>
-              <label><p>{{localize 'MYTHRAS.Intensity'}}</p>
-                <input class="misc-input" type="text" disabled="disabled" value="{{data.data.intensity.max}}"/></label><span style="color:transparent !important">%</span>
+              <label>
+                <p>{{localize 'MYTHRAS.Intensity'}}</p>
+                <input class="misc-input" type="text" disabled="disabled" value="{{data.data.intensity.max}}" />
+              </label><span style="color:transparent !important">%</span>
             </div>
             {{/unless}}
             {{#unless (eq data.data.magnitude.max 0) }}
             <div>
-              <label><p>{{localize 'MYTHRAS.Magnitude'}}</p></label>
-              <input class="misc-input" type="text" disabled="disabled"
-                     value="{{data.data.magnitude.max}}"/><span style="color:transparent !important">%</span>
+              <label>
+                <p>{{localize 'MYTHRAS.Magnitude'}}</p>
+              </label>
+              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.magnitude.max}}" /><span
+                style="color:transparent !important">%</span>
             </div>
             {{/unless}}
           </div>
