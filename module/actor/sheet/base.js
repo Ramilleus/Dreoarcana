@@ -443,16 +443,43 @@ export class ActorSheetMythras extends ActorSheet {
     if (game.i18n) {
       name = game.i18n.localize(`MYTHRAS.New_${type}`)
     }
+    console.log(data)
     // Prepare the item object.
     const itemData = {
       name: name,
       type: type,
-      data: data
+      data: data,
+      img: this._getItemImage(type)
     }
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.data['type']
     // Finally, create the item!
     return Item.create(itemData, { parent: this.actor })
+  }
+
+  _getItemImage(itemType) {
+    switch (itemType) {
+      case 'equipment':
+        return 'icons/svg/item-bag.svg'
+      case 'armor':
+        return 'icons/svg/shield.svg'
+      case 'melee-weapon':
+        return 'icons/svg/sword.svg'
+      case 'ranged-weapon':
+        return 'icons/svg/sword.svg'
+      case 'currency':
+        return 'icons/svg/coins.svg'
+      case 'combatStyle':
+        return 'icons/svg/combat.svg'
+      case 'storage':
+        return 'icons/svg/chest.svg'
+      case 'cultBrotherhood':
+        return 'icons/svg/hanging-sign.svg'
+      case 'magicSkill':
+        return 'icons/svg/daze.svg'
+      default:
+        return 'icons/svg/book.svg'
+    }
   }
 
   _rollSkillAlt(event) {
