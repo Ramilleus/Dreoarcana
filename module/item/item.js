@@ -35,6 +35,8 @@ export class MythrasItem extends Item {
       } else if (itemType === 'cultBrotherhood') {
         // Prepare cult/brotherhood data if item is cultBrotherhood
         this._prepareCultBrotherhoodData(itemData, actorData)
+      } else if (itemType === 'spell') {
+        this._prepareSpellData(itemData, actorData)
       }
       if (
         actorData !== undefined &&
@@ -46,6 +48,29 @@ export class MythrasItem extends Item {
         })
         this._prepareStorageList(itemData, storageList)
       }
+    }
+  }
+
+  /**
+   * Prepare data specific to spells
+   * @param {*} itemData
+   * @param {*} actorData
+   */
+  _prepareSpellData(itemData, actorData) {
+    const data = itemData.data
+    if (actorData != undefined) {
+      data.sourceList = actorData.items.filter(function (value) {
+        return value.type === 'magicSkill'
+      })
+      let sourceName = data.sourceList.filter(function (value) {
+        return value.id === data.sourceID
+      })
+      if (sourceName.length > 0) {
+        data.source = sourceName[0].name
+      }
+    }
+    if (data.sourceID === 'Uncategorized') {
+      data.source = 'Uncategorized'
     }
   }
 
