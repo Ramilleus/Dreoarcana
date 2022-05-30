@@ -2,7 +2,7 @@
   "name": "mythras",
   "title": "Mythras",
   "description": "The Mythras system for FoundryVTT!",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "minimumCoreVersion": "0.8.9",
   "compatibleCoreVersion": "9",
   "templateVersion": 2,
@@ -68,12 +68,12 @@
     }
   ],
   "socket": true,
-  "gridDistance": 5,
+  "gridDistance": 1.5,
   "gridUnits": "m",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/mythras",
-  "manifest": "http://gitlab.com/tpaoloni/mythras/-/raw/0.2.1/system.json",
-  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.2.1/mythras-0.2.1.zip",
+  "manifest": "http://gitlab.com/tpaoloni/mythras/-/raw/0.3.0/system.json",
+  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.3.0/mythras-0.3.0.zip",
   "license": "LICENSE.txt"
 }
