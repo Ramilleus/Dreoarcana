@@ -94,6 +94,7 @@
   "MYTHRAS.Professional_Skills": "Professional Skills",
   "MYTHRAS.Combat_Styles": "Combat Styles",
   "MYTHRAS.Magic_Skills": "Magic Skills",
+  "MYTHRAS.Magic_Skill": "Magic Skill",
   "MYTHRAS.Passions": "Passions",
   "MYTHRAS.New_professionalSkill": "New Professional Skill",
   "MYTHRAS.Source": "Source",
@@ -228,5 +229,6 @@
   "MYTHRAS.Spirit_Bounded_Pow": "Spirit Bounded POW",
   "MYTHRAS.Combined_Talent_Intensity": "Combined Intensity",
   "MYTHRAS.Shaping_Points": "Shaping Points",
-  "MYTHRAS.Devotional_Pool": "Devotional Pool"
+  "MYTHRAS.Devotional_Pool": "Devotional Pool",
+  "MYTHRAS.New_spell": "New Spell"
 }

@@ -5,12 +5,14 @@ encounterGenerator()
 
 function encounterGenerator() {
   let template = `
-    <h2>Generate a single enemy</h2>
+    <h2>Click <a href="https://gitlab.com/tpaoloni/mythras/-/tags/0.1.4">here</a> for instructions</h1>
+    <h4><i/>Future releases of this macro will be located in the <a href="https://foundryvtt.com/packages/mythras-not-so-imperative">Mythras Not So Imperative</a> module</i></h4>
+    <h3>Generate a single enemy</h2>
     <p>Mythras Encounter Generator Enemy ID: <input type="number" id="megid-enemy" /></p>
     <p>or<p>
     <p>Mythras Encounter Generator Enemy JSON: <input type="text" id="megJSON-enemy" /></p>
     <p><b>OR</b></p>
-    <h2>Generate a party</h2>
+    <h3>Generate a party</h2>
     <p>Mythras Encounter Generator Party ID: <input type="number" id="megid-party" /></p>
     <p>or<p>
     <p>Mythras Encounter Generator Party JSON: <input type="text" id="megJSON-party" /></p>
@@ -77,7 +79,6 @@ async function generateParty(partyData, type) {
           type: 'Actor',
           parent: null
         }).then((folder) => {
-          game.folders.insert(folder)
           data.enemies.forEach((enemy) => {
             createActor(enemy, folder.id)
           })
@@ -91,7 +92,6 @@ async function generateParty(partyData, type) {
       type: 'Actor',
       parent: null
     }).then((folder) => {
-      game.folders.insert(folder)
       data.enemies.forEach((enemy) => {
         createActor(enemy, folder.id)
       })

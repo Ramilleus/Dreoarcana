@@ -301,8 +301,8 @@ export class ActorMythras extends Actor {
       return physicalItems.includes(value.type)
     })
     // Sum up and return all of the items' weights
-    totalEnc = 0
-    armorEnc = 0
+    let totalEnc = 0
+    let armorEnc = 0
     for (let i of encItems) {
       let quantity = Number(i.data.data.quantity) || 0
       let enc = Number(i.data.data.encumbrance) || 0

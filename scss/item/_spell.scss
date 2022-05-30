@@ -1,0 +1,26 @@
+.spell-sheet {
+  display: flex;
+  flex-direction: column;
+  .sheet-body {
+    height: unset;
+    flex: 1;
+  }
+  .header-flex {
+    justify-content: flex-start;
+  }
+
+  .spell-core {
+    padding: 5px;
+    width: 100%;
+    .spell-core-section {
+      width: 100%;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-around;
+
+      select {
+        display: block;
+      }
+    }
+  }
+}

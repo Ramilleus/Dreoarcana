@@ -2,9 +2,9 @@ div.equipment {
   .damageModCheck {
     pointer-events: none;
   }
-  .equippedCheck {
-    pointer-events: none;
-  }
+  // .equippedCheck {
+  //   pointer-events: none;
+  // }
   .enc-row {
     display: flex;
     align-items: row;
@@ -68,44 +68,6 @@ div.equipment {
 
       .delete-column {
         width: 20px;
-      }
-    }
-
-    .top-equipment-tables {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border: 0;
-      padding: 0;
-      > div {
-        width: 49.5%;
-        .add-items-button {
-          float: right;
-          margin-right: 8px;
-          font-size: 1.2em;
-        }
-        div {
-          border: solid rgba(0, 0, 0, 0.2) 1px;
-          padding: 5px;
-          table {
-            background: none;
-            border: none;
-          }
-
-          th {
-            text-align: left;
-          }
-
-          thead {
-            background: none;
-            color: black;
-            text-shadow: none;
-          }
-
-          .delete-column {
-            width: 20px;
-          }
-        }
       }
     }
   }

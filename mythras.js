@@ -59,7 +59,8 @@ Hooks.once('ready', async function () {
               skill.data.update({
                 name: game.i18n.localize(
                   'MYTHRAS.' + skill.data.name.replace(/ /g, '_')
-                )
+                ),
+                img: 'icons/svg/book.svg'
               })
             }
             skillArray.push(skill.data)
@@ -87,24 +88,17 @@ Hooks.once('ready', async function () {
     }
   })
 
-  Hooks.on('preCreateOwnedItem', (parentId, itemData, options) => {
-    if (itemData.type !== 'hitLocation') {
-      itemData.img = getItemImage(itemData.type)
-    }
-  })
-
-  Hooks.on('preCreateItem', (parentId, itemData, options) => {
-    if (itemData.type !== 'hitLocation') {
-      itemData.img = getItemImage(itemData.type)
-    }
-  })
+  // Hooks.on('preCreateItem', (parentId, itemData, options) => {
+  //   if (itemData.type !== 'hitLocation') {
+  //     itemData.img = getItemImage(itemData.type)
+  //   }
+  // })
 
   Hooks.on('createItem', (document, options, parentId) => {
     if (document.data.type !== 'hitLocation') {
       document.data.img = getItemImage(document.data.type)
     }
   })
-  
 })
 
 function getItemImage(itemType) {

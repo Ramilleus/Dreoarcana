@@ -1,7 +1,7 @@
-<form class="{{cssClass}} item-sheet flexcol" autocomplete="off">
+<form class="{{cssClass}} item-sheet equipment-sheet flexcol" autocomplete="off">
   <header class="sheet-header">
     <div class="header-flex">
-      <img class="token-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="50" width="50" />
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="50" width="50" />
       <div class="header-fields">
         <h1 class="charname">
           <input id="storageChange_name" name="name" type="text" value="{{item.name}}" placeholder="Name" />
@@ -16,23 +16,23 @@
   <section class="sheet-body flexcol">
     <div class="equip-section">
       <div class="equipment-core">
-		<div class="equip-core-section">
-			<div>
-				<h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
-				<select name="data.storage" data-dtype="String">
-				    {{#select data.data.storage}}
-				    <option value="Unknown"></option>
-					{{#each data.data.storageList as |bag|}}
-					<option value="{{bag.id}}">{{bag.name}}</option>
-					{{/each}} 
-					{{/select}}
-				</select>
-			</div>
-		</div>
+        <div class="equip-core-section">
+          <div>
+            <h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
+            <select name="data.storage" data-dtype="String">
+              {{#select data.data.storage}}
+              <option value="Unknown"></option>
+              {{#each data.data.storageList as |bag|}}
+              <option value="{{bag.id}}">{{bag.name}}</option>
+              {{/each}}
+              {{/select}}
+            </select>
+          </div>
+        </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.ENC'}}</h3>
-            <input type="text" name="data.encumbrance" value="{{data.data.encumbrance}}"/>
+            <input type="text" name="data.encumbrance" value="{{data.data.encumbrance}}" />
           </div>
         </div>
         <div class="equip-core-section">
@@ -60,13 +60,14 @@
         </div>
       </div>
     </div>
-    
+
     <div class="equip-section">
       <div class="equipment-core">
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Carried'}}</h3>
-            <input type="checkbox" id="item_carried" name="data.carried" value="{{data.data.carried}}" {{checked data.data.carried}}/>
+            <input type="checkbox" id="item_carried" name="data.carried" value="{{data.data.carried}}" {{checked
+              data.data.carried}} />
           </div>
         </div>
         <div class="equip-core-section">
@@ -76,10 +77,10 @@
           </div>
         </div>
       </div>
-	</div>
-	
+    </div>
+
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
-    <div class="desc skill-section" data-group="primary">
+    <div class="desc" data-group="primary">
       {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
     </div>
   </section>

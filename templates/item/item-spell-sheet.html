@@ -1,45 +1,62 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form class="{{cssClass}} item-sheet spell-sheet" autocomplete="off">
   <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
-    <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
-      </h1>
+    <div class="header-flex">
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+      <div class="header-fields">
+        <h1 class="charname">
+          <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
+        </h1>
+      </div>
     </div>
   </header>
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
 
   {{! Sheet Tab Navigation }}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">
-      {{localize 'MYTHRAS.Description'}}
-    </a>
     <a class="item" data-tab="attributes">
       {{localize 'MYTHRAS.Attributes'}}
+    </a>
+    <a class="item" data-tab="description">
+      {{localize 'MYTHRAS.Description'}}
     </a>
   </nav>
 
   {{! Sheet Body }}
-  <section class="sheet-body">
+  <section class="sheet-body flexcol">
+
+    {{! Attributes Tab }}
+    <div class="attributes tab" data-group="primary" data-tab="attributes">
+      <div class="spell-core">
+        <div class="spell-core-section">
+          <div class="resource">
+            <label class="resource-label">
+              {{localize 'MYTHRAS.Spell_Level'}}
+            </label>
+            <input type="text" name="data.spellLevel" value="{{data.data.spellLevel}}" data-dtype="Number" />
+          </div>
+
+          <div class="resource">
+            <label class="resource-label">
+              {{localize 'MYTHRAS.Magic_Skill'}}
+            </label>
+            <select name="data.sourceID" data-dtype="String">
+              {{#select data.data.sourceID}}
+              <option value="Uncategorized">Uncategorized</option>
+              {{#each data.data.sourceList as |src|}}
+              <option value="{{src.id}}">{{src.name}}</option>
+              {{/each}}
+              {{/select}}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
     {{! Description Tab }}
     <div class="desc tab" data-group="primary" data-tab="description">
       {{ editor content=data.data.description target='data.description' button=true owner=owner editable=editable }}
     </div>
-
-    {{! Attributes Tab }}
-    <div class="tab attributes" data-group="primary" data-tab="attributes">
-      {{! As you add new fields, add them in here! }}
-      <div class="resource">
-        <label class="resource-label">
-          {{localize 'MYTHRAS.Spell_Level'}}
-        </label>
-        <input type="text" name="data.spellLevel" value="{{data.data.spellLevel}}" data-dtype="Number" />
-      </div>
-      <div class="resource">
-        <label class="resource-label">
-          {{localize 'MYTHRAS.Source'}}
-        </label>
-        <input type="text" name="data.source" value="{{data.data.source}}">
-      </div>
-    </div>
   </section>
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.html}}
 </form>

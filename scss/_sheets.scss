@@ -27,13 +27,6 @@
   }
 }
 
-.two-column-flex-container {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: 100%;
-}
-
 ::-webkit-scrollbar {
   background: #eeeeee;
   width: 8px;
@@ -53,4 +46,43 @@
 
 .decreased-attribute {
   color: #c11f1f;
+}
+
+.flex-table-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 0 !important;
+  padding: 0 !important;
+  > .tables-left,
+  .tables-right {
+    width: 49.5%;
+    .add-items-button {
+      float: right;
+      margin-right: 8px;
+      font-size: 1.2em;
+    }
+    > div {
+      border: solid rgba(0, 0, 0, 0.2) 1px;
+      padding: 5px;
+      table {
+        background: none;
+        border: none;
+      }
+
+      th {
+        text-align: left;
+      }
+
+      thead {
+        background: none;
+        color: black;
+        text-shadow: none;
+      }
+
+      .delete-column {
+        width: 20px;
+      }
+    }
+  }
 }
