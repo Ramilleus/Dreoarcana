@@ -115,7 +115,7 @@ Hooks.on('renderChatMessage', (app, html, data) => {
 
           if (game.user.isGM) {
               let hitLocation = targetTokenActor.actor.items.find(i => i.id === chatMessage.dataset.hitLocationId)
-              let totalArmor = Number(hitLocation.data.data.ap) + Number(hitLocation.data.data.naturalArmor)
+              let totalArmor = Number(hitLocation.data.data.ap)
               // let hitLocation = targetTokenActor.getEmbeddedDocument('Item', chatMessage.dataset.hitLocationId)
               let armorMitigatedDamage = Number(chatMessage.dataset.damage) > totalArmor ? Number(chatMessage.dataset.damage - totalArmor) : 0
 
