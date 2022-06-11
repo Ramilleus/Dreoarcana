@@ -413,8 +413,8 @@
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.data.primaryChar}} +
-                  {{localizeSkillAbbrev item.data.data.secondaryChar}} </td>
+                  {{formatSkillAbbrev item.data.data}}
+                </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
                     data-label="{{item.data.name}},{{item.data.data.totalVal}}">
@@ -468,8 +468,7 @@
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
-                  item.data.data.secondaryChar }}
+                  {{formatSkillAbbrev item.data.data}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
@@ -521,8 +520,7 @@
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
-                  item.data.data.secondaryChar}}
+                  {{formatSkillAbbrev item.data.data}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
@@ -573,8 +571,7 @@
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
-                  item.data.data.secondaryChar}}
+                  {{formatSkillAbbrev item.data.data}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
@@ -625,8 +622,7 @@
                   </a>
                 </td>
                 <td>
-                  {{localizeSkillAbbrev item.data.data.primaryChar}} + {{localizeSkillAbbrev
-                  item.data.data.secondaryChar}}
+                  {{formatSkillAbbrev item.data.data}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
@@ -656,34 +652,34 @@
           </h3>
           <table class="basic-skills-table">
             <thead>
-            <th>
-              {{localize 'MYTHRAS.Name'}}
-            </th>
-            <th>
-              {{localize 'MYTHRAS.Rank'}}
-            </th>
-            <th class="delete-column">
-              <i class="fas fa-trash"></i>
-            </th>
+              <th>
+                {{localize 'MYTHRAS.Name'}}
+              </th>
+              <th>
+                {{localize 'MYTHRAS.Rank'}}
+              </th>
+              <th class="delete-column">
+                <i class="fas fa-trash"></i>
+              </th>
             </thead>
             <tbody>
-            {{#each actor.cults as |item id|}}
-            <tr class="item" data-item-id="{{item.data._id}}">
-              <td>
-                <a class="item-name item-control item-edit">
-                  {{item.data.name}}
-                </a>
-              </td>
-              <td>
-                {{item.data.data.currentRankName}}
-              </td>
-              <td>
-                <a class="item-control item-delete delete-column" title="Delete Item">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </td>
-            </tr>
-            {{/each}}
+              {{#each actor.cults as |item id|}}
+              <tr class="item" data-item-id="{{item.data._id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.data.name}}
+                  </a>
+                </td>
+                <td>
+                  {{item.data.data.currentRankName}}
+                </td>
+                <td>
+                  <a class="item-control item-delete delete-column" title="Delete Item">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              {{/each}}
             </tbody>
           </table>
         </div>

@@ -161,12 +161,7 @@ function getItemImage(itemType) {
 
 function registerHandlebarsHelpers() {
   Handlebars.registerHelper('localizeSkillAbbrev', function (str) {
-    if (game.i18n && str !== undefined) {
-      return game.i18n.localize('MYTHRAS.' + str.toUpperCase())
-    } else if (str == undefined) {
-      return str
-    }
-    return str.toUpperCase()
+    return localizeSkillAbbrev(str)
   })
   Handlebars.registerHelper('localizeSkillName', function (str) {
     if (game.i18n) {
@@ -180,8 +175,24 @@ function registerHandlebarsHelpers() {
     }
     return items.find((entry) => entry.name === itemName)
   })
+  Handlebars.registerHelper('formatSkillAbbrev', function(data){
+    let primChar = localizeSkillAbbrev(data.primaryChar)
+    let secondChar = localizeSkillAbbrev(data.secondaryChar)
+    return [primChar,secondChar].filter(Boolean).join(' + ')
+  })
 }
 
+function localizeSkillAbbrev (str){
+  if (str === ""){
+    return ""
+  }
+  if (game.i18n && str !== undefined) {
+    return game.i18n.localize('MYTHRAS.' + str.toUpperCase())
+  } else if (str == undefined) {
+    return str
+  }
+  return str.toUpperCase()
+}
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */
