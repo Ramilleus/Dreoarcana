@@ -448,6 +448,7 @@ export class ActorSheetMythras extends ActorSheet {
     if (game.i18n) {
       name = game.i18n.localize(`MYTHRAS.New_${type}`)
     }
+    console.log('i did it')
     // Prepare the item object.
     const itemData = {
       name: name,

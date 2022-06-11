@@ -88,14 +88,9 @@ Hooks.once('ready', async function () {
     }
   })
 
-  // Hooks.on('preCreateItem', (parentId, itemData, options) => {
-  //   if (itemData.type !== 'hitLocation') {
-  //     itemData.img = getItemImage(itemData.type)
-  //   }
-  // })
-
-  Hooks.on('createItem', (document, options, parentId) => {
-    if (document.data.type !== 'hitLocation') {
+  Hooks.on('createItem', (document, options, userID) => {
+    if (document.data.type !== 'hitLocation' && document.parent == null) {
+      console.log('test')
       document.data.img = getItemImage(document.data.type)
     }
   })
