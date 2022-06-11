@@ -1099,6 +1099,11 @@ div.window-app section.window-content {
 .mythras div.combat .damageModCheck {
   pointer-events: none;
 }
+.mythras div.combat .table-header-icon {
+  border: none;
+  height: 18px;
+  filter: invert(90%);
+}
 .mythras div.combat .combat-tables {
   display: flex;
   flex-direction: column;

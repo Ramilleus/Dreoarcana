@@ -2,6 +2,11 @@ div.combat {
   .damageModCheck {
     pointer-events: none;
   }
+  .table-header-icon {
+    border: none;
+    height: 18px;
+    filter: invert(90%);
+  }
   .combat-tables {
     display: flex;
     flex-direction: column;

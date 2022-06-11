@@ -17,6 +17,7 @@
             <thead>
               <th class="hitloc-location-cell">{{localize 'MYTHRAS.Location'}}</th>
               <th class="hitloc-range-cell">{{localize 'MYTHRAS.Range2'}}</th>
+              <th class="hitloc-ward-cell"><img class="table-header-icon" src="icons/svg/shield.svg" /></th>
               <th class="hitloc-naturalArmor-cell">Natural AP</th>
               <th class="hitloc-armor-cell">{{localize 'MYTHRAS.Armor'}}</th>
               <th class="hitloc-ap-cell">{{localize 'MYTHRAS.AP'}}</th>
@@ -46,6 +47,10 @@
                   <p class="hit-loc-text">-</p>
                   <input id="{{id}}_{{item.data._id}}_rollRangeEnd_hitLoc" type="text"
                     name="item.data.data.rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
+                </td>
+                <td class="hitloc-wardLocation-cell">
+                  <input id="{{id}}_{{item.data._id}}_wardLocation_hitLoc" type="checkbox" style="margin-left: 22px"
+                    name="item.{{item.data._id}}.wardLocation" {{checked item.data.data.wardLocation}} />
                 </td>
                 <td class="hitloc-flex-cell hitloc-naturalArmor-cell">
                   <input id="{{id}}_{{item.data._id}}_naturalArmor_hitLoc" type="text"

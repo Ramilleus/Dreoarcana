@@ -185,7 +185,8 @@
       "maxHp": 0,
       "currentHp": 0,
       "maxHpMod": 0,
-      "naturalArmor": 0
+      "naturalArmor": 0,
+      "wardLocation": false
     },
     "standardSkill": {
       "templates": ["skill"]
