@@ -205,18 +205,23 @@ export class ActorSheetMythras extends ActorSheet {
         let hitLocField = fieldInfo[2]
         let updateField = ''
         let newFieldValue = ''
+
+        let wardLocation = formData['item.' + hitLoc.id + '.wardLocation']
+
         if (hitLocField === 'name') {
           updateField = 'name'
           newFieldValue = formData['item.data.name'][Number(hitLocIndex)]
-        } else {
+        } else if (hitLocField !== 'wardLocation') {
           updateField = 'data.' + hitLocField
           newFieldValue =
             formData['item.data.data.' + hitLocField][Number(hitLocIndex)]
         }
+        console.log(formData)
         this.actor.updateEmbeddedDocuments('Item', [
           {
             _id: hitLoc.id,
-            [updateField]: newFieldValue
+            [updateField]: newFieldValue,
+            'data.wardLocation': wardLocation
           }
         ])
       }
