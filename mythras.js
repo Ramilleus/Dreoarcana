@@ -90,7 +90,6 @@ Hooks.once('ready', async function () {
 
   Hooks.on('createItem', (document, options, userID) => {
     if (document.data.type !== 'hitLocation' && document.parent == null) {
-      console.log('test')
       document.data.img = getItemImage(document.data.type)
     }
   })
