@@ -428,7 +428,11 @@ export class ActorSheetMythras extends ActorSheet {
         li.addEventListener('dragstart', handler, false)
       })
     }
+
+    // Run Wounded Style Check
+    this._styleWoundedHitLocations()
   }
+  
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
@@ -832,6 +836,20 @@ export class ActorSheetMythras extends ActorSheet {
           option.dataset.source = spell.data.data.source
           option.innerHTML = `${spell.data.data.source}`
           document.querySelector('#spellFilter').append(option)
+      }
+    }
+  }
+  _styleWoundedHitLocations() {
+    const hitLocations = this.actor.items.filter(item => item.type == 'hitLocation')
+    for (let hitLocation of hitLocations) {
+      let hitLocationElement = document.querySelector(`.hitLocation-table [data-item-id="${hitLocation.id}"]`)
+      if (hitLocation.data.data.currentHp <= (hitLocation.data.data.maxHp * -1)) {
+          hitLocationElement.style.backgroundColor = '#c5000094'
+          continue
+      }
+      else if (hitLocation.data.data.currentHp <= 0) {
+          hitLocationElement.style.backgroundColor = '#ed5b1585'
+          continue
       }
     }
   }
