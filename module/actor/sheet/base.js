@@ -515,209 +515,183 @@ export class ActorSheetMythras extends ActorSheet {
       }).render(true)
     }
   }
+
   /**
    * Handle clickable rolls.
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRollSkill(event) {
+  async _onRollSkill(event) {
     event.preventDefault()
+
+    // Gets the data-label attribute of the skill's html tag
+    // attr is in format <skill_name>,<skill_value>,<foundry_item_id>
     const element = event.currentTarget
     const dataset = element.dataset
     const dataLabel = dataset.label.split(',')
-    const itemData = this.actor.items.get(dataLabel[2]).data
-    const diffGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
-      return Math.ceil(x * Number(dataLabel[1]))
+
+    let skillName = dataLabel[0]
+    let skillValue = dataLabel[1]
+    let itemId = dataLabel[2]
+
+    // Gets the skill item data using the item's id
+    let itemData = this.actor.items.get(itemId).data
+    let encPenalty = itemData.data.encPenalty
+
+    // Calculate difficulty grades based on skill value
+    let difficultyGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
+      return Math.ceil(x * Number(skillValue))
     })
-    let diffNames = [
-      'Very Easy: ',
-      'Easy: ',
-      'Standard: ',
-      'Hard: ',
-      'Formidable: ',
-      'Herculean: '
+
+    // Difficulty name code. Are localized in the template
+    let difficultyNames = [
+      'MYTHRAS.very_easy_dif',
+      'MYTHRAS.easy_dif',
+      'MYTHRAS.standard_dif',
+      'MYTHRAS.hard_dif',
+      'MYTHRAS.formidable_dif',
+      'MYTHRAS.herculean_dif'
     ]
-    if (game.i18n) {
-      diffNames = [
-        game.i18n.localize('MYTHRAS.very_easy_dif') + ': ',
-        game.i18n.localize('MYTHRAS.easy_dif') + ': ',
-        game.i18n.localize('MYTHRAS.standard_dif') + ': ',
-        game.i18n.localize('MYTHRAS.hard_dif') + ': ',
-        game.i18n.localize('MYTHRAS.formidable_dif') + ': ',
-        game.i18n.localize('MYTHRAS.herculean_dif') + ': '
-      ]
-    }
-    let modMessage = ''
-    let fatigueValue = this.actor.data.data.attributes.fatigue.value
-    if (fatigueValue !== 'fresh') {
-      let fatigueMessage = `<strong>Fatigue Mod:</strong><br> ${fatigueInfo[fatigueValue]['Skill Grade']}`
-      modMessage += fatigueMessage
-    }
-    if (itemData.data.encPenalty) {
-      if (modMessage !== '') {
-        modMessage += '<br>'
-      }
-      let currentEnc = this.actor.data.data.attributes.encumbrance.value
-      let burdened = this.actor.data.data.attributes.encumbrance.burdened
-      let overloaded = this.actor.data.data.attributes.encumbrance.overloaded
-      let encMessage = ''
-      if (currentEnc > overloaded) {
-        encMessage += `<strong>ENC Mod:</strong><br> ${encInfo['overloaded']['Skill Grade']}`
-      } else if (currentEnc > burdened) {
-        encMessage += `<strong>ENC Mod:</strong><br> ${encInfo['burdened']['Skill Grade']}`
-      }
-      modMessage += encMessage
-    }
-    if (modMessage === '') {
-      modMessage += '<strong>No Penalty</strong>'
-    }
 
     if (dataset.roll) {
+      // Get encumberance and fatigue modifier text
+      let modifiers = this.getModifiers(encPenalty)
+
+      // Create roll label, like "Rolling: <skill_name>"
+      let rollLabel = dataset.label
+        ? game.i18n.localize('MYTHRAS.Rolling') + ` ${skillName}`
+        : ''
+
+      // Make the roll
       let roll = new Roll(dataset.roll, this.actor.data.data)
-      let label = dataset.label ? `Rolling ${dataLabel[0]}` : ''
-      if (game.i18n) {
-        label = dataset.label
-          ? game.i18n.localize('MYTHRAS.Rolling') + ` ${dataLabel[0]}`
-          : ''
-      }
+      const rolled = roll.evaluate({ async: true })
 
-      const rolled = roll.roll()
-      let contentString = `<div class='mythras'><div class="tooltip">Roll Modifiers
-      <span class="tooltiptext">${modMessage}</span></div>
-      <p>
-      <table>
-       <tr>
-         <th>Difficulty</th>
-         <th>Roll</th>
-         <th>    </th>
-         <th>Skill %</th>
-         <th>Result</th>
-         
-       </tr>`
-
-      if (game.i18n) {
-        contentString = `<div class='mythras'><div class="tooltip">Roll Modifiers
-        <span class="tooltiptext">${modMessage}</span></div>
-        <p>
-        <table>
-         <tr>
-           <th>${game.i18n.localize('MYTHRAS.Difficulty')}</th>
-           <th>${game.i18n.localize('MYTHRAS.Roll')}</th>
-           <th>    </th>
-           <th>${game.i18n.localize('MYTHRAS.Skill')} %</th>
-           <th>${game.i18n.localize('MYTHRAS.Result')}</th>
-         
-         </tr>`
-      }
-      rolled.then((result) => {
-        contentString = this.rollTableString(
-          diffNames,
-          diffGrades,
-          result,
-          contentString
+      rolled.then(async (result) => {
+        // Get results of the rolls at given grades, (e.g. Success, Failure, Critical, Fumble)
+        let rollResults = this.getRollResults(
+          difficultyNames,
+          difficultyGrades,
+          result
         )
-        contentString += `</table></p></div>`
+
+        // Render the skill roll chat message content
+        let htmlContent = await renderTemplate(
+          'systems/mythras/templates/chat/skill-roll.html',
+          {
+            game: game,
+            rollResults: rollResults,
+            modifiers: modifiers
+          }
+        )
+
+        // Display the roll
         roll.toMessage({
           user: game.user.id,
           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          flavor: label,
-          content: contentString
+          flavor: rollLabel,
+          content: htmlContent
         })
       })
     }
   }
-  rollTableString(diffNames, diffGrades, rolled, contentString) {
-    diffNames.forEach((name, index) => {
-      let resultString = ''
+
+  getModifiers(encPenalty) {
+    let attributes = this.actor.data.data.attributes
+    let modifiers = []
+
+    // Include Fatigue Penalty value if character is not fresh
+    let fatigueValue = attributes.fatigue.value
+    if (fatigueValue !== 'fresh') {
+      modifiers.push({
+        name: 'Fatigue Mod',
+        value: fatigueInfo[fatigueValue]['Skill Grade']
+      })
+    }
+
+    //Include ENC Penalty if skill suffers ENC penalty and character is encumbered
+    if (encPenalty) {
+      let currentEnc = attributes.encumbrance.value
+      let burdened = attributes.encumbrance.burdened
+      let overloaded = attributes.encumbrance.overloaded
+      if (currentEnc > overloaded) {
+        modifiers.push({
+          name: 'ENC Mod',
+          value: encInfo['overloaded']['Skill Grade']
+        })
+      } else if (currentEnc > burdened) {
+        modifiers.push({
+          name: 'Fatigue Mod',
+          value: encInfo['burdened']['Skill Grade']
+        })
+      }
+    }
+
+    return modifiers
+  }
+
+  getRollResults(difficultyNames, difficultyGrades, rolled) {
+    let results = []
+
+    // For each difficulty grade, determine if the roll is a
+    // Success, Failure, Critical, or Fumble
+    difficultyNames.forEach((name, index) => {
+      let result = {}
+      result.difficultyName = name
+      result.difficultyGrade = difficultyGrades[index]
+      result.rollValue = rolled.result
+
+      // Rolls above 95 are guaranteed Failures or Fumbles
       if (rolled.result >= 95) {
+        // If the roll is 99 or 100, the roll is a fumble
+        // (unless the character has a skill >= 100. Then 99 is only a Failure)
         if (
           rolled.result == 100 ||
-          (rolled.result == 99 && diffGrades[index] <= 100)
+          (rolled.result == 99 && difficultyGrades[index] <= 100)
         ) {
-          resultString = " <span style='color:darkred;'> <b>FUMBLE!</b></span>"
-          if (game.i18n) {
-            resultString =
-              " <span style='color:darkred;'> <b>" +
-              game.i18n.localize('MYTHRAS.FUMBLE!') +
-              '</b></span>'
-          }
+          result.description = 'MYTHRAS.FUMBLE!'
+          result.descriptionClass = 'text-darkred'
         } else {
-          resultString = " <span style='color:red;'> <b>FAILURE!</b></span>"
-          if (game.i18n) {
-            resultString =
-              " <span style='color:red;'> <b>" +
-              game.i18n.localize('MYTHRAS.FAILURE!') +
-              '</b></span>'
-          }
+          result.description = 'MYTHRAS.FAILURE!'
+          result.descriptionClass = 'text-red'
         }
+        // Rolls below 5 are guaranteed Successes or Criticals
       } else if (rolled.result <= 5) {
+        // If the roll is 1 or less than 1/10th the character's skill, its a Critical
         if (
           rolled.result == 1 ||
-          rolled.result <= Math.ceil(diffGrades[index] * 0.1)
+          rolled.result <= Math.ceil(difficultyGrades[index] * 0.1)
         ) {
-          resultString =
-            " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
-          if (game.i18n) {
-            resultString =
-              " <span style='color:goldenrod;'> <b>" +
-              game.i18n.localize('MYTHRAS.CRITICAL!') +
-              '</b></span>'
-          }
+          result.description = 'MYTHRAS.CRITICAL!'
+          result.descriptionClass = 'text-goldenrod'
         } else {
-          resultString = " <span style='color:green;'> <b>SUCCESS!</b></span>"
-          if (game.i18n) {
-            resultString =
-              " <span style='color:green;'> <b>" +
-              game.i18n.localize('MYTHRAS.SUCCESS!') +
-              '</b></span>'
-          }
+          result.description = 'MYTHRAS.SUCCESS!'
+          result.descriptionClass = 'text-green'
         }
       } else {
-        if (rolled.result <= Math.ceil(diffGrades[index] * 0.1)) {
-          resultString =
-            " <span style='color:goldenrod;'> <b>CRITICAL!</b></span>"
-          if (game.i18n) {
-            resultString =
-              " <span style='color:goldenrod;'> <b>" +
-              game.i18n.localize('MYTHRAS.CRITICAL!') +
-              '</b></span>'
-          }
+        if (rolled.result <= Math.ceil(difficultyGrades[index] * 0.1)) {
+          result.description = 'MYTHRAS.CRITICAL!'
+          result.descriptionClass = 'text-goldenrod'
+        } else if (rolled.result <= difficultyGrades[index]) {
+          result.description = 'MYTHRAS.SUCCESS!'
+          result.descriptionClass = 'text-green'
         } else {
-          resultString = `${
-            rolled.result <= diffGrades[index]
-              ? " <span style='color:green;'> <b>SUCCESS!</b></span>"
-              : " <span style='color:red;'> <b>FAILURE!</b></span>"
-          }`
-          if (game.i18n) {
-            resultString = `${
-              rolled.result <= diffGrades[index]
-                ? " <span style='color:green;'> <b>" +
-                  game.i18n.localize('MYTHRAS.SUCCESS!') +
-                  '</b></span>'
-                : " <span style='color:red;'> <b>" +
-                  game.i18n.localize('MYTHRAS.FAILURE!') +
-                  '</b></span>'
-            } `
-          }
+          result.description = 'MYTHRAS.FAILURE!'
+          result.descriptionClass = 'text-red'
         }
       }
-      contentString += `<tr>
-      <td><b>${name}</b></td>
-      <td>[[${rolled.result}]]</td>
-      <td> ≤ </td>
-      <td>[[${diffGrades[index]}]]</td>
-      <td>${resultString}</td>
-      </tr> `
+      results.push(result)
     })
-    return contentString
+
+    return results
   }
-  _onRollMeleeDamage(event) {
+
+  async _onRollMeleeDamage(event) {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
     const weapon = this.actor.items.get(dataset.label)
     const damMod = weapon.data.data.damageModifier
-    const combatEffect = weapon.data.data['combat-effects']
+    const combatEffects = weapon.data.data['combat-effects']
     const traits = weapon.data.data.traits
     const size = weapon.data.data.size
     const reach = weapon.data.data.reach
@@ -727,46 +701,32 @@ export class ActorSheetMythras extends ActorSheet {
         damage += '+' + this.actor.data.data.attributes.damageMod.value
       }
       let roll = new Roll(damage, this.actor.data.data)
-      let label = dataset.label ? `Rolling ${weapon.data.name} ` : ''
-      label +=
-        '<br><strong>Combat-Effects: </strong>' +
-        combatEffect +
-        '<br><strong>Traits: </strong>' +
-        traits
 
-      if (game.i18n) {
-        label = dataset.label
-          ? `${game.i18n.localize('MYTHRAS.Rolling')} ${weapon.data.name} `
-          : ''
-        label +=
-          '<br><strong>Size: </strong>' +
-          size +
-          '&#8195;<strong>Reach: </strong>' +
-          reach +
-          '<br><strong>' +
-          game.i18n.localize('MYTHRAS.Combat_Effects') +
-          ': </strong>' +
-          combatEffect +
-          '<br><strong>' +
-          game.i18n.localize('MYTHRAS.Traits') +
-          ': </strong>' +
-          traits
-      }
+      let labelHtml = await renderTemplate(
+        'systems/mythras/templates/chat/damage/melee-roll.html',
+        {
+          weaponName: weapon.data.name,
+          size: size,
+          reach: reach,
+          combatEffects: combatEffects,
+          traits: traits
+        }
+      )
 
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
+        flavor: labelHtml
       })
     }
   }
-  _onRollRangedDamage(event) {
+
+  async _onRollRangedDamage(event) {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
     const weapon = this.actor.items.get(dataset.label)
-    const name = weapon.data.name
     const damMod = weapon.data.data.damageModifier
-    const combatEffect = weapon.data.data['combat-effects']
+    const combatEffects = weapon.data.data['combat-effects']
     const force = weapon.data.data.force
     if (dataset.roll) {
       let damage = dataset.roll
@@ -774,28 +734,19 @@ export class ActorSheetMythras extends ActorSheet {
         damage += '+' + this.actor.data.data.attributes.damageMod.value
       }
       let roll = new Roll(damage, this.actor.data.data)
-      let label = dataset.label ? `Rolling ${name} ` : ''
-      label +=
-        '<br><strong>Force: </strong>' +
-        force +
-        '<br><strong>Combat-Effects: </strong>' +
-        combatEffect
-      if (game.i18n) {
-        let label = dataset.label
-          ? `${game.i18n.localize('MYTHRAS.Rolling')} ${name} `
-          : ''
-        label +=
-          '<br><strong>Force: </strong>' +
-          force +
-          '<br><strong>' +
-          game.i18n.localize('MYTHRAS.Combat_Effects') +
-          ': </strong>' +
-          combatEffect
-      }
+
+      let labelHtml = await renderTemplate(
+        'systems/mythras/templates/chat/damage/ranged-roll.html',
+        {
+          weaponName: weapon.data.name,
+          force: force,
+          combatEffects: combatEffects
+        }
+      )
 
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
+        flavor: labelHtml
       })
     }
   }

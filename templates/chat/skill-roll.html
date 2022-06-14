@@ -1,0 +1,32 @@
+<div class="mythras">
+  <div class="tooltip">Roll Modifiers
+    <span class="tooltiptext">
+      {{#each modifiers}}
+      <strong>{{ this.name }}:</strong><br /> {{ this.value }}
+      {{#unless @last }}
+      <br />
+      {{/unless}}
+      {{else}}
+      No Penalties
+      {{/each}}
+    </span>
+  </div>
+  <table>
+    <tr>
+      <th>{{ localize 'MYTHRAS.Difficulty'}}</th>
+      <th>{{ localize 'MYTHRAS.Roll'}}</th>
+      <th></th>
+      <th>{{ localize 'MYTHRAS.Skill'}}</th>
+      <th>{{ localize 'MYTHRAS.Result'}}</th>
+    </tr>
+    {{#each rollResults}}
+    <tr>
+      <td><b>{{ localize this.difficultyName }}: </b></td>
+      <td>[[{{ this.rollValue }}]]</td>
+      <td> ≤ </td>
+      <td>[[{{ this.difficultyGrade }}]]</td>
+      <td><span class="{{ this.descriptionClass }}"> <b>{{ localize this.description }}</b></span></td>
+    </tr>
+    {{/each}}
+  </table>
+</div>

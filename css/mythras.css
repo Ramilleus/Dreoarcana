@@ -91,6 +91,18 @@ div.window-app section.window-content {
 .mythras .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+.mythras .text-red {
+  color: red;
+}
+.mythras .text-darkred {
+  color: darkred;
+}
+.mythras .text-goldenrod {
+  color: goldenrod;
+}
+.mythras .text-green {
+  color: green;
+}
 .mythras .window-content {
   padding: 0px;
   overflow-x: scroll;
