@@ -11,8 +11,11 @@
 @import 'fonts';
 @import 'globals';
 
+
 /* Styles limited to mythras sheets */
 .mythras {
+  @import 'chat';
+
   @import 'sheets';
   @import 'actor/character/header';
   @import 'actor/character/body';

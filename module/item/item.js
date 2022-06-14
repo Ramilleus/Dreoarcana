@@ -89,6 +89,7 @@ export class MythrasItem extends Item {
     if (itemData.type === 'magicSkill') {
       this._prepareMagicSkillData(itemData, actorData)
     }
+    data.encPenalty = (data.primaryChar === 'str' || data.primaryChar === 'dex' || data.secondaryChar === 'str' || data.secondaryChar === 'dex')
   }
 
   /**

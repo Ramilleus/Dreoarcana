@@ -1,5 +1,6 @@
 import { skillTypes } from '../../item/skill-helper.js'
 import { fatigueInfo } from '../actor-helper.js'
+import { encInfo } from '../actor-helper.js'
 import { doesTypeHaveTemplate } from '../actor-helper.js'
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -432,7 +433,6 @@ export class ActorSheetMythras extends ActorSheet {
     // Run Wounded Style Check
     this._styleWoundedHitLocations()
   }
-  
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
@@ -525,6 +525,7 @@ export class ActorSheetMythras extends ActorSheet {
     const element = event.currentTarget
     const dataset = element.dataset
     const dataLabel = dataset.label.split(',')
+    const itemData = this.actor.items.get(dataLabel[2]).data
     const diffGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
       return Math.ceil(x * Number(dataLabel[1]))
     })
@@ -546,8 +547,30 @@ export class ActorSheetMythras extends ActorSheet {
         game.i18n.localize('MYTHRAS.herculean_dif') + ': '
       ]
     }
+    let modMessage = ''
     let fatigueValue = this.actor.data.data.attributes.fatigue.value
-    let fatigueMessage = `<strong>Fatigue Modifier:</strong> ${fatigueInfo[fatigueValue]['Skill Grade']}`
+    if (fatigueValue !== 'fresh') {
+      let fatigueMessage = `<strong>Fatigue Mod:</strong><br> ${fatigueInfo[fatigueValue]['Skill Grade']}`
+      modMessage += fatigueMessage
+    }
+    if (itemData.data.encPenalty) {
+      if (modMessage !== '') {
+        modMessage += '<br>'
+      }
+      let currentEnc = this.actor.data.data.attributes.encumbrance.value
+      let burdened = this.actor.data.data.attributes.encumbrance.burdened
+      let overloaded = this.actor.data.data.attributes.encumbrance.overloaded
+      let encMessage = ''
+      if (currentEnc > overloaded) {
+        encMessage += `<strong>ENC Mod:</strong><br> ${encInfo['overloaded']['Skill Grade']}`
+      } else if (currentEnc > burdened) {
+        encMessage += `<strong>ENC Mod:</strong><br> ${encInfo['burdened']['Skill Grade']}`
+      }
+      modMessage += encMessage
+    }
+    if (modMessage === '') {
+      modMessage += '<strong>No Penalty</strong>'
+    }
 
     if (dataset.roll) {
       let roll = new Roll(dataset.roll, this.actor.data.data)
@@ -559,7 +582,9 @@ export class ActorSheetMythras extends ActorSheet {
       }
 
       const rolled = roll.roll()
-      let contentString = `<h4>${fatigueMessage}</h4><p>
+      let contentString = `<div class='mythras'><div class="tooltip">Roll Modifiers
+      <span class="tooltiptext">${modMessage}</span></div>
+      <p>
       <table>
        <tr>
          <th>Difficulty</th>
@@ -571,7 +596,9 @@ export class ActorSheetMythras extends ActorSheet {
        </tr>`
 
       if (game.i18n) {
-        contentString = `<h4>${fatigueMessage}</h4><p>
+        contentString = `<div class='mythras'><div class="tooltip">Roll Modifiers
+        <span class="tooltiptext">${modMessage}</span></div>
+        <p>
         <table>
          <tr>
            <th>${game.i18n.localize('MYTHRAS.Difficulty')}</th>
@@ -589,7 +616,7 @@ export class ActorSheetMythras extends ActorSheet {
           result,
           contentString
         )
-        contentString += `</table></p>`
+        contentString += `</table></p></div>`
         roll.toMessage({
           user: game.user.id,
           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -840,16 +867,19 @@ export class ActorSheetMythras extends ActorSheet {
     }
   }
   _styleWoundedHitLocations() {
-    const hitLocations = this.actor.items.filter(item => item.type == 'hitLocation')
+    const hitLocations = this.actor.items.filter(
+      (item) => item.type == 'hitLocation'
+    )
     for (let hitLocation of hitLocations) {
-      let hitLocationElement = document.querySelector(`.hitLocation-table [data-item-id="${hitLocation.id}"]`)
-      if (hitLocation.data.data.currentHp <= (hitLocation.data.data.maxHp * -1)) {
-          hitLocationElement.style.backgroundColor = '#c5000094'
-          continue
-      }
-      else if (hitLocation.data.data.currentHp <= 0) {
-          hitLocationElement.style.backgroundColor = '#ed5b1585'
-          continue
+      let hitLocationElement = document.querySelector(
+        `.hitLocation-table [data-item-id="${hitLocation.id}"]`
+      )
+      if (hitLocation.data.data.currentHp <= hitLocation.data.data.maxHp * -1) {
+        hitLocationElement.style.backgroundColor = '#c5000094'
+        continue
+      } else if (hitLocation.data.data.currentHp <= 0) {
+        hitLocationElement.style.backgroundColor = '#ed5b1585'
+        continue
       }
     }
   }

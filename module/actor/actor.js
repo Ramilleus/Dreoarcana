@@ -1,4 +1,4 @@
-import { fatigueInfo, physicalItems, formatter } from './actor-helper.js'
+import { fatigueInfo, encInfo, physicalItems, formatter } from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
@@ -213,6 +213,9 @@ export class ActorMythras extends Actor {
    */
   prepareMovement(data, items) {
     // Get athletics and swim item objects
+    let currentEnc = data.attributes.encumbrance.value
+    let burdened = data.attributes.encumbrance.burdened
+    let overloaded = data.attributes.encumbrance.overloaded
     let athletics = items.find(
       (entry) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
     )
@@ -225,6 +228,12 @@ export class ActorMythras extends Actor {
       fatigueInfo[data.attributes.fatigue.value].Movement(
         data.attributes.movement.walk
       )
+    if (currentEnc > overloaded){
+      movementMiscMod += encInfo['overloaded'].Movement(data.attributes.movement.walk)
+    }else if (currentEnc > burdened){
+      movementMiscMod += encInfo['burdened'].Movement(data.attributes.movement.walk)
+    }
+    
     // Default walk speed for a human is 6
     data.attributes.movement.walk = 6 + movementMiscMod
     let walkSpeed = data.attributes.movement.walk

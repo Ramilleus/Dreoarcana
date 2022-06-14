@@ -13,6 +13,17 @@ export const formatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2
 })
 
+export const encInfo = {
+  burdened: {
+    'Skill Grade': 'One Step Penalty',
+    Movement: (Movement) => -2
+  },
+  overloaded: {
+    'Skill Grade': 'Two Steps Penalty',
+    Movement: (Movement) => -(Movement * 0.5)
+  }
+}
+
 export const fatigueInfo = {
   fresh: {
     'Skill Grade': 'Normal Difficulty',

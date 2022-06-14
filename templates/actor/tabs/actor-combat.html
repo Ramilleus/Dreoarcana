@@ -17,7 +17,8 @@
             <thead>
               <th class="hitloc-location-cell">{{localize 'MYTHRAS.Location'}}</th>
               <th class="hitloc-range-cell">{{localize 'MYTHRAS.Range2'}}</th>
-              <th class="hitloc-ward-cell"><img class="table-header-icon" src="icons/svg/shield.svg" /></th>
+              <th class="hitloc-ward-cell" style="width: 35px"><img class="table-header-icon"
+                  src="icons/svg/shield.svg" /></th>
               <th class="hitloc-naturalArmor-cell">Natural AP</th>
               <th class="hitloc-armor-cell">{{localize 'MYTHRAS.Armor'}}</th>
               <th class="hitloc-ap-cell">{{localize 'MYTHRAS.AP'}}</th>
@@ -49,7 +50,7 @@
                     name="item.data.data.rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
                 </td>
                 <td class="hitloc-wardLocation-cell">
-                  <input id="{{id}}_{{item.data._id}}_wardLocation_hitLoc" type="checkbox" style="margin-left: 22px"
+                  <input id="{{id}}_{{item.data._id}}_wardLocation_hitLoc" type="checkbox" style="margin-left: 8px"
                     name="item.{{item.data._id}}.wardLocation" {{checked item.data.data.wardLocation}} />
                 </td>
                 <td class="hitloc-flex-cell hitloc-naturalArmor-cell">
@@ -116,7 +117,7 @@
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
                     {{item.data.data.totalVal}}%
                   </a>
                 </td>
@@ -134,7 +135,7 @@
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
                     {{item.data.data.totalVal}}%
                   </a>
                 </td>
@@ -152,7 +153,7 @@
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
                     {{item.data.data.totalVal}}%
                   </a>
                 </td>
@@ -170,7 +171,7 @@
                 </td>
                 <td>
                   <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
                     {{item.data.data.totalVal}}%
                   </a>
                 </td>
@@ -236,7 +237,7 @@
             </td>
             <td>
               <a class="skill-val rollableSkill" data-roll="1d100"
-                data-label="{{item.data.name}},{{item.data.data.totalVal}}">
+                data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
                 {{item.data.data.totalVal}}%
               </a>
             </td>
