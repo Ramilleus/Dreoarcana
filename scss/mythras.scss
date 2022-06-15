@@ -1,36 +1,6 @@
-// Import utilities.
-//@import 'utils/typography';
-//@import 'utils/colors';
-//@import 'utils/mixins';
-//@import 'utils/variables';
-
-/* Global styles */
-//@import 'global/window';
-//@import 'global/grid';
-//@import 'global/flex';
-@import 'fonts';
-@import 'globals';
-
-
-/* Styles limited to mythras sheets */
-.mythras {
-  @import 'chat';
-
-  @import 'sheets';
-  @import 'actor/character/header';
-  @import 'actor/character/body';
-  @import 'actor/character/abilities';
-  @import 'actor/character/core';
-  @import 'actor/character/equipment';
-  @import 'actor/character/notes';
-  @import 'actor/character/combat';
-  @import 'item/item';
-  @import 'item/skill';
-  @import 'item/equipment';
-  @import 'item/cult';
-  @import 'item/spell';
-  //@import 'components/forms';
-  //@import 'components/resource';
-  //@import 'components/tabs';
-  //@import 'components/items';
-}
+@use 'actor/character';
+@use 'chat';
+@use 'fonts';
+@use 'item';
+@use 'globals';
+@use 'sheets';

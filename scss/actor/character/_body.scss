@@ -1,8 +1,7 @@
-.tabs > * {
-  flex: 0;
-}
-
 nav.sheet-tabs {
+  > * {
+    flex: 0;
+  }
   font-family: 'Suravaram';
   font-size: 1.2em;
   justify-content: space-around;
