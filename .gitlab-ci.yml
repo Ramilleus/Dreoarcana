@@ -8,11 +8,11 @@ before_script:
   - apt-get install zip
 
 cache:
-  key:
-    files:
-      - package-lock.json
-    paths:
-      - .npm/
+  - key:
+      files:
+        - package-lock.json
+      paths:
+        - .npm/
 
 build:release:
   stage: build
