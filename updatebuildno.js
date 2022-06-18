@@ -11,7 +11,7 @@ const argv = yargs
     description:
       'The path on gitlab where this branch is stored (CI_PROJECT_PATH)'
   })
-  .demandOption(['branch', 'buildno']).argv
+  .demandOption(['gitlabpath', 'versiontag']).argv
 
 const systemRaw = fs.readFileSync('system.json')
 let system = JSON.parse(systemRaw)
