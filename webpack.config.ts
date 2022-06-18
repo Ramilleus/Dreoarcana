@@ -173,6 +173,10 @@ const config: WebpackConfiguration = {
   optimization: optimization,
   resolve: {
     alias: {
+      '@actor': path.resolve(__dirname, 'src/module/actor'),
+      '@item': path.resolve(__dirname, 'src/module/item'),
+      '@combat': path.resolve(__dirname, 'src/module/combat'),
+      '@scripts': path.resolve(__dirname, 'src/scripts'),
       '@util': path.resolve(__dirname, 'src/util')
     },
     extensions: ['.ts', '.js']
