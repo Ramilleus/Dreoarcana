@@ -7,36 +7,36 @@
   "compatibleCoreVersion": "9",
   "templateVersion": 3,
   "author": "Jonathan Karkour and Tom Paoloni",
-  "esmodules": ["mythras.js"],
-  "styles": ["css/mythras.css"],
+  "esmodules": ["main.bundle.js"],
+  "styles": ["./styles/main.css"],
   "scripts": [],
   "packs": [
     {
       "name": "standardSkill",
       "label": "Standard Skills",
       "system": "mythras",
-      "path": "./packs/standardskill.db",
+      "path": "packs/standardskill.db",
       "entity": "Item"
     },
     {
       "name": "professionalSkill",
       "label": "Professional Skills",
       "system": "mythras",
-      "path": "./packs/professionalskill.db",
+      "path": "packs/professionalskill.db",
       "entity": "Item"
     },
     {
       "name": "humanoidHitLocations",
       "label": "Humanoid Hit Locations",
       "system": "mythras",
-      "path": "./packs/humanoidHitLocations.db",
+      "path": "packs/humanoidHitLocations.db",
       "entity": "Item"
     },
     {
       "name": "mythrasMacros",
       "label": "Mythras Macros",
       "system": "mythras",
-      "path": "./packs/mythras-macros.db",
+      "path": "packs/mythras-macros.db",
       "entity": "Macro"
     }
   ],
