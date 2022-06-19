@@ -1,10 +1,11 @@
-import { MythrasItem } from '@item/item.js'
 import { ActorMythras } from '@actor/actor.js'
 import { CombatMythras } from '@combat/combat-mythras.js'
 import { MythrasCombatTracker } from '@combat/combat-tracker'
 import { MythrasCombatTrackerConfig } from '@combat/combat-config.js'
 import { registerHandlebarsHelpers } from '@scripts/handlebars'
 import { registerTemplates } from '@scripts/register-templates'
+import { MYTHRASCONFIG } from '@scripts/config'
+import { ItemMythras } from '@item/base'
 
 export const Init = {
   listen: (): void => {
@@ -12,15 +13,17 @@ export const Init = {
       // Setup game.mythras
       game.mythras = {
         ActorMythras,
-        MythrasItem,
+        ItemMythras,
         CombatMythras,
         MythrasCombatTracker,
         MythrasCombatTrackerConfig
       }
 
+      CONFIG.MYTHRAS = MYTHRASCONFIG
+
       // Define custom Entity classes
       CONFIG.Actor.documentClass = ActorMythras
-      CONFIG.Item.documentClass = MythrasItem
+      CONFIG.Item.documentClass = ItemMythras
       CONFIG.Combat.documentClass = CombatMythras
       CONFIG.ui.combat = MythrasCombatTracker as any
 

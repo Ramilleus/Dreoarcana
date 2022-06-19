@@ -1,11 +1,13 @@
-export const CreateItem = {
+export const PreCreateItem = {
   listen: (): void => {
     Hooks.on(
-      'createItem',
+      'preCreateItem',
       (document: foundry.documents.BaseItem, options, userID) => {
         if (document.data.type !== 'hitLocation' && document.parent == null) {
           document.data.img = getItemImage(document.data.type)
         }
+
+        document.data.update(document.data)
       }
     )
   }

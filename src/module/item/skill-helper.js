@@ -1,14 +1,12 @@
 export function updateSkillValues(itemData, actorData) {
   const data = itemData.data
-  if (actorData !== undefined) {
+  if (actorData && actorData.data) {
     let primChar = 0
     let secondChar = 0
-    if (data.primaryChar !== ""){
-      primChar = Number(
-        actorData.data.characteristics[data.primaryChar].value
-      )
+    if (data.primaryChar !== '') {
+      primChar = Number(actorData.data.characteristics[data.primaryChar].value)
     }
-    if (data.secondaryChar !== ""){
+    if (data.secondaryChar !== '') {
       secondChar = Number(
         actorData.data.characteristics[data.secondaryChar].value
       )
