@@ -65,12 +65,23 @@ export class MythrasItem extends Item {
       let sourceName = data.sourceList.filter(function (value) {
         return value.id === data.sourceID
       })
+
       if (sourceName.length > 0) {
         data.source = sourceName[0].name
+        let sourceData = sourceName[0].data.data
+        data.magicType = sourceData.skillType
       }
     }
     if (data.sourceID === 'Uncategorized') {
       data.source = 'Uncategorized'
+      data.magicType = ''
+    }
+    if (data.magicType === 'FM') {
+      data.intensity.value = 1
+      data.magnitude.value = 1
+    } else {
+      data.intensity.value = 0
+      data.magnitude.value = 0
     }
   }
 
@@ -89,7 +100,11 @@ export class MythrasItem extends Item {
     if (itemData.type === 'magicSkill') {
       this._prepareMagicSkillData(itemData, actorData)
     }
-    data.encPenalty = (data.primaryChar === 'str' || data.primaryChar === 'dex' || data.secondaryChar === 'str' || data.secondaryChar === 'dex')
+    data.encPenalty =
+      data.primaryChar === 'str' ||
+      data.primaryChar === 'dex' ||
+      data.secondaryChar === 'str' ||
+      data.secondaryChar === 'dex'
   }
 
   /**

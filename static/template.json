@@ -279,7 +279,22 @@
       "spellLevel": 1,
       "sourceList": [],
       "source": "Uncategorized",
-      "sourceID": "Uncategorized"
+      "sourceID": "Uncategorized",
+      "cost": 0,
+      "castTime": "",
+      "duration": "",
+      "durationMult": 0,
+      "traits": "",
+      "intensity": {
+        "mod": 0,
+        "value": 0,
+        "base": 0
+      },
+      "magnitude": {
+        "mod": 0,
+        "value": 0,
+        "base": 0
+      }
     },
     "cultBrotherhood": {
       "templates": ["base"],

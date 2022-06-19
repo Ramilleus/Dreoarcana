@@ -18,6 +18,21 @@
       display: flex;
       justify-content: space-around;
 
+      .resource {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .short-input {
+        width: 50%;
+      }
+
+      .long-input {
+        width: 100%;
+      }
+
       select {
         display: block;
       }
