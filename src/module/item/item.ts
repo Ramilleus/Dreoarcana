@@ -1,11 +1,12 @@
 import { updateSkillValues, skillTypes } from './skill-helper.js'
 import { physicalItems } from '../actor/actor-helper.js'
+import { ItemMythras } from './base'
 
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
-export class MythrasItem extends Item {
+export class MythrasItem extends ItemMythras {
   /**
    * Augment the basic Item data model with additional dynamic data.
    */
@@ -17,7 +18,7 @@ export class MythrasItem extends Item {
     const itemType = itemData.type
 
     // Get the data of the actor that owns the item
-    const actorData = this.actor ? this.actor.data : {}
+    const actorData: any = this.actor ? this.actor.data : {}
 
     if (this.actor !== null) {
       if (skillTypes.includes(itemType)) {
@@ -43,7 +44,7 @@ export class MythrasItem extends Item {
         actorData.items !== undefined &&
         physicalItems.includes(itemType)
       ) {
-        let storageList = actorData.items.filter((item) => {
+        let storageList = actorData.items.filter((item: any) => {
           return item.type == 'storage'
         })
         this._prepareStorageList(itemData, storageList)
@@ -56,16 +57,15 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} actorData
    */
-  _prepareSpellData(itemData, actorData) {
+  _prepareSpellData(itemData: any, actorData: any) {
     const data = itemData.data
     if (actorData != undefined) {
-      data.sourceList = actorData.items.filter(function (value) {
+      data.sourceList = actorData.items.filter(function (value: any) {
         return value.type === 'magicSkill'
       })
-      let sourceName = data.sourceList.filter(function (value) {
+      let sourceName = data.sourceList.filter(function (value: any) {
         return value.id === data.sourceID
       })
-
       if (sourceName.length > 0) {
         data.source = sourceName[0].name
         let sourceData = sourceName[0].data.data
@@ -90,7 +90,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} actorData
    */
-  _prepareSkillData(itemData, actorData) {
+  _prepareSkillData(itemData: any, actorData: any) {
     const data = itemData.data
     if (data.baseVal.init === 0) {
       updateSkillValues(itemData, actorData)
@@ -112,18 +112,18 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} actorData
    */
-  _prepareMagicSkillData(itemData, actorData) {
+  _prepareMagicSkillData(itemData: any, actorData: any) {
     const data = itemData.data
     let cultRank = 0
     let chaValue = 0
     let powValue = 0
     if (actorData !== undefined && actorData.items !== undefined) {
       const cults = actorData.items.filter(
-        (item) => item.data.type === 'cultBrotherhood'
+        (item: any) => item.data.type === 'cultBrotherhood'
       )
       data.cults = cults
       if (data.cultId !== undefined) {
-        const theCult = cults.find((item) => item.id === data.cultId)
+        const theCult = cults.find((item: any) => item.id === data.cultId)
         if (theCult !== undefined) {
           cultRank = Number(theCult.data.data.currentRank)
         }
@@ -167,7 +167,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setFMMagicValues(data, skillValue) {
+  _setFMMagicValues(data: any, skillValue: any) {
     data.intensity = { min: 1, max: 1, base: 1 }
     data.magnitude = { min: 1, max: 1, base: 1 }
     data.spiritBounded.max = 0
@@ -182,7 +182,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setTRMagicValues(data, skillValue) {
+  _setTRMagicValues(data: any, skillValue: any) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -199,7 +199,7 @@ export class MythrasItem extends Item {
    * @param {*} cult rank
    * @param {*} charisma Value
    */
-  _setBIMagicValues(data, skillValue, cultRank, chaValue) {
+  _setBIMagicValues(data: any, skillValue: any, cultRank: any, chaValue: any) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = Math.ceil((chaValue * cultRank) / 4)
@@ -214,7 +214,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setMEMagicValues(data, skillValue) {
+  _setMEMagicValues(data: any, skillValue: any) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -229,7 +229,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setMYMagicValues(data, skillValue) {
+  _setMYMagicValues(data: any, skillValue: any) {
     data.intensity = { min: 1, max: Math.ceil(skillValue / 20), base: 1 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -244,7 +244,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setINMagicValues(data, skillValue) {
+  _setINMagicValues(data: any, skillValue: any) {
     data.intensity = {
       min: 1,
       max: Math.ceil(skillValue / 10),
@@ -263,7 +263,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setSHMagicValues(data, skillValue) {
+  _setSHMagicValues(data: any, skillValue: any) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 1, max: Math.ceil(skillValue / 10), base: 1 }
     data.spiritBounded.max = 0
@@ -280,7 +280,7 @@ export class MythrasItem extends Item {
    * @param {*} cult rank
    * @param {*} power Value
    */
-  _setDEMagicValues(data, skillValue, cultRank, powValue) {
+  _setDEMagicValues(data: any, skillValue: any, cultRank: any, powValue: any) {
     data.intensity = {
       min: Math.ceil(skillValue / 10),
       max: Math.ceil(skillValue / 10),
@@ -303,7 +303,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setEXMagicValues(data, skillValue) {
+  _setEXMagicValues(data: any, skillValue: any) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -318,7 +318,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} actorData
    */
-  _prepareCultBrotherhoodData(itemData, actorData) {
+  _prepareCultBrotherhoodData(itemData: any, actorData: any) {
     const data = itemData.data
     switch (data.currentRank) {
       case '4':
@@ -344,7 +344,7 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} actorData
    */
-  _prepareStorageData(itemData, actorData) {
+  _prepareStorageData(itemData: any, actorData: any) {
     itemData.data.contentEncumbrance = 0
     itemData.data.contentValue = 0
     itemData.data.storageName = ''
@@ -354,7 +354,7 @@ export class MythrasItem extends Item {
       actorData.items !== undefined
     ) {
       let storage = actorData.items.find(
-        (item) => item.id === itemData.data.storage
+        (item: any) => item.id === itemData.data.storage
       )
       if (storage !== undefined) {
         itemData.data.carried = storage.data.data.carried
@@ -367,18 +367,18 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} storageList
    */
-  _prepareStorageList(itemData, storageList) {
+  _prepareStorageList(itemData: any, storageList: any) {
     if (storageList != undefined) {
       let storageName = ''
       let storage = storageList.find(
-        (item) => item.id === itemData.data.storage
+        (item: any) => item.id === itemData.data.storage
       )
       if (storage != undefined) {
         storageName = storage.name
       }
       if (itemData.type === 'storage') {
         let otherStorages = storageList.filter(
-          (item) => item.id !== itemData._id
+          (item: any) => item.id !== itemData._id
         )
         itemData.data.storageList = otherStorages
       } else {
@@ -393,19 +393,19 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} actorData
    */
-  _prepareArmorData(itemData, actorData) {
+  _prepareArmorData(itemData: any, actorData: any) {
     const data = itemData.data
     if (actorData != undefined) {
-      data.hitLoc = actorData.items.filter(function (value) {
+      data.hitLoc = actorData.items.filter(function (value: any) {
         return value.type === 'hitLocation'
       })
       if (data.location === 'Unequipped' && data.locationName.length > 0) {
-        let hitlocID = data.hitLoc.filter(function (value) {
+        let hitlocID = data.hitLoc.filter(function (value: any) {
           return value.name === data.locationName
         })
         data.location = hitlocID[0].id
       }
-      let hitLocName = data.hitLoc.filter(function (value) {
+      let hitLocName = data.hitLoc.filter(function (value: any) {
         return value.id === data.location
       })
       if (hitLocName.length > 0) {
@@ -419,17 +419,17 @@ export class MythrasItem extends Item {
    * @param {*} itemData
    * @param {*} actorData
    */
-  _prepareHitLocationData(itemData, actorData) {
+  _prepareHitLocationData(itemData: any, actorData: any) {
     const data = itemData.data
     const id = itemData._id
     if (actorData != undefined) {
-      let armors = actorData.items.filter(function (value) {
+      let armors = actorData.items.filter(function (value: any) {
         return value.type === 'armor'
       })
 
-      let armorEquipped = []
+      let armorEquipped: any = []
       let ap = 0
-      armors.forEach(function (piece, index) {
+      armors.forEach(function (piece: any, index: any) {
         if (piece.data.data.location === id && piece.data.data.equipped) {
           armorEquipped.push(piece.name)
           ap += Number(piece.data.data.ap)

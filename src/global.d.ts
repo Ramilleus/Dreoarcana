@@ -1,3 +1,5 @@
+import { MYTHRASCONFIG } from '@scripts/config'
+
 export {}
 
 declare global {
@@ -5,7 +7,11 @@ declare global {
     mythras: any
   }
 
-  const CONFIG: Config
+  interface ConfigMythras extends Config {
+    MYTHRAS: typeof MYTHRASCONFIG
+  }
+
+  const CONFIG: ConfigMythras
 
   namespace globalThis {
     var game: Game

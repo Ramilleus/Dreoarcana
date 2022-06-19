@@ -104,7 +104,7 @@ export class MythrasItemSheet extends ItemSheet {
       // Get the hit location the armor is on
       let hitLoc = this.actor.items.get(String(data.location))
       // Run if equipped checkbox changes
-      if (event.target.id.includes('equipped')) {
+      if (event.target.id.includes('equipped') && itemData) {
         this.toggleArmorEquipped(itemData, formData, hitLoc)
       } else if (
         (event.target.id.includes('ap') || event.target.id.includes('name')) &&
