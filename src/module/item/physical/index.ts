@@ -2,7 +2,6 @@ import { ItemMythras } from '@item/base'
 import type { StorageMythras } from '@item/storage'
 
 export abstract class PhysicalItemMythras extends ItemMythras {
-  
   override prepareData(): void {
     super.prepareData()
 
