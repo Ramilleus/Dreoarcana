@@ -18,21 +18,18 @@ export class SpellMythras extends ItemMythras {
       if (sourceName.length > 0) {
         data.source = sourceName[0].name
         let sourceData = sourceName[0].data.data
+        console.log(sourceName[0].data.data)
         data.magicType = sourceData.skillType
+        data.intensity.base = sourceName[0].data.data.intensity.max
+        data.magnitude.base = sourceName[0].data.data.magnitude.max
       }
     }
     if (data.sourceID === 'Uncategorized') {
       data.source = 'Uncategorized'
       data.magicType = ''
     }
-    if (data.intensity && data.magnitude) {
-      if (data.magicType === 'FM') {
-        data.intensity.value = 1
-        data.magnitude.value = 1
-      } else {
-        data.intensity.value = 0
-        data.magnitude.value = 0
-      }
-    }
+
+    data.intensity.value = data.intensity.base + Number(data.intensity.mod)
+    data.magnitude.value = data.magnitude.base + Number(data.magnitude.mod)
   }
 }
