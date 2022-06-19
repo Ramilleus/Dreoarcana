@@ -1,4 +1,5 @@
-export default function () {
+/** Handlebars partials */
+export function registerTemplates() {
   const templatePaths = [
     // Global partials
     'systems/mythras/templates/global/mythras-symbols.html',

@@ -19,6 +19,7 @@
     "@types/webpack-env": "^1.17.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^4.0.0",
     "eslint": "^8.18.0",
     "eslint-plugin-import": "^2.26.0",
     "fork-ts-checker-webpack-plugin": "^7.2.11",
@@ -40,5 +41,8 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.2",
     "webpack-import-glob-loader": "^1.6.3"
+  },
+  "dependencies": {
+    "yargs": "^17.5.1"
   }
 }

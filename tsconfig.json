@@ -10,6 +10,13 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
+      "@actor": ["src/module/actor"],
+      "@actor/*": ["src/module/actor/*"],
+      "@item": ["src/module/item"],
+      "@item/*": ["src/module/item/*"],
+      "@combat": ["src/module/combat"],
+      "@combat/*": ["src/module/combat/*"],
+      "@scripts/*": ["src/scripts/*"],
       "@util": ["src/util"],
       "@util/*": ["src/util/*"]
     },

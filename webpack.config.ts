@@ -7,6 +7,8 @@ import { Request } from 'webpack-dev-server'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import SimpleProgressWebpackPlugin from 'simple-progress-webpack-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
 import * as glob from 'glob'
 
 const buildMode =
@@ -37,6 +39,32 @@ const [outDir, foundryUri] = (() => {
     'http://localhost:30000'
   return [outDir, foundryUri]
 })()
+
+type Optimization = WebpackConfiguration['optimization']
+const optimization: Optimization = isProductionBuild
+  ? {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: { mangle: false, module: true, keep_classnames: true }
+        }),
+        new CssMinimizerPlugin()
+      ],
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          default: {
+            name: 'main',
+            test: 'src/pf2e.ts'
+          },
+          vendor: {
+            name: 'vendor',
+            test: /node_modules/
+          }
+        }
+      }
+    }
+  : undefined
 
 const config: WebpackConfiguration = {
   context: __dirname,
@@ -142,8 +170,13 @@ const config: WebpackConfiguration = {
     new MiniCssExtractPlugin({ filename: 'styles/[name].css' }),
     new SimpleProgressWebpackPlugin({ format: 'compact' })
   ],
+  optimization: optimization,
   resolve: {
     alias: {
+      '@actor': path.resolve(__dirname, 'src/module/actor'),
+      '@item': path.resolve(__dirname, 'src/module/item'),
+      '@combat': path.resolve(__dirname, 'src/module/combat'),
+      '@scripts': path.resolve(__dirname, 'src/scripts'),
       '@util': path.resolve(__dirname, 'src/util')
     },
     extensions: ['.ts', '.js']
