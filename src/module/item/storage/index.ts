@@ -1,6 +1,8 @@
 import { PhysicalItemMythras } from '@item/physical'
 
 export class StorageMythras extends PhysicalItemMythras {
+  isStorage: boolean = true
+
   override prepareData(): void {
     super.prepareData()
   

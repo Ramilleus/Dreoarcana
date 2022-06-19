@@ -1,4 +1,3 @@
-import { MythrasItem } from '@item/item'
 import { ActorMythras } from '@actor/actor.js'
 import { CombatMythras } from '@combat/combat-mythras.js'
 import { MythrasCombatTracker } from '@combat/combat-tracker'

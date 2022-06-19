@@ -9,7 +9,7 @@ export abstract class PhysicalItemMythras extends ItemMythras {
     const itemData: any = this.data
     const actorData: any = this.actor ? this.actor.data : {}
     if (actorData) {
-      let storageList = actorData.items.filter((item: ItemMythras) => {
+      let storageList: StorageMythras[] = actorData.items.filter((item: ItemMythras) => {
         return itemIsStorageType(item)
       })
   
@@ -36,9 +36,6 @@ export abstract class PhysicalItemMythras extends ItemMythras {
 
 }
 
-function itemIsStorageType(item: PhysicalItemMythras): boolean {
-  if ((item as StorageMythras).type) {
-    return true
-  }
-  return false
+function itemIsStorageType(item: PhysicalItemMythras): item is StorageMythras {
+  return (item as StorageMythras).isStorage !== undefined
 }
