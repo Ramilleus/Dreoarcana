@@ -7,7 +7,7 @@ export abstract class PhysicalItemMythras extends ItemMythras {
     super.prepareData()
 
     const itemData: any = this.data
-    const actorData: any = this.actor ? this.actor.data : {}
+    const actorData: any = this.actor ? this.actor.data : undefined
     if (actorData) {
       let storageList: StorageMythras[] = actorData.items.filter((item: ItemMythras) => {
         return itemIsStorageType(item)

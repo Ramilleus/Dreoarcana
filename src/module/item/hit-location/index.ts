@@ -13,7 +13,7 @@ export class HitLocationMythras extends ItemMythras {
       let armors = actorData.items.filter(function (value: any) {
         return value.type === 'armor'
       })
-
+      
       let armorEquipped: any = []
       let ap = 0
       armors.forEach(function (piece: any, index: any) {

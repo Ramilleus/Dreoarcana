@@ -1,4 +1,9 @@
-import { fatigueInfo, encInfo, physicalItems, formatter } from './actor-helper.js'
+import {
+  fatigueInfo,
+  encInfo,
+  physicalItems,
+  formatter
+} from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
@@ -84,6 +89,12 @@ export class ActorMythras extends Actor {
     let hitLoc = items.filter(function (value) {
       return value.type === 'hitLocation'
     })
+
+    // Manually run prepareData for all hitlocations in order to display the correct armor value
+    hitLoc.forEach((hitlocation) => {
+      hitlocation.prepareData()
+    })
+
     // Fix for strange MEG importer bug
     // TODO: Should move into mythras.js with a hook on sheet opening or fix the actual problem, lol
     armor.forEach((armorVal) => {
@@ -228,12 +239,16 @@ export class ActorMythras extends Actor {
       fatigueInfo[data.attributes.fatigue.value].Movement(
         data.attributes.movement.walk
       )
-    if (currentEnc > overloaded){
-      movementMiscMod += encInfo['overloaded'].Movement(data.attributes.movement.walk)
-    }else if (currentEnc > burdened){
-      movementMiscMod += encInfo['burdened'].Movement(data.attributes.movement.walk)
+    if (currentEnc > overloaded) {
+      movementMiscMod += encInfo['overloaded'].Movement(
+        data.attributes.movement.walk
+      )
+    } else if (currentEnc > burdened) {
+      movementMiscMod += encInfo['burdened'].Movement(
+        data.attributes.movement.walk
+      )
     }
-    
+
     // Default walk speed for a human is 6
     data.attributes.movement.walk = 6 + movementMiscMod
     let walkSpeed = data.attributes.movement.walk
