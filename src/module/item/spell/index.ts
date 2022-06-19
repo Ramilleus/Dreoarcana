@@ -18,7 +18,6 @@ export class SpellMythras extends ItemMythras {
       if (sourceName.length > 0) {
         data.source = sourceName[0].name
         let sourceData = sourceName[0].data.data
-        console.log(sourceName[0].data.data)
         data.magicType = sourceData.skillType
         data.intensity.base = sourceName[0].data.data.intensity.max
         data.magnitude.base = sourceName[0].data.data.magnitude.max
