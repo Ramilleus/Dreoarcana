@@ -8,7 +8,7 @@ export class CombatMythras extends Combat {
   }
   async startCombat() {
     await this.setupTurns()
-    await this.setFlag('mythras', 'cycle', 0)
+    await this.setFlag('mythras', 'cycle', 1)
     return super.startCombat()
   }
 
@@ -64,7 +64,7 @@ export class CombatMythras extends Combat {
    */
   async nextRound() {
     let turn = 0
-    this.setFlag('mythras', 'cycle', 0)
+    this.setFlag('mythras', 'cycle', 1)
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
       t.actor.update({

@@ -286,14 +286,10 @@
       "durationMult": 0,
       "traits": "",
       "intensity": {
-        "mod": 0,
-        "value": 0,
-        "base": 0
+        "mod": 0
       },
       "magnitude": {
-        "mod": 0,
-        "value": 0,
-        "base": 0
+        "mod": 0
       }
     },
     "cultBrotherhood": {

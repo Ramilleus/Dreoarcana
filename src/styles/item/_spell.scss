@@ -12,29 +12,76 @@
   .spell-core {
     padding: 5px;
     width: 100%;
-    .spell-core-section {
-      width: 100%;
-      margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    .int-mag-section {
       display: flex;
-      justify-content: space-around;
-
-      .resource {
-        text-align: center;
+      flex-direction: column;
+      .spell-component-container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
+        .component-label {
+          width: 60px;
+          margin-top: 5px;
+          text-align: center;
+          margin-bottom: 8px;
+        }
+        .spell-component {
+          min-width: 60px;
+          padding: 3px;
+          height: 70px;
+          border: solid rgba(0, 0, 0, 0.2) 1px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 1.8em;
+            text-align: center;
+          }
+          div {
+            input {
+              text-align: center;
+              width: 25px;
+              margin: 0;
+              margin-top: 2px;
+            }
+          }
+        }
       }
-
-      .short-input {
-        width: 50%;
-      }
-
-      .long-input {
+    }
+    .spell-info {
+      margin-right: 20px;
+      .spell-info-section {
         width: 100%;
-      }
+        margin-bottom: 10px;
+        display: flex;
 
-      select {
-        display: block;
+        .resource {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+        }
+        .centered {
+          text-align: center;
+          align-items: center;
+        }
+
+        .short-input {
+          width: 50%;
+        }
+
+        .long-input {
+          width: 100%;
+        }
+
+        select {
+          display: block;
+        }
       }
     }
   }
