@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Mythras system JS and CSS Utilities",
   "scripts": {
-    "watch-css": "sass --watch scss/mythras.scss css/mythras.css",
-    "build-css": "sass scss/mythras.scss css/mythras.css",
+    "build": "webpack --mode production",
+    "build:dev": "webpack",
     "format": "prettier --write \"**/*.js\" \"**/*.scss\" \"**/*.json\""
   },
   "browserslist": [
@@ -14,7 +14,35 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^7.2.0",
+    "@types/webpack-env": "^1.17.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^4.0.0",
+    "eslint": "^8.18.0",
+    "eslint-plugin-import": "^2.26.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.11",
+    "fs-extra": "^10.1.0",
+    "glob": "^8.0.3",
+    "handlebars": "^4.7.7",
+    "mini-css-extract-plugin": "^2.6.1",
+    "null-loader": "^4.0.1",
     "prettier": "2.0.5",
-    "sass": "^1.52.1"
+    "raw-loader": "^4.0.2",
+    "sass": "^1.52.1",
+    "sass-loader": "^13.0.0",
+    "simple-progress-webpack-plugin": "^2.0.0",
+    "string-replace-loader": "^3.1.0",
+    "ts-loader": "^9.3.0",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.2",
+    "webpack-import-glob-loader": "^1.6.3"
+  },
+  "dependencies": {
+    "yargs": "^17.5.1"
   }
 }

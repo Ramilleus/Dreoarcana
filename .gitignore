@@ -1,6 +1,11 @@
 # IDE
 .idea/
 .vs/
+.vscode/
+
+# Project Specific
+dist/
+foundryconfig.json
 
 # Node Modules
 node_modules/

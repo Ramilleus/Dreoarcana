@@ -2,41 +2,41 @@
   "name": "mythras",
   "title": "Mythras",
   "description": "The Mythras system for FoundryVTT!",
-  "version": "0.3.1",
+  "version": "2.x.x",
   "minimumCoreVersion": "0.8.9",
   "compatibleCoreVersion": "9",
   "templateVersion": 3,
   "author": "Jonathan Karkour and Tom Paoloni",
-  "esmodules": ["mythras.js"],
-  "styles": ["css/mythras.css"],
+  "esmodules": ["main.bundle.js"],
+  "styles": ["./styles/main.css"],
   "scripts": [],
   "packs": [
     {
       "name": "standardSkill",
       "label": "Standard Skills",
       "system": "mythras",
-      "path": "./packs/standardskill.db",
+      "path": "packs/standardskill.db",
       "entity": "Item"
     },
     {
       "name": "professionalSkill",
       "label": "Professional Skills",
       "system": "mythras",
-      "path": "./packs/professionalskill.db",
+      "path": "packs/professionalskill.db",
       "entity": "Item"
     },
     {
       "name": "humanoidHitLocations",
       "label": "Humanoid Hit Locations",
       "system": "mythras",
-      "path": "./packs/humanoidHitLocations.db",
+      "path": "packs/humanoidHitLocations.db",
       "entity": "Item"
     },
     {
       "name": "mythrasMacros",
       "label": "Mythras Macros",
       "system": "mythras",
-      "path": "./packs/mythras-macros.db",
+      "path": "packs/mythras-macros.db",
       "entity": "Macro"
     }
   ],
@@ -73,7 +73,8 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/mythras",
-  "manifest": "http://gitlab.com/tpaoloni/mythras/-/raw/0.3.1/system.json",
-  "download": "https://gitlab.com/tpaoloni/mythras/-/archive/0.3.1/mythras-0.3.1.zip",
+  "bugs": "https://gitlab.com/hooking/mythras/-/issues",
+  "manifest": "http://gitlab.com/tpaoloni/mythras/-/jobs/artifacts/2.x.x/system.json",
+  "download": "https://gitlab.com/tpaoloni/mythras/-/jobs/artifacts/2.x.x/mythras.zip",
   "license": "LICENSE.txt"
 }
