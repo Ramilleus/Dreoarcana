@@ -8,6 +8,8 @@ export class SpellMythras extends ItemMythras {
     const actorData: any = this.actor ? this.actor.data : {}
     
     const data = itemData.data
+    const intMod = Number(data.intensity.mod)
+    const magMod = Number(data.magnitude.mod)
     if (actorData && actorData.items) {
       data.sourceList = actorData.items.filter(function (value: any) {
         return value.type === 'magicSkill'
@@ -28,7 +30,23 @@ export class SpellMythras extends ItemMythras {
       data.magicType = ''
     }
 
-    data.intensity.value = data.intensity.base + Number(data.intensity.mod)
-    data.magnitude.value = data.magnitude.base + Number(data.magnitude.mod)
+    data.intensity.value = data.intensity.base + intMod
+    data.magnitude.value = data.magnitude.base + magMod
+
+    data.intensity.applyClass = this.applyModColoring(intMod)
+    data.magnitude.applyClass = this.applyModColoring(magMod)
+
+  }
+
+  applyModColoring(mod: Number){
+    let classMod: string = ''
+    if (mod > 0){
+      classMod = 'increased-attribute'
+    }else if(mod < 0){
+      classMod = 'decreased-attribute'
+    }else{
+      classMod = ''
+    }
+    return classMod
   }
 }

@@ -32,7 +32,7 @@
           <div class="spell-info-section">
             <div class="resource">
               <label class="resource-label">
-                {{localize 'MYTHRAS.Magic_Skill'}}
+                <strong>{{localize 'MYTHRAS.Magic_Skill'}}</strong>
               </label>
               <select name="data.sourceID" data-dtype="String">
                 {{#select data.data.sourceID}}
@@ -47,7 +47,7 @@
           <div class="spell-info-section">
             <div class="resource">
               <label class="resource-label">
-                Traits
+                <strong>Traits</strong>
               </label>
               <input class="long-input" type="text" name="data.traits" value="{{data.data.traits}}"
                 data-dtype="String" />
@@ -73,13 +73,16 @@
               <label class="resource-label">
                 Duration
               </label>
-              <input class="short-input" type="text" name="data.duration" value="{{data.data.duration}}"
+              <input class="long-input" type="text" name="data.duration" value="{{data.data.duration}}"
                 data-dtype="String" />
             </div>
           </div>
           <div class="spell-info-section">
-            Description
+            <strong>Description</strong>
           </div>
+          <p>
+            {{{data.data.description}}}
+          </p>
         </div>
 
         <div class="int-mag-section">
@@ -89,7 +92,7 @@
               Intensity
             </p>
             <div class="spell-component">
-              <p name="data.intensity.value">
+              <p class="{{data.data.intensity.applyClass}}" name="data.intensity.value">
                 {{data.data.intensity.value}}
               </p>
               <div>
@@ -107,7 +110,7 @@
               Magnitude
             </p>
             <div class="spell-component">
-              <p name="data.intensity.value">
+              <p class="{{data.data.magnitude.applyClass}}" name="data.intensity.value">
                 {{data.data.magnitude.value}}
               </p>
               <div>
