@@ -20,7 +20,7 @@
       "@util": ["src/util"],
       "@util/*": ["src/util/*"]
     },
-    "types": ["handlebars", "webpack-env"],
+    "types": ["jquery", "handlebars", "webpack-env"],
     "typeRoots": ["node_modules/handlebars"]
   }
 }

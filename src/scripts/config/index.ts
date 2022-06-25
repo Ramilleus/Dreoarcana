@@ -1,4 +1,4 @@
-import { ActorMythras } from '@actor/actor'
+import { CharacterMythras } from '@actor'
 import { ArmorMythras } from '@item/armor'
 import { CombatStyleMythras } from '@item/combat-style'
 import { CultBrotherhoodMythras } from '@item/cult-brotherhood'
@@ -15,7 +15,7 @@ import { StorageMythras } from '@item/storage'
 export const MYTHRASCONFIG = {
   Actor: {
     documentClasses: {
-      character: ActorMythras
+      character: CharacterMythras
     }
   },
 

@@ -1,7 +1,7 @@
-import { ActorSheetMythrasCharacter } from '@actor/sheet/character.js'
 import { ArmorSheetMythras } from '@item/armor/sheet'
 import { SkillSheetMythras } from '@item/skill/sheet'
 import { ItemSheetMythras } from '@item/sheet/base'
+import { CharacterSheetMythras } from '@actor/character/sheet'
 
 export function registerSheets() {
   registerItemSheet()
@@ -53,7 +53,7 @@ function registerItemSheet() {
  */
 function registerActorSheet() {
   Actors.unregisterSheet('core', ActorSheet)
-  Actors.registerSheet('mythras', ActorSheetMythrasCharacter as any, {
+  Actors.registerSheet('mythras', CharacterSheetMythras as any, {
     types: ['character'],
     makeDefault: true
   })

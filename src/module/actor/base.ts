@@ -1,16 +1,24 @@
-import {
-  fatigueInfo,
-  encInfo,
-  physicalItems,
-  formatter
-} from './actor-helper.js'
+import { fatigueInfo, encInfo, physicalItems, formatter } from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
  */
 export class ActorMythras extends Actor {
+  constructor(data: any, context: any = {}) {
+    if (context.mythras?.ready) {
+      super(data, context)
+    } else {
+      mergeObject(context, { mythras: { ready: true } })
+      const documentClasses: any = CONFIG.MYTHRAS.Actor.documentClasses
+      const ActorConstructor = documentClasses[data.type]
+      return ActorConstructor
+        ? new ActorConstructor(data, context)
+        : new ActorMythras(data, context)
+    }
+  }
+
   /** @override */
-  static async create(data, options = {}) {
+  static async create(data: any, context: any): Promise<any> {
     data.token = data.token || {}
     if (data.type === 'character') {
       mergeObject(
@@ -25,7 +33,7 @@ export class ActorMythras extends Actor {
         { overwrite: false }
       )
     }
-    return super.create(data, options)
+    return super.create(data, context)
   }
 
   /**
@@ -43,7 +51,7 @@ export class ActorMythras extends Actor {
   /**
    * Prepare Character type specific data
    */
-  _prepareCharacterData(actorData) {
+  _prepareCharacterData(actorData: any) {
     const data = actorData.data
     let items = actorData.items
     // Prepare a character's attributes
@@ -73,7 +81,7 @@ export class ActorMythras extends Actor {
    * @param {*} data
    * @param {*} items
    */
-  prepareAttributes(data, items) {
+  prepareAttributes(data: any, items: any) {
     // Get characteristic values and convert them to Numbers
     let str = Number(data.characteristics.str.value)
     let con = Number(data.characteristics.con.value)
@@ -83,26 +91,23 @@ export class ActorMythras extends Actor {
     let pow = Number(data.characteristics.pow.value)
     let cha = Number(data.characteristics.cha.value)
 
-    let armor = items.filter(function (value) {
+    let armor = items.filter(function (value: any) {
       return value.type === 'armor'
     })
-    let hitLoc = items.filter(function (value) {
+    let hitLoc = items.filter(function (value: any) {
       return value.type === 'hitLocation'
     })
 
     // Manually run prepareData for all hitlocations in order to display the correct armor value
-    hitLoc.forEach((hitlocation) => {
+    hitLoc.forEach((hitlocation: any) => {
       hitlocation.prepareData()
     })
 
     // Fix for strange MEG importer bug
     // TODO: Should move into mythras.js with a hook on sheet opening or fix the actual problem, lol
-    armor.forEach((armorVal) => {
-      if (
-        armorVal.data.location === 'Unequipped' &&
-        armorVal.data.locationName.length > 0
-      ) {
-        let hitLocId = hitLoc.filter(function (hitVal) {
+    armor.forEach((armorVal: any) => {
+      if (armorVal.data.location === 'Unequipped' && armorVal.data.locationName.length > 0) {
+        let hitLocId = hitLoc.filter(function (hitVal: any) {
           return hitVal.name === armorVal.data.locationName
         })
         this.updateEmbeddedDocuments('Item', [
@@ -114,10 +119,10 @@ export class ActorMythras extends Actor {
       }
     })
     // Armor Penalty
-    let equippedArmor = armor.filter(function (value) {
+    let equippedArmor = armor.filter(function (value: any) {
       return value.data.data.equipped
     })
-    let armorEncTotal = equippedArmor.reduce((weight, i) => {
+    let armorEncTotal = equippedArmor.reduce((weight: any, i: any) => {
       const enc = Number(i.data.data.encumbrance) || 0
       return weight + enc
     }, 0)
@@ -125,24 +130,20 @@ export class ActorMythras extends Actor {
 
     // Hit Point Mod
     let hpModMiscMod = Number(data.attributes.hitPointMod.mod)
-    data.attributes.hitPointMod.value =
-      Math.ceil((siz + con) / 5) + hpModMiscMod
+    data.attributes.hitPointMod.value = Math.ceil((siz + con) / 5) + hpModMiscMod
 
     //Action Point Mod
     data.attributes.actionPoints.max = Math.ceil((int + dex) / 12)
     let actionPointsMiscMod =
       Number(data.attributes.actionPoints.mod) +
-      fatigueInfo[data.attributes.fatigue.value].ActionPoints(
+      (fatigueInfo as any)[data.attributes.fatigue.value].ActionPoints(
         data.attributes.actionPoints.max
       )
     data.attributes.actionPoints.max += actionPointsMiscMod
 
     // Damage Mod
     let damageModMiscMod = Number(data.attributes.damageMod.mod)
-    data.attributes.damageMod.value = this.damageModCalc(
-      str + siz,
-      damageModMiscMod
-    )
+    data.attributes.damageMod.value = this.damageModCalc(str + siz, damageModMiscMod)
 
     // Experience Mod
     let xpModMiscMod = Number(data.attributes.experienceMod.mod)
@@ -156,7 +157,7 @@ export class ActorMythras extends Actor {
     data.attributes.initiativeBonus.value = Math.ceil((int + dex) / 2)
     let initiativeBonusMiscMod =
       Number(data.attributes.initiativeBonus.mod) +
-      fatigueInfo[data.attributes.fatigue.value].Initiative(
+      (fatigueInfo as any)[data.attributes.fatigue.value].Initiative(
         data.attributes.initiativeBonus.value
       )
     data.attributes.initiativeBonus.value +=
@@ -180,35 +181,30 @@ export class ActorMythras extends Actor {
    * @param {*} data
    * @param {*} items
    */
-  prepareEncumbrance(data, items) {
+  prepareEncumbrance(data: any, items: any) {
     let str = Number(data.characteristics.str.value)
     data.attributes.encumbrance.burdened = str * 2
     data.attributes.encumbrance.overloaded = str * 3
     data.attributes.encumbrance.maxLoad = str * 4
-    data.attributes.encumbrance.value = formatter.format(
-      this.encumbranceCalc(items)
-    )
+    data.attributes.encumbrance.value = formatter.format(this.encumbranceCalc(items))
   }
 
   /**
    * Calculates and sets a character's content encumbrance and value inside each storage
    * @param {*} items
    */
-  prepareStoragesContentInfo(items) {
-    let storedItems = items.filter(function (value) {
+  prepareStoragesContentInfo(items: any) {
+    let storedItems = items.filter(function (value: any) {
       return physicalItems.includes(value.type)
     })
 
-    storedItems.forEach((thing) => {
-      let storage = items.find((item) => item.id === thing.data.data.storage)
+    storedItems.forEach((thing: any) => {
+      let storage = items.find((item: any) => item.id === thing.data.data.storage)
       if (storage !== undefined && storage.id != thing.id) {
         let qty = Number(thing.data.data.quantity) || 0
         let enc =
-          Number(storage.data.data.contentEncumbrance) +
-          Number(thing.data.data.encumbrance) * qty
-        let val =
-          Number(storage.data.data.contentValue) +
-          Number(thing.data.data.value) * qty
+          Number(storage.data.data.contentEncumbrance) + Number(thing.data.data.encumbrance) * qty
+        let val = Number(storage.data.data.contentValue) + Number(thing.data.data.value) * qty
         storage.data.data.contentEncumbrance = enc || 0
         storage.data.data.contentValue = val || 0
         storage.data.data.formattedCE = formatter.format(enc)
@@ -222,31 +218,23 @@ export class ActorMythras extends Actor {
    * @param {*} data
    * @param {*} items
    */
-  prepareMovement(data, items) {
+  prepareMovement(data: any, items: any) {
     // Get athletics and swim item objects
     let currentEnc = data.attributes.encumbrance.value
     let burdened = data.attributes.encumbrance.burdened
     let overloaded = data.attributes.encumbrance.overloaded
     let athletics = items.find(
-      (entry) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
+      (entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
     )
-    let swim = items.find(
-      (entry) => entry.data.name === game.i18n.localize('MYTHRAS.Swim')
-    )
+    let swim = items.find((entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Swim'))
     let ap = Number(data.attributes.armorPenalty.value)
     let movementMiscMod =
       Number(data.attributes.movement.mod) +
-      fatigueInfo[data.attributes.fatigue.value].Movement(
-        data.attributes.movement.walk
-      )
+      (fatigueInfo as any)[data.attributes.fatigue.value].Movement(data.attributes.movement.walk)
     if (currentEnc > overloaded) {
-      movementMiscMod += encInfo['overloaded'].Movement(
-        data.attributes.movement.walk
-      )
+      movementMiscMod += encInfo['overloaded'].Movement(data.attributes.movement.walk)
     } else if (currentEnc > burdened) {
-      movementMiscMod += encInfo['burdened'].Movement(
-        data.attributes.movement.walk
-      )
+      movementMiscMod += encInfo['burdened'].Movement(data.attributes.movement.walk)
     }
 
     // Default walk speed for a human is 6
@@ -254,43 +242,29 @@ export class ActorMythras extends Actor {
     let walkSpeed = data.attributes.movement.walk
 
     // Calculate run speed
-    data.attributes.movement.run =
-      this.moveRateCalc(walkSpeed, athletics, 'run') - ap
+    data.attributes.movement.run = this.moveRateCalc(walkSpeed, athletics, 'run') - ap
 
     // Calculate sprint speed
-    data.attributes.movement.sprint =
-      this.moveRateCalc(walkSpeed, athletics, 'sprint') - ap
+    data.attributes.movement.sprint = this.moveRateCalc(walkSpeed, athletics, 'sprint') - ap
 
     // Calculate climb speed
-    data.attributes.climb.value = this.moveRateCalc(
-      walkSpeed,
-      athletics,
-      'climb'
-    )
+    data.attributes.climb.value = this.moveRateCalc(walkSpeed, athletics, 'climb')
 
     // Calculate swim speed
     data.attributes.swim.value = this.moveRateCalc(walkSpeed, swim, 'swim')
 
     // Calculate horizontal jump speed
-    data.attributes.jump.horizontal = this.moveRateCalc(
-      Number(data.height),
-      athletics,
-      'hJump'
-    )
+    data.attributes.jump.horizontal = this.moveRateCalc(Number(data.height), athletics, 'hJump')
 
     // Calculate vertical jump speed
-    data.attributes.jump.vertical = this.moveRateCalc(
-      Number(data.height),
-      athletics,
-      'vJump'
-    )
+    data.attributes.jump.vertical = this.moveRateCalc(Number(data.height), athletics, 'vJump')
   }
 
   /**
    * Applies green/red coloring to attributes that have been increased/decreased
    * @param {*} data
    */
-  applyAttrbiuteColoring(data) {
+  applyAttrbiuteColoring(data: any) {
     for (let key in data.attributes) {
       if (data.attributes[key].mod != null) {
         let mod = Number(data.attributes[key].mod)
@@ -308,8 +282,9 @@ export class ActorMythras extends Actor {
     }
   }
 
-  doesTypeHaveTemplate(type, template) {
-    let itemTemplates = game.system.template.Item[type].templates
+  doesTypeHaveTemplate(type: any, template: any) {
+    let system = game.system as any
+    let itemTemplates = system.template.Item[type].templates
     if (itemTemplates === undefined) return false
 
     return itemTemplates.includes(template)
@@ -319,9 +294,9 @@ export class ActorMythras extends Actor {
    * Calculates a character's encumbrance based on their physical items
    * @param {*} items
    */
-  encumbranceCalc(items) {
+  encumbranceCalc(items: any) {
     // Get all of the players owned items that are physical
-    let encItems = items.filter(function (value) {
+    let encItems = items.filter(function (value: any) {
       return physicalItems.includes(value.type)
     })
     // Sum up and return all of the items' weights
@@ -337,8 +312,7 @@ export class ActorMythras extends Actor {
       if (i.data.data.storage !== undefined) {
         let itemStorage = items.get(i.data.data.storage)
         if (itemStorage !== undefined && itemStorage != i.id) {
-          carriedStorage =
-            Number(itemStorage.data.data.carried) && carriedStorage
+          carriedStorage = Number(itemStorage.data.data.carried) && carriedStorage
         }
       }
 
@@ -359,8 +333,8 @@ export class ActorMythras extends Actor {
    * @param {*} fatigueLevel
    * @param {*} healRate
    */
-  recoveryTimeCalc(fatigueLevel, healRate) {
-    let levels = {
+  recoveryTimeCalc(fatigueLevel: any, healRate: any) {
+    let levels: any = {
       fresh: 'Feeling fresh!',
       winded: 15,
       tired: 3,
@@ -404,11 +378,11 @@ export class ActorMythras extends Actor {
    * @param {*} skill
    * @param {*} type
    */
-  moveRateCalc(move, skill, type) {
+  moveRateCalc(move: any, skill: any, type: any) {
     if (skill === undefined) {
       return move
     }
-    let actor = this.data.data
+    let actor: any = this.data.data
     let skillVal =
       Number(skill.data.data.trainingVal) +
       Number(skill.data.data.miscBonus) +
@@ -437,7 +411,7 @@ export class ActorMythras extends Actor {
    * @param {*} total
    * @param {*} stepInc
    */
-  damageModCalc(total, stepInc) {
+  damageModCalc(total: any, stepInc: any) {
     // The different possible values for damage mod
     const damageSteps = [
       '-1d8',
@@ -481,8 +455,7 @@ export class ActorMythras extends Actor {
       total += stepInc * 10
       let excess = Math.floor(total / 110)
       damMod = excess * 2 + 'd10'
-      if (total % 110 != 0)
-        damMod += '+' + damInfinite[Math.floor((total - 110 * excess) / 10)]
+      if (total % 110 != 0) damMod += '+' + damInfinite[Math.floor((total - 110 * excess) / 10)]
     }
     return damMod
   }

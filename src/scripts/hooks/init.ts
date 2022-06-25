@@ -1,4 +1,4 @@
-import { ActorMythras } from '@actor/actor.js'
+import { ActorMythras } from '@actor'
 import { CombatMythras } from '@combat/combat-mythras.js'
 import { MythrasCombatTracker } from '@combat/combat-tracker'
 import { MythrasCombatTrackerConfig } from '@combat/combat-config.js'

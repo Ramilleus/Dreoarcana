@@ -1,4 +1,4 @@
-import { ActorMythras } from '@actor/actor'
+import { ActorMythras } from '@actor'
 
 export const CreateActor = {
   listen: (): void => {
@@ -13,9 +13,7 @@ export const CreateActor = {
             result.forEach((skill, index) => {
               if (game.i18n) {
                 skill.data.update({
-                  name: game.i18n.localize(
-                    'MYTHRAS.' + skill.data.name.replace(/ /g, '_')
-                  ),
+                  name: game.i18n.localize('MYTHRAS.' + skill.data.name.replace(/ /g, '_')),
                   img: 'icons/svg/book.svg'
                 })
               }
@@ -33,9 +31,7 @@ export const CreateActor = {
             result.forEach((hitLoc, index) => {
               if (game.i18n) {
                 hitLoc.data.update({
-                  name: game.i18n.localize(
-                    'MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_')
-                  )
+                  name: game.i18n.localize('MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_'))
                 })
               }
               hitLocArray.push(hitLoc.data)

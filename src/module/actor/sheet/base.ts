@@ -1,3 +1,5 @@
+import { ActorMythras } from '@actor'
+import { ItemMythras } from '@item/base'
 import { skillTypes } from '../../item/skill-helper.js'
 import { fatigueInfo } from '../actor-helper.js'
 import { encInfo } from '../actor-helper.js'
@@ -6,7 +8,10 @@ import { doesTypeHaveTemplate } from '../actor-helper.js'
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class ActorSheetMythras extends ActorSheet {
+export abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
+  TActor,
+  ItemMythras
+> {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -18,7 +23,7 @@ export class ActorSheetMythras extends ActorSheet {
 
   /** @override */
   getData() {
-    const data = super.getData()
+    const data: any = super.getData()
     data.dtypes = ['String', 'Number', 'Boolean']
 
     //Prepare items.
@@ -36,29 +41,29 @@ export class ActorSheetMythras extends ActorSheet {
    *
    * @return {undefined}
    */
-  _prepareCharacterItems(sheetData) {
+  _prepareCharacterItems(sheetData: any) {
     const actorData = sheetData.actor
 
     // Initialize containers.
-    const gear = []
-    const hitLocations = []
-    const standardSkills = []
-    const professionalSkills = []
-    const combatStyles = []
-    const magicSkills = []
-    const passions = []
-    const skillsAndPassions = []
-    const meleeWeapons = []
-    const rangedWeapons = []
-    const armor = []
-    const equipment = []
-    const currency = []
-    const cults = []
-    const storages = []
-    const abilities = []
-    const spells = []
+    const gear: any[] = []
+    const hitLocations: any[] = []
+    const standardSkills: any[] = []
+    const professionalSkills: any[] = []
+    const combatStyles: any[] = []
+    const magicSkills: any[] = []
+    const passions: any[] = []
+    const skillsAndPassions: any[] = []
+    const meleeWeapons: any[] = []
+    const rangedWeapons: any[] = []
+    const armor: any[] = []
+    const equipment: any[] = []
+    const currency: any[] = []
+    const cults: any[] = []
+    const storages: any[] = []
+    const abilities: any[] = []
+    const spells: any[] = []
 
-    const itemMapper = {
+    const itemMapper: any = {
       hitLocation: hitLocations,
       standardSkill: standardSkills,
       professionalSkill: professionalSkills,
@@ -132,23 +137,19 @@ export class ActorSheetMythras extends ActorSheet {
 
   /* -------------------------------------------- */
   /** @override */
-  _updateObject(event, formData) {
+  _updateObject(event: any, formData: any): any {
     const actor = this.getData().actor
     const skills = actor.skillsAndPassions
     const hitLocations = actor.hitLocations
     if (event.target != null) {
       if (event.target.id.includes('characteristic-box')) {
         let affectedChar = event.target.id.slice(0, 3)
-        skills.forEach((skill) => {
+        skills.forEach((skill: any) => {
           let primChar = Number(
-            formData[
-              'data.characteristics.' + skill.data.data.primaryChar + '.value'
-            ]
+            formData['data.characteristics.' + skill.data.data.primaryChar + '.value']
           )
           let secondChar = Number(
-            formData[
-              'data.characteristics.' + skill.data.data.secondaryChar + '.value'
-            ]
+            formData['data.characteristics.' + skill.data.data.secondaryChar + '.value']
           )
           if (
             skill.data.data.primaryChar === affectedChar ||
@@ -214,8 +215,7 @@ export class ActorSheetMythras extends ActorSheet {
           newFieldValue = formData['item.data.name'][Number(hitLocIndex)]
         } else if (hitLocField !== 'wardLocation') {
           updateField = 'data.' + hitLocField
-          newFieldValue =
-            formData['item.data.data.' + hitLocField][Number(hitLocIndex)]
+          newFieldValue = formData['item.data.data.' + hitLocField][Number(hitLocIndex)]
         }
         this.actor.updateEmbeddedDocuments('Item', [
           {
@@ -230,7 +230,7 @@ export class ActorSheetMythras extends ActorSheet {
         event.target.id.includes('con_characteristic-box') ||
         event.target.id.includes('siz_characteristic-box')
       ) {
-        hitLocations.forEach((hitLoc, index) => {
+        hitLocations.forEach((hitLoc: any, index: any) => {
           let newHp =
             Number(hitLoc.data.data.baseHp) +
             Math.ceil(
@@ -258,7 +258,7 @@ export class ActorSheetMythras extends ActorSheet {
   }
 
   /** @override */
-  activateListeners(html) {
+  activateListeners(html: any) {
     super.activateListeners(html)
     const actor = this.actor
 
@@ -269,7 +269,7 @@ export class ActorSheetMythras extends ActorSheet {
     html.find('.item-create').click(this._onItemCreate.bind(this))
 
     // Update Actor Item
-    html.find('.item-edit').click((ev) => {
+    html.find('.item-edit').click((ev: any) => {
       const li = $(ev.currentTarget).parents('.item')
       const item = actor.items.get(li.data('itemId'))
       item.sheet.render(true)
@@ -285,7 +285,7 @@ export class ActorSheetMythras extends ActorSheet {
     // })
 
     // Delete Actor Item
-    html.find('.item-delete').click((ev) => {
+    html.find('.item-delete').click((ev: any) => {
       const li = $(ev.currentTarget).parents('.item')
       let item = actor.items.get(li.data('itemId'))
 
@@ -314,9 +314,7 @@ export class ActorSheetMythras extends ActorSheet {
     html.find('.rollableMeleeDamage').click(this._onRollMeleeDamage.bind(this))
 
     // Ranged Weapon roll button listener
-    html
-      .find('.rollableRangedDamage')
-      .click(this._onRollRangedDamage.bind(this))
+    html.find('.rollableRangedDamage').click(this._onRollRangedDamage.bind(this))
 
     // Hit Location roll button listener
     html.find('.roll-hitlocations-button').click(this._onRollHitLoc.bind(this))
@@ -352,7 +350,7 @@ export class ActorSheetMythras extends ActorSheet {
       '#toggle-er': 'experienceRoll'
     }
     for (const [key, value] of Object.entries(pointToggleMap)) {
-      html.find(key).click(function (event) {
+      html.find(key).click(function (event: any) {
         event.preventDefault()
         const label = document.querySelector(key)
         const parent = label.parentNode
@@ -381,16 +379,17 @@ export class ActorSheetMythras extends ActorSheet {
       '#increase-current-er': 'experienceRolls'
     }
     for (const [key, value] of Object.entries(pointIncreaseMapping)) {
-      html.find(key).click(function (event) {
+      html.find(key).click(function (event: any) {
         event.preventDefault()
+        let data: any = actor.data.data
         if (value == 'experienceRolls') {
           actor.update({
-            ['data.' + value]: Number(actor.data.data[value]) + 1
+            ['data.' + value]: Number(data[value]) + 1
           })
         } else {
+          let attributes = data.attributes
           actor.update({
-            ['data.attributes.' + value + '.value']:
-              Number(actor.data.data.attributes[value].value) + 1
+            ['data.attributes.' + value + '.value']: Number(attributes[value].value) + 1
           })
         }
       })
@@ -405,16 +404,17 @@ export class ActorSheetMythras extends ActorSheet {
       '#decrease-current-er': 'experienceRolls'
     }
     for (const [key, value] of Object.entries(pointDecreaseMapping)) {
-      html.find(key).click(function (event) {
+      html.find(key).click(function (event: any) {
         event.preventDefault()
+        let data: any = actor.data.data
         if (value == 'experienceRolls') {
           actor.update({
-            ['data.' + value]: Number(actor.data.data[value]) - 1
+            ['data.' + value]: Number(data[value]) - 1
           })
         } else {
+          let attributes = data.attributes
           actor.update({
-            ['data.attributes.' + value + '.value']:
-              Number(actor.data.data.attributes[value].value) - 1
+            ['data.attributes.' + value + '.value']: Number(attributes[value].value) - 1
           })
         }
       })
@@ -422,8 +422,9 @@ export class ActorSheetMythras extends ActorSheet {
 
     // Drag events for macros.
     if (actor.isOwner) {
-      let handler = (ev) => this._onDragItemStart(ev)
-      html.find('li.item').each((i, li) => {
+      let sheet: any = this
+      let handler = (ev: any) => sheet._onDragItemStart(ev)
+      html.find('li.item').each((i: any, li: any) => {
         if (li.classList.contains('inventory-header')) return
         li.setAttribute('draggable', true)
         li.addEventListener('dragstart', handler, false)
@@ -439,7 +440,7 @@ export class ActorSheetMythras extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-  _onItemCreate(event) {
+  _onItemCreate(event: any) {
     event.preventDefault()
     const header = event.currentTarget
     // Get the type of item to create.
@@ -452,7 +453,7 @@ export class ActorSheetMythras extends ActorSheet {
       name = game.i18n.localize(`MYTHRAS.New_${type}`)
     }
     // Prepare the item object.
-    const itemData = {
+    const itemData: any = {
       name: name,
       type: type,
       data: data,
@@ -464,7 +465,7 @@ export class ActorSheetMythras extends ActorSheet {
     return Item.create(itemData, { parent: this.actor })
   }
 
-  _getItemImage(itemType) {
+  _getItemImage(itemType: any) {
     switch (itemType) {
       case 'equipment':
         return 'icons/svg/item-bag.svg'
@@ -489,13 +490,13 @@ export class ActorSheetMythras extends ActorSheet {
     }
   }
 
-  _rollSkillAlt(event) {
+  _rollSkillAlt(event: any) {
     event.preventDefault()
     let skills = this.actor.items.filter(function (value) {
       return doesTypeHaveTemplate(value.data.type, 'skill')
     })
     let skillSelect = `<select id="skill-mod">`
-    skills.forEach((skill, index) => {
+    skills.forEach((skill: any, index) => {
       skillSelect += `<option value="${skill.data.name},${skill.data.data.totalVal}">${skill.data.name}</option>`
     })
     skillSelect += '</select>'
@@ -521,7 +522,7 @@ export class ActorSheetMythras extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-  async _onRollSkill(event) {
+  async _onRollSkill(event: any) {
     event.preventDefault()
 
     // Gets the data-label attribute of the skill's html tag
@@ -535,7 +536,7 @@ export class ActorSheetMythras extends ActorSheet {
     let itemId = dataLabel[2]
 
     // Gets the skill item data using the item's id
-    let itemData = this.actor.items.get(itemId).data
+    let itemData: any = this.actor.items.get(itemId).data
     let encPenalty = itemData.data.encPenalty
 
     // Calculate difficulty grades based on skill value
@@ -558,9 +559,7 @@ export class ActorSheetMythras extends ActorSheet {
       let modifiers = this.getModifiers(encPenalty)
 
       // Create roll label, like "Rolling: <skill_name>"
-      let rollLabel = dataset.label
-        ? game.i18n.localize('MYTHRAS.Rolling') + ` ${skillName}`
-        : ''
+      let rollLabel = dataset.label ? game.i18n.localize('MYTHRAS.Rolling') + ` ${skillName}` : ''
 
       // Make the roll
       let roll = new Roll(dataset.roll, this.actor.data.data)
@@ -568,21 +567,14 @@ export class ActorSheetMythras extends ActorSheet {
 
       rolled.then(async (result) => {
         // Get results of the rolls at given grades, (e.g. Success, Failure, Critical, Fumble)
-        let rollResults = this.getRollResults(
-          difficultyNames,
-          difficultyGrades,
-          result
-        )
+        let rollResults = this.getRollResults(difficultyNames, difficultyGrades, result)
 
         // Render the skill roll chat message content
-        let htmlContent = await renderTemplate(
-          'systems/mythras/templates/chat/skill-roll.html',
-          {
-            game: game,
-            rollResults: rollResults,
-            modifiers: modifiers
-          }
-        )
+        let htmlContent = await renderTemplate('systems/mythras/templates/chat/skill-roll.html', {
+          game: game,
+          rollResults: rollResults,
+          modifiers: modifiers
+        })
 
         // Display the roll
         roll.toMessage({
@@ -595,8 +587,9 @@ export class ActorSheetMythras extends ActorSheet {
     }
   }
 
-  getModifiers(encPenalty) {
-    let attributes = this.actor.data.data.attributes
+  getModifiers(encPenalty: any) {
+    let data: any = this.actor.data.data
+    let attributes = data.attributes
     let modifiers = []
 
     // Include Fatigue Penalty value if character is not fresh
@@ -604,7 +597,7 @@ export class ActorSheetMythras extends ActorSheet {
     if (fatigueValue !== 'fresh') {
       modifiers.push({
         name: 'Fatigue Mod',
-        value: fatigueInfo[fatigueValue]['Skill Grade']
+        value: (fatigueInfo as any)[fatigueValue]['Skill Grade']
       })
     }
 
@@ -629,13 +622,13 @@ export class ActorSheetMythras extends ActorSheet {
     return modifiers
   }
 
-  getRollResults(difficultyNames, difficultyGrades, rolled) {
-    let results = []
+  getRollResults(difficultyNames: any, difficultyGrades: any, rolled: any) {
+    let results: any[] = []
 
     // For each difficulty grade, determine if the roll is a
     // Success, Failure, Critical, or Fumble
-    difficultyNames.forEach((name, index) => {
-      let result = {}
+    difficultyNames.forEach((name: any, index: any) => {
+      let result: any = {}
       result.difficultyName = name
       result.difficultyGrade = difficultyGrades[index]
       result.rollValue = rolled.result
@@ -644,10 +637,7 @@ export class ActorSheetMythras extends ActorSheet {
       if (rolled.result >= 95) {
         // If the roll is 99 or 100, the roll is a fumble
         // (unless the character has a skill >= 100. Then 99 is only a Failure)
-        if (
-          rolled.result == 100 ||
-          (rolled.result == 99 && difficultyGrades[index] <= 100)
-        ) {
+        if (rolled.result == 100 || (rolled.result == 99 && difficultyGrades[index] <= 100)) {
           result.description = 'MYTHRAS.FUMBLE!'
           result.descriptionClass = 'text-darkred'
         } else {
@@ -657,10 +647,7 @@ export class ActorSheetMythras extends ActorSheet {
         // Rolls below 5 are guaranteed Successes or Criticals
       } else if (rolled.result <= 5) {
         // If the roll is 1 or less than 1/10th the character's skill, its a Critical
-        if (
-          rolled.result == 1 ||
-          rolled.result <= Math.ceil(difficultyGrades[index] * 0.1)
-        ) {
+        if (rolled.result == 1 || rolled.result <= Math.ceil(difficultyGrades[index] * 0.1)) {
           result.description = 'MYTHRAS.CRITICAL!'
           result.descriptionClass = 'text-goldenrod'
         } else {
@@ -685,20 +672,21 @@ export class ActorSheetMythras extends ActorSheet {
     return results
   }
 
-  async _onRollMeleeDamage(event) {
+  async _onRollMeleeDamage(event: any) {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
-    const weapon = this.actor.items.get(dataset.label)
+    const weapon: any = this.actor.items.get(dataset.label)
     const damMod = weapon.data.data.damageModifier
     const combatEffects = weapon.data.data['combat-effects']
     const traits = weapon.data.data.traits
     const size = weapon.data.data.size
     const reach = weapon.data.data.reach
     if (dataset.roll) {
+      let data: any = this.actor.data.data
       let damage = dataset.roll
       if (damMod) {
-        damage += '+' + this.actor.data.data.attributes.damageMod.value
+        damage += '+' + data.attributes.damageMod.value
       }
       let roll = new Roll(damage, this.actor.data.data)
 
@@ -720,18 +708,19 @@ export class ActorSheetMythras extends ActorSheet {
     }
   }
 
-  async _onRollRangedDamage(event) {
+  async _onRollRangedDamage(event: any) {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
-    const weapon = this.actor.items.get(dataset.label)
+    const weapon: any = this.actor.items.get(dataset.label)
     const damMod = weapon.data.data.damageModifier
     const combatEffects = weapon.data.data['combat-effects']
     const force = weapon.data.data.force
     if (dataset.roll) {
       let damage = dataset.roll
       if (damMod) {
-        damage += '+' + this.actor.data.data.attributes.damageMod.value
+        let data: any = this.actor.data.data
+        damage += '+' + data.attributes.damageMod.value
       }
       let roll = new Roll(damage, this.actor.data.data)
 
@@ -750,26 +739,22 @@ export class ActorSheetMythras extends ActorSheet {
       })
     }
   }
-  _onRollHitLoc(event) {
+  _onRollHitLoc(event: any) {
     event.preventDefault()
     const element = event.currentTarget
     const dataset = element.dataset
     const hitLoc = dataset.label.split(',')
     if (dataset.roll) {
-      let roll = new Roll(dataset.roll, this.actor.data.data)
+      let roll: any = new Roll(dataset.roll, this.actor.data.data)
       const rolled = roll.roll()
       let label = dataset.label ? `Rolling Hit Location` : ''
       if (game.i18n) {
-        label = dataset.label
-          ? game.i18n.localize('MYTHRAS.Rolling_Location')
-          : ''
+        label = dataset.label ? game.i18n.localize('MYTHRAS.Rolling_Location') : ''
       }
-      rolled.then((result) => {
-        const locHit = hitLoc.filter(function (value) {
+      rolled.then((result: any) => {
+        const locHit = hitLoc.filter(function (value: any) {
           let loc = value.split('/')
-          return (
-            result.result >= Number(loc[1]) && result.result <= Number(loc[2])
-          )
+          return result.result >= Number(loc[1]) && result.result <= Number(loc[2])
         })
         let loc = String(locHit).split('/')
         label += '<br><h2>' + loc[0] + '</h2>'
@@ -780,12 +765,11 @@ export class ActorSheetMythras extends ActorSheet {
       })
     }
   }
-  async _filterSpells(event) {
+  async _filterSpells(event: any) {
     event.preventDefault()
     let filterBy = event.currentTarget.value
-    for (let item of [
-      ...document.querySelectorAll('.spell-list-table .item')
-    ]) {
+    let items: any[] = [...document.querySelectorAll('.spell-list-table .item')]
+    for (let item of items) {
       switch (filterBy) {
         case 'All':
           item.classList.add('active')
@@ -800,9 +784,10 @@ export class ActorSheetMythras extends ActorSheet {
     }
   }
   _createSpellFilterOptions() {
-    for (let spell of this.actor.items.filter((i) => i.type === 'spell')) {
+    let spells: any[] = this.actor.items.filter((i) => i.type === 'spell')
+    for (let spell of spells) {
       let isDuplicate = [...document.querySelectorAll('[data-source]')].some(
-        (i) => i.dataset.source == spell.data.data.source
+        (i: any) => i.dataset.source == spell.data.data.source
       )
 
       switch (isDuplicate) {
@@ -818,11 +803,9 @@ export class ActorSheetMythras extends ActorSheet {
     }
   }
   _styleWoundedHitLocations() {
-    const hitLocations = this.actor.items.filter(
-      (item) => item.type == 'hitLocation'
-    )
+    const hitLocations: any[] = this.actor.items.filter((item) => item.type == 'hitLocation')
     for (let hitLocation of hitLocations) {
-      let hitLocationElement = document.querySelector(
+      let hitLocationElement: any = document.querySelector(
         `.hitLocation-table [data-item-id="${hitLocation.id}"]`
       )
       if (hitLocation.data.data.currentHp <= hitLocation.data.data.maxHp * -1) {
