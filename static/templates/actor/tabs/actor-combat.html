@@ -37,7 +37,7 @@
             </thead>
             <tbody>
               {{#each actor.hitLocations as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
+              <tr class="item" data-item-id="{{item.data._id}}" data-updatable-item="">
                 <td class="hitloc-location-cell">
                   <input id="{{id}}_{{item.data._id}}_name_hitLoc" type="text" name="item.data.name" data-dtype="text"
                     value="{{item.data.name}}" />
@@ -58,10 +58,10 @@
                     name="item.data.data.naturalArmor" data-dtype="text" value="{{item.data.data.naturalArmor}}" />
                 </td>
                 <td class="hitloc-armor-cell">
-                  {{item.data.data.armors}}
+                  {{item.equippedArmorNames}}
                 </td>
                 <td class="hitloc-ap-cell">
-                  <p class="hit-loc-text">{{item.data.data.ap}}</p>
+                  <p class="hit-loc-text">{{item.totalAp}}</p>
 
                   {{!-- <div class="hitloc-apbonus-cell">
                     +
