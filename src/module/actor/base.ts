@@ -99,9 +99,9 @@ export class ActorMythras extends Actor {
     })
 
     // Manually run prepareData for all hitlocations in order to display the correct armor value
-    hitLoc.forEach((hitlocation: any) => {
-      hitlocation.prepareData()
-    })
+    // hitLoc.forEach((hitlocation: any) => {
+    //   hitlocation.prepareData()
+    // })
 
     // Fix for strange MEG importer bug
     // TODO: Should move into mythras.js with a hook on sheet opening or fix the actual problem, lol

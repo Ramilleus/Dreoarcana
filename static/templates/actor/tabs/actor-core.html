@@ -110,50 +110,52 @@
       </h2>
       <div class="core-characteristics">
         <div>
-          <input id="str_characteristic-box" name="data.characteristics.str.value" onclick="this.select()"
-            value="{{data.data.characteristics.str.value}}" type="text" />
+          <input data-characteristic="str" id="str_characteristic-box" name="data.characteristics.str.value"
+            onclick="this.select()" value="{{data.data.characteristics.str.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.STRENGTH'}}
           </label>
         </div>
         <div>
-          <input id="con_characteristic-box" name="data.characteristics.con.value" onclick="this.select()"
+          <input data-characteristic="con" data-hp-characteristic id="con_characteristic-box"
+            name="data.characteristics.con.value" onclick="this.select()"
             value="{{data.data.characteristics.con.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.CONSTITUTION'}}
           </label>
         </div>
         <div>
-          <input id="siz_characteristic-box" name="data.characteristics.siz.value" onclick="this.select()"
+          <input data-characteristic="siz" data-hp-characteristic id="siz_characteristic-box"
+            name="data.characteristics.siz.value" onclick="this.select()"
             value="{{data.data.characteristics.siz.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.SIZE'}}
           </label>
         </div>
         <div>
-          <input id="dex_characteristic-box" name="data.characteristics.dex.value" onclick="this.select()"
-            value="{{data.data.characteristics.dex.value}}" type="text" />
+          <input data-characteristic="dex" id="dex_characteristic-box" name="data.characteristics.dex.value"
+            onclick="this.select()" value="{{data.data.characteristics.dex.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.DEXTERITY'}}
           </label>
         </div>
         <div>
-          <input id="int_characteristic-box" name="data.characteristics.int.value" onclick="this.select()"
-            value="{{data.data.characteristics.int.value}}" type="text" />
+          <input data-characteristic="int" id="int_characteristic-box" name="data.characteristics.int.value"
+            onclick="this.select()" value="{{data.data.characteristics.int.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.INTELLIGENCE'}}
           </label>
         </div>
         <div>
-          <input id="pow_characteristic-box" name="data.characteristics.pow.value" onclick="this.select()"
-            value="{{data.data.characteristics.pow.value}}" type="text" />
+          <input data-characteristic="pow" id="pow_characteristic-box" name="data.characteristics.pow.value"
+            onclick="this.select()" value="{{data.data.characteristics.pow.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.POWER'}}
           </label>
         </div>
         <div>
-          <input id="cha_characteristic-box" name="data.characteristics.cha.value" onclick="this.select()"
-            value="{{data.data.characteristics.cha.value}}" type="text" />
+          <input data-characteristic="cha" id="cha_characteristic-box" name="data.characteristics.cha.value"
+            onclick="this.select()" value="{{data.data.characteristics.cha.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.CHARISMA'}}
           </label>

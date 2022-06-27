@@ -4,7 +4,8 @@
       <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="50" width="50" />
       <div class="header-fields">
         <h1 class="charname">
-          <input id="armorChange_name" name="name" type="text" value="{{item.name}}" placeholder="Name" />
+          <input data-handler="changeName" id="armorChange_name" name="name" type="text" value="{{item.name}}"
+            placeholder="Name" />
         </h1>
       </div>
     </div>
@@ -46,7 +47,7 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.AP'}}</h3>
-            <input id="armorChange_ap" type="text" name="data.ap" value="{{data.data.ap}}" />
+            <input data-handler="changeAp" id="armorChange_ap" type="text" name="data.ap" value="{{data.data.ap}}" />
           </div>
           <div>/</div>
           <div>
@@ -68,9 +69,11 @@
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Armor_Location'}}</h3>
             <select name="data.location" data-dtype="String">
-              {{#select data.data.location}} {{#each data.data.hitLoc as |loc|}}
+              {{#select data.data.location}}
+              {{#each availableHitLocations as |loc|}}
               <option value="{{loc.id}}">{{loc.name}}</option>
-              {{/each}} {{/select}}
+              {{/each}}
+              {{/select}}
             </select>
           </div>
           <div class="weapon-piece">
@@ -79,7 +82,7 @@
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Equipped'}}</h3>
-            <input id="armorChange_equipped" type="checkbox" name="data.equipped" {{checked data.data.equipped}} />
+            <input data-handler="toggleEquipped" type="checkbox" name="data.equipped" {{checked data.data.equipped}} />
           </div>
         </div>
       </div>

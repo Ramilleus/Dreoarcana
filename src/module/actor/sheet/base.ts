@@ -1,5 +1,7 @@
 import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
+import { HitLocationMythras } from '@item/hit-location/index.js'
+import { SkillMythras } from '@item/skill/index.js'
 import { skillTypes } from '../../item/skill-helper.js'
 import { fatigueInfo } from '../actor-helper.js'
 import { encInfo } from '../actor-helper.js'
@@ -135,132 +137,65 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     })
   }
 
-  /* -------------------------------------------- */
-  /** @override */
-  _updateObject(event: any, formData: any): any {
-    const actor = this.getData().actor
-    const skills = actor.skillsAndPassions
-    const hitLocations = actor.hitLocations
-    if (event.target != null) {
-      if (event.target.id.includes('characteristic-box')) {
-        let affectedChar = event.target.id.slice(0, 3)
-        skills.forEach((skill: any) => {
-          let primChar = Number(
-            formData['data.characteristics.' + skill.data.data.primaryChar + '.value']
-          )
-          let secondChar = Number(
-            formData['data.characteristics.' + skill.data.data.secondaryChar + '.value']
-          )
-          if (
-            skill.data.data.primaryChar === affectedChar ||
-            skill.data.data.secondaryChar === affectedChar
-          ) {
-            this.actor.updateEmbeddedDocuments('Item', [
-              {
-                _id: skill.id,
-                'data.data.baseVal.value': primChar + secondChar,
-                'data.data.totalVal':
-                  primChar +
-                  secondChar +
-                  Number(skill.data.data.trainingVal) +
-                  Number(skill.data.data.miscBonus)
-              }
-            ])
-          }
-        })
-      }
-
-      if (event.target.id.includes('_equipped')) {
-        let armorInfo = event.target.id.split('_')
-        let armor = this.actor.items.get(armorInfo[1])
-        let equipped = formData['item.' + armor.id + '.equipped']
-        if (Array.isArray(equipped)) {
-          equipped = equipped[armorInfo[0]]
-        }
-        this.actor.updateEmbeddedDocuments('Item', [
-          {
-            _id: armor.id,
-            'data.equipped': equipped
-          }
-        ])
-      }
-
-      if (event.target.id.includes('_carried')) {
-        let thingInfo = event.target.id.split('_')
-        let thing = this.actor.items.get(thingInfo[1])
-        let carried = formData['item.' + thing.id + '.carried']
-        if (Array.isArray(carried)) {
-          carried = carried[thingInfo[0]]
-        }
-        this.actor.updateEmbeddedDocuments('Item', [
-          {
-            _id: thing.id,
-            'data.carried': carried
-          }
-        ])
-      }
-
-      if (event.target.id.includes('_hitLoc')) {
-        let fieldInfo = event.target.id.split('_')
-        let hitLocIndex = fieldInfo[0]
-        let hitLoc = this.actor.items.get(fieldInfo[1])
-        let hitLocField = fieldInfo[2]
-        let updateField = ''
-        let newFieldValue = ''
-
-        let wardLocation = formData['item.' + hitLoc.id + '.wardLocation']
-
-        if (hitLocField === 'name') {
-          updateField = 'name'
-          newFieldValue = formData['item.data.name'][Number(hitLocIndex)]
-        } else if (hitLocField !== 'wardLocation') {
-          updateField = 'data.' + hitLocField
-          newFieldValue = formData['item.data.data.' + hitLocField][Number(hitLocIndex)]
-        }
-        this.actor.updateEmbeddedDocuments('Item', [
-          {
-            _id: hitLoc.id,
-            [updateField]: newFieldValue,
-            'data.wardLocation': wardLocation
-          }
-        ])
-      }
-      if (
-        event.target.id.includes('maxHpMod') ||
-        event.target.id.includes('con_characteristic-box') ||
-        event.target.id.includes('siz_characteristic-box')
-      ) {
-        hitLocations.forEach((hitLoc: any, index: any) => {
-          let newHp =
-            Number(hitLoc.data.data.baseHp) +
-            Math.ceil(
-              (Number(formData['data.characteristics.siz.value']) +
-                Number(formData['data.characteristics.con.value'])) /
-                5
-            ) +
-            Number(formData['data.attributes.hitPointMod.mod']) +
-            Number(formData['item.data.data.maxHpMod'][index])
-          if (newHp < 1) {
-            newHp = 1
-          }
-          this.actor.updateEmbeddedDocuments('Item', [
-            {
-              _id: hitLoc.id,
-              'data.data.maxHp': newHp,
-              'data.data.maxHpMod': formData['item.data.data.maxHpMod'][index]
-            }
-          ])
-        })
-      }
+  getSkillOtherCharacteristic(skill: any, characteristic: string) {
+    if (skill.data.data.primaryChar == characteristic) {
+      return skill.data.data.secondaryChar
+    } else {
+      return skill.data.data.primaryChar
     }
-
-    return this.actor.update(formData)
   }
 
   /** @override */
-  activateListeners(html: any) {
+  activateListeners(html: JQuery) {
     super.activateListeners(html)
     const actor = this.actor
+
+    // Listens for item-input updates. Element with [data-item] that contain inputs
+    // are listened to. If an input changes, update the embedded document associated with
+    // that data-item using the data-item-id attribute on that same element
+    html.find('[data-item] input, [data-item] select').on('change', async (event) => {
+      let target = event.target as HTMLInputElement
+      let itemId = $(target.closest('[data-item]')).attr('data-item-id')
+      let propertyName = $(target).attr('data-item-property')
+      let item = this.actor.items.get(itemId)
+      let newValue: string | boolean = target.value
+      if ($(target).is(':checkbox')) {
+        newValue = target.checked
+      }
+      if (propertyName != 'name') {
+        propertyName = 'data.' + propertyName
+      }
+      await this.actor.updateEmbeddedDocuments('Item', [
+        {
+          _id: item.id,
+          [propertyName]: newValue
+        }
+      ])
+    })
+
+    // Listens for updates to siz and con. Recalculated max HP for all hit locations
+    // if one changes
+    html.find('[data-hp-characteristic]').on('change', (event) => {
+      Hooks.once('updateActor', () => {
+        let hitLocations = (this.actor as any).hitLocations as HitLocationMythras[]
+        hitLocations.forEach((hitLocation: HitLocationMythras) => {
+          hitLocation.calculateMaxHitpoints()
+        })
+      })
+    })
+
+    // Listens for updates to all characteristics. If a characteristic is updated, recalculate the
+    // skill's base value and total value
+    html.find('[data-characteristic]').on('change', (event) => {
+      Hooks.once('updateActor', () => {
+        let target = event.target as HTMLInputElement
+        let char = $(target).attr('data-characteristic')
+        let skills = (this.actor as any).skillsAndPassions as SkillMythras[]
+        skills.forEach((skill: SkillMythras) => {
+          skill.recalculateSkillValuesOnCharacteristicUpdate(char)
+        })
+      })
+    })
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return
@@ -319,29 +254,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     // Hit Location roll button listener
     html.find('.roll-hitlocations-button').click(this._onRollHitLoc.bind(this))
 
-    //Actor Point Minimizer
-    // const pointToggle = [
-    //   '#toggle-lp',
-    //   '#toggle-mp',
-    //   '#toggle-tp',
-    //   '#toggle-ap',
-    //   '#toggle-er'
-    // ]
-    // pointToggle.forEach((value) => {
-    //   html.find(value).click(function (event) {
-    //     event.preventDefault()
-    //     const label = document.querySelector(value)
-    //     const parent = label.parentNode
-    //     const bubble = parent.querySelector('.number-input-container')
-    //     if (bubble.classList.contains('hidden')) {
-    //       bubble.classList.remove('hidden')
-    //       label.classList.remove('sideways-text')
-    //     } else {
-    //       bubble.classList.add('hidden')
-    //       label.classList.add('sideways-text')
-    //     }
-    //   })
-    // })
     const pointToggleMap = {
       '#toggle-lp': 'luckPoints',
       '#toggle-mp': 'magicPoints',

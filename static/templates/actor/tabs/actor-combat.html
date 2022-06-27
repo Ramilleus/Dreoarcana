@@ -37,48 +37,38 @@
             </thead>
             <tbody>
               {{#each actor.hitLocations as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}" data-updatable-item="">
+              <tr class="item" data-item data-item-id="{{ item.id }}">
                 <td class="hitloc-location-cell">
-                  <input id="{{id}}_{{item.data._id}}_name_hitLoc" type="text" name="item.data.name" data-dtype="text"
-                    value="{{item.data.name}}" />
+                  <input type="text" data-item-property="name" data-dtype="text" value="{{item.data.name}}" />
                 </td>
                 <td class="hitLoc-flex-cell hitloc-range-cell">
-                  <input id="{{id}}_{{item.data._id}}_rollRangeStart_hitLoc" type="text"
-                    name="item.data.data.rollRangeStart" value="{{item.data.data.rollRangeStart}}" />
+                  <input type="text" data-item-property="rollRangeStart" value="{{item.data.data.rollRangeStart}}" />
                   <p class="hit-loc-text">-</p>
-                  <input id="{{id}}_{{item.data._id}}_rollRangeEnd_hitLoc" type="text"
-                    name="item.data.data.rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
+                  <input type="text" data-item-property="rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
                 </td>
                 <td class="hitloc-wardLocation-cell">
-                  <input id="{{id}}_{{item.data._id}}_wardLocation_hitLoc" type="checkbox" style="margin-left: 8px"
-                    name="item.{{item.data._id}}.wardLocation" {{checked item.data.data.wardLocation}} />
+                  <input type="checkbox" style="margin-left: 8px" data-item-property="wardLocation" {{checked
+                    item.data.data.wardLocation}} />
                 </td>
                 <td class="hitloc-flex-cell hitloc-naturalArmor-cell">
-                  <input id="{{id}}_{{item.data._id}}_naturalArmor_hitLoc" type="text"
-                    name="item.data.data.naturalArmor" data-dtype="text" value="{{item.data.data.naturalArmor}}" />
+                  <input type="text" data-item-property="naturalArmor" data-dtype="text"
+                    value="{{item.data.data.naturalArmor}}" />
                 </td>
                 <td class="hitloc-armor-cell">
                   {{item.equippedArmorNames}}
                 </td>
                 <td class="hitloc-ap-cell">
                   <p class="hit-loc-text">{{item.totalAp}}</p>
-
-                  {{!-- <div class="hitloc-apbonus-cell">
-                    +
-                    <input type="number">
-                  </div> --}}
-
                 </td>
                 <td class="hitLoc-flex-cell hitloc-hp-cell">
-                  <input id="{{id}}_{{item.data._id}}_currentHp_hitLoc" type="number" name="item.data.data.currentHp"
-                    value="{{item.data.data.currentHp}}" />
+                  <input data-item-property="currentHp" type="number" value="{{item.data.data.currentHp}}" />
                   <p class="max-hp"> / {{item.data.data.maxHp}}</p>
                   <div class="max-hp-mod">
                     <span>
                       +
                     </span>
-                    <input id="{{id}}_{{item.data._id}}_maxHpMod_hitLoc" type="text" name="item.data.data.maxHpMod"
-                      class="" onclick="this.select()" value="{{item.data.data.maxHpMod}}" />
+                    <input data-item-property="maxHpMod" type="text" class="" onclick="this.select()"
+                      value="{{item.data.data.maxHpMod}}" />
                   </div>
                 </td>
               </tr>

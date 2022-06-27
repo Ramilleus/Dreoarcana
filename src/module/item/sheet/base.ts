@@ -38,8 +38,8 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     }
   }
 
-  override getData() {
-    const data = super.getData()
+  override getData(options?: Partial<DocumentSheetOptions>) {
+    const data = super.getData(options)
     return data
   }
 
@@ -51,8 +51,8 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     return position
   }
 
-  override activateListeners(html: any): void {
-    super.activateListeners(html)
+  override activateListeners($html: JQuery): void {
+    super.activateListeners($html)
     if (!this.options.editable) return
   }
 }
