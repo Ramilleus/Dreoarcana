@@ -47,7 +47,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     const actorData = sheetData.actor
 
     // Initialize containers.
-    const gear: any[] = []
     const hitLocations: any[] = []
     const standardSkills: any[] = []
     const professionalSkills: any[] = []
@@ -97,7 +96,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     }
 
     // Assign and return
-    actorData.gear = gear
     hitLocations.sort(function (a, b) {
       return a.data.data.rollRangeStart - b.data.data.rollRangeStart
     })

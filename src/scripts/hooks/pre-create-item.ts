@@ -1,15 +1,12 @@
 export const PreCreateItem = {
   listen: (): void => {
-    Hooks.on(
-      'preCreateItem',
-      (document: foundry.documents.BaseItem, options, userID) => {
-        if (document.data.type !== 'hitLocation' && document.parent == null) {
-          document.data.img = getItemImage(document.data.type)
-        }
-
-        document.data.update(document.data)
+    Hooks.on('preCreateItem', (document: foundry.documents.BaseItem, options, userID) => {
+      if (document.data.type !== 'hitLocation' && document.parent == null) {
+        document.data.img = getItemImage(document.data.type)
       }
-    )
+
+      document.data.update(document.data)
+    })
   }
 }
 

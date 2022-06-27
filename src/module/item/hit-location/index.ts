@@ -2,7 +2,6 @@ import { ArmorMythras } from '@item/armor'
 import { ItemMythras } from '@item/base'
 
 export class HitLocationMythras extends ItemMythras {
-
   get attachedArmor(): Embedded<ArmorMythras>[] {
     return this.actor.items.filter((value: ItemMythras) => {
       return value.type === 'armor' && (value as ArmorMythras).selectedHitLocationId === this.id
