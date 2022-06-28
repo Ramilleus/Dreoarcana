@@ -1,5 +1,5 @@
 import { ArmorMythras } from '@item/armor/index.js'
-import { fatigueInfo, encInfo, physicalItems, formatter } from './actor-helper.js'
+import { fatigueInfo, encInfo, physicalItems } from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
@@ -167,7 +167,7 @@ export class ActorMythras extends Actor {
     data.attributes.encumbrance.burdened = str * 2
     data.attributes.encumbrance.overloaded = str * 3
     data.attributes.encumbrance.maxLoad = str * 4
-    data.attributes.encumbrance.value = formatter.format(this.encumbranceCalc(items))
+    data.attributes.encumbrance.value = this.encumbranceCalc(items)
   }
 
   /**

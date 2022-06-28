@@ -8,11 +8,6 @@ export const physicalItems = [
   'storage'
 ]
 
-export const formatter = new Intl.NumberFormat('en-US', {
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 2
-})
-
 export const encInfo = {
   burdened: {
     'Skill Grade': 'One Step Penalty',
