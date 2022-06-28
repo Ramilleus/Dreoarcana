@@ -1,28 +1,38 @@
+import { ItemMythras } from '@item/base'
 import { PhysicalItemMythras } from '@item/physical'
 
 export class StorageMythras extends PhysicalItemMythras {
   isStorage: boolean = true
 
-  override prepareData(): void {
-    super.prepareData()
-  
-    const itemData: any = this.data
-    const actorData: any = this.actor ? this.actor.data : {}
-
-    itemData.data.contentEncumbrance = 0
-    itemData.data.contentValue = 0
-    itemData.data.storageName = ''
-    if (
-      itemData.data.storage !== undefined &&
-      actorData !== undefined &&
-      actorData.items !== undefined
-    ) {
-      let storage = actorData.items.find(
-        (item: any) => item.id === itemData.data.storage
-      )
-      if (storage !== undefined) {
-        itemData.data.carried = storage.data.data.carried
-      }
-    }
+  get contentEncumbrance() {
+    return this.storedItems.reduce(
+      (totalEncumbrance: number, item: PhysicalItemMythras) =>
+        totalEncumbrance + item.quantity * item.encumbrance,
+      0
+    )
   }
+
+  get maxEncumbrance(): number {
+    return Number((this.data.data as any).maxEncumbrance) || 0
+  }
+
+  get contentValue() {
+    return this.storedItems.reduce(
+      (totalValue: number, item: PhysicalItemMythras) => totalValue + item.quantity * item.value,
+      0
+    )
+  }
+
+  get storedItems(): PhysicalItemMythras[] {
+    if (this.actorData) {
+      return this.actorData.items.filter((item: ItemMythras) => {
+        return itemIsPhysical(item) && item.storageId == this.id
+      })
+    }
+    return []
+  }
+}
+
+function itemIsPhysical(item: ItemMythras): item is PhysicalItemMythras {
+  return (item as PhysicalItemMythras).isPhysical !== undefined
 }

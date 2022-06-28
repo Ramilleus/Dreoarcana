@@ -31,7 +31,19 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       this._prepareCharacterItems(data)
     }
 
-    return data
+    return {
+      ...data,
+      armorPenalty: this.actor.armorPenalty,
+      currentLevelOfFatigue: this.actor.currentLevelOfFatigue,
+      maxActionPoints: this.actor.maxActionPoints,
+      damageMod: this.actor.damageMod,
+      experienceMod: this.actor.experienceMod,
+      healingRate: this.actor.healingRate,
+      initiativeBonus: this.actor.initiativeBonus,
+      maxLuckPoints: this.actor.maxLuckPoints,
+      maxMagicPoints: this.actor.maxMagicPoints,
+      maxTenacity: this.actor.maxTenacity
+    }
   }
 
   /**

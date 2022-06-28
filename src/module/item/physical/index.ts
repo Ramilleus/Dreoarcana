@@ -2,39 +2,47 @@ import { ItemMythras } from '@item/base'
 import type { StorageMythras } from '@item/storage'
 
 export abstract class PhysicalItemMythras extends ItemMythras {
-  override prepareData(): void {
-    super.prepareData()
+  isPhysical: boolean = true
 
-    const itemData: any = this.data
-    const actorData: any = this.actor ? this.actor.data : undefined
-    if (actorData) {
-      let storageList: StorageMythras[] = actorData.items.filter((item: ItemMythras) => {
+  get availableStorage() {
+    if (this.actorData) {
+      let availableStorage: StorageMythras[] = this.actorData.items.filter(function (
+        item: ItemMythras
+      ) {
         return itemIsStorageType(item)
       })
-  
-      if (storageList != undefined) {
-        let storageName = ''
-        let storage = storageList.find(
-          (item: any) => item.id === itemData.data.storage
-        )
-        if (storage != undefined) {
-          storageName = storage.name
-        }
-        if (itemIsStorageType(this)) {
-          let otherStorages = storageList.filter(
-            (item: any) => item.id !== itemData._id
-          )
-          itemData.data.storageList = otherStorages
-        } else {
-          itemData.data.storageList = storageList
-        }
-        itemData.data.storageName = storageName
-      }
+      return availableStorage
     }
+    return []
   }
 
+  get encumbrance(): number {
+    return Number((this.data.data as any).encumbrance) || 0
+  }
+
+  get quantity(): number {
+    return Number((this.data.data as any).quantity) || 0
+  }
+
+  get value(): number {
+    return Number((this.data.data as any).value) || 0
+  }
+
+  get storageId(): string {
+    return (this.data.data as any).storage
+  }
+
+  get storageName(): string {
+    if (this.actor && this.actor.items) {
+      let storage = this.actor.items.find((item) => item.id === this.storageId)
+      if (storage) {
+        return storage.name
+      }
+    }
+    return game.i18n.localize('MYTHRAS.No_Storage')
+  }
 }
 
-function itemIsStorageType(item: PhysicalItemMythras): item is StorageMythras {
+function itemIsStorageType(item: ItemMythras): item is StorageMythras {
   return (item as StorageMythras).isStorage !== undefined
 }

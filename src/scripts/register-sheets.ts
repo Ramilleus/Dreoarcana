@@ -2,6 +2,7 @@ import { ArmorSheetMythras } from '@item/armor/sheet'
 import { SkillSheetMythras } from '@item/skill/sheet'
 import { ItemSheetMythras } from '@item/sheet/base'
 import { CharacterSheetMythras } from '@actor/character/sheet'
+import { PhysicalItemSheetMythras } from '@item/physical/sheet'
 
 export function registerSheets() {
   registerItemSheet()
@@ -14,19 +15,17 @@ export function registerSheets() {
 function registerItemSheet() {
   Items.unregisterSheet('core', ItemSheet)
 
-  const itemTypes = [
-    'hitLocation',
-    'melee-weapon',
-    'ranged-weapon',
-    'equipment',
-    'currency',
-    'ability',
-    'spell',
-    'storage',
-    'cultBrotherhood'
-  ]
+  const itemTypes = ['hitLocation', 'ability', 'spell', 'cultBrotherhood']
   for (const itemType of itemTypes) {
     Items.registerSheet('mythras', ItemSheetMythras, {
+      types: [itemType],
+      makeDefault: true
+    })
+  }
+
+  const physicalItemTypes = ['melee-weapon', 'ranged-weapon', 'equipment', 'currency', 'storage']
+  for (const itemType of physicalItemTypes) {
+    Items.registerSheet('mythras', PhysicalItemSheetMythras, {
       types: [itemType],
       makeDefault: true
     })

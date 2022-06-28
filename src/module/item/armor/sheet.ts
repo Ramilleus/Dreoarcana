@@ -1,7 +1,7 @@
-import { ItemSheetMythras } from '@item/sheet/base'
+import { PhysicalItemSheetMythras } from '@item/physical/sheet';
 import { ArmorMythras } from '.'
 
-export class ArmorSheetMythras extends ItemSheetMythras<ArmorMythras> {
+export class ArmorSheetMythras extends PhysicalItemSheetMythras<ArmorMythras> {
   
   override async getData(options?: Partial<DocumentSheetOptions>) {
     const sheetData = await super.getData(options);

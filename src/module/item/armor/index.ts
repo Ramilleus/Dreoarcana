@@ -13,13 +13,12 @@ export class ArmorMythras extends PhysicalItemMythras {
     return []
   }
 
-
   get selectedHitLocationId() {
     return (this.data.data as any).location
   }
 
   get ap() {
-    return Number((this.data.data as any).ap)
+    return Number((this.data.data as any).ap) || 0
   }
 
   get isEquipped() {
@@ -49,9 +48,15 @@ export class ArmorMythras extends PhysicalItemMythras {
 
   override prepareData(): void {
     const itemData: any = this.data
+    // Move the armor out of storage if its equipped
+    if (this.isEquipped) {
+      itemData.data.storage = undefined
+    }
+
     if (this.actorData) {
       this.linkHitLocation(itemData)
     }
+
     this.data.update(itemData)
     super.prepareData()
   }

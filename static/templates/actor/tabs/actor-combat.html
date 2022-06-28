@@ -8,8 +8,7 @@
         <div>
           <h3 class="armorLocationHeader">
             <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}:
-              {{data.data.attributes.armorPenalty.value}}</span><a class="roll-hitlocations-button" title="Roll 1d20"
-              data-roll="1d20"
+              {{ armorPenalty }}</span><a class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
               data-label="{{#each actor.hitLocations as |item|}}{{item.data.name}}/{{item.data.data.rollRangeStart}}/{{item.data.data.rollRangeEnd}},{{/each}}">
               {{localize 'MYTHRAS.Roll2'}} 1d20</a>
           </h3>

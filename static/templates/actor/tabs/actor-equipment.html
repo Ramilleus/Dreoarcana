@@ -44,11 +44,10 @@
                   <input type="checkbox" data-item-property="carried" {{checked item.data.data.carried}} />
                 </td>
                 <td>
-                  {{item.data.data.encumbrance}} {{#if
-                  data.data.formattedCE}}(+{{data.data.formattedCE}}/{{item.data.data.maxEncumbrance}}){{/if}}
+                  {{item.encumbrance}} (+{{roundNumber item.contentEncumbrance 2}}/{{item.maxEncumbrance}})
                 </td>
                 <td>
-                  {{item.data.data.value}} {{#if data.data.formattedCV}}(+{{data.data.formattedCV}}){{/if}}
+                  {{item.value}} (+{{roundNumber item.contentValue 2}})
                 </td>
                 <td>
                   <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -133,8 +132,7 @@
               {{item.data.data.value}}
             </td>
             <td>
-              {{item.data.data.storageName}}{{#if (eq item.data.data.storage 'Unknown')}}{{localize
-              'MYTHRAS.No_Storage'}}{{/if}}
+              {{item.storageName}}
             </td>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>

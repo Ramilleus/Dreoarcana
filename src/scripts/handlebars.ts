@@ -19,6 +19,13 @@ export function registerHandlebarsHelpers() {
     let secondChar = localizeSkillAbbrev(data.secondaryChar)
     return [primChar, secondChar].filter(Boolean).join(' + ')
   })
+
+  Handlebars.registerHelper('roundNumber', function (num: number, maxDecimalPlaces: number) {
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: maxDecimalPlaces
+    }).format(num)
+  })
 }
 
 function localizeSkillAbbrev(str: string) {

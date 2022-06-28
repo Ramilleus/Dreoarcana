@@ -16,7 +16,7 @@
           <div>
             <input class="action-points" name="data.attributes.actionPoints.value" type="text"
               value="{{data.data.attributes.actionPoints.value}}" placeholder="" />
-            <p class="point-total">/{{data.data.attributes.actionPoints.max}}</p>
+            <p class="point-total">/{{ maxActionPoints }}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-ap">+</a>
@@ -32,7 +32,7 @@
           <div>
             <input class="luck-points" name="data.attributes.luckPoints.value" type="text"
               value="{{data.data.attributes.luckPoints.value}}" placeholder="" />
-            <p class="point-total">/{{data.data.attributes.luckPoints.max}}</p>
+            <p class="point-total">/{{ maxLuckPoints }}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-lp">+</a>
@@ -48,7 +48,7 @@
           <div>
             <input class="magic-points" name="data.attributes.magicPoints.value" type="text"
               value="{{data.data.attributes.magicPoints.value}}" placeholder="" />
-            <p class="point-total">/{{data.data.attributes.magicPoints.max}}</p>
+            <p class="point-total">/{{ maxMagicPoints }}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-mp">+</a>
@@ -65,7 +65,7 @@
           <div>
             <input class="tenacity-points" name="data.attributes.tenacity.value" type="text"
               value="{{data.data.attributes.tenacity.value}}" placeholder="" />
-            <p class="point-total">/{{data.data.attributes.tenacity.max}}</p>
+            <p class="point-total">/{{ maxTenacity }}</p>
           </div>
           <div class="plus-minus-buttons">
             <a id="increase-current-tp">+</a>

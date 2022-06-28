@@ -24,8 +24,8 @@
               <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
               {{#unless data.data.equipped}}
               {{#select data.data.storage}}
-              {{#each data.data.storageList as |bag|}}
-              <option value="{{bag.id}}">{{bag.name}}</option>
+              {{#each availableStorage as |storage|}}
+              <option value="{{storage.id}}">{{storage.name}}</option>
               {{/each}}
               {{/select}}
               {{/unless}}

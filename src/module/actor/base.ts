@@ -1,3 +1,4 @@
+import { ArmorMythras } from '@item/armor/index.js'
 import { fatigueInfo, encInfo, physicalItems, formatter } from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
@@ -14,6 +15,94 @@ export class ActorMythras extends Actor {
       return ActorConstructor
         ? new ActorConstructor(data, context)
         : new ActorMythras(data, context)
+    }
+  }
+
+  get armorPenalty() {
+    let equippedArmor: ArmorMythras[] = this.items.filter(function (item: any) {
+      return item.type === 'armor' && item.isEquipped
+    })
+    let totalArmorEncumbrance = equippedArmor.reduce(
+      (weight: number, armor: ArmorMythras) => weight + armor.encumbrance,
+      0
+    )
+    return Math.ceil(Number(totalArmorEncumbrance) / 5)
+  }
+
+  get currentLevelOfFatigue() {
+    let data: any = this.data.data
+    return data.attributes.fatigue.value
+  }
+
+  get maxActionPoints() {
+    let base = Math.ceil((this.characteristics.int + this.characteristics.dex) / 12)
+    return (
+      base +
+      this.attributeMiscMods.actionPoints +
+      (fatigueInfo as any)[this.currentLevelOfFatigue].ActionPoints(base)
+    )
+  }
+
+  get damageMod() {
+    return this.damageModCalc(
+      this.characteristics.str + this.characteristics.siz,
+      this.attributeMiscMods.damageMod
+    )
+  }
+
+  get experienceMod() {
+    return Math.ceil(this.characteristics.cha / 6 - 2) + this.attributeMiscMods.experienceMod
+  }
+
+  get healingRate() {
+    return Math.ceil(this.characteristics.con / 6) + this.attributeMiscMods.healingRate
+  }
+
+  get initiativeBonus() {
+    let base = Math.ceil((this.characteristics.int + this.characteristics.dex) / 2)
+    return (
+      base +
+      this.attributeMiscMods.initiativeBonus +
+      (fatigueInfo as any)[this.currentLevelOfFatigue].Initiative(base)
+    )
+  }
+
+  get maxLuckPoints() {
+    return Math.ceil(this.characteristics.pow / 6) + this.attributeMiscMods.luckPoints
+  }
+
+  get maxMagicPoints() {
+    return this.characteristics.pow + this.attributeMiscMods.magicPoints
+  }
+
+  get maxTenacity() {
+    return this.characteristics.pow + this.attributeMiscMods.tenacity
+  }
+
+  get attributeMiscMods() {
+    let data: any = this.data.data
+    return {
+      actionPoints: Number(data.attributes.actionPoints.mod),
+      damageMod: Number(data.attributes.damageMod.mod),
+      experienceMod: Number(data.attributes.experienceMod.mod),
+      healingRate: Number(data.attributes.healingRate.mod),
+      initiativeBonus: Number(data.attributes.initiativeBonus.mod),
+      luckPoints: Number(data.attributes.luckPoints.mod),
+      magicPoints: Number(data.attributes.magicPoints.mod),
+      tenacity: Number(data.attributes.tenacity.mod)
+    }
+  }
+
+  get characteristics() {
+    let data: any = this.data.data
+    return {
+      str: Number(data.characteristics.str.value),
+      con: Number(data.characteristics.con.value),
+      siz: Number(data.characteristics.siz.value),
+      dex: Number(data.characteristics.dex.value),
+      int: Number(data.characteristics.int.value),
+      pow: Number(data.characteristics.pow.value),
+      cha: Number(data.characteristics.cha.value)
     }
   }
 
@@ -54,11 +143,6 @@ export class ActorMythras extends Actor {
   _prepareCharacterData(actorData: any) {
     const data = actorData.data
     let items = actorData.items
-    // Prepare a character's attributes
-    this.prepareAttributes(data, items)
-
-    //prepare a character storage content info
-    this.prepareStoragesContentInfo(items)
 
     // Prepare a character's encumbrance limits
     this.prepareEncumbrance(data, items)
@@ -74,106 +158,6 @@ export class ActorMythras extends Actor {
   }
 
   /**
-   * Calculates and sets a character's attribute values based on characteristics
-   * @param {*} data
-   * @param {*} items
-   */
-  prepareAttributes(data: any, items: any) {
-    // Get characteristic values and convert them to Numbers
-    let str = Number(data.characteristics.str.value)
-    let con = Number(data.characteristics.con.value)
-    let siz = Number(data.characteristics.siz.value)
-    let dex = Number(data.characteristics.dex.value)
-    let int = Number(data.characteristics.int.value)
-    let pow = Number(data.characteristics.pow.value)
-    let cha = Number(data.characteristics.cha.value)
-
-    let armor = items.filter(function (value: any) {
-      return value.type === 'armor'
-    })
-    let hitLoc = items.filter(function (value: any) {
-      return value.type === 'hitLocation'
-    })
-
-    // Manually run prepareData for all hitlocations in order to display the correct armor value
-    // hitLoc.forEach((hitlocation: any) => {
-    //   hitlocation.prepareData()
-    // })
-
-    // Fix for strange MEG importer bug
-    // TODO: Should move into mythras.js with a hook on sheet opening or fix the actual problem, lol
-    armor.forEach((armorVal: any) => {
-      if (armorVal.data.location === 'Unequipped' && armorVal.data.locationName.length > 0) {
-        let hitLocId = hitLoc.filter(function (hitVal: any) {
-          return hitVal.name === armorVal.data.locationName
-        })
-        this.updateEmbeddedDocuments('Item', [
-          {
-            _id: armorVal.id,
-            'data.location': hitLocId[0].id
-          }
-        ])
-      }
-    })
-    // Armor Penalty
-    let equippedArmor = armor.filter(function (value: any) {
-      return value.data.data.equipped
-    })
-    let armorEncTotal = equippedArmor.reduce((weight: any, i: any) => {
-      const enc = Number(i.data.data.encumbrance) || 0
-      return weight + enc
-    }, 0)
-    data.attributes.armorPenalty.value = Math.ceil(Number(armorEncTotal) / 5)
-
-    // Hit Point Mod
-    let hpModMiscMod = Number(data.attributes.hitPointMod.mod)
-    data.attributes.hitPointMod.value = Math.ceil((siz + con) / 5) + hpModMiscMod
-
-    //Action Point Mod
-    data.attributes.actionPoints.max = Math.ceil((int + dex) / 12)
-    let actionPointsMiscMod =
-      Number(data.attributes.actionPoints.mod) +
-      (fatigueInfo as any)[data.attributes.fatigue.value].ActionPoints(
-        data.attributes.actionPoints.max
-      )
-    data.attributes.actionPoints.max += actionPointsMiscMod
-
-    // Damage Mod
-    let damageModMiscMod = Number(data.attributes.damageMod.mod)
-    data.attributes.damageMod.value = this.damageModCalc(str + siz, damageModMiscMod)
-
-    // Experience Mod
-    let xpModMiscMod = Number(data.attributes.experienceMod.mod)
-    data.attributes.experienceMod.value = Math.ceil(cha / 6 - 2) + xpModMiscMod
-
-    // Healing Rate
-    let healingRateMiscMod = Number(data.attributes.healingRate.mod)
-    data.attributes.healingRate.value = Math.ceil(con / 6) + healingRateMiscMod
-
-    // Initiative Bonus
-    data.attributes.initiativeBonus.value = Math.ceil((int + dex) / 2)
-    let initiativeBonusMiscMod =
-      Number(data.attributes.initiativeBonus.mod) +
-      (fatigueInfo as any)[data.attributes.fatigue.value].Initiative(
-        data.attributes.initiativeBonus.value
-      )
-    data.attributes.initiativeBonus.value +=
-      initiativeBonusMiscMod - Number(data.attributes.armorPenalty.value)
-
-    // Luck Points
-    let luckPointsMiscMod = Number(data.attributes.luckPoints.mod)
-    data.attributes.luckPoints.max = Math.ceil(pow / 6) + luckPointsMiscMod
-
-    // Magic Points
-    let magicPointsMiscMod = Number(data.attributes.magicPoints.mod)
-    data.attributes.magicPoints.max = pow + magicPointsMiscMod
-
-    //Tenacity
-    let tenacityMiscMod = Number(data.attributes.tenacity.mod)
-    data.attributes.tenacity.max = pow + tenacityMiscMod
-  }
-
-  /**
    * Calculates and sets a character's encumbrance limits
    * @param {*} data
    * @param {*} items
@@ -184,30 +168,6 @@ export class ActorMythras extends Actor {
     data.attributes.encumbrance.overloaded = str * 3
     data.attributes.encumbrance.maxLoad = str * 4
     data.attributes.encumbrance.value = formatter.format(this.encumbranceCalc(items))
-  }
-
-  /**
-   * Calculates and sets a character's content encumbrance and value inside each storage
-   * @param {*} items
-   */
-  prepareStoragesContentInfo(items: any) {
-    let storedItems = items.filter(function (value: any) {
-      return physicalItems.includes(value.type)
-    })
-
-    storedItems.forEach((thing: any) => {
-      let storage = items.find((item: any) => item.id === thing.data.data.storage)
-      if (storage !== undefined && storage.id != thing.id) {
-        let qty = Number(thing.data.data.quantity) || 0
-        let enc =
-          Number(storage.data.data.contentEncumbrance) + Number(thing.data.data.encumbrance) * qty
-        let val = Number(storage.data.data.contentValue) + Number(thing.data.data.value) * qty
-        storage.data.data.contentEncumbrance = enc || 0
-        storage.data.data.contentValue = val || 0
-        storage.data.data.formattedCE = formatter.format(enc)
-        storage.data.data.formattedCV = formatter.format(val)
-      }
-    })
   }
 
   /**
