@@ -30,7 +30,7 @@
                       +
                     </span>
                     <input id="maxHpMod_all" type="text" name="data.attributes.hitPointMod.mod" class=""
-                      onclick="this.select()" value="{{data.data.attributes.hitPointMod.mod}}" />
+                      value="{{data.data.attributes.hitPointMod.mod}}" />
                   </span>
                 </div>
               </th>
@@ -62,13 +62,12 @@
                 </td>
                 <td class="hitLoc-flex-cell hitloc-hp-cell">
                   <input data-item-property="currentHp" type="number" value="{{item.data.data.currentHp}}" />
-                  <p class="max-hp"> / {{item.data.data.maxHp}}</p>
+                  <p class="max-hp"> / {{item.maxHp}}</p>
                   <div class="max-hp-mod">
                     <span>
                       +
                     </span>
-                    <input data-item-property="maxHpMod" type="text" class="" onclick="this.select()"
-                      value="{{item.data.data.maxHpMod}}" />
+                    <input data-item-property="maxHpMod" type="text" class="" value="{{item.data.data.maxHpMod}}" />
                   </div>
                 </td>
               </tr>

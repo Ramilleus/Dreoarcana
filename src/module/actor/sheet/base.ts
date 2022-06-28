@@ -1,7 +1,5 @@
 import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
-import { HitLocationMythras } from '@item/hit-location/index.js'
-import { SkillMythras } from '@item/skill/index.js'
 import { skillTypes } from '../../item/skill-helper.js'
 import { fatigueInfo } from '../actor-helper.js'
 import { encInfo } from '../actor-helper.js'
@@ -82,7 +80,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       spell: spells
     }
 
-    let x = 0
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
     for (let i of this.actor.items.values()) {
@@ -135,11 +132,23 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     })
   }
 
-  getSkillOtherCharacteristic(skill: any, characteristic: string) {
-    if (skill.data.data.primaryChar == characteristic) {
-      return skill.data.data.secondaryChar
+  private modifyStatStyle(modifier: HTMLInputElement) {
+    let statToModify = $(modifier).closest('[data-stat]').find('.modifiable')
+    if (Number(modifier.value) > 0) {
+      $(modifier).removeClass('decreased')
+      statToModify.removeClass('decreased')
+      $(modifier).addClass('increased')
+      statToModify.addClass('increased')
+    } else if (Number(modifier.value) < 0) {
+      $(modifier).removeClass('increased')
+      statToModify.removeClass('increased')
+      $(modifier).addClass('decreased')
+      statToModify.addClass('decreased')
     } else {
-      return skill.data.data.primaryChar
+      $(modifier).removeClass('decreased')
+      statToModify.removeClass('decreased')
+      $(modifier).removeClass('increased')
+      statToModify.removeClass('increased')
     }
   }
 
@@ -147,6 +156,21 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   activateListeners(html: JQuery) {
     super.activateListeners(html)
     const actor = this.actor
+
+    Hooks.once('renderActorSheet', () => {
+      html.find('.modifier').each((_, modifier: HTMLInputElement) => {
+        this.modifyStatStyle(modifier)
+      })
+    })
+
+    html.find('.modifier').on('change', (event) => {
+      let target = event.target as HTMLInputElement
+      this.modifyStatStyle(target)
+    })
+
+    html.find('input').on('click', function (event) {
+      this.select()
+    })
 
     // Listens for item-input updates. Element with [data-item] that contain inputs
     // are listened to. If an input changes, update the embedded document associated with
@@ -169,30 +193,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           [propertyName]: newValue
         }
       ])
-    })
-
-    // Listens for updates to siz and con. Recalculated max HP for all hit locations
-    // if one changes
-    html.find('[data-hp-characteristic]').on('change', (event) => {
-      Hooks.once('updateActor', () => {
-        let hitLocations = (this.actor as any).hitLocations as HitLocationMythras[]
-        hitLocations.forEach((hitLocation: HitLocationMythras) => {
-          hitLocation.calculateMaxHitpoints()
-        })
-      })
-    })
-
-    // Listens for updates to all characteristics. If a characteristic is updated, recalculate the
-    // skill's base value and total value
-    html.find('[data-characteristic]').on('change', (event) => {
-      Hooks.once('updateActor', () => {
-        let target = event.target as HTMLInputElement
-        let char = $(target).attr('data-characteristic')
-        let skills = (this.actor as any).skillsAndPassions as SkillMythras[]
-        skills.forEach((skill: SkillMythras) => {
-          skill.recalculateSkillValuesOnCharacteristicUpdate(char)
-        })
-      })
     })
 
     // Everything below here is only needed if the sheet is editable

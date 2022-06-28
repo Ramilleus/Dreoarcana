@@ -71,9 +71,6 @@ export class ActorMythras extends Actor {
       data.attributes.fatigue.value,
       Number(data.attributes.healingRate.value)
     )
-
-    // Apply green/red coloring to attributes if they've been increased/decreased
-    this.applyAttrbiuteColoring(data)
   }
 
   /**
@@ -258,28 +255,6 @@ export class ActorMythras extends Actor {
 
     // Calculate vertical jump speed
     data.attributes.jump.vertical = this.moveRateCalc(Number(data.height), athletics, 'vJump')
-  }
-
-  /**
-   * Applies green/red coloring to attributes that have been increased/decreased
-   * @param {*} data
-   */
-  applyAttrbiuteColoring(data: any) {
-    for (let key in data.attributes) {
-      if (data.attributes[key].mod != null) {
-        let mod = Number(data.attributes[key].mod)
-        if (mod > 0) {
-          // If an attribute has a positive mod, apply the increased-attribute class (green coloring)
-          data.attributes[key].applyClass = 'increased-attribute'
-        } else if (mod < 0) {
-          // If an attribute has a negative mod, apply the decreased-attribute class (red coloring)
-          data.attributes[key].applyClass = 'decreased-attribute'
-        } else {
-          // If an attribute has a 0 mod, apply the no class (default coloring)
-          data.attributes[key].applyClass = ''
-        }
-      }
-    }
   }
 
   doesTypeHaveTemplate(type: any, template: any) {

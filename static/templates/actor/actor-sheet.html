@@ -14,7 +14,7 @@
       <div class="stats-container">
         <div class="number-input-container {{#if data.data.attributes.actionPoints.minimize}}hidden{{/if}}">
           <div>
-            <input class="action-points" name="data.attributes.actionPoints.value" onclick="this.select()" type="text"
+            <input class="action-points" name="data.attributes.actionPoints.value" type="text"
               value="{{data.data.attributes.actionPoints.value}}" placeholder="" />
             <p class="point-total">/{{data.data.attributes.actionPoints.max}}</p>
           </div>
@@ -30,7 +30,7 @@
       <div class="stats-container">
         <div class="number-input-container {{#if data.data.attributes.luckPoints.minimize}}hidden{{/if}}">
           <div>
-            <input class="luck-points" name="data.attributes.luckPoints.value" onclick="this.select()" type="text"
+            <input class="luck-points" name="data.attributes.luckPoints.value" type="text"
               value="{{data.data.attributes.luckPoints.value}}" placeholder="" />
             <p class="point-total">/{{data.data.attributes.luckPoints.max}}</p>
           </div>
@@ -46,7 +46,7 @@
       <div class="stats-container">
         <div class="number-input-container {{#if data.data.attributes.magicPoints.minimize}}hidden{{/if}}">
           <div>
-            <input class="magic-points" name="data.attributes.magicPoints.value" onclick="this.select()" type="text"
+            <input class="magic-points" name="data.attributes.magicPoints.value" type="text"
               value="{{data.data.attributes.magicPoints.value}}" placeholder="" />
             <p class="point-total">/{{data.data.attributes.magicPoints.max}}</p>
           </div>
@@ -63,7 +63,7 @@
       <div class="stats-container">
         <div class="number-input-container {{#if data.data.attributes.tenacity.minimize}}hidden{{/if}}">
           <div>
-            <input class="tenacity-points" name="data.attributes.tenacity.value" onclick="this.select()" type="text"
+            <input class="tenacity-points" name="data.attributes.tenacity.value" type="text"
               value="{{data.data.attributes.tenacity.value}}" placeholder="" />
             <p class="point-total">/{{data.data.attributes.tenacity.max}}</p>
           </div>
@@ -79,8 +79,8 @@
 
       <div class="stats-container">
         <div class="number-input-container {{#if data.data.attributes.experienceRoll.minimize}}hidden{{/if}}">
-          <input class="experience-rolls" name="data.experienceRolls" onclick="this.select()" type="text"
-            value="{{data.data.experienceRolls}}" placeholder="" />
+          <input class="experience-rolls" name="data.experienceRolls" type="text" value="{{data.data.experienceRolls}}"
+            placeholder="" />
           <div class="plus-minus-buttons">
             <a id="increase-current-er">+</a>
             <a id="decrease-current-er">-</a>

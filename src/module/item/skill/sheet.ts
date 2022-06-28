@@ -6,7 +6,8 @@ export class SkillSheetMythras extends ItemSheetMythras<SkillMythras> {
     const sheetData = await super.getData(options);
     return {
       ...sheetData,
-      encPenalty: this.item.encPenalty
+      encPenalty: this.item.encPenalty,
+      totalVal: this.item.totalVal
     }
   }
 }

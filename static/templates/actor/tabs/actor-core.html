@@ -110,52 +110,43 @@
       </h2>
       <div class="core-characteristics">
         <div>
-          <input data-characteristic="str" id="str_characteristic-box" name="data.characteristics.str.value"
-            onclick="this.select()" value="{{data.data.characteristics.str.value}}" type="text" />
+          <input name="data.characteristics.str.value" value="{{data.data.characteristics.str.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.STRENGTH'}}
           </label>
         </div>
         <div>
-          <input data-characteristic="con" data-hp-characteristic id="con_characteristic-box"
-            name="data.characteristics.con.value" onclick="this.select()"
-            value="{{data.data.characteristics.con.value}}" type="text" />
+          <input name="data.characteristics.con.value" value="{{data.data.characteristics.con.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.CONSTITUTION'}}
           </label>
         </div>
         <div>
-          <input data-characteristic="siz" data-hp-characteristic id="siz_characteristic-box"
-            name="data.characteristics.siz.value" onclick="this.select()"
-            value="{{data.data.characteristics.siz.value}}" type="text" />
+          <input name="data.characteristics.siz.value" value="{{data.data.characteristics.siz.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.SIZE'}}
           </label>
         </div>
         <div>
-          <input data-characteristic="dex" id="dex_characteristic-box" name="data.characteristics.dex.value"
-            onclick="this.select()" value="{{data.data.characteristics.dex.value}}" type="text" />
+          <input name="data.characteristics.dex.value" value="{{data.data.characteristics.dex.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.DEXTERITY'}}
           </label>
         </div>
         <div>
-          <input data-characteristic="int" id="int_characteristic-box" name="data.characteristics.int.value"
-            onclick="this.select()" value="{{data.data.characteristics.int.value}}" type="text" />
+          <input name="data.characteristics.int.value" value="{{data.data.characteristics.int.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.INTELLIGENCE'}}
           </label>
         </div>
         <div>
-          <input data-characteristic="pow" id="pow_characteristic-box" name="data.characteristics.pow.value"
-            onclick="this.select()" value="{{data.data.characteristics.pow.value}}" type="text" />
+          <input name="data.characteristics.pow.value" value="{{data.data.characteristics.pow.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.POWER'}}
           </label>
         </div>
         <div>
-          <input data-characteristic="cha" id="cha_characteristic-box" name="data.characteristics.cha.value"
-            onclick="this.select()" value="{{data.data.characteristics.cha.value}}" type="text" />
+          <input name="data.characteristics.cha.value" value="{{data.data.characteristics.cha.value}}" type="text" />
           <label>
             {{localize 'MYTHRAS.CHARISMA'}}
           </label>
@@ -166,17 +157,16 @@
       </h2>
       <div class="core-attributes">
         <div>
-          <div class="attribute-container">
+          <div data-stat="actionPoints" class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.actionPoints.max" class="{{data.data.attributes.actionPoints.applyClass}}">
+              <p name="data.attributes.actionPoints.max" class="modifiable">
                 {{data.data.attributes.actionPoints.max}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.actionPoints.mod"
-                  class="{{data.data.attributes.actionPoints.applyClass}}" onclick="this.select()"
+                <input type="text" name="data.attributes.actionPoints.mod" class="modifier"
                   value="{{data.data.attributes.actionPoints.mod}}" />
               </div>
             </div>
@@ -184,17 +174,16 @@
               {{localize 'MYTHRAS.ACTION_POINTS'}}
             </p>
           </div>
-          <div class="attribute-container">
+          <div data-stat="damageMod" class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.damageMod.value" class="{{data.data.attributes.damageMod.applyClass}}">
+              <p name="data.attributes.damageMod.value" class="modifiable">
                 {{data.data.attributes.damageMod.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.damageMod.mod"
-                  class="{{data.data.attributes.damageMod.applyClass}}" onclick="this.select()"
+                <input type="text" name="data.attributes.damageMod.mod" class="modifier"
                   value="{{data.data.attributes.damageMod.mod}}" />
               </div>
             </div>
@@ -202,17 +191,16 @@
               {{localize 'MYTHRAS.DAMAGE_MOD'}}
             </p>
           </div>
-          <div class="attribute-container">
+          <div data-stat="experienceMod" class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.experienceMod.value" class="{{data.data.attributes.experienceMod.applyClass}}">
+              <p name="data.attributes.experienceMod.value" class="modifiable">
                 {{data.data.attributes.experienceMod.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.experienceMod.mod"
-                  class="{{data.data.attributes.experienceMod.applyClass}}" onclick="this.select()"
+                <input type="text" name="data.attributes.experienceMod.mod" class="modifier"
                   value="{{data.data.attributes.experienceMod.mod}}" />
               </div>
             </div>
@@ -220,17 +208,16 @@
               {{localize 'MYTHRAS.EXPERIENCE_MOD'}}
             </p>
           </div>
-          <div class="attribute-container">
+          <div data-stat="healingRate" class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.healingRate.value" class="{{data.data.attributes.healingRate.applyClass}}">
+              <p name="data.attributes.healingRate.value" class="modifiable">
                 {{data.data.attributes.healingRate.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.healingRate.mod"
-                  class="{{data.data.attributes.healingRate.applyClass}}" onclick="this.select()"
+                <input type="text" name="data.attributes.healingRate.mod" class="modifier"
                   value="{{data.data.attributes.healingRate.mod}}" />
               </div>
             </div>
@@ -238,18 +225,16 @@
               {{localize 'MYTHRAS.HEALING_RATE'}}
             </p>
           </div>
-          <div class="attribute-container">
+          <div data-stat="initiativeBonus" class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.initiativeBonus.value"
-                class="{{data.data.attributes.initiativeBonus.applyClass}}">
+              <p name="data.attributes.initiativeBonus.value" class="modifiable">
                 {{data.data.attributes.initiativeBonus.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.initiativeBonus.mod"
-                  class="{{data.data.attributes.initiativeBonus.applyClass}}" onclick="this.select()"
+                <input type="text" name="data.attributes.initiativeBonus.mod" class="modifier"
                   value="{{data.data.attributes.initiativeBonus.mod}}" />
               </div>
             </div>
@@ -257,17 +242,16 @@
               {{localize 'MYTHRAS.INITIATIVE_BONUS'}}
             </p>
           </div>
-          <div class="attribute-container">
+          <div data-stat="luckPoints" class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.luckPoints.max" class="{{data.data.attributes.luckPoints.applyClass}}">
+              <p name="data.attributes.luckPoints.max" class="modifiable">
                 {{data.data.attributes.luckPoints.max}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.luckPoints.mod"
-                  class="{{data.data.attributes.luckPoints.applyClass}}" onclick="this.select()"
+                <input type="text" name="data.attributes.luckPoints.mod" class="modifier"
                   value="{{data.data.attributes.luckPoints.mod}}" />
               </div>
             </div>
@@ -276,17 +260,16 @@
               <br />
             </p>
           </div>
-          <div class="attribute-container">
+          <div data-stat="magicPoints" class="attribute-container">
             <div class="attribute">
-              <p name="data.attributes.magicPoints.max" class="{{data.data.attributes.magicPoints.applyClass}}">
+              <p name="data.attributes.magicPoints.max" class="modifiable">
                 {{data.data.attributes.magicPoints.max}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.attributes.magicPoints.mod"
-                  class="{{data.data.attributes.magicPoints.applyClass}}" onclick="this.select()"
+                <input type="text" name="data.attributes.magicPoints.mod" class="modifier"
                   value="{{data.data.attributes.magicPoints.mod}}" />
               </div>
             </div>
@@ -297,7 +280,7 @@
         </div>
       </div>
 
-      <div class="movement-container">
+      <div data-stat="movement" class="movement-container">
         <div>
           <h3>
             {{localize 'MYTHRAS.Movement'}}
@@ -306,16 +289,13 @@
             <span>
               +
             </span>
-            <input type="text" name="data.attributes.movement.mod" class="{{data.data.attributes.movement.applyClass}}"
-              onclick="this.select()" value="{{data.data.attributes.movement.mod}}" />
+            <input type="text" name="data.attributes.movement.mod" class="modifier"
+              value="{{data.data.attributes.movement.mod}}" />
           </div>
         </div>
         <div class="movement-inner-container">
           <div>
-            <p class="{{data.data.attributes.movement.applyClass}}">
-              {{!-- <input class="{{data.data.attributes.movement.applyClass}}" type="number"
-                name="data.attributes.movement.walk" onclick="this.select()"
-                value="{{data.data.attributes.movement.walk}}" /> --}}
+            <p class="modifiable">
               {{data.data.attributes.movement.walk}}
             </p>
             <p class="movement-label">
@@ -323,7 +303,7 @@
             </p>
           </div>
           <div>
-            <p class="{{data.data.attributes.movement.applyClass}}">
+            <p class="modifiable">
               {{data.data.attributes.movement.run}}
             </p>
             <p class="movement-label">
@@ -331,7 +311,7 @@
             </p>
           </div>
           <div>
-            <p class="{{data.data.attributes.movement.applyClass}}">
+            <p class="modifiable">
               {{data.data.attributes.movement.sprint}}
             </p>
             <p class="movement-label">
@@ -339,7 +319,7 @@
             </p>
           </div>
           <div>
-            <p class="{{data.data.attributes.movement.applyClass}}">
+            <p class="modifiable">
               {{data.data.attributes.climb.value}}
             </p>
             <p class="movement-label">
@@ -347,7 +327,7 @@
             </p>
           </div>
           <div>
-            <p class="{{data.data.attributes.movement.applyClass}}">
+            <p class="modifiable">
               {{data.data.attributes.jump.horizontal}}
             </p>
             <p class="movement-label">
@@ -355,7 +335,7 @@
             </p>
           </div>
           <div>
-            <p class="{{data.data.attributes.movement.applyClass}}">
+            <p class="modifiable">
               {{data.data.attributes.jump.vertical}}
             </p>
             <p class="movement-label">
@@ -363,7 +343,7 @@
             </p>
           </div>
           <div>
-            <p class="{{data.data.attributes.movement.applyClass}}">
+            <p class="modifiable">
               {{data.data.attributes.swim.value}}
             </p>
             <p class="movement-label">
@@ -382,266 +362,21 @@
     </h2>
     <div class="skill-tables">
       <div class="tables-left">
-        <div>
-          <h3>
-            <span>
-              {{localize 'MYTHRAS.Standard_Skills'}}
-            </span>
-            <a class="add-skills-button item-create" title="Create item" data-type="standardSkill">
-              +
-            </a>
-          </h3>
-          <table class="basic-skills-table">
-            <thead>
-              <th>
-                {{localize 'MYTHRAS.Name'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Base_Char'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Roll'}}
-              </th>
-              <th class="delete-column">
-                <i class="fas fa-trash"></i>
-              </th>
-            </thead>
-            <tbody>
-              {{#each actor.standardSkills as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
-                <td>
-                  <a class="item-name item-control item-edit">
-                    {{item.data.name}}
-                  </a>
-                </td>
-                <td>
-                  {{formatSkillAbbrev item.data.data}}
-                </td>
-                <td>
-                  <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
-                    {{item.data.data.totalVal}}%
-                  </a>
-                </td>
-                <td>
-                  <a class="item-control item-delete delete-column" title="Delete Item">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Standard_Skills')
+        skillType="standardSkill" skills=actor.standardSkills}}
       </div>
       <div class="tables-right">
-        <div>
-          <h3>
-            <span>
-              {{localize 'MYTHRAS.Professional_Skills'}}
-            </span>
-            <a class="add-skills-button item-create" title="Create item" data-type="professionalSkill">
-              +
-            </a>
-          </h3>
-          <table class="basic-skills-table">
-            <thead>
-              <th>
-                <a class="skill-alpha-sort" id="professional-alpha-sort">
-                  {{localize 'MYTHRAS.Name'}}
-                </a>
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Base_Char'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Roll'}}
-              </th>
-              <th class="delete-column">
-                <i class="fas fa-trash"></i>
-              </th>
-            </thead>
-            <tbody>
-              {{#each actor.professionalSkills as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
-                <td>
-                  <a class="item-name item-control item-edit">
-                    {{item.data.name}}
-                  </a>
-                </td>
-                <td>
-                  {{formatSkillAbbrev item.data.data}}
-                </td>
-                <td>
-                  <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
-                    {{item.data.data.totalVal}}%
-                  </a>
-                </td>
-                <td>
-                  <a class="item-control item-delete delete-column" title="Delete Item">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Professional_Skills')
+        skillType="professionalSkill" skills=actor.professionalSkills}}
 
-        <div>
-          <h3>
-            <span>
-              {{localize 'MYTHRAS.Combat_Styles'}}
-            </span>
-            <a class="add-skills-button item-create" title="Create item" data-type="combatStyle">
-              +
-            </a>
-          </h3>
-          <table class="basic-skills-table">
-            <thead>
-              <th>
-                {{localize 'MYTHRAS.Name'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Base_Char'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Roll'}}
-              </th>
-              <th class="delete-column">
-                <i class="fas fa-trash"></i>
-              </th>
-            </thead>
-            <tbody>
-              {{#each actor.combatStyles as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
-                <td>
-                  <a class="item-name item-control item-edit">
-                    {{item.data.name}}
-                  </a>
-                </td>
-                <td>
-                  {{formatSkillAbbrev item.data.data}}
-                </td>
-                <td>
-                  <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
-                    {{item.data.data.totalVal}}%
-                  </a>
-                </td>
-                <td>
-                  <a class="item-control item-delete delete-column" title="Delete Item">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <h3>
-            <span>
-              {{localize 'MYTHRAS.Magic_Skills'}}
-            </span>
-            <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
-              +
-            </a>
-          </h3>
-          <table class="basic-skills-table">
-            <thead>
-              <th>
-                {{localize 'MYTHRAS.Name'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Base_Char'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Roll'}}
-              </th>
-              <th class="delete-column">
-                <i class="fas fa-trash"></i>
-              </th>
-            </thead>
-            <tbody>
-              {{#each actor.magicSkills as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
-                <td>
-                  <a class="item-name item-control item-edit">
-                    {{item.data.name}}
-                  </a>
-                </td>
-                <td>
-                  {{formatSkillAbbrev item.data.data}}
-                </td>
-                <td>
-                  <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
-                    {{item.data.data.totalVal}}%
-                  </a>
-                </td>
-                <td>
-                  <a class="item-control item-delete delete-column" title="Delete Item">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <h3>
-            <span>
-              {{localize 'MYTHRAS.Passions'}}
-            </span>
-            <a class="add-skills-button item-create" title="Create item" data-type="passion">
-              +
-            </a>
-          </h3>
-          <table class="basic-skills-table">
-            <thead>
-              <th>
-                {{localize 'MYTHRAS.Name'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Base_Char'}}
-              </th>
-              <th>
-                {{localize 'MYTHRAS.Roll'}}
-              </th>
-              <th class="delete-column">
-                <i class="fas fa-trash"></i>
-              </th>
-            </thead>
-            <tbody>
-              {{#each actor.passions as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
-                <td>
-                  <a class="item-name item-control item-edit">
-                    {{item.data.name}}
-                  </a>
-                </td>
-                <td>
-                  {{formatSkillAbbrev item.data.data}}
-                </td>
-                <td>
-                  <a class="skill-val rollableSkill" data-roll="1d100"
-                    data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
-                    {{item.data.data.totalVal}}%
-                  </a>
-                </td>
-                <td>
-                  <a class="item-control item-delete delete-column" title="Delete Item">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Combat_Styles')
+        skillType="combatStyle" skills=actor.combatStyles}}
+
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Magic_Skills')
+        skillType="magicSkill" skills=actor.magicSkills}}
+
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Passions')
+        skillType="passion" skills=actor.passions}}
 
         <div>
           <h3>

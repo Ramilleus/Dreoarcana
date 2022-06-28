@@ -53,6 +53,11 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
 
   override activateListeners($html: JQuery): void {
     super.activateListeners($html)
+
+    $html.find('input').on('click', function (event) {
+      this.select()
+    })
+
     if (!this.options.editable) return
   }
 }

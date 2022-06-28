@@ -9,13 +9,11 @@ export class HitLocationMythras extends ItemMythras {
   }
 
   get equippedArmor(): Embedded<ArmorMythras>[] {
-    return this.attachedArmor
-      .filter((armor) => armor.isEquipped)
+    return this.attachedArmor.filter((armor) => armor.isEquipped)
   }
 
   get equippedArmorNames() {
-    return this.equippedArmor
-      .map((armor) => armor.name).join(', ')
+    return this.equippedArmor.map((armor) => armor.name).join(', ')
   }
 
   get naturalArmor() {
@@ -33,49 +31,21 @@ export class HitLocationMythras extends ItemMythras {
     }
   }
 
-  override prepareData(): void {
-    super.prepareData()
-    this.calculateMaxHitpoints()
+  get maxHp() {
+    let data: any = deepClone(this.data)
+    let actorData: any = this.actor.data.data
 
-    const itemData: any = this.data
-    const actorData: any = this.actor ? this.actor.data : {}
-    
-    const data = itemData.data
-    if (actorData && actorData.items) {
-      if (data.maxHp == 0) {
-        data.maxHp =
-          Number(data.baseHp) +
-          Math.ceil(
-            (Number(actorData.data.characteristics.siz.value) +
-              Number(actorData.data.characteristics.con.value)) /
-              5
-          ) +
-          Number(actorData.data.attributes.hitPointMod.mod) +
-          Number(data.maxHpMod)
-        if (data.maxHp < 1) {
-          data.maxHp = 1
-        }
-      }
-    }
-  }
+    let sizValue = Number(actorData.characteristics.siz.value)
+    let conValue = Number(actorData.characteristics.con.value)
 
-  calculateMaxHitpoints() {
-    if (this.actor && this.actor.data) {
-      let data: any = deepClone(this.data)
-      let actorData: any = this.actor.data.data
-  
-      let sizValue = Number(actorData.characteristics.siz.value)
-      let conValue = Number(actorData.characteristics.con.value)
-  
-      let overallHpMod = Number(actorData.attributes.hitPointMod.mod)
-      let hitLocationbaseHp = Number(data.data.baseHp)
-      let hitLocationHpMod = Number(data.data.maxHpMod)
-      data.data.maxHp =
-        hitLocationbaseHp +
-        Math.ceil((sizValue + conValue) / 5) +
-        hitLocationHpMod +
-        overallHpMod
-      this.data.update(data)
+    let overallHpMod = Number(actorData.attributes.hitPointMod.mod)
+    let hitLocationbaseHp = Number(data.data.baseHp)
+    let hitLocationHpMod = Number(data.data.maxHpMod)
+    let maxHp =
+      hitLocationbaseHp + Math.ceil((sizValue + conValue) / 5) + hitLocationHpMod + overallHpMod
+    if (maxHp < 1) {
+      maxHp = 1
     }
+    return maxHp
   }
 }

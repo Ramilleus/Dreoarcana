@@ -1,0 +1,51 @@
+<div>
+  <h3>
+    <span>
+      {{ tableTitle }}
+    </span>
+    <a class="add-skills-button item-create" title="Create item" data-type="{{ skillType }}">
+      +
+    </a>
+  </h3>
+  <table class="basic-skills-table">
+    <thead>
+      <th>
+        {{localize 'MYTHRAS.Name'}}
+      </th>
+      <th>
+        {{localize 'MYTHRAS.Base_Char'}}
+      </th>
+      <th>
+        {{localize 'MYTHRAS.Roll'}}
+      </th>
+      <th class="delete-column">
+        <i class="fas fa-trash"></i>
+      </th>
+    </thead>
+    <tbody>
+      {{#each skills as |item id|}}
+      <tr class="item" data-item-id="{{item.data._id}}">
+        <td>
+          <a class="item-name item-control item-edit">
+            {{item.data.name}}
+          </a>
+        </td>
+        <td>
+          {{formatSkillAbbrev item.data.data}}
+        </td>
+        <td>
+          <a class="skill-val rollableSkill" data-roll="1d100"
+            data-label="{{item.data.name}},{{item.totalVal}},{{item.id}}">
+            {{item.totalVal}}%
+          </a>
+        </td>
+        <td>
+          <a class="item-control item-delete delete-column" title="Delete Item">
+            <i class="fas fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
