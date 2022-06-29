@@ -1,4 +1,43 @@
 div.equipment {
+  .encumbrance-bar {
+    width: 100%;
+    > div {
+      height: 24px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+    }
+    .encumbrance-bar-names,
+    .encumbrance-bar-values {
+      .bar-label {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+    .encumbrance-bar-display {
+      border: 1px solid #777;
+      padding: 2px;
+      .bar-segment:not(:last-child) {
+        border-right: 1px solid black;
+      }
+      .bar-segment {
+        .percent-segment-filled {
+          height: 100%;
+          background-color: rgba(0, 121, 0, 0.8);
+        }
+        .burdened {
+          background-color: rgba(170, 96, 0, 0.8);
+        }
+        .overloaded {
+          background-color: rgba(163, 8, 0, 0.8);
+        }
+        .maxload {
+          background-color: rgba(75, 0, 0, 0.8);
+        }
+      }
+    }
+  }
+
   .damageModCheck {
     pointer-events: none;
   }

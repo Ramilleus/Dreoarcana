@@ -26,6 +26,12 @@ export function registerHandlebarsHelpers() {
       maximumFractionDigits: maxDecimalPlaces
     }).format(num)
   })
+  Handlebars.registerHelper('ifeq', function (a, b, options) {
+    if (a == b) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  })
 }
 
 function localizeSkillAbbrev(str: string) {

@@ -1,5 +1,6 @@
 import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
+import { SkillMythras } from '@item/skill/index.js'
 import { skillTypes } from '../../item/skill-helper.js'
 import { fatigueInfo } from '../actor-helper.js'
 import { encInfo } from '../actor-helper.js'
@@ -20,6 +21,40 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   }
 
   /* -------------------------------------------- */
+
+  private get encumbranceBarSegments() {
+    const encumbranceLevels = [this.actor.burdenedCap, this.actor.overloadedCap, this.actor.maxLoad]
+    const encumbranceLevelNames = ['Burdened', 'Overloaded', 'Max Load']
+    const segmentColors = ['green', 'red', 'darkred']
+    const segments = []
+    const totalEncumbrance = this.actor.totalEncumbrance
+    const maxLoad = this.actor.maxLoad
+    let barCovered = 0
+    let barFilled = 0
+
+    for (let i = 0; i < encumbranceLevels.length; i++) {
+      let percentSegmentFilled = 0
+      if (totalEncumbrance >= encumbranceLevels[i]) {
+        percentSegmentFilled = 100
+        barFilled += encumbranceLevels[i] - barCovered
+      } else if (i == 0 || totalEncumbrance > encumbranceLevels[i - 1]) {
+        const divisor = totalEncumbrance - barFilled
+        const dividend = encumbranceLevels[i] - barFilled
+        percentSegmentFilled = 100 * (divisor / dividend)
+      }
+      const width = encumbranceLevels[i] - barCovered
+      segments.push({
+        level: encumbranceLevels[i],
+        levelName: encumbranceLevelNames[i],
+        color: segmentColors[i],
+        percentFilled: percentSegmentFilled,
+        width: width
+      })
+      barCovered += width
+    }
+
+    return segments
+  }
 
   /** @override */
   getData() {
@@ -42,7 +77,9 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       initiativeBonus: this.actor.initiativeBonus,
       maxLuckPoints: this.actor.maxLuckPoints,
       maxMagicPoints: this.actor.maxMagicPoints,
-      maxTenacity: this.actor.maxTenacity
+      maxTenacity: this.actor.maxTenacity,
+      encumbranceBarSegments: this.encumbranceBarSegments,
+      totalEncumbrance: this.actor.totalEncumbrance
     }
   }
 
@@ -173,6 +210,19 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       html.find('.modifier').each((_, modifier: HTMLInputElement) => {
         this.modifyStatStyle(modifier)
       })
+      if (this.actor.isOverMaxLoad) {
+        $('.encumbrance-bar .percent-segment-filled').removeClass('burdened')
+        $('.encumbrance-bar .percent-segment-filled').removeClass('overloaded')
+        $('.encumbrance-bar .percent-segment-filled').addClass('maxload')
+      } else if (this.actor.isOverloaded) {
+        $('.encumbrance-bar .percent-segment-filled').removeClass('burdened')
+        $('.encumbrance-bar .percent-segment-filled').removeClass('maxload')
+        $('.encumbrance-bar .percent-segment-filled').addClass('overloaded')
+      } else if (this.actor.isBurdened) {
+        $('.encumbrance-bar .percent-segment-filled').removeClass('overloaded')
+        $('.encumbrance-bar .percent-segment-filled').removeClass('maxload')
+        $('.encumbrance-bar .percent-segment-filled').addClass('burdened')
+      }
     })
 
     html.find('.modifier').on('change', (event) => {
@@ -458,8 +508,8 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     let itemId = dataLabel[2]
 
     // Gets the skill item data using the item's id
-    let itemData: any = this.actor.items.get(itemId).data
-    let encPenalty = itemData.data.encPenalty
+    let item: SkillMythras = this.actor.items.get(itemId)
+    let encPenalty = item.encPenalty
 
     // Calculate difficulty grades based on skill value
     let difficultyGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
@@ -479,6 +529,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     if (dataset.roll) {
       // Get encumberance and fatigue modifier text
       let modifiers = this.getModifiers(encPenalty)
+      console.log(modifiers)
 
       // Create roll label, like "Rolling: <skill_name>"
       let rollLabel = dataset.label ? game.i18n.localize('MYTHRAS.Rolling') + ` ${skillName}` : ''
@@ -510,12 +561,10 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   }
 
   getModifiers(encPenalty: any) {
-    let data: any = this.actor.data.data
-    let attributes = data.attributes
     let modifiers = []
 
     // Include Fatigue Penalty value if character is not fresh
-    let fatigueValue = attributes.fatigue.value
+    let fatigueValue = this.actor.currentLevelOfFatigue
     if (fatigueValue !== 'fresh') {
       modifiers.push({
         name: 'Fatigue Mod',
@@ -525,22 +574,18 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
 
     //Include ENC Penalty if skill suffers ENC penalty and character is encumbered
     if (encPenalty) {
-      let currentEnc = attributes.encumbrance.value
-      let burdened = attributes.encumbrance.burdened
-      let overloaded = attributes.encumbrance.overloaded
-      if (currentEnc > overloaded) {
+      if (this.actor.isOverloaded) {
         modifiers.push({
           name: 'ENC Mod',
           value: encInfo['overloaded']['Skill Grade']
         })
-      } else if (currentEnc > burdened) {
+      } else if (this.actor.isBurdened) {
         modifiers.push({
-          name: 'Fatigue Mod',
+          name: 'ENC Mod',
           value: encInfo['burdened']['Skill Grade']
         })
       }
     }
-
     return modifiers
   }
 

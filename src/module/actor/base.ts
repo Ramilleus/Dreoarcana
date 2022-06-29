@@ -18,6 +18,8 @@ export class ActorMythras extends Actor {
     }
   }
 
+  // Attribute getters
+
   get armorPenalty() {
     let equippedArmor: ArmorMythras[] = this.items.filter(function (item: any) {
       return item.type === 'armor' && item.isEquipped
@@ -79,6 +81,40 @@ export class ActorMythras extends Actor {
     return this.characteristics.pow + this.attributeMiscMods.tenacity
   }
 
+  // Encumbrance getters
+  get totalEncumbrance(): number {
+    return this.encumbranceCalc(this.items)
+  }
+
+  get percentEncumbered(): number {
+    return (this.totalEncumbrance / this.maxLoad) * 100
+  }
+
+  get burdenedCap(): number {
+    return this.characteristics.str * 2
+  }
+
+  get isBurdened(): boolean {
+    return this.totalEncumbrance > this.burdenedCap
+  }
+
+  get overloadedCap(): number {
+    return this.characteristics.str * 3
+  }
+
+  get isOverloaded(): boolean {
+    return this.totalEncumbrance > this.overloadedCap
+  }
+
+  get maxLoad(): number {
+    return this.characteristics.str * 4
+  }
+
+  get isOverMaxLoad(): boolean {
+    return this.totalEncumbrance > this.maxLoad
+  }
+
+  // Actor attribute misc modifier convenience getter
   get attributeMiscMods() {
     let data: any = this.data.data
     return {
@@ -93,6 +129,7 @@ export class ActorMythras extends Actor {
     }
   }
 
+  // Actor characteristics convenience getter
   get characteristics() {
     let data: any = this.data.data
     return {
@@ -106,8 +143,7 @@ export class ActorMythras extends Actor {
     }
   }
 
-  /** @override */
-  static async create(data: any, context: any): Promise<any> {
+  static override async create(data: any, context: any): Promise<any> {
     data.token = data.token || {}
     if (data.type === 'character') {
       mergeObject(
@@ -152,8 +188,8 @@ export class ActorMythras extends Actor {
 
     // Prepare a character's fatigue recovery time
     data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(
-      data.attributes.fatigue.value,
-      Number(data.attributes.healingRate.value)
+      this.currentLevelOfFatigue,
+      this.healingRate
     )
   }
 

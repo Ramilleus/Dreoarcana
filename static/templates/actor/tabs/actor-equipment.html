@@ -1,22 +1,5 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
-  <div class="enc-row">
-    <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Current_ENC'}}:</h3> <span class="enc-value">{{roundNumber
-        data.data.attributes.encumbrance.value 2}}</span>
-    </div>
-    <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Normal_Cap'}}: </h3> <span
-        class="enc-value">{{data.data.attributes.encumbrance.burdened}}</span>
-    </div>
-    <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Burdened_Cap'}}:</h3> <span
-        class="enc-value">{{data.data.attributes.encumbrance.overloaded}}</span>
-    </div>
-    <div class="enc-section">
-      <h3 class="enc-tag">{{localize 'MYTHRAS.Overloaded_Cap'}}:</h3> <span
-        class="enc-value">{{data.data.attributes.encumbrance.maxLoad}}</span>
-    </div>
-  </div>
+  {{> systems/mythras/templates/actor/encumbrance-bar.html}}
   <div class="equipment-tables">
     <h2>{{localize 'MYTHRAS.Items'}}</h2>
     <div class="flex-table-container">
