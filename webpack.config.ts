@@ -11,14 +11,13 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import * as glob from 'glob'
 
-const buildMode =
-  process.argv[3] === 'production' ? 'production' : 'development'
+const buildMode = process.argv[3] === 'production' ? 'production' : 'development'
 const isProductionBuild = buildMode === 'production'
 
 const allTemplates = () => {
   return glob
     .sync('**/*.html', { cwd: path.join(__dirname, 'static/templates') })
-    .map((file: string) => `"systems/pf2e/templates/${file}"`)
+    .map((file: string) => `"systems/mythras/templates/${file}"`)
     .join(', ')
 }
 
@@ -27,16 +26,9 @@ const [outDir, foundryUri] = (() => {
   const config = fs.readJSONSync(configPath, { throws: false })
   const outDir =
     config instanceof Object
-      ? path.join(
-          config.dataPath,
-          'Data',
-          'systems',
-          config.systemName ?? 'mythras'
-        )
+      ? path.join(config.dataPath, 'Data', 'systems', config.systemName ?? 'mythras')
       : path.join(__dirname, 'dist/')
-  const foundryUri =
-    (config instanceof Object ? config.foundryUri : '') ??
-    'http://localhost:30000'
+  const foundryUri = (config instanceof Object ? config.foundryUri : '') ?? 'http://localhost:30000'
   return [outDir, foundryUri]
 })()
 
@@ -55,7 +47,7 @@ const optimization: Optimization = isProductionBuild
         cacheGroups: {
           default: {
             name: 'main',
-            test: 'src/pf2e.ts'
+            test: 'src/mythras.ts'
           },
           vendor: {
             name: 'vendor',
@@ -173,6 +165,7 @@ const config: WebpackConfiguration = {
   optimization: optimization,
   resolve: {
     alias: {
+      '@module': path.resolve(__dirname, 'src/module'),
       '@actor': path.resolve(__dirname, 'src/module/actor'),
       '@item': path.resolve(__dirname, 'src/module/item'),
       '@combat': path.resolve(__dirname, 'src/module/combat'),
@@ -186,6 +179,9 @@ const config: WebpackConfiguration = {
     path: outDir,
     filename: '[name].bundle.js',
     publicPath: '/systems/mythras'
+  },
+  externals: {
+    https: require.resolve('https')
   }
 }
 
