@@ -25,7 +25,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   private get encumbranceBarSegments() {
     const encumbranceLevels = [this.actor.burdenedCap, this.actor.overloadedCap, this.actor.maxLoad]
     const encumbranceLevelNames = ['Burdened', 'Overloaded', 'Max Load']
-    const segmentColors = ['green', 'red', 'darkred']
     const segments = []
     const totalEncumbrance = this.actor.totalEncumbrance
     const maxLoad = this.actor.maxLoad
@@ -46,7 +45,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       segments.push({
         level: encumbranceLevels[i],
         levelName: encumbranceLevelNames[i],
-        color: segmentColors[i],
         percentFilled: percentSegmentFilled,
         width: width
       })
