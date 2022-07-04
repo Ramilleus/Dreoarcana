@@ -68,16 +68,83 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       ...data,
       armorPenalty: this.actor.armorPenalty,
       currentLevelOfFatigue: this.actor.currentLevelOfFatigue,
-      maxActionPoints: this.actor.maxActionPoints,
-      damageMod: this.actor.damageMod,
-      experienceMod: this.actor.experienceMod,
-      healingRate: this.actor.healingRate,
-      initiativeBonus: this.actor.initiativeBonus,
-      maxLuckPoints: this.actor.maxLuckPoints,
-      maxMagicPoints: this.actor.maxMagicPoints,
       maxTenacity: this.actor.maxTenacity,
       encumbranceBarSegments: this.encumbranceBarSegments,
-      totalEncumbrance: this.actor.totalEncumbrance
+      totalEncumbrance: this.actor.totalEncumbrance,
+      stats: {
+        actionPoints: {
+          label: 'MYTHRAS.ACTION_POINTS',
+          derivedName: 'maxActionPoints',
+          derivedValue: this.actor.maxActionPoints,
+          modifierValue: data.data.data.attributes.actionPoints.mod
+        },
+        damageMod: {
+          label: 'MYTHRAS.DAMAGE_MOD',
+          derivedName: 'damageMod',
+          derivedValue: this.actor.damageMod,
+          modifierValue: data.data.data.attributes.damageMod.mod
+        },
+        experienceMod: {
+          label: 'MYTHRAS.EXPERIENCE_MOD',
+          derivedName: 'experienceMod',
+          derivedValue: this.actor.experienceMod,
+          modifierValue: data.data.data.attributes.experienceMod.mod
+        },
+        healingRate: {
+          label: 'MYTHRAS.HEALING_RATE',
+          derivedName: 'healingRate',
+          derivedValue: this.actor.healingRate,
+          modifierValue: data.data.data.attributes.healingRate.mod
+        },
+        initiativeBonus: {
+          label: 'MYTHRAS.INITIATIVE_BONUS',
+          derivedName: 'initiativeBonus',
+          derivedValue: this.actor.initiativeBonus,
+          modifierValue: data.data.data.attributes.initiativeBonus.mod
+        },
+        luckPoints: {
+          label: 'MYTHRAS.LUCK_POINTS',
+          derivedName: 'maxLuckPoints',
+          derivedValue: this.actor.maxLuckPoints,
+          modifierValue: data.data.data.attributes.luckPoints.mod
+        },
+        magicPoints: {
+          label: 'MYTHRAS.MAGIC_POINTS',
+          derivedName: 'maxMagicPoints',
+          derivedValue: this.actor.maxMagicPoints,
+          modifierValue: data.data.data.attributes.magicPoints.mod
+        }
+      },
+      characteristics: {
+        str: {
+          value: this.actor.characteristics.str,
+          label: 'MYTHRAS.STRENGTH'
+        },
+        con: {
+          value: this.actor.characteristics.con,
+          label: 'MYTHRAS.CONSTITUTION'
+        },
+        siz: {
+          value: this.actor.characteristics.siz,
+          label: 'MYTHRAS.SIZE'
+        },
+        dex: {
+          value: this.actor.characteristics.dex,
+          label: 'MYTHRAS.DEXTERITY'
+        },
+        int: {
+          value: this.actor.characteristics.int,
+          label: 'MYTHRAS.INTELLIGENCE'
+        },
+        pow: {
+          value: this.actor.characteristics.pow,
+          label: 'MYTHRAS.POWER'
+        },
+        cha: {
+          value: this.actor.characteristics.cha,
+          label: 'MYTHRAS.CHARISMA'
+        }
+      }
     }
   }
 
@@ -527,7 +594,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     if (dataset.roll) {
       // Get encumberance and fatigue modifier text
       let modifiers = this.getModifiers(encPenalty)
-      console.log(modifiers)
 
       // Create roll label, like "Rolling: <skill_name>"
       let rollLabel = dataset.label ? game.i18n.localize('MYTHRAS.Rolling') + ` ${skillName}` : ''

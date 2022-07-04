@@ -148,7 +148,7 @@ div.core {
         .attribute-container {
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          justify-content: flex-start;
           align-items: center;
           .attribute {
             min-width: 50px;

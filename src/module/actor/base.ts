@@ -1,5 +1,8 @@
 import { ArmorMythras } from '@item/armor/index.js'
-import { fatigueInfo, encInfo, physicalItems } from './actor-helper.js'
+import { ItemMythras } from '@item/base.js'
+import { PhysicalItemMythras } from '@item/physical/index.js'
+import { itemIsArmor, itemIsPhysical } from '@item/type-guards'
+import { fatigueInfo, encInfo } from './actor-helper.js'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
@@ -83,7 +86,7 @@ export class ActorMythras extends Actor {
 
   // Encumbrance getters
   get totalEncumbrance(): number {
-    return this.encumbranceCalc(this.items)
+    return this.encumbranceCalc()
   }
 
   get percentEncumbered(): number {
@@ -118,14 +121,14 @@ export class ActorMythras extends Actor {
   get attributeMiscMods() {
     let data: any = this.data.data
     return {
-      actionPoints: Number(data.attributes.actionPoints.mod),
-      damageMod: Number(data.attributes.damageMod.mod),
-      experienceMod: Number(data.attributes.experienceMod.mod),
-      healingRate: Number(data.attributes.healingRate.mod),
-      initiativeBonus: Number(data.attributes.initiativeBonus.mod),
-      luckPoints: Number(data.attributes.luckPoints.mod),
-      magicPoints: Number(data.attributes.magicPoints.mod),
-      tenacity: Number(data.attributes.tenacity.mod)
+      actionPoints: Number(data.attributes.actionPoints.mod) || 0,
+      damageMod: Number(data.attributes.damageMod.mod) || 0,
+      experienceMod: Number(data.attributes.experienceMod.mod) || 0,
+      healingRate: Number(data.attributes.healingRate.mod) || 0,
+      initiativeBonus: Number(data.attributes.initiativeBonus.mod) || 0,
+      luckPoints: Number(data.attributes.luckPoints.mod) || 0,
+      magicPoints: Number(data.attributes.magicPoints.mod) || 0,
+      tenacity: Number(data.attributes.tenacity.mod) || 0
     }
   }
 
@@ -180,9 +183,6 @@ export class ActorMythras extends Actor {
     const data = actorData.data
     let items = actorData.items
 
-    // Prepare a character's encumbrance limits
-    this.prepareEncumbrance(data, items)
-
     // Prepare a character's movement rates
     this.prepareMovement(data, items)
 
@@ -194,28 +194,12 @@ export class ActorMythras extends Actor {
   }
 
   /**
-   * Calculates and sets a character's encumbrance limits
-   * @param {*} data
-   * @param {*} items
-   */
-  prepareEncumbrance(data: any, items: any) {
-    let str = Number(data.characteristics.str.value)
-    data.attributes.encumbrance.burdened = str * 2
-    data.attributes.encumbrance.overloaded = str * 3
-    data.attributes.encumbrance.maxLoad = str * 4
-    data.attributes.encumbrance.value = this.encumbranceCalc(items)
-  }
-
-  /**
    * Calculates and sets a character's movement rates
    * @param {*} data
    * @param {*} items
    */
   prepareMovement(data: any, items: any) {
     // Get athletics and swim item objects
-    let currentEnc = data.attributes.encumbrance.value
-    let burdened = data.attributes.encumbrance.burdened
-    let overloaded = data.attributes.encumbrance.overloaded
     let athletics = items.find(
       (entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
     )
@@ -224,9 +208,9 @@ export class ActorMythras extends Actor {
     let movementMiscMod =
       Number(data.attributes.movement.mod) +
       (fatigueInfo as any)[data.attributes.fatigue.value].Movement(data.attributes.movement.walk)
-    if (currentEnc > overloaded) {
+    if (this.isOverloaded) {
       movementMiscMod += encInfo['overloaded'].Movement(data.attributes.movement.walk)
-    } else if (currentEnc > burdened) {
+    } else if (this.isBurdened) {
       movementMiscMod += encInfo['burdened'].Movement(data.attributes.movement.walk)
     }
 
@@ -253,46 +237,23 @@ export class ActorMythras extends Actor {
     data.attributes.jump.vertical = this.moveRateCalc(Number(data.height), athletics, 'vJump')
   }
 
-  doesTypeHaveTemplate(type: any, template: any) {
-    let system = game.system as any
-    let itemTemplates = system.template.Item[type].templates
-    if (itemTemplates === undefined) return false
-
-    return itemTemplates.includes(template)
-  }
-
   /**
    * Calculates a character's encumbrance based on their physical items
    * @param {*} items
    */
-  encumbranceCalc(items: any) {
+  encumbranceCalc() {
     // Get all of the players owned items that are physical
-    let encItems = items.filter(function (value: any) {
-      return physicalItems.includes(value.type)
+    let encItems: PhysicalItemMythras[] = this.items.filter((item: ItemMythras): item is PhysicalItemMythras => {
+      return itemIsPhysical(item)
     })
     // Sum up and return all of the items' weights
     let totalEnc = 0
     let armorEnc = 0
-    for (let i of encItems) {
-      let quantity = Number(i.data.data.quantity) || 0
-      let enc = Number(i.data.data.encumbrance) || 0
-      let carriedStorage = 1
-      if (i.data.type === 'storage') {
-        carriedStorage = Number(i.data.data.carried) || 0
-      }
-      if (i.data.data.storage !== undefined) {
-        let itemStorage = items.get(i.data.data.storage)
-        if (itemStorage !== undefined && itemStorage != i.id) {
-          carriedStorage = Number(itemStorage.data.data.carried) && carriedStorage
-        }
-      }
-
-      if (i.data.type === 'armor' && i.data.data.equipped) {
-        // If an item is equipped armor, only add half of it's enc to total enc
-        armorEnc = armorEnc + enc * carriedStorage
+    for (let item of encItems) {
+      if (itemIsArmor(item) && item.isEquipped) {
+        armorEnc = armorEnc + item.encumbranceTowardsTotal
       } else {
-        // Else, add enc * quantity to total enc
-        totalEnc = totalEnc + enc * quantity * carriedStorage
+        totalEnc = totalEnc + item.encumbranceTowardsTotal
       }
     }
     totalEnc = totalEnc + Math.ceil(armorEnc / 2)

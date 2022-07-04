@@ -1,5 +1,6 @@
 import { ItemMythras } from '@item/base'
 import { PhysicalItemMythras } from '@item/physical'
+import { itemIsPhysical } from '@item/type-guards'
 
 export class StorageMythras extends PhysicalItemMythras {
   isStorage: boolean = true
@@ -10,6 +11,18 @@ export class StorageMythras extends PhysicalItemMythras {
         totalEncumbrance + item.quantity * item.encumbrance,
       0
     )
+  }
+
+  override get encumbranceTowardsTotal() {
+    if (this.isCarried) {
+      return super.encumbranceTowardsTotal
+    } else {
+      return 0
+    }
+  }
+
+  get isCarried(): boolean {
+    return Boolean((this.data.data as any).carried) || false
   }
 
   get maxEncumbrance(): number {
@@ -31,8 +44,4 @@ export class StorageMythras extends PhysicalItemMythras {
     }
     return []
   }
-}
-
-function itemIsPhysical(item: ItemMythras): item is PhysicalItemMythras {
-  return (item as PhysicalItemMythras).isPhysical !== undefined
 }

@@ -1,5 +1,6 @@
 import { ItemMythras } from '@item/base'
 import type { StorageMythras } from '@item/storage'
+import { itemIsStorageType } from '@item/type-guards'
 
 export abstract class PhysicalItemMythras extends ItemMythras {
   isPhysical: boolean = true
@@ -20,6 +21,17 @@ export abstract class PhysicalItemMythras extends ItemMythras {
     return Number((this.data.data as any).encumbrance) || 0
   }
 
+  get encumbranceTowardsTotal(): number {
+    if (this.storedIn) {
+      if (this.storedIn.isCarried) {
+        return this.encumbrance
+      } else {
+        return 0
+      }
+    }
+    return this.encumbrance
+  }
+
   get quantity(): number {
     return Number((this.data.data as any).quantity) || 0
   }
@@ -33,16 +45,19 @@ export abstract class PhysicalItemMythras extends ItemMythras {
   }
 
   get storageName(): string {
-    if (this.actor && this.actor.items) {
-      let storage = this.actor.items.find((item) => item.id === this.storageId)
-      if (storage) {
-        return storage.name
-      }
+    if (this.storedIn) {
+      return this.storedIn.name
     }
     return game.i18n.localize('MYTHRAS.No_Storage')
   }
-}
 
-function itemIsStorageType(item: ItemMythras): item is StorageMythras {
-  return (item as StorageMythras).isStorage !== undefined
+  get storedIn(): StorageMythras {
+    if (this.actor && this.actor.items) {
+      let storage = this.actor.items.find((item) => item.id === this.storageId)
+      if (storage) {
+        return storage as Embedded<StorageMythras>
+      }
+    }
+    return undefined
+  }
 }

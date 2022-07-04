@@ -109,174 +109,16 @@
         {{localize 'MYTHRAS.Characteristics'}}
       </h2>
       <div class="core-characteristics">
-        <div>
-          <input name="data.characteristics.str.value" value="{{data.data.characteristics.str.value}}" type="text" />
-          <label>
-            {{localize 'MYTHRAS.STRENGTH'}}
-          </label>
-        </div>
-        <div>
-          <input name="data.characteristics.con.value" value="{{data.data.characteristics.con.value}}" type="text" />
-          <label>
-            {{localize 'MYTHRAS.CONSTITUTION'}}
-          </label>
-        </div>
-        <div>
-          <input name="data.characteristics.siz.value" value="{{data.data.characteristics.siz.value}}" type="text" />
-          <label>
-            {{localize 'MYTHRAS.SIZE'}}
-          </label>
-        </div>
-        <div>
-          <input name="data.characteristics.dex.value" value="{{data.data.characteristics.dex.value}}" type="text" />
-          <label>
-            {{localize 'MYTHRAS.DEXTERITY'}}
-          </label>
-        </div>
-        <div>
-          <input name="data.characteristics.int.value" value="{{data.data.characteristics.int.value}}" type="text" />
-          <label>
-            {{localize 'MYTHRAS.INTELLIGENCE'}}
-          </label>
-        </div>
-        <div>
-          <input name="data.characteristics.pow.value" value="{{data.data.characteristics.pow.value}}" type="text" />
-          <label>
-            {{localize 'MYTHRAS.POWER'}}
-          </label>
-        </div>
-        <div>
-          <input name="data.characteristics.cha.value" value="{{data.data.characteristics.cha.value}}" type="text" />
-          <label>
-            {{localize 'MYTHRAS.CHARISMA'}}
-          </label>
-        </div>
+        {{#each characteristics}} {{> systems/mythras/templates/actor/components/characteristic.html
+        characteristic=this characteristicName=@key}} {{/each}}
       </div>
       <h2>
         {{localize 'MYTHRAS.Attributes'}}
       </h2>
       <div class="core-attributes">
         <div>
-          <div data-stat="actionPoints" class="attribute-container">
-            <div class="attribute">
-              <p name="maxActionPoints" class="modifiable">
-                {{ maxActionPoints }}
-              </p>
-              <div>
-                <span>
-                  +
-                </span>
-                <input type="text" name="data.attributes.actionPoints.mod" class="modifier"
-                  value="{{data.data.attributes.actionPoints.mod}}" />
-              </div>
-            </div>
-            <p class="attribute-label">
-              {{localize 'MYTHRAS.ACTION_POINTS'}}
-            </p>
-          </div>
-          <div data-stat="damageMod" class="attribute-container">
-            <div class="attribute">
-              <p name="damageMod" class="modifiable">
-                {{ damageMod }}
-              </p>
-              <div>
-                <span>
-                  +
-                </span>
-                <input type="text" name="data.attributes.damageMod.mod" class="modifier"
-                  value="{{data.data.attributes.damageMod.mod}}" />
-              </div>
-            </div>
-            <p class="attribute-label">
-              {{localize 'MYTHRAS.DAMAGE_MOD'}}
-            </p>
-          </div>
-          <div data-stat="experienceMod" class="attribute-container">
-            <div class="attribute">
-              <p name="experienceMod" class="modifiable">
-                {{ experienceMod }}
-              </p>
-              <div>
-                <span>
-                  +
-                </span>
-                <input type="text" name="data.attributes.experienceMod.mod" class="modifier"
-                  value="{{data.data.attributes.experienceMod.mod}}" />
-              </div>
-            </div>
-            <p class="attribute-label">
-              {{localize 'MYTHRAS.EXPERIENCE_MOD'}}
-            </p>
-          </div>
-          <div data-stat="healingRate" class="attribute-container">
-            <div class="attribute">
-              <p name="healingRate" class="modifiable">
-                {{ healingRate }}
-              </p>
-              <div>
-                <span>
-                  +
-                </span>
-                <input type="text" name="data.attributes.healingRate.mod" class="modifier"
-                  value="{{data.data.attributes.healingRate.mod}}" />
-              </div>
-            </div>
-            <p class="attribute-label">
-              {{localize 'MYTHRAS.HEALING_RATE'}}
-            </p>
-          </div>
-          <div data-stat="initiativeBonus" class="attribute-container">
-            <div class="attribute">
-              <p name="initiativeBonus" class="modifiable">
-                {{ initiativeBonus }}
-              </p>
-              <div>
-                <span>
-                  +
-                </span>
-                <input type="text" name="data.attributes.initiativeBonus.mod" class="modifier"
-                  value="{{data.data.attributes.initiativeBonus.mod}}" />
-              </div>
-            </div>
-            <p class="attribute-label">
-              {{localize 'MYTHRAS.INITIATIVE_BONUS'}}
-            </p>
-          </div>
-          <div data-stat="luckPoints" class="attribute-container">
-            <div class="attribute">
-              <p name="maxLuckPoints" class="modifiable">
-                {{ maxLuckPoints }}
-              </p>
-              <div>
-                <span>
-                  +
-                </span>
-                <input type="text" name="data.attributes.luckPoints.mod" class="modifier"
-                  value="{{data.data.attributes.luckPoints.mod}}" />
-              </div>
-            </div>
-            <p class="attribute-label">
-              {{localize 'MYTHRAS.LUCK_POINTS'}}
-              <br />
-            </p>
-          </div>
-          <div data-stat="magicPoints" class="attribute-container">
-            <div class="attribute">
-              <p name="maxMagicPoints" class="modifiable">
-                {{ maxMagicPoints }}
-              </p>
-              <div>
-                <span>
-                  +
-                </span>
-                <input type="text" name="data.attributes.magicPoints.mod" class="modifier"
-                  value="{{data.data.attributes.magicPoints.mod}}" />
-              </div>
-            </div>
-            <p class="attribute-label">
-              {{localize 'MYTHRAS.MAGIC_POINTS'}}
-            </p>
-          </div>
+          {{#each stats}} {{> systems/mythras/templates/actor/components/derived-stat.html
+          stat=this statName=@key}} {{/each}}
         </div>
       </div>
 
@@ -366,18 +208,15 @@
         skillType="standardSkill" skills=actor.standardSkills}}
       </div>
       <div class="tables-right">
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Professional_Skills')
-        skillType="professionalSkill" skills=actor.professionalSkills}}
-
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Combat_Styles')
-        skillType="combatStyle" skills=actor.combatStyles}}
-
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Magic_Skills')
-        skillType="magicSkill" skills=actor.magicSkills}}
-
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Passions')
-        skillType="passion" skills=actor.passions}}
-
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        'MYTHRAS.Professional_Skills') skillType="professionalSkill"
+        skills=actor.professionalSkills}}
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        'MYTHRAS.Combat_Styles') skillType="combatStyle" skills=actor.combatStyles}}
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        'MYTHRAS.Magic_Skills') skillType="magicSkill" skills=actor.magicSkills}}
+        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        'MYTHRAS.Passions') skillType="passion" skills=actor.passions}}
         <div>
           <h3>
             <span>
