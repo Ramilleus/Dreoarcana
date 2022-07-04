@@ -1,3 +1,4 @@
+@use '../../colors' as *;
 div.equipment {
   .encumbrance-bar {
     width: 100%;
@@ -87,7 +88,7 @@ div.equipment {
       padding: 5px;
       h3 {
         margin-bottom: 0px;
-        color: #840701;
+        color: $sheet-crimson;
       }
       table {
         margin: 0;
