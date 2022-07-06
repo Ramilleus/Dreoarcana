@@ -161,6 +161,7 @@
         "fumbled": false
       },
       "item": {
+        "defaultImageSet": false,
         "description": "",
         "encumbrance": 0,
         "quantity": 1,

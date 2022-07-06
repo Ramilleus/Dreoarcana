@@ -1,20 +1,23 @@
 import { ArmorMythras } from '@item/armor/index.js'
-import { ItemMythras } from '@item/base.js'
-import { PhysicalItemMythras } from '@item/physical/index.js'
-import { itemIsArmor, itemIsPhysical } from '@item/type-guards'
-import { fatigueInfo, encInfo } from './actor-helper.js'
+import { SkillMythras } from '@module/item/skill/index.js'
+import { MYTHRASCONFIG } from '@scripts/config'
+import { ActorMythrasEncumbrance } from './encumbrance'
+import { fatigueLevels } from './fatigue'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
  */
-export class ActorMythras extends Actor {
+export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
+  public encumbrance!: ActorMythrasEncumbrance
+
   constructor(data: any, context: any = {}) {
     if (context.mythras?.ready) {
       super(data, context)
     } else {
       mergeObject(context, { mythras: { ready: true } })
-      const documentClasses: any = CONFIG.MYTHRAS.Actor.documentClasses
-      const ActorConstructor = documentClasses[data.type]
+      const documentClasses = CONFIG.MYTHRAS.Actor.documentClasses
+      let type: keyof typeof documentClasses = data.type
+      const ActorConstructor = documentClasses[type]
       return ActorConstructor
         ? new ActorConstructor(data, context)
         : new ActorMythras(data, context)
@@ -44,7 +47,7 @@ export class ActorMythras extends Actor {
     return (
       base +
       this.attributeMiscMods.actionPoints +
-      (fatigueInfo as any)[this.currentLevelOfFatigue].ActionPoints(base)
+      fatigueLevels[this.currentLevelOfFatigue].actionPointsPenalty(base)
     )
   }
 
@@ -68,7 +71,7 @@ export class ActorMythras extends Actor {
     return (
       base +
       this.attributeMiscMods.initiativeBonus +
-      (fatigueInfo as any)[this.currentLevelOfFatigue].Initiative(base)
+      fatigueLevels[this.currentLevelOfFatigue].initiativePenalty(base)
     )
   }
 
@@ -82,39 +85,6 @@ export class ActorMythras extends Actor {
 
   get maxTenacity() {
     return this.characteristics.pow + this.attributeMiscMods.tenacity
-  }
-
-  // Encumbrance getters
-  get totalEncumbrance(): number {
-    return this.encumbranceCalc()
-  }
-
-  get percentEncumbered(): number {
-    return (this.totalEncumbrance / this.maxLoad) * 100
-  }
-
-  get burdenedCap(): number {
-    return this.characteristics.str * 2
-  }
-
-  get isBurdened(): boolean {
-    return this.totalEncumbrance > this.burdenedCap
-  }
-
-  get overloadedCap(): number {
-    return this.characteristics.str * 3
-  }
-
-  get isOverloaded(): boolean {
-    return this.totalEncumbrance > this.overloadedCap
-  }
-
-  get maxLoad(): number {
-    return this.characteristics.str * 4
-  }
-
-  get isOverMaxLoad(): boolean {
-    return this.totalEncumbrance > this.maxLoad
   }
 
   // Actor attribute misc modifier convenience getter
@@ -147,20 +117,6 @@ export class ActorMythras extends Actor {
   }
 
   static override async create(data: any, context: any): Promise<any> {
-    data.token = data.token || {}
-    if (data.type === 'character') {
-      mergeObject(
-        data.token,
-        {
-          vision: true,
-          dimSight: 30,
-          brightSight: 0,
-          actorLink: true,
-          disposition: 1
-        },
-        { overwrite: false }
-      )
-    }
     return super.create(data, context)
   }
 
@@ -169,17 +125,9 @@ export class ActorMythras extends Actor {
    */
   prepareData() {
     super.prepareData()
+    this.encumbrance = new ActorMythrasEncumbrance(this)
 
-    const actorData = this.data
-
-    // Prepare character specific data
-    if (actorData.type === 'character') this._prepareCharacterData(actorData)
-  }
-
-  /**
-   * Prepare Character type specific data
-   */
-  _prepareCharacterData(actorData: any) {
+    const actorData: any = this.data
     const data = actorData.data
     let items = actorData.items
 
@@ -200,18 +148,17 @@ export class ActorMythras extends Actor {
    */
   prepareMovement(data: any, items: any) {
     // Get athletics and swim item objects
-    let athletics = items.find(
+    let athletics: SkillMythras = items.find(
       (entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
     )
-    let swim = items.find((entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Swim'))
-    let ap = Number(data.attributes.armorPenalty.value)
+    let swim: SkillMythras = items.find((entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Swim'))
     let movementMiscMod =
       Number(data.attributes.movement.mod) +
-      (fatigueInfo as any)[data.attributes.fatigue.value].Movement(data.attributes.movement.walk)
-    if (this.isOverloaded) {
-      movementMiscMod += encInfo['overloaded'].Movement(data.attributes.movement.walk)
-    } else if (this.isBurdened) {
-      movementMiscMod += encInfo['burdened'].Movement(data.attributes.movement.walk)
+      fatigueLevels[this.currentLevelOfFatigue].movementPenalty(data.attributes.movement.walk)
+    if (this.encumbrance.isOverloaded) {
+      movementMiscMod += this.encumbrance.levels.overloaded.movementPenalty(data.attributes.movement.walk)
+    } else if (this.encumbrance.isBurdened) {
+      movementMiscMod += this.encumbrance.levels.burdened.movementPenalty(data.attributes.movement.walk)
     }
 
     // Default walk speed for a human is 6
@@ -219,10 +166,10 @@ export class ActorMythras extends Actor {
     let walkSpeed = data.attributes.movement.walk
 
     // Calculate run speed
-    data.attributes.movement.run = this.moveRateCalc(walkSpeed, athletics, 'run') - ap
+    data.attributes.movement.run = this.moveRateCalc(walkSpeed, athletics, 'run') - this.armorPenalty
 
     // Calculate sprint speed
-    data.attributes.movement.sprint = this.moveRateCalc(walkSpeed, athletics, 'sprint') - ap
+    data.attributes.movement.sprint = this.moveRateCalc(walkSpeed, athletics, 'sprint') - this.armorPenalty
 
     // Calculate climb speed
     data.attributes.climb.value = this.moveRateCalc(walkSpeed, athletics, 'climb')
@@ -237,28 +184,6 @@ export class ActorMythras extends Actor {
     data.attributes.jump.vertical = this.moveRateCalc(Number(data.height), athletics, 'vJump')
   }
 
-  /**
-   * Calculates a character's encumbrance based on their physical items
-   * @param {*} items
-   */
-  encumbranceCalc() {
-    // Get all of the players owned items that are physical
-    let encItems: PhysicalItemMythras[] = this.items.filter((item: ItemMythras): item is PhysicalItemMythras => {
-      return itemIsPhysical(item)
-    })
-    // Sum up and return all of the items' weights
-    let totalEnc = 0
-    let armorEnc = 0
-    for (let item of encItems) {
-      if (itemIsArmor(item) && item.isEquipped) {
-        armorEnc = armorEnc + item.encumbranceTowardsTotal
-      } else {
-        totalEnc = totalEnc + item.encumbranceTowardsTotal
-      }
-    }
-    totalEnc = totalEnc + Math.ceil(armorEnc / 2)
-    return totalEnc
-  }
 
   /**
    * Calculates a character's recovery time based on their fatigue level and healing rate
@@ -310,29 +235,23 @@ export class ActorMythras extends Actor {
    * @param {*} skill
    * @param {*} type
    */
-  moveRateCalc(move: any, skill: any, type: any) {
+  moveRateCalc(move: any, skill: SkillMythras, type: any) {
     if (skill === undefined) {
       return move
     }
-    let actor: any = this.data.data
-    let skillVal =
-      Number(skill.data.data.trainingVal) +
-      Number(skill.data.data.miscBonus) +
-      Number(actor.characteristics.dex.value) +
-      Number(actor.characteristics.str.value)
     switch (type) {
       case 'run':
-        return 3 * (move + Math.floor(skillVal / 50))
+        return 3 * (move + Math.floor(skill.totalVal / 50))
       case 'sprint':
-        return 5 * (move + Math.floor(skillVal / 25))
+        return 5 * (move + Math.floor(skill.totalVal / 25))
       case 'climb':
         return move
       case 'swim':
-        return move + Math.floor(skillVal / 20)
+        return move + Math.floor(skill.totalVal / 20)
       case 'hJump':
-        return (move * 2 + 100 * Math.floor(skillVal / 20)) / 100
+        return (move * 2 + 100 * Math.floor(skill.totalVal / 20)) / 100
       case 'vJump':
-        return (Math.floor(move / 2) + 20 * Math.floor(skillVal / 20)) / 100
+        return (Math.floor(move / 2) + 20 * Math.floor(skill.totalVal / 20)) / 100
       default:
         return move
     }
@@ -392,3 +311,8 @@ export class ActorMythras extends Actor {
     return damMod
   }
 }
+
+type ItemType = keyof typeof MYTHRASCONFIG.Item.documentClasses
+type ItemTypeMap = {
+  [K in ItemType]: InstanceType<ConfigMythras["MYTHRAS"]["Item"]["documentClasses"][K]>;
+};

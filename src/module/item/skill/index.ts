@@ -1,6 +1,8 @@
 import { ItemMythras } from '@item/base'
 
 export class SkillMythras extends ItemMythras {
+  isSkill: boolean = true
+
   get encPenalty() {
     const data: any = this.data.data
     return (

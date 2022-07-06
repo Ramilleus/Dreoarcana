@@ -1,5 +1,5 @@
 import { ItemMythras } from '@item/base'
-import { skillTypes } from '@item/skill-helper.js'
+import { itemIsSkill } from '../type-guards'
 
 export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem> {
   static override get defaultOptions() {
@@ -29,7 +29,7 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     } else if (itemType === 'combatStyle') {
       // Combat style is considered a skill, but has a unique sheet. This serves as an override
       return `${path}/item-combatStyle-sheet.html`
-    } else if (skillTypes.includes(itemType)) {
+    } else if (itemIsSkill(this.item)) {
       // Loads the default skill sheet that applies to all other skills
       return `${path}/item-skill-sheet.html`
     } else {

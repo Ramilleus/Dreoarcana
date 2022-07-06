@@ -8,6 +8,14 @@ export class HitLocationMythras extends ItemMythras {
     })
   }
 
+  get rollRangeStart(): Embedded<ArmorMythras>[] {
+    return (this.data.data as any).rollRangeStart
+  }
+
+  get rollRangeEnd(): Embedded<ArmorMythras>[] {
+    return (this.data.data as any).rollRangeEnd
+  }
+
   get equippedArmor(): Embedded<ArmorMythras>[] {
     return this.attachedArmor.filter((armor) => armor.isEquipped)
   }

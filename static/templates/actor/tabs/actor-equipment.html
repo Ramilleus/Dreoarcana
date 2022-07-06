@@ -18,7 +18,7 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.storages as |item id|}}
+              {{#each items.storage as |item id|}}
               <tr class="item" data-item data-item-id="{{ item.id }}">
                 <td>
                   <a class="item-name item-control item-edit">{{item.data.name}}</a>
@@ -56,8 +56,8 @@
               <th class="delete-column"><i class="fas fa-trash"></i></th>
             </thead>
             <tbody>
-              {{#each actor.currency as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
+              {{#each items.currency as |item id|}}
+              <tr class="item" data-item-id="{{item.id}}">
                 <td>
                   <a class="item-name item-control item-edit">{{item.data.name}}</a>
                 </td>
@@ -97,8 +97,8 @@
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
-          {{#each actor.equipment as |item id|}}
-          <tr class="item" data-item-id="{{item.data._id}}">
+          {{#each items.equipment as |item id|}}
+          <tr class="item" data-item-id="{{item.id}}">
             <td>
               <a class="item-name item-control item-edit">{{item.data.name}}</a>
             </td>
@@ -142,7 +142,7 @@
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
-          {{#each actor.armor as |item id|}}
+          {{#each items.armor as |item id|}}
           <tr class="item" data-item data-item-id="{{ item.id }}">
             <td>
               <a class="item-name item-control item-edit">{{item.data.name}}</a>
@@ -186,18 +186,18 @@
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
-          {{#each actor.meleeWeapons as |item id|}}
-          <tr class="item" data-item-id="{{item.data._id}}">
+          {{#each items.[melee-weapon] as |item id|}}
+          <tr class="item" data-item data-item-id="{{item.id}}">
             <td>
               <a class="item-name item-control item-edit">{{item.data.name}}</a>
             </td>
             <td>
-              <a class="rollableMeleeDamage" data-roll="{{item.data.data.damage}}" data-label="{{item.data._id}}">
+              <a class="rollableMeleeDamage">
                 {{item.data.data.damage}}
               </a>
             </td>
             <td>
-              <input class="damageModCheck" type="checkbox" name="data.data.damageModifier" {{checked
+              <input data-item-property="damageModifier" type="checkbox" name="data.data.damageModifier" {{checked
                 data.data.damageModifier}} />
             </td>
             <td>
@@ -234,18 +234,18 @@
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
-          {{#each actor.rangedWeapons as |item id|}}
-          <tr class="item" data-item-id="{{item.data._id}}">
+          {{#each items.[ranged-weapon] as |item id|}}
+          <tr class="item" data-item data-item-id="{{item.id}}">
             <td>
               <a class="item-name item-control item-edit">{{item.data.name}}</a>
             </td>
             <td>
-              <a class="rollableRangedDamage" data-roll="{{item.data.data.damage}}" data-label="{{item.data._id}}">
+              <a class="rollableRangedDamage">
                 {{item.data.data.damage}}
               </a>
             </td>
             <td>
-              <input class="damageModCheck" type="checkbox" name="data.data.damageModifier" {{checked
+              <input data-item-property="damageModifier" type="checkbox" name="data.data.damageModifier" {{checked
                 data.data.damageModifier}} />
             </td>
             <td>

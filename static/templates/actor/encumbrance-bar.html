@@ -1,21 +1,21 @@
 <div class="encumbrance-bar">
   <div class="encumbrance-bar-names">
-    {{#each encumbranceBarSegments as |segment id|}}
+    {{#each encumbrance.barSegments as |segment id|}}
     <div style="flex: {{ segment.width }};{{#if @first}}justify-content: space-between;{{/if}}" class="bar-label">
-      {{#if @first}}<p>{{localize 'MYTHRAS.Current_ENC'}}: {{ ../totalEncumbrance }}</p> {{/if}}
+      {{#if @first}}<p>{{localize 'MYTHRAS.Current_ENC'}}: {{ ../encumbrance.currentEncumbrance }}</p> {{/if}}
       <p>{{ segment.levelName }}</p>
     </div>
     {{/each}}
   </div>
   <div class="encumbrance-bar-display">
-    {{#each encumbranceBarSegments as |segment id|}}
+    {{#each encumbrance.barSegments as |segment id|}}
     <div style="flex: {{ segment.width }}" class="bar-segment">
       <div class="percent-segment-filled" style="width: {{ segment.percentFilled }}%;"></div>
     </div>
     {{/each}}
   </div>
   <div class="encumbrance-bar-values">
-    {{#each encumbranceBarSegments as |segment id|}}
+    {{#each encumbrance.barSegments as |segment id|}}
     <div style="flex: {{ segment.width }}" class="bar-label">
       <p>{{ segment.level }}</p>
     </div>

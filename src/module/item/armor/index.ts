@@ -3,7 +3,7 @@ import { PhysicalItemMythras } from '@item/physical'
 
 export class ArmorMythras extends PhysicalItemMythras {
   isArmor: boolean = true
-
+  
   get availableHitLocations(): HitLocationMythras[] {
     if (this.actorData) {
       let availableHitLocations: HitLocationMythras[] = this.actorData.items

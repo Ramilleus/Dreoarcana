@@ -35,7 +35,7 @@
             </th>
           </thead>
           <tbody>
-            {{#each actor.magicSkills as |item id|}}
+            {{#each items.magicSkill as |item id|}}
             <tr class="item" data-item-id="{{item.data._id}}">
               <td>
                 <a class="item-name item-control item-edit">
@@ -114,7 +114,7 @@
                 </th>
               </thead>
               <tbody>
-                {{#each actor.spells as |item id|}}
+                {{#each items.spell as |item id|}}
                 <tr class="item active" data-item-id="{{item.data._id}}" data-item-source="{{item.data.data.source}}">
                   <td class="item-profile">
                     <img class="item-img" src="{{item.img}}">

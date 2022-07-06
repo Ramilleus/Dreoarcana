@@ -205,18 +205,18 @@
     <div class="skill-tables">
       <div class="tables-left">
         {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Standard_Skills')
-        skillType="standardSkill" skills=actor.standardSkills}}
+        skillType="standardSkill" skills=items.standardSkill}}
       </div>
       <div class="tables-right">
         {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
         'MYTHRAS.Professional_Skills') skillType="professionalSkill"
-        skills=actor.professionalSkills}}
+        skills=items.professionalSkill}}
         {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
-        'MYTHRAS.Combat_Styles') skillType="combatStyle" skills=actor.combatStyles}}
+        'MYTHRAS.Combat_Styles') skillType="combatStyle" skills=items.combatStyle}}
         {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
-        'MYTHRAS.Magic_Skills') skillType="magicSkill" skills=actor.magicSkills}}
+        'MYTHRAS.Magic_Skills') skillType="magicSkill" skills=items.magicSkill}}
         {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
-        'MYTHRAS.Passions') skillType="passion" skills=actor.passions}}
+        'MYTHRAS.Passions') skillType="passion" skills=items.passion}}
         <div>
           <h3>
             <span>
@@ -239,7 +239,7 @@
               </th>
             </thead>
             <tbody>
-              {{#each actor.cults as |item id|}}
+              {{#each items.cultBrotherhood as |item id|}}
               <tr class="item" data-item-id="{{item.data._id}}">
                 <td>
                   <a class="item-name item-control item-edit">

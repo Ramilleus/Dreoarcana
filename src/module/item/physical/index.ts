@@ -24,12 +24,12 @@ export abstract class PhysicalItemMythras extends ItemMythras {
   get encumbranceTowardsTotal(): number {
     if (this.storedIn) {
       if (this.storedIn.isCarried) {
-        return this.encumbrance
+        return this.encumbrance * this.quantity
       } else {
         return 0
       }
     }
-    return this.encumbrance
+    return this.encumbrance * this.quantity
   }
 
   get quantity(): number {
