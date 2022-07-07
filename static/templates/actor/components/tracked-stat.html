@@ -1,0 +1,17 @@
+{{#if stat.tracked}}
+<div class="stats-container" data-stat-name="{{statName}}">
+  <div class="number-input-container">
+    <div>
+      <input name="data.stats.{{statName}}.currentValue" type="text" value="{{stat.currentValue}}" placeholder="" />
+      {{#if stat.derivedValue includeZero=true}}<p class="point-total">/{{ stat.derivedValue }}</p>{{/if}}
+    </div>
+    <div class="plus-minus-buttons">
+      <a class="stat-increase">+</a>
+      <a class="stat-decrease">-</a>
+    </div>
+  </div>
+  <p class="stat-minimizer input-label">
+    <span>{{localize stat.label}}</span>
+  </p>
+</div>
+{{/if}}

@@ -10,86 +10,10 @@
         <p class="input-label">{{localize 'MYTHRAS.PLAYER_NAME'}}</p>
       </div>
     </div>
+    {{!-- Tracked stats --}}
     <div class="header-stats">
-      <div class="stats-container">
-        <div class="number-input-container {{#if data.data.attributes.actionPoints.minimize}}hidden{{/if}}">
-          <div>
-            <input class="action-points" name="data.attributes.actionPoints.value" type="text"
-              value="{{data.data.attributes.actionPoints.value}}" placeholder="" />
-            <p class="point-total">/{{ stats.actionPoints.derivedValue }}</p>
-          </div>
-          <div class="plus-minus-buttons">
-            <a id="increase-current-ap">+</a>
-            <a id="decrease-current-ap">-</a>
-          </div>
-        </div>
-        <p class="input-label {{#if data.data.attributes.actionPoints.minimize}}sideways-text{{/if}}" id="toggle-ap">
-          <span>{{localize 'MYTHRAS.ACTION_POINTS'}}</span>
-        </p>
-      </div>
-      <div class="stats-container">
-        <div class="number-input-container {{#if data.data.attributes.luckPoints.minimize}}hidden{{/if}}">
-          <div>
-            <input class="luck-points" name="data.attributes.luckPoints.value" type="text"
-              value="{{data.data.attributes.luckPoints.value}}" placeholder="" />
-            <p class="point-total">/{{ stats.luckPoints.derivedValue }}</p>
-          </div>
-          <div class="plus-minus-buttons">
-            <a id="increase-current-lp">+</a>
-            <a id="decrease-current-lp">-</a>
-          </div>
-        </div>
-        <p class="input-label {{#if data.data.attributes.luckPoints.minimize}}sideways-text{{/if}}" id="toggle-lp">
-          <span>{{localize 'MYTHRAS.LUCK_POINTS'}}</span>
-        </p>
-      </div>
-      <div class="stats-container">
-        <div class="number-input-container {{#if data.data.attributes.magicPoints.minimize}}hidden{{/if}}">
-          <div>
-            <input class="magic-points" name="data.attributes.magicPoints.value" type="text"
-              value="{{data.data.attributes.magicPoints.value}}" placeholder="" />
-            <p class="point-total">/{{ stats.magicPoints.derivedValue }}</p>
-          </div>
-          <div class="plus-minus-buttons">
-            <a id="increase-current-mp">+</a>
-            <a id="decrease-current-mp">-</a>
-          </div>
-        </div>
-        <p class="input-label {{#if data.data.attributes.magicPoints.minimize}}sideways-text{{/if}}" id="toggle-mp">
-          <span>{{localize 'MYTHRAS.MAGIC_POINTS'}}</span>
-        </p>
-      </div>
-
-      <div class="stats-container">
-        <div class="number-input-container {{#if data.data.attributes.tenacity.minimize}}hidden{{/if}}">
-          <div>
-            <input class="tenacity-points" name="data.attributes.tenacity.value" type="text"
-              value="{{data.data.attributes.tenacity.value}}" placeholder="" />
-            <p class="point-total">/{{ maxTenacity }}</p>
-          </div>
-          <div class="plus-minus-buttons">
-            <a id="increase-current-tp">+</a>
-            <a id="decrease-current-tp">-</a>
-          </div>
-        </div>
-        <p class="input-label {{#if data.data.attributes.tenacity.minimize}}sideways-text{{/if}}" id="toggle-tp">
-          <span>TENACITY</span>
-        </p>
-      </div>
-
-      <div class="stats-container">
-        <div class="number-input-container {{#if data.data.attributes.experienceRoll.minimize}}hidden{{/if}}">
-          <input class="experience-rolls" name="data.experienceRolls" type="text" value="{{data.data.experienceRolls}}"
-            placeholder="" />
-          <div class="plus-minus-buttons">
-            <a id="increase-current-er">+</a>
-            <a id="decrease-current-er">-</a>
-          </div>
-        </div>
-        <p class="input-label {{#if data.data.attributes.experienceRoll.minimize}}sideways-text{{/if}}" id="toggle-er">
-          <span>{{localize 'MYTHRAS.EXPERIENCE_ROLLS'}}</span>
-        </p>
-      </div>
+      {{#each stats}} {{> systems/mythras/templates/actor/components/tracked-stat.html
+      stat=this statName=@key}} {{/each}}
     </div>
   </header>
 

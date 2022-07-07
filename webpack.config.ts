@@ -118,7 +118,12 @@ const config: WebpackConfiguration = {
           },
           {
             loader: 'sass-loader',
-            options: { sourceMap: true }
+            options: {
+              sourceMap: true,
+              sassOptions: {
+                includePaths: ['src/styles']
+              }
+            }
           }
         ]
       }

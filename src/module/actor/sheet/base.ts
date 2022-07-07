@@ -28,56 +28,93 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   override getData() {
     const baseData: any = super.getData()
     baseData.dtypes = ['String', 'Number', 'Boolean']
-
     const data = {
       items: { ...this.actor.itemTypes },
       armorPenalty: this.actor.armorPenalty,
-      currentLevelOfFatigue: this.actor.currentLevelOfFatigue,
-      maxTenacity: this.actor.maxTenacity,
+      fatigue: this.actor.fatigue,
       encumbrance: this.actor.encumbrance,
+      movement: this.actor.movement,
 
       stats: {
         actionPoints: {
+          isAttribute: true,
+          tracked: true,
           label: 'MYTHRAS.ACTION_POINTS',
           derivedName: 'maxActionPoints',
+          currentValue: baseData.data.data.attributes.actionPoints.value,
           derivedValue: this.actor.maxActionPoints,
-          modifierValue: baseData.data.data.attributes.actionPoints.mod
+          modifierValue: baseData.data.data.attributes.actionPoints.mod,
+          minimized: baseData.data.data.attributes.actionPoints.minimize
         },
         damageMod: {
+          isAttribute: true,
+          tracked: false,
           label: 'MYTHRAS.DAMAGE_MOD',
           derivedName: 'damageMod',
           derivedValue: this.actor.damageMod,
           modifierValue: baseData.data.data.attributes.damageMod.mod
         },
         experienceMod: {
+          isAttribute: true,
+          tracked: false,
           label: 'MYTHRAS.EXPERIENCE_MOD',
           derivedName: 'experienceMod',
           derivedValue: this.actor.experienceMod,
           modifierValue: baseData.data.data.attributes.experienceMod.mod
         },
         healingRate: {
+          isAttribute: true,
+          tracked: false,
           label: 'MYTHRAS.HEALING_RATE',
           derivedName: 'healingRate',
           derivedValue: this.actor.healingRate,
           modifierValue: baseData.data.data.attributes.healingRate.mod
         },
         initiativeBonus: {
+          isAttribute: true,
+          tracked: false,
           label: 'MYTHRAS.INITIATIVE_BONUS',
           derivedName: 'initiativeBonus',
           derivedValue: this.actor.initiativeBonus,
           modifierValue: baseData.data.data.attributes.initiativeBonus.mod
         },
         luckPoints: {
+          isAttribute: true,
+          tracked: true,
           label: 'MYTHRAS.LUCK_POINTS',
           derivedName: 'maxLuckPoints',
+          currentValue: baseData.data.data.attributes.luckPoints.value,
           derivedValue: this.actor.maxLuckPoints,
-          modifierValue: baseData.data.data.attributes.luckPoints.mod
+          modifierValue: baseData.data.data.attributes.luckPoints.mod,
+          minimized: baseData.data.data.attributes.luckPoints.minimize
         },
         magicPoints: {
+          isAttribute: true,
+          tracked: true,
           label: 'MYTHRAS.MAGIC_POINTS',
           derivedName: 'maxMagicPoints',
+          currentValue: baseData.data.data.attributes.magicPoints.value,
           derivedValue: this.actor.maxMagicPoints,
-          modifierValue: baseData.data.data.attributes.magicPoints.mod
+          modifierValue: baseData.data.data.attributes.magicPoints.mod,
+          minimized: baseData.data.data.attributes.magicPoints.minimize
+        },
+        tenacity: {
+          isAttribute: false,
+          tracked: true,
+          // TODO: Localize
+          label: 'TENACITY',
+          derivedName: 'maxTenacity',
+          currentValue: baseData.data.data.attributes.tenacity.value,
+          derivedValue: this.actor.maxTenacity,
+          modifierValue: baseData.data.data.attributes.tenacity.mod,
+          minimized: baseData.data.data.attributes.tenacity.minimize
+        },
+        experienceRoll: {
+          isAttribute: false,
+          tracked: true,
+          label: 'MYTHRAS.EXPERIENCE_ROLLS',
+          currentValue: baseData.data.data.experienceRolls,
+          minimized: baseData.data.data.attributes.experienceRoll.minimize
         }
       },
       characteristics: {
@@ -146,6 +183,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     this.applyStatStyles()
     this.applyEncumbranceStyles()
     this.applyWoundedHitLocationStyles()
+    this.hideMinimizedStats()
   }
 
   private applyStatStyles() {
@@ -175,9 +213,44 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     }
   }
 
+  private applyWoundedHitLocationStyles() {
+    const hitLocations: HitLocationMythras[] = this.actor.items.filter(
+      (item) => item.type == 'hitLocation'
+    )
+    for (let hitLocation of hitLocations) {
+      let currentHp = (hitLocation.data.data as any).currentHp
+      let hitLocationElement: any = document.querySelector(
+        `.hitLocation-table [data-item-id="${hitLocation.id}"]`
+      )
+      if (currentHp <= hitLocation.maxHp * -1) {
+        hitLocationElement.style.backgroundColor = '#c5000094'
+        continue
+      } else if (currentHp <= 0) {
+        hitLocationElement.style.backgroundColor = '#ed5b1585'
+        continue
+      }
+    }
+  }
+
+  private hideMinimizedStats() {
+    this.element.find('[data-stat-name]').each((_, stat: HTMLInputElement) => {
+      const statName = $(stat).attr('data-stat-name')
+      const bubble = $(stat).find('.number-input-container')
+      const label = $(stat).find('.stat-minimizer')
+      const actor: any = this.actor
+      if (actor.data.data.attributes[statName].minimize) {
+        bubble.addClass('hidden')
+        label.addClass('sideways-text')
+      } else {
+        bubble.removeClass('hidden')
+        label.removeClass('sideways-text')
+      }
+    })
+  }
+
   override activateListeners(html: JQuery) {
     super.activateListeners(html)
-    const actor: ActorMythras = this.actor
+    const actor: any = this.actor
 
     html.find('input').on('click', function () {
       this.select()
@@ -265,84 +338,52 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       event.preventDefault()
       this.roller.rollHitLocation()
     })
+    
+    html.find('.stat-minimizer').on('click', function (event: any) {
+      event.preventDefault()
+      const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
+      if (actor.data.data.attributes[statName].minimize) {
+        actor.update({
+          ['data.attributes.' + statName + '.minimize']: 0
+        })
+      } else {
+        actor.update({
+          ['data.attributes.' + statName + '.minimize']: 1
+        })
+      }
+    })
 
-    const pointToggleMap = {
-      '#toggle-lp': 'luckPoints',
-      '#toggle-mp': 'magicPoints',
-      '#toggle-tp': 'tenacity',
-      '#toggle-ap': 'actionPoints',
-      '#toggle-er': 'experienceRoll'
-    }
-    for (const [key, value] of Object.entries(pointToggleMap)) {
-      html.find(key).on('click', function (event: any) {
-        event.preventDefault()
-        const label = document.querySelector(key)
-        const parent = label.parentNode
-        const bubble = parent.querySelector('.number-input-container')
-        if (bubble.classList.contains('hidden')) {
-          actor.update({
-            ['data.attributes.' + value + '.minimize']: 0
-          })
-          // bubble.classList.remove('hidden')
-          // label.classList.remove('sideways-text')
-        } else {
-          actor.update({
-            ['data.attributes.' + value + '.minimize']: 1
-          })
-          // bubble.classList.add('hidden')
-          // label.classList.add('sideways-text')
-        }
-      })
-    }
-    // Actor Current Point increase listeners
-    const pointIncreaseMapping = {
-      '#increase-current-lp': 'luckPoints',
-      '#increase-current-mp': 'magicPoints',
-      '#increase-current-tp': 'tenacity',
-      '#increase-current-ap': 'actionPoints',
-      '#increase-current-er': 'experienceRolls'
-    }
-    for (const [key, value] of Object.entries(pointIncreaseMapping)) {
-      html.find(key).on('click', function (event: any) {
-        event.preventDefault()
-        let data: any = actor.data.data
-        if (value == 'experienceRolls') {
-          actor.update({
-            ['data.' + value]: Number(data[value]) + 1
-          })
-        } else {
-          let attributes = data.attributes
-          actor.update({
-            ['data.attributes.' + value + '.value']: Number(attributes[value].value) + 1
-          })
-        }
-      })
-    }
+    html.find('.stat-increase').on('click', (event) => {
+      event.preventDefault()
+      let data: any = actor.data.data
+      const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
+      if (statName == 'experienceRoll') {
+        actor.update({
+          ['data.experienceRolls']: Number(data['experienceRolls']) + 1
+        })
+      } else {
+        let attributes = data.attributes
+        actor.update({
+          ['data.attributes.' + statName + '.value']: Number(attributes[statName].value) + 1
+        })
+      }
+    })
 
-    // Actor Current Point decrease listenerss
-    const pointDecreaseMapping = {
-      '#decrease-current-lp': 'luckPoints',
-      '#decrease-current-mp': 'magicPoints',
-      '#decrease-current-tp': 'tenacity',
-      '#decrease-current-ap': 'actionPoints',
-      '#decrease-current-er': 'experienceRolls'
-    }
-    for (const [key, value] of Object.entries(pointDecreaseMapping)) {
-      html.find(key).on('click', function (event: any) {
-        event.preventDefault()
-        let data: any = actor.data.data
-        if (value == 'experienceRolls') {
-          actor.update({
-            ['data.' + value]: Number(data[value]) - 1
-          })
-        } else {
-          let attributes = data.attributes
-          actor.update({
-            ['data.attributes.' + value + '.value']: Number(attributes[value].value) - 1
-          })
-        }
-      })
-    }
+    html.find('.stat-decrease').on('click', (event) => {
+      event.preventDefault()
+      let data: any = actor.data.data
+      const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
+      if (statName == 'experienceRoll') {
+        actor.update({
+          ['data.experienceRolls']: Number(data['experienceRolls']) - 1
+        })
+      } else {
+        let attributes = data.attributes
+        actor.update({
+          ['data.attributes.' + statName + '.value']: Number(attributes[statName].value) - 1
+        })
+      }
+    })
 
     // Drag events for macros.
     if (actor.isOwner) {
@@ -462,25 +503,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           option.dataset.source = spell.data.data.source
           option.innerHTML = `${spell.data.data.source}`
           document.querySelector('#spellFilter').append(option)
-      }
-    }
-  }
-
-  private applyWoundedHitLocationStyles() {
-    const hitLocations: HitLocationMythras[] = this.actor.items.filter(
-      (item) => item.type == 'hitLocation'
-    )
-    for (let hitLocation of hitLocations) {
-      let currentHp = (hitLocation.data.data as any).currentHp
-      let hitLocationElement: any = document.querySelector(
-        `.hitLocation-table [data-item-id="${hitLocation.id}"]`
-      )
-      if (currentHp <= hitLocation.maxHp * -1) {
-        hitLocationElement.style.backgroundColor = '#c5000094'
-        continue
-      } else if (currentHp <= 0) {
-        hitLocationElement.style.backgroundColor = '#ed5b1585'
-        continue
       }
     }
   }

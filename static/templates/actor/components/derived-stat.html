@@ -1,3 +1,4 @@
+{{#if stat.isAttribute}}
 <div data-stat="{{statName}}" class="attribute-container">
   <div class="attribute">
     <p name="{{stat.derivedName}}" class="modifiable">
@@ -15,3 +16,4 @@
     {{localize stat.label}}
   </p>
 </div>
+{{/if}}

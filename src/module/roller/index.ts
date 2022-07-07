@@ -1,5 +1,4 @@
 import { ActorMythras } from '@actor'
-import { fatigueLevels } from '@actor/fatigue'
 import { HitLocationMythras } from '@item/hit-location'
 import { MeleeWeaponMythras } from '@item/weapon/melee-weapon'
 import { RangedWeaponMythras } from '@item/weapon/ranged-weapon'
@@ -99,25 +98,20 @@ export class Roller {
     let modifiers = []
 
     // Include Fatigue Penalty value if character is not fresh
-    let fatigueValue = this.actor.currentLevelOfFatigue
-    if (fatigueValue !== 'fresh') {
+    let fatigueLevelName = this.actor.fatigue.currentLevelName
+    if (fatigueLevelName !== 'fresh') {
       modifiers.push({
         name: 'Fatigue Mod',
-        value: fatigueLevels[fatigueValue].skillGrade
+        value: this.actor.fatigue.currentLevel.skillGrade
       })
     }
 
     //Include ENC Penalty if skill suffers ENC penalty and character is encumbered
     if (skill.encPenalty) {
-      if (this.actor.encumbrance.isOverloaded) {
+      if (this.actor.encumbrance.skillPenalty) {
         modifiers.push({
           name: 'ENC Mod',
-          value: this.actor.encumbrance.levels.overloaded.skillGrade
-        })
-      } else if (this.actor.encumbrance.isBurdened) {
-        modifiers.push({
-          name: 'ENC Mod',
-          value: this.actor.encumbrance.levels.burdened.skillGrade
+          value: this.actor.encumbrance.skillPenalty
         })
       }
     }

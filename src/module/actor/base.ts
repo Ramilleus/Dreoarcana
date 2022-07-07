@@ -1,14 +1,16 @@
 import { ArmorMythras } from '@item/armor/index.js'
-import { SkillMythras } from '@module/item/skill/index.js'
 import { MYTHRASCONFIG } from '@scripts/config'
 import { ActorMythrasEncumbrance } from './encumbrance'
-import { fatigueLevels } from './fatigue'
+import { ActorMythrasFatigue } from './fatigue'
+import { ActorMythrasMovement } from './movement'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
  */
 export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
   public encumbrance!: ActorMythrasEncumbrance
+  public fatigue!: ActorMythrasFatigue
+  public movement!: ActorMythrasMovement
 
   constructor(data: any, context: any = {}) {
     if (context.mythras?.ready) {
@@ -37,17 +39,12 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
     return Math.ceil(Number(totalArmorEncumbrance) / 5)
   }
 
-  get currentLevelOfFatigue() {
-    let data: any = this.data.data
-    return data.attributes.fatigue.value
-  }
-
   get maxActionPoints() {
     let base = Math.ceil((this.characteristics.int + this.characteristics.dex) / 12)
     return (
       base +
       this.attributeMiscMods.actionPoints +
-      fatigueLevels[this.currentLevelOfFatigue].actionPointsPenalty(base)
+      this.fatigue.currentLevel.actionPointsPenalty(base)
     )
   }
 
@@ -71,7 +68,7 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
     return (
       base +
       this.attributeMiscMods.initiativeBonus +
-      fatigueLevels[this.currentLevelOfFatigue].initiativePenalty(base)
+      this.fatigue.currentLevel.initiativePenalty(base)
     )
   }
 
@@ -120,148 +117,13 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
     return super.create(data, context)
   }
 
-  /**
-   * Augment the basic actor data with additional dynamic data.
-   */
   prepareData() {
     super.prepareData()
     this.encumbrance = new ActorMythrasEncumbrance(this)
-
-    const actorData: any = this.data
-    const data = actorData.data
-    let items = actorData.items
-
-    // Prepare a character's movement rates
-    this.prepareMovement(data, items)
-
-    // Prepare a character's fatigue recovery time
-    data.attributes.fatigue.recoveryTime = this.recoveryTimeCalc(
-      this.currentLevelOfFatigue,
-      this.healingRate
-    )
+    this.fatigue = new ActorMythrasFatigue(this)
+    this.movement = new ActorMythrasMovement(this)
   }
 
-  /**
-   * Calculates and sets a character's movement rates
-   * @param {*} data
-   * @param {*} items
-   */
-  prepareMovement(data: any, items: any) {
-    // Get athletics and swim item objects
-    let athletics: SkillMythras = items.find(
-      (entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
-    )
-    let swim: SkillMythras = items.find((entry: any) => entry.data.name === game.i18n.localize('MYTHRAS.Swim'))
-    let movementMiscMod =
-      Number(data.attributes.movement.mod) +
-      fatigueLevels[this.currentLevelOfFatigue].movementPenalty(data.attributes.movement.walk)
-    if (this.encumbrance.isOverloaded) {
-      movementMiscMod += this.encumbrance.levels.overloaded.movementPenalty(data.attributes.movement.walk)
-    } else if (this.encumbrance.isBurdened) {
-      movementMiscMod += this.encumbrance.levels.burdened.movementPenalty(data.attributes.movement.walk)
-    }
-
-    // Default walk speed for a human is 6
-    data.attributes.movement.walk = 6 + movementMiscMod
-    let walkSpeed = data.attributes.movement.walk
-
-    // Calculate run speed
-    data.attributes.movement.run = this.moveRateCalc(walkSpeed, athletics, 'run') - this.armorPenalty
-
-    // Calculate sprint speed
-    data.attributes.movement.sprint = this.moveRateCalc(walkSpeed, athletics, 'sprint') - this.armorPenalty
-
-    // Calculate climb speed
-    data.attributes.climb.value = this.moveRateCalc(walkSpeed, athletics, 'climb')
-
-    // Calculate swim speed
-    data.attributes.swim.value = this.moveRateCalc(walkSpeed, swim, 'swim')
-
-    // Calculate horizontal jump speed
-    data.attributes.jump.horizontal = this.moveRateCalc(Number(data.height), athletics, 'hJump')
-
-    // Calculate vertical jump speed
-    data.attributes.jump.vertical = this.moveRateCalc(Number(data.height), athletics, 'vJump')
-  }
-
-
-  /**
-   * Calculates a character's recovery time based on their fatigue level and healing rate
-   * @param {*} fatigueLevel
-   * @param {*} healRate
-   */
-  recoveryTimeCalc(fatigueLevel: any, healRate: any) {
-    let levels: any = {
-      fresh: 'Feeling fresh!',
-      winded: 15,
-      tired: 3,
-      wearied: 6,
-      exhausted: 12,
-      debilitated: 18,
-      incapacitated: 24,
-      'semi-conscious': 36,
-      comatose: 48,
-      dead: 'There is no hope.'
-    }
-    if (game.i18n) {
-      levels.fresh = game.i18n.localize('MYTHRAS.Fresh')
-      levels.dead = game.i18n.localize('MYTHRAS.Dead')
-    }
-
-    let recoveryMsg = ' '
-    if (healRate < 1) healRate = 1
-    if (fatigueLevel == 'fresh') {
-      return levels[fatigueLevel]
-    } else if (fatigueLevel == 'dead') {
-      return levels[fatigueLevel]
-    } else if (fatigueLevel == 'winded') {
-      recoveryMsg = ' minutes until Fresh.'
-      if (game.i18n) {
-        recoveryMsg = game.i18n.localize('MYTHRAS.minrecovermsg')
-      }
-      return Math.ceil(levels[fatigueLevel] / healRate) + recoveryMsg
-    } else {
-      recoveryMsg = ' hours until Fresh'
-      if (game.i18n) {
-        recoveryMsg = game.i18n.localize('MYTHRAS.hoursrecovermsg')
-      }
-      return Math.ceil(levels[fatigueLevel] / healRate) + recoveryMsg
-    }
-  }
-
-  /**
-   * Calcalates a character's movement rate for a particular movement type
-   * @param {*} move
-   * @param {*} skill
-   * @param {*} type
-   */
-  moveRateCalc(move: any, skill: SkillMythras, type: any) {
-    if (skill === undefined) {
-      return move
-    }
-    switch (type) {
-      case 'run':
-        return 3 * (move + Math.floor(skill.totalVal / 50))
-      case 'sprint':
-        return 5 * (move + Math.floor(skill.totalVal / 25))
-      case 'climb':
-        return move
-      case 'swim':
-        return move + Math.floor(skill.totalVal / 20)
-      case 'hJump':
-        return (move * 2 + 100 * Math.floor(skill.totalVal / 20)) / 100
-      case 'vJump':
-        return (Math.floor(move / 2) + 20 * Math.floor(skill.totalVal / 20)) / 100
-      default:
-        return move
-    }
-  }
-
-  /**
-   * Calculates a character's damage modifier
-   * @param {*} total
-   * @param {*} stepInc
-   */
   damageModCalc(total: any, stepInc: any) {
     // The different possible values for damage mod
     const damageSteps = [

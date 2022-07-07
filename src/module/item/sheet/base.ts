@@ -1,5 +1,5 @@
 import { ItemMythras } from '@item/base'
-import { itemIsSkill } from '../type-guards'
+import { itemIsSkill } from '@item/type-guards'
 
 export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem> {
   static override get defaultOptions() {

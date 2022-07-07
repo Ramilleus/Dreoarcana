@@ -2,12 +2,10 @@ import { ItemMythras } from '@item/base'
 import { PhysicalItemMythras } from '@item/physical'
 import { itemIsArmor, itemIsPhysical } from '@item/type-guards'
 import { ActorMythras } from '@actor/base'
-import { EncumbranceLevel } from './types'
 
 export class ActorMythrasEncumbrance {
   constructor(private actor: ActorMythras) {}
 
-  // Encumbrance getters
   get currentEncumbrance(): number {
     return this.encumbranceCalc()
   }
@@ -40,16 +38,23 @@ export class ActorMythrasEncumbrance {
     return this.currentEncumbrance > this.maxLoad
   }
 
-  get levels(): Record<string, EncumbranceLevel> {
-    return {
-      burdened: {
-        skillGrade: 'One Step Penalty',
-        movementPenalty: () => -2
-      },
-      overloaded: {
-        skillGrade: 'Two Steps Penalty',
-        movementPenalty: (movement) => -(movement * 0.5)
-      }
+  public movementPenalty(movement: number): number {
+    if (this.isOverloaded) {
+      return -(movement * 0.5)
+    } else if (this.isBurdened) {
+      return -2
+    } else {
+      return 0
+    }
+  }
+
+  get skillPenalty(): string {
+    if (this.isOverloaded) {
+      return 'Two Steps Penalty'
+    } else if (this.isBurdened) {
+      return 'One Step Penalty'
+    } else {
+      return undefined
     }
   }
 
@@ -84,10 +89,6 @@ export class ActorMythrasEncumbrance {
     return segments
   }
 
-  /**
-   * Calculates a character's encumbrance based on their physical items
-   * @param {*} items
-   */
   private encumbranceCalc() {
     // Get all of the players owned items that are physical
     let encItems: PhysicalItemMythras[] = this.actor.items.filter(
