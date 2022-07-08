@@ -1,0 +1,13 @@
+@use 'colors';
+.mythras .sheet-header {
+  background: url('../assets/sheet/header-background-pattern-overlay.png') repeat
+    colors.$sheet-header-color;
+  color: white;
+  padding: 10px;
+  box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
+  flex: 0;
+
+  a.link-important {
+    color: #ff9065;
+  }
+}

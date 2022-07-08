@@ -1,7 +1,23 @@
 import { ItemMythras } from '@item/base'
 import { itemIsSkill } from '@item/type-guards'
+import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
 export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem> {
+  sheetPostRender!: SheetPostRender
+
+  constructor (item: TItem, options?: Partial<DocumentSheetOptions>) {
+    super(item, options)
+    // Apply styles after renderActorSheet hook
+    Hooks.on('renderItemSheet', () => {
+      this.sheetPostRender = new SheetPostRender(this.element)
+      this.postRender()
+    })
+  }
+
+  private postRender() {
+    this.sheetPostRender.postRender()
+  }
+
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ['mythras', 'sheet', 'item'],

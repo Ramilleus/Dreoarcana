@@ -11,11 +11,16 @@ export function registerTemplates() {
     'systems/mythras/templates/actor/tabs/actor-equipment.html',
     'systems/mythras/templates/actor/tabs/actor-notes.html',
     'systems/mythras/templates/actor/skills/skill-table.html',
-    'systems/mythras/templates/actor/components/derived-stat.html',
+    'systems/mythras/templates/common-components/derived-stat.html',
     'systems/mythras/templates/actor/components/tracked-stat.html',
     'systems/mythras/templates/actor/components/characteristic.html',
+    'systems/mythras/templates/common-components/basic-labelled-input.html',
+    'systems/mythras/templates/common-components/tab-navigator.html',
+    'systems/mythras/templates/common-components/loader.html',
     'systems/mythras/templates/actor/encumbrance-bar.html',
     'systems/mythras/templates/apps/encounter-generator/encounter-generator.html',
+    'systems/mythras/templates/apps/encounter-generator/tabs/enemies.html',
+    'systems/mythras/templates/apps/encounter-generator/tabs/parties.html',
 
     // Combat partials
     'systems/mythras/templates/combat/combat-tracker.html',

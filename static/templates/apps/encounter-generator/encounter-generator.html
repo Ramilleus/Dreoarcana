@@ -1,30 +1,12 @@
-<div class="content-box">
-  <header class="encounter-generator-header">
+<div class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header flex-0">
     <h2>Mythras Encounter Generator</h2>
+    <p><i>Create actors using data from the <a class="link-important"
+          href="https://mythras.skoll.xyz/about/">Mythras&nbsp;Encounter&nbsp;Generator</a></i></p>
   </header>
-  <section class="template-list-filters">
-    <input type="text" data-dtype="String" class="template-list-search" name="searchTerm"
-      value="{{ filters.search.text }}" />
-    <button class="search-button">Search</button>
-  </section>
-  <section class="template-list-section">
-    <div class="template-list-header-row">
-      <div class="enemy-type">Enemy Type</div>
-      <div>Race</div>
-      <div>Rank</div>
-      <div>Owner</div>
-      <div></div>
-    </div>
-    <div class="template-list-rows">
-      {{#each templates as |template|}}
-      <div data-template-id="{{ template.id }}" class="template-list-row">
-        <div class="enemy-type">{{ template.name }}</div>
-        <div>{{ template.race }}</div>
-        <div>{{ template.rank }}</div>
-        <div>{{ template.owner }}</div>
-        <div><button class="import-button">Import ></button></div>
-      </div>
-      {{/each}}
-    </div>
+  {{> systems/mythras/templates/common-components/tab-navigator.html tabs=tabs}}
+  <section class="sheet-body">
+    {{> systems/mythras/templates/apps/encounter-generator/tabs/enemies.html}}
+    {{> systems/mythras/templates/apps/encounter-generator/tabs/parties.html}}
   </section>
 </div>

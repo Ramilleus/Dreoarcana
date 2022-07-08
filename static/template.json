@@ -74,10 +74,22 @@
             "walk": 6,
             "mod": 0
           },
+          "walk": {
+            "mod": 0
+          },
+          "run": {
+            "mod": 0
+          },
+          "sprint": {
+            "mod": 0
+          },
           "climb": {
             "mod": 0
           },
-          "jump": {
+          "jumpHorizontal": {
+            "mod": 0
+          },
+          "jumpVertical": {
             "mod": 0
           },
           "swim": {

@@ -1,13 +1,13 @@
 <div class="tab equipment" data-group="primary" data-tab="equipment">
   {{> systems/mythras/templates/actor/encumbrance-bar.html}}
-  <div class="equipment-tables">
-    <h2>{{localize 'MYTHRAS.Items'}}</h2>
-    <div class="flex-table-container">
-      <div class="tables-left">
-        <div>
+  <div class="titled-section">
+    <h2 class="titled-section__title">{{localize 'MYTHRAS.Items'}}</h2>
+    <div class="d-flex d-flex--gap-medium">
+      <div class="flex-1">
+        <div class="basic-table">
           <h3>
-            <span>{{localize 'MYTHRAS.Storage'}}</span><a class="add-items-button item-create" title="Create item"
-              data-type="storage">+</a>
+            <span>{{localize 'MYTHRAS.Storage'}}</span><a class="basic-table__add-button item-create"
+              title="Create item" data-type="storage">+</a>
           </h3>
           <table class="storage-table">
             <thead>
@@ -41,10 +41,10 @@
           </table>
         </div>
       </div>
-      <div class="tables-right">
-        <div>
+      <div class="flex-1">
+        <div class="basic-table">
           <h3>
-            <span>{{localize 'MYTHRAS.Currency_and_Wealth'}}</span><a class="add-items-button item-create"
+            <span>{{localize 'MYTHRAS.Currency_and_Wealth'}}</span><a class="basic-table__add-button item-create"
               title="Create item" data-type="currency">+</a>
           </h3>
           <table class="currency-table">
@@ -80,10 +80,9 @@
         </div>
       </div>
     </div>
-
-    <div>
+    <div class="basic-table">
       <h3>
-        <span>{{localize 'MYTHRAS.Equipment'}}</span><a class="add-equipment-button item-create" title="Create item"
+        <span>{{localize 'MYTHRAS.Equipment'}}</span><a class="basic-table__add-button item-create" title="Create item"
           data-type="equipment">+</a>
       </h3>
       <table class="equipment-table">
@@ -126,10 +125,12 @@
       </table>
     </div>
 
-    <h2>{{localize 'MYTHRAS.Armor'}}</h2>
-    <div>
+  </div>
+  <div class="titled-section">
+    <h2 class="titled-section__title">{{localize 'MYTHRAS.Armor'}}</h2>
+    <div class="basic-table">
       <h3>
-        <span>{{localize 'MYTHRAS.Armor'}}</span><a class="add-equipment-button item-create" title="Create item"
+        <span>{{localize 'MYTHRAS.Armor'}}</span><a class="basic-table__add-button item-create" title="Create item"
           data-type="armor">+</a>
       </h3>
       <table class="armor-table">
@@ -168,12 +169,13 @@
         </tbody>
       </table>
     </div>
-
-    <h2>{{localize 'MYTHRAS.Weapons'}}</h2>
-    <div>
+  </div>
+  <div class="titled-section">
+    <h2 class="titled-section__title">{{localize 'MYTHRAS.Weapons'}}</h2>
+    <div class="basic-table">
       <h3>
-        <span>{{localize 'MYTHRAS.Melee_Weapons'}}</span><a class="add-equipment-button item-create" title="Create item"
-          data-type="melee-weapon">+</a>
+        <span>{{localize 'MYTHRAS.Melee_Weapons'}}</span><a class="basic-table__add-button item-create"
+          title="Create item" data-type="melee-weapon">+</a>
       </h3>
       <table class="weapons-table">
         <thead>
@@ -218,7 +220,7 @@
       </table>
       <hr />
       <h3>
-        <span>{{localize 'MYTHRAS.Ranged_Weapons'}}</span><a class="add-equipment-button item-create"
+        <span>{{localize 'MYTHRAS.Ranged_Weapons'}}</span><a class="basic-table__add-button item-create"
           title="Create item" data-type="ranged-weapon">+</a>
       </h3>
       <table class="weapons-table">

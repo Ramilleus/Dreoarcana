@@ -1,33 +1,63 @@
 export class EncounterGenerator extends Application {
   private skollProxyBaseUrl: string = "http://3.13.17.94/"
+  private enemyDataReady: boolean = false
+  private enemyScrollLimitHit: boolean = false
+  private showEnemyLoader: boolean = true
+  private enemyTemplatesPage: any[] = []
+  private enemyScrollLimit: number = 100
+  private enemyTotalTemplateCount: number = 0
+  private enemyTotalFilteredCount: number = 0
+  private enemyLastScrollTop: number = 0
+  
+  private partyDataReady: boolean = false
+  private partyScrollLimitHit: boolean = false
+  private showPartyLoader: boolean = true
+  private partyTemplatesPage: any[] = []
+  private partyScrollLimit: number = 100
+  private partyTotalTemplateCount: number = 0
+  private partyTotalFilteredCount: number = 0
+  private partyLastScrollTop: number = 0
 
   filters!: {
-    search: {
-      text: string
+    enemy: {
+      search: {
+        text: string
+      }
+    },
+    party: {
+      search: {
+        text: string
+      }
     }
   }
-  scrollLimit: number = 100
-  totalTemplateCount: number = 0
-  totalFilteredCount: number = 0
-  lastScrollTop: number = 0
   constructor(options = {}) {
     super(options);
 
     this.injectActorDirectory()
-    this.loadTemplates()
+    this.loadEnemyTemplates()
     this.prepareFilters()
   }
 
   prepareFilters() {
     this.filters = {
-      search: {
-        text: ""
+      enemy: {
+        search: {
+          text: ""
+        }
+      },
+      party: {
+        search: {
+          text: ""
+        }
       }
     }
   }
 
-  get $templateList() {
-    return this.element.find("div.template-list-rows");
+  get $enemyTemplateList() {
+    return this.element.find("div.enemy-template-list-rows");
+  }
+  get $partyTemplateList() {
+    return this.element.find("div.party-template-list-rows");
   }
   
 
@@ -38,38 +68,88 @@ export class EncounterGenerator extends Application {
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "encounter-generator",
-      classes: [],
+      classes: ['mythras', 'sheet'],
       template: "systems/mythras/templates/apps/encounter-generator/encounter-generator.html",
       width: 800,
       height: 700,
       resizable: true,
+      tabs: [
+        {
+          navSelector: '.sheet-tabs',
+          contentSelector: '.sheet-body',
+          initial: 'enemies'
+        }
+      ]
     });
   }
 
   override async _render(force?: boolean, options?: RenderOptions) {
     await super._render(force, options);
-    const $list = this.$templateList
-    if (this.scrollLimit < this.totalFilteredCount) {
-      $list.scrollTop(this.lastScrollTop)
+    if (this.enemyScrollLimit < this.enemyTotalFilteredCount) {
+      this.$enemyTemplateList.scrollTop(this.enemyLastScrollTop)
+    }
+    if (this.partyScrollLimit < this.partyTotalFilteredCount) {
+      this.$partyTemplateList.scrollTop(this.partyLastScrollTop)
     }
     this.activateGeneratorListeners();
+    if (!this.enemyDataReady) {
+      this.getEnemyTemplatesPage()
+    }
+    if (!this.partyDataReady) {
+      this.getPartyTemplatesPage()
+    }
   }
 
   override async getData(options?: Partial<ApplicationOptions>): Promise<object> {
     return {
-      templates: await this.getTemplatesPage(),
-      filters: this.filters
+      tabs: [
+        {
+          name: 'enemies',
+          label: 'Generate Enemies'
+        },
+        {
+          name: 'parties',
+          label: 'Generate Parties'
+        },
+        {
+          name: 'json',
+          label: 'Generate from JSON'
+        },
+        {
+          name: 'credits',
+          label: 'Credits'
+        }
+      ],
+      enemyTemplates: this.enemyTemplatesPage,
+      partyTemplates: this.partyTemplatesPage,
+      filters: this.filters,
+      showEnemyLoader: this.showEnemyLoader,
+      showPartyLoader: this.showPartyLoader
     }
   }
 
-  async getTemplatesPage() {
-    let filtered = (await this.loadTemplates()).filter(this.filterTemplates.bind(this))
-    this.totalFilteredCount = filtered.length
-    return filtered.slice(0, this.scrollLimit)
+  async getEnemyTemplatesPage() {
+    let filtered = (await this.loadEnemyTemplates()).filter(this.filterEnemyTemplates.bind(this))
+    this.enemyTotalFilteredCount = filtered.length
+    this.enemyTemplatesPage = filtered.slice(0, this.enemyScrollLimit)
+    this.enemyDataReady = true
+    this.enemyScrollLimitHit = false
+    this.showEnemyLoader = false
+    this._render()
   }
 
-  filterTemplates(template: any) {
-    const searchText = this.filters.search.text
+  async getPartyTemplatesPage() {
+    let filtered = (await this.loadPartyTemplates()).filter(this.filterPartyTemplates.bind(this))
+    this.partyTotalFilteredCount = filtered.length
+    this.partyTemplatesPage = filtered.slice(0, this.partyScrollLimit)
+    this.partyDataReady = true
+    this.partyScrollLimitHit = false
+    this.showPartyLoader = false
+    this._render()
+  }
+
+  filterEnemyTemplates(template: any) {
+    const searchText = this.filters.enemy.search.text
     if (!searchText) {
       return true
     }
@@ -83,61 +163,132 @@ export class EncounterGenerator extends Application {
     return false
   }
 
-  async loadTemplates(): Promise<any[]> {
-    let response = await fetch(`${this.skollProxyBaseUrl}get_template_list`)
+  filterPartyTemplates(template: any) {
+    const searchText = this.filters.party.search.text
+    if (!searchText) {
+      return true
+    }
+    if (template.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
+      return true
+    }
+
+    return false
+  }
+
+  async loadEnemyTemplates(): Promise<any[]> {
+    let response = await fetch(`${this.skollProxyBaseUrl}get_enemy_template_list`)
     let templates = await response.json()
-    this.totalTemplateCount = templates.length
+    this.enemyTotalTemplateCount = templates.length
+    return templates
+  }
+
+  async loadPartyTemplates(): Promise<any[]> {
+    let response = await fetch(`${this.skollProxyBaseUrl}get_party_template_list`)
+    let templates = await response.json()
+    this.partyTotalTemplateCount = templates.length
     return templates
   }
 
   override activateListeners($html: JQuery<HTMLElement>): void {
     super.activateListeners($html)
-    const $filters = $html.find(".template-list-filters");
-    const $searchInput = $filters.find('input[name=searchTerm]')
-    $searchInput.on('keypress', (event) => {
+    const $enemyFilters = $html.find(".enemy-template-list-filters");
+    const $enemySearchInput = $enemyFilters.find('input[name=enemySearchTerm]')
+    $enemySearchInput.on('keypress', (event) => {
       if(event.key === 'Enter')
       {
-        this.search($searchInput)
+        this.searchEnemies($enemySearchInput)
       }
     });
-    $filters.find('.search-button').on('click', (event) => {
-      this.search($searchInput)
+    $enemyFilters.find('.search-button').on('click', (event) => {
+      this.searchEnemies($enemySearchInput)
+    })
+
+    
+    const $partyFilters = $html.find(".party-template-list-filters");
+    const $partySearchInput = $partyFilters.find('input[name=partySearchTerm]')
+    $partySearchInput.on('keypress', (event) => {
+      if(event.key === 'Enter')
+      {
+        this.searchParties($partySearchInput)
+      }
+    });
+    $partyFilters.find('.search-button').on('click', (event) => {
+      this.searchParties($partySearchInput)
     })
   }
 
-  private search($searchInput: JQuery<HTMLElement>) {
-    this.filters.search.text = $searchInput.val() as string
-    this.scrollLimit = 100
-    this.lastScrollTop = 0
+  private searchEnemies($searchInput: JQuery<HTMLElement>) {
+    this.filters.enemy.search.text = $searchInput.val() as string
+    this.enemyScrollLimit = 100
+    this.enemyLastScrollTop = 0
+    this.enemyTemplatesPage = []
+    this.enemyDataReady = false
+    this.showEnemyLoader = true
     this.render(true);
   }
 
-  private activateGeneratorListeners() {
-    const $list = this.$templateList
-    //if ($list.length === 0) return;
-  
-    $list.on("scroll", async (event) => {
-      if (this.scrollLimit >= this.totalFilteredCount) {
+  private searchParties($searchInput: JQuery<HTMLElement>) {
+    this.filters.party.search.text = $searchInput.val() as string
+    this.partyScrollLimit = 100
+    this.partyLastScrollTop = 0
+    this.partyTemplatesPage = []
+    this.partyDataReady = false
+    this.showPartyLoader = true
+    this.render(true);
+  }
+
+  private activateGeneratorListeners() {  
+    this.$enemyTemplateList.on("scroll", async (event) => {
+      if (this.enemyScrollLimit >= this.enemyTotalFilteredCount) {
         return
       }
       const target = event.currentTarget;
       if (target.scrollTop + target.clientHeight === target.scrollHeight) {
-          const currentValue = this.scrollLimit;
-          const maxValue = this.totalTemplateCount ?? 0;
-          if (currentValue < maxValue) {
+          const currentValue = this.enemyScrollLimit;
+          const maxValue = this.enemyTotalTemplateCount ?? 0;
+          if (currentValue < maxValue && !this.enemyScrollLimitHit) {
+              this.enemyScrollLimitHit = true
               const newValue = Math.clamped(currentValue + 100, 100, maxValue);
-              this.scrollLimit = newValue;
-              this.lastScrollTop = target.scrollTop
+              this.enemyScrollLimit = newValue;
+              this.enemyLastScrollTop = target.scrollTop
+              this.enemyDataReady = false
+              this.showEnemyLoader = true
               this.render(true);
           }
       }
-    });
+    })
+
+    this.$partyTemplateList.on("scroll", async (event) => {
+      if (this.partyScrollLimit >= this.partyTotalFilteredCount) {
+        return
+      }
+      const target = event.currentTarget;
+      if (target.scrollTop + target.clientHeight === target.scrollHeight) {
+          const currentValue = this.partyScrollLimit;
+          const maxValue = this.partyTotalTemplateCount ?? 0;
+          if (currentValue < maxValue && !this.partyScrollLimitHit) {
+              this.partyScrollLimitHit = true
+              const newValue = Math.clamped(currentValue + 100, 100, maxValue);
+              this.partyScrollLimit = newValue;
+              this.partyLastScrollTop = target.scrollTop
+              this.partyDataReady = false
+              this.showPartyLoader = true
+              this.render(true);
+          }
+      }
+    })
 
     const  $importButtons = this.element.find('.import-button')
     $importButtons.on('click', (event) => {
       let target = event.target
-      let id = $(target.closest('[data-template-id]')).attr('data-template-id')
-      this.import(id)
+      let elem = $(target.closest('[data-template-id]'))
+      let id = elem.attr('data-template-id')
+      let type = elem.attr('data-template-type')
+      if (type === "enemy") {
+        this.importEnemy(id)
+      } else if (type === "party") {
+        this.importParty(id)
+      }
     })
   }
 
@@ -161,13 +312,26 @@ export class EncounterGenerator extends Application {
     });
   }
 
-  private async import(id: string) {
+  private async importEnemy(id: string) {
     let response = await fetch(`${this.skollProxyBaseUrl}generate_enemy_json?id=${id}`)
     let template = await response.json()
     let skollEnemy = template[0]
     await this.createActor(skollEnemy, null)
   }
   
+  private async importParty(id: string) {
+    let response = await fetch(`${this.skollProxyBaseUrl}generate_party_json?id=${id}`)
+    let template = await response.json()
+    let folder = await Folder.create({
+      name: `${template['party_name']}`,
+      type: 'Actor',
+      parent: null
+    })
+    template.enemies.forEach(async (enemy: any) => {
+      await this.createActor(enemy, folder.id)
+    })
+  }
+
   private async createActor(skollEnemy: any, folder: string) {
     /**************** Setup ******************/
     let actorData: any = {}

@@ -7,7 +7,7 @@ import { EquipmentMythras } from '@item/equipment'
 import { HitLocationMythras } from '@item/hit-location'
 import { MagicSkillMythras } from '@item/magic-skill'
 import { MeleeWeaponMythras } from '@item/weapon/melee-weapon'
-import { RangedWeaponMythras } from '@module/item/weapon/ranged-weapon'
+import { RangedWeaponMythras } from '@item/weapon/ranged-weapon'
 import { SkillMythras } from '@item/skill'
 import { SpellMythras } from '@item/spell'
 import { StorageMythras } from '@item/storage'
@@ -16,6 +16,7 @@ import { ArmorSheetMythras } from '@item/armor/sheet'
 import { ItemSheetMythras } from '@item/sheet/base'
 import { PhysicalItemSheetMythras } from '@item/physical/sheet'
 import { CharacterSheetMythras } from '@actor/character/sheet'
+import { SpellSheetMythras } from '@item/spell/sheet'
 
 export const MYTHRASCONFIG = {
   Actor: {
@@ -56,7 +57,7 @@ export const MYTHRASCONFIG = {
       armor: ArmorSheetMythras,
       equipment: PhysicalItemSheetMythras,
       currency: PhysicalItemSheetMythras,
-      spell: ItemSheetMythras,
+      spell: SpellSheetMythras,
       storage: PhysicalItemSheetMythras,
       cultBrotherhood: ItemSheetMythras
     }

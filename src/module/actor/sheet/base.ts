@@ -1,7 +1,8 @@
 import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
-import { HitLocationMythras } from '@module/item/hit-location'
+import { HitLocationMythras } from '@item/hit-location'
 import { Roller } from '@module/roller'
+import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
 export abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
   TActor,
@@ -14,11 +15,13 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   }
 
   roller!: Roller
+  sheetPostRender!: SheetPostRender
 
   constructor(object: TActor, options: Partial<ActorSheetOptions>) {
     super(object, options)
     // Apply styles after renderActorSheet hook
     Hooks.on('renderActorSheet', () => {
+      this.sheetPostRender = new SheetPostRender(this.element)
       this.postRender()
     })
 
@@ -35,6 +38,29 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
 
+      tabs: [
+        {
+          name: "core",
+          label: "MYTHRAS.Character"
+        },
+        {
+          name: "combat",
+          label: "MYTHRAS.Combat"
+        },
+        {
+          name: "abilities",
+          label: "MYTHRAS.Abilities"
+        },
+        {
+          name: "equipment",
+          label: "MYTHRAS.Equipment"
+        },
+        {
+          name: "notes",
+          label: "MYTHRAS.Journal"
+        }
+      ],
+
       stats: {
         actionPoints: {
           isAttribute: true,
@@ -43,6 +69,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           derivedName: 'maxActionPoints',
           currentValue: baseData.data.data.attributes.actionPoints.value,
           derivedValue: this.actor.maxActionPoints,
+          modifierName: "data.attributes.actionPoints.mod",
           modifierValue: baseData.data.data.attributes.actionPoints.mod,
           minimized: baseData.data.data.attributes.actionPoints.minimize
         },
@@ -52,6 +79,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.DAMAGE_MOD',
           derivedName: 'damageMod',
           derivedValue: this.actor.damageMod,
+          modifierName: "data.attributes.damageMod.mod",
           modifierValue: baseData.data.data.attributes.damageMod.mod
         },
         experienceMod: {
@@ -60,6 +88,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.EXPERIENCE_MOD',
           derivedName: 'experienceMod',
           derivedValue: this.actor.experienceMod,
+          modifierName: "data.attributes.experienceMod.mod",
           modifierValue: baseData.data.data.attributes.experienceMod.mod
         },
         healingRate: {
@@ -68,6 +97,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.HEALING_RATE',
           derivedName: 'healingRate',
           derivedValue: this.actor.healingRate,
+          modifierName: "data.attributes.healingRate.mod",
           modifierValue: baseData.data.data.attributes.healingRate.mod
         },
         initiativeBonus: {
@@ -76,6 +106,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.INITIATIVE_BONUS',
           derivedName: 'initiativeBonus',
           derivedValue: this.actor.initiativeBonus,
+          modifierName: "data.attributes.initiativeBonus.mod",
           modifierValue: baseData.data.data.attributes.initiativeBonus.mod
         },
         luckPoints: {
@@ -85,6 +116,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           derivedName: 'maxLuckPoints',
           currentValue: baseData.data.data.attributes.luckPoints.value,
           derivedValue: this.actor.maxLuckPoints,
+          modifierName: "data.attributes.luckPoints.mod",
           modifierValue: baseData.data.data.attributes.luckPoints.mod,
           minimized: baseData.data.data.attributes.luckPoints.minimize
         },
@@ -95,6 +127,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           derivedName: 'maxMagicPoints',
           currentValue: baseData.data.data.attributes.magicPoints.value,
           derivedValue: this.actor.maxMagicPoints,
+          modifierName: "data.attributes.magicPoints.mod",
           modifierValue: baseData.data.data.attributes.magicPoints.mod,
           minimized: baseData.data.data.attributes.magicPoints.minimize
         },
@@ -106,6 +139,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           derivedName: 'maxTenacity',
           currentValue: baseData.data.data.attributes.tenacity.value,
           derivedValue: this.actor.maxTenacity,
+          modifierName: "data.attributes.tenacity.mod",
           modifierValue: baseData.data.data.attributes.tenacity.mod,
           minimized: baseData.data.data.attributes.tenacity.minimize
         },
@@ -180,26 +214,10 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   }
 
   private postRender() {
-    this.applyStatStyles()
+    this.sheetPostRender.postRender()
     this.applyEncumbranceStyles()
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
-  }
-
-  private applyStatStyles() {
-    this.element.find('.modifier').each((_, modifier: HTMLInputElement) => {
-      let statToModify = $(modifier).closest('[data-stat]').find('.modifiable')
-      if (Number(modifier.value) > 0) {
-        $(modifier).removeClass('decreased').addClass('increased')
-        statToModify.removeClass('decreased').addClass('increased')
-      } else if (Number(modifier.value) < 0) {
-        $(modifier).removeClass('increased').addClass('decreased')
-        statToModify.removeClass('increased').addClass('decreased')
-      } else {
-        $(modifier).removeClass('decreased increased')
-        statToModify.removeClass('decreased increased')
-      }
-    })
   }
 
   private applyEncumbranceStyles() {

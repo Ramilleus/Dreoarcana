@@ -21,27 +21,7 @@
   {{> systems/mythras/templates/global/mythras-symbols.html}}
 
   {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item active" data-tab="core">
-      <div>{{localize 'MYTHRAS.Character'}}</div>
-    </a>
-    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
-    <a class="item" data-tab="combat">
-      <div>{{localize 'MYTHRAS.Combat'}}</div>
-    </a>
-    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
-    <a class="item" data-tab="abilities">
-      <div>{{localize 'MYTHRAS.Abilities'}}</div>
-    </a>
-    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
-    <a class="item" data-tab="equipment">
-      <div>{{localize 'MYTHRAS.Equipment'}}</div>
-    </a>
-    <img class="dividing-diamond" src="systems/mythras/assets/sheet/diamond.png" />
-    <a class="item" data-tab="notes">
-      <div>{{localize 'MYTHRAS.Journal'}}</div>
-    </a>
-  </nav>
+  {{> systems/mythras/templates/common-components/tab-navigator.html tabs=tabs}}
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">

@@ -4,12 +4,12 @@
       {{localize 'MYTHRAS.Abilities'}}
     </h2>
     <div class="section">
-      <div class="mythras-table">
+      <div class="basic-table">
         <h3>
           <span>
             {{localize 'MYTHRAS.Magic_Skills'}}
           </span>
-          <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
+          <a class="basic-table__add-button item-create" title="Create item" data-type="magicSkill">
             +
           </a>
         </h3>
@@ -89,7 +89,7 @@
     <div class="section section-large">
       <div class="flex-table-container">
         <div class="tables-left">
-          <div class="mythras-table spells-table">
+          <div class="basic-table spells-table">
             <h3 class="table-header-flex">
               <span class="title">
                 {{localize 'MYTHRAS.Spells'}}
@@ -97,7 +97,7 @@
               <select id="spellFilter">
                 <option>All</option>
               </select>
-              <a class="add-skills-button item-create" title="Create item" data-type="spell">
+              <a class="basic-table__add-button item-create" title="Create item" data-type="spell">
                 +
               </a>
             </h3>
@@ -115,14 +115,14 @@
               </thead>
               <tbody>
                 {{#each items.spell as |item id|}}
-                <tr class="item active" data-item-id="{{item.data._id}}" data-item-source="{{item.data.data.source}}">
+                <tr class="item active" data-item-id="{{item.id}}">
                   <td class="item-profile">
                     <img class="item-img" src="{{item.img}}">
                     <a class="item-name item-control item-edit">
                       {{item.data.name}}
                     </a>
                   </td>
-                  <td>{{item.data.data.source}}</td>
+                  <td>{{item.magicSkillName}}</td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item">
                       <i class="fas fa-trash"></i>

@@ -1,6 +1,16 @@
 import { SkillMythras } from '@item/skill'
 
 export class MagicSkillMythras extends SkillMythras {
+  isMagicSkill: boolean = true
+
+  get intensity() {
+    return (this.data.data as any).intensity.max
+  }
+
+  get magnitude() {
+    return (this.data.data as any).magnitude.max
+  }
+
   override prepareData(): void {
     super.prepareData()
 

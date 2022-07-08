@@ -1,3 +1,4 @@
+@use 'colors';
 div.window-app section.window-content {
   background: url('../assets/sheet/sheet-background.jpg');
   background-repeat: repeat;
@@ -12,6 +13,20 @@ div.window-app section.window-content {
   width: 100px; /* Width of new image */
   height: 46px; /* Height of new image */
   padding-left: 100px; /* Equal to width of new image */
+}
+
+// Reset margins on paragraph tag
+p {
+  margin: 0;
+}
+
+hr {
+  margin: 15px 0px;
+  color: colors.$sheet-gray;
+  border-color: colors.$sheet-gray;
+  background-color: colors.$sheet-gray;
+  height: 1px;
+  border: 0;
 }
 
 .desc {
