@@ -8,46 +8,29 @@
   }
 }
 #encounter-generator {
+  h2 {
+    border: 0;
+  }
   .tab {
     height: 100%;
   }
   .sheet-header {
     flex-wrap: wrap;
-    h2 {
-      white-space: nowrap;
-      text-decoration: none;
-      border: none;
-      //margin: 0;
-    }
     p {
       white-space: nowrap;
     }
-  }
-  button {
-    border: 0;
-    background-color: $sheet-dark-crimson;
-    color: white;
-    width: unset;
-    margin: 0;
-    cursor: pointer;
   }
 
   button:hover {
     background-color: $sheet-crimson;
     box-shadow: unset;
   }
-  .template-list-filters {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    .template-list-search:focus {
-      box-shadow: 0px 0px 7px $sheet-crimson;
-    }
-    .template-list-search {
-      margin-right: 5px;
-      width: 300px;
-      height: 30px;
-    }
+  .template-list-search:focus {
+    box-shadow: 0px 0px 7px $sheet-crimson;
+  }
+  .template-list-search {
+    width: 300px;
+    height: 30px;
   }
   .template-list-section {
     flex: 1;
@@ -80,6 +63,7 @@
     .template-list-rows {
       flex: 1 0 0;
       overflow: scroll;
+      overflow-x: hidden;
       .template-list-row:nth-child(even) {
         background-color: rgb(204, 204, 204, 0.5);
       }
@@ -111,10 +95,25 @@
         z-index: 500;
         cursor: pointer;
       }
-      .loader-row {
+      .info-row {
         display: flex;
         justify-content: center;
       }
     }
+  }
+}
+
+.mini-stat-table {
+  overflow: hidden;
+  > div {
+    padding: 3px;
+  }
+  > div:nth-child(even) {
+    background-color: rgb(204, 204, 204, 0.5);
+  }
+
+  &__header {
+    background-color: rgb(31, 31, 31);
+    color: white;
   }
 }

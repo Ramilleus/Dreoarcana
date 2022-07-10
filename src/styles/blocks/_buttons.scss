@@ -1,0 +1,28 @@
+@use 'colors';
+
+button.button-red {
+  border: 0;
+  background-color: colors.$sheet-dark-crimson;
+  color: white;
+  width: unset;
+  margin: 0;
+  cursor: pointer;
+}
+
+button.button-white {
+  border: 0;
+  background-color: white;
+  color: colors.$sheet-dark-crimson;
+  width: unset;
+  margin: 0;
+  cursor: pointer;
+}
+
+button.button-gray {
+  border: 1px solid gray;
+  background-color: #ddd;
+  color: dimgray;
+  width: unset;
+  margin: 0;
+  cursor: pointer;
+}

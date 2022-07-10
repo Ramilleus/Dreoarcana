@@ -172,6 +172,7 @@ const config: WebpackConfiguration = {
     alias: {
       '@module': path.resolve(__dirname, 'src/module'),
       '@actor': path.resolve(__dirname, 'src/module/actor'),
+      '@apps': path.resolve(__dirname, 'src/module/apps'),
       '@item': path.resolve(__dirname, 'src/module/item'),
       '@combat': path.resolve(__dirname, 'src/module/combat'),
       '@scripts': path.resolve(__dirname, 'src/scripts'),

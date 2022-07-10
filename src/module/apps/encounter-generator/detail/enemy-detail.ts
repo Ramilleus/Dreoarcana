@@ -1,0 +1,80 @@
+import { EncounterGeneratorActorBuilder } from "../actor-builder"
+
+export class EncounterGeneratorEnemyDetail extends Application {
+  private skollProxyBaseUrl: string = "http://3.13.17.94/"
+  private dataReady: boolean = false
+  private showLoader: boolean = true
+  private enemy: any = {}
+
+  private actorBuilder: EncounterGeneratorActorBuilder
+
+  constructor(private enemyId: string, private enemyName: string, private tags: string, options?: Partial<ApplicationOptions>) {
+    super(options)
+    this.actorBuilder = new EncounterGeneratorActorBuilder()
+  }
+
+  override get title() {
+    return this.enemyName;
+  }
+
+  static override get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      id: "encounter-generator-enemy-detail",
+      classes: ['mythras', 'sheet'],
+      template: "systems/mythras/templates/apps/encounter-generator/detail/enemy-detail.html",
+      width: 550,
+      height: 600,
+      resizable: true
+    });
+  }
+
+  override async getData(options?: Partial<ApplicationOptions>): Promise<object> {
+    const tagList = this.tags.split(',')
+    return {
+      enemyName: this.enemyName,
+      enemy: this.enemy,
+      showLoader: this.showLoader,
+      dataReady: this.dataReady,
+      tags: tagList
+    }
+  }
+
+  override async _render(force?: boolean, options?: RenderOptions) {
+    await super._render(force, options);
+    if (!this.dataReady) {
+      this.getEnemyData()
+    }
+  }
+
+  private async getEnemyData() {
+    this.enemy = await this.loadEnemy()
+    console.log(this.enemy)
+    this.showLoader = false
+    this.dataReady = true
+    this.render(true)
+  }
+
+  private async loadEnemy(): Promise<any[]> {
+    let response = await fetch(`${this.skollProxyBaseUrl}generate_enemy_json?id=${this.enemyId}`)
+    let template = await response.json()
+    return template[0]
+  }
+  
+  private async importEnemy() {
+    await this.actorBuilder.createActor(this.enemy, null)
+  }
+  
+  override activateListeners($html: JQuery<HTMLElement>): void {
+    super.activateListeners($html)
+    $html.find('.refresh-button').on('click', (event) => {
+      event.preventDefault()
+      this.showLoader = true
+      this.dataReady = false
+      this.render(true)
+    })
+    $html.find('.import-button').on('click', (event) => {
+      event.preventDefault()
+      this.importEnemy()
+    })
+  }
+}

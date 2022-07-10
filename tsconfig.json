@@ -12,6 +12,8 @@
     "paths": {
       "@module": ["src/module"],
       "@module/*": ["src/module/*"],
+      "@apps": ["src/module/apps"],
+      "@apps/*": ["src/module/apps/*"],
       "@actor": ["src/module/actor"],
       "@actor/*": ["src/module/actor/*"],
       "@item": ["src/module/item"],

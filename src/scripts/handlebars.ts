@@ -32,6 +32,15 @@ export function registerHandlebarsHelpers() {
     }
     return options.inverse(this)
   })
+  Handlebars.registerHelper('formatSnakeCaseName', function (name: string) {
+    const segs = name.split('_')
+
+    return segs
+      .map((seg) => {
+        return seg[0].toUpperCase() + seg.substring(1)
+      })
+      .join(' ')
+  })
 }
 
 function localizeSkillAbbrev(str: string) {

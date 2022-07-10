@@ -19,8 +19,12 @@ export function registerTemplates() {
     'systems/mythras/templates/common-components/loader.html',
     'systems/mythras/templates/actor/encumbrance-bar.html',
     'systems/mythras/templates/apps/encounter-generator/encounter-generator.html',
+    'systems/mythras/templates/apps/encounter-generator/detail/enemy-detail.html',
+    'systems/mythras/templates/apps/encounter-generator/detail/party-detail.html',
     'systems/mythras/templates/apps/encounter-generator/tabs/enemies.html',
     'systems/mythras/templates/apps/encounter-generator/tabs/parties.html',
+    'systems/mythras/templates/apps/encounter-generator/tabs/from-json.html',
+    'systems/mythras/templates/apps/encounter-generator/tabs/credits.html',
 
     // Combat partials
     'systems/mythras/templates/combat/combat-tracker.html',
