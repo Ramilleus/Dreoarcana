@@ -60,7 +60,14 @@
       margin-right: 10px;
     }
   }
-
+  .header-settings {
+    text-align: right;
+    font-size: 1.2em;
+    span:hover {
+      text-shadow: rgb(255, 255, 255) 1px 0 10px;
+      cursor: pointer;
+    }
+  }
   .header-stats {
     display: flex;
     flex: 0 0 150px;

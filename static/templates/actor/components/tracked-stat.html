@@ -1,9 +1,8 @@
-{{#if stat.tracked}}
-<div class="stats-container" data-stat-name="{{statName}}">
+<div class="stats-container" data-stat-name="{{stat.id}}">
   <div class="number-input-container">
     <div>
-      <input name="data.stats.{{statName}}.currentValue" type="text" value="{{stat.currentValue}}" placeholder="" />
-      {{#if stat.derivedValue includeZero=true}}<p class="point-total">/{{ stat.derivedValue }}</p>{{/if}}
+      <input name="data.trackedStats.{{stat.id}}.value" type="text" value="{{stat.value}}" placeholder="" />
+      {{#if stat.maxValue includeZero=true}}<p class="point-total">/{{ stat.maxValue }}</p>{{/if}}
     </div>
     <div class="plus-minus-buttons">
       <a class="stat-increase">+</a>
@@ -11,7 +10,6 @@
     </div>
   </div>
   <p class="stat-minimizer input-label">
-    <span>{{localize stat.label}}</span>
+    <span>{{localize stat.name}}</span>
   </p>
 </div>
-{{/if}}

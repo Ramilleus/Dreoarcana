@@ -34,6 +34,38 @@
             "mod": 0
           }
         },
+        "trackedStats": {
+          "stat_bce33a791d7d46c990c3dc4bd039c39c": {
+            "name": "Experience Rolls",
+            "attribute": "",
+            "value": 0,
+            "display": true
+          },
+          "stat_f6b707e8e4704e46b8939596fd2c209a": {
+            "name": "Tenacity",
+            "attribute": "tenacity",
+            "value": 11,
+            "display": true
+          },
+          "stat_a4171d50b2b744f9b797487e69dd4807": {
+            "name": "Magic Points",
+            "attribute": "magicPoints",
+            "value": 0,
+            "display": true
+          },
+          "stat_47b5332de0b54794a3e76d8d003ac56a": {
+            "name": "Luck Points",
+            "attribute": "luckPoints",
+            "value": 0,
+            "display": true
+          },
+          "stat_e16bd91fc81b47c591a39495f7e5aec5": {
+            "name": "Action Points",
+            "attribute": "actionPoints",
+            "value": 0,
+            "display": true
+          }
+        },
         "attributes": {
           "actionPoints": {
             "mod": 0,

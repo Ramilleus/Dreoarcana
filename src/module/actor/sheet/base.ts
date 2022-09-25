@@ -37,6 +37,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       fatigue: this.actor.fatigue,
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
+      statTracker: this.actor.statTracker,
 
       tabs: [
         {
@@ -256,13 +257,13 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       const bubble = $(stat).find('.number-input-container')
       const label = $(stat).find('.stat-minimizer')
       const actor: any = this.actor
-      if (actor.data.data.attributes[statName].minimize) {
-        bubble.addClass('hidden')
-        label.addClass('sideways-text')
-      } else {
-        bubble.removeClass('hidden')
-        label.removeClass('sideways-text')
-      }
+      // if (actor.data.data.attributes[statName].minimize) {
+      //   bubble.addClass('hidden')
+      //   label.addClass('sideways-text')
+      // } else {
+      //   bubble.removeClass('hidden')
+      //   label.removeClass('sideways-text')
+      // }
     })
   }
 
@@ -357,50 +358,48 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       this.roller.rollHitLocation()
     })
     
-    html.find('.stat-minimizer').on('click', function (event: any) {
+    // html.find('.stat-minimizer').on('click', function (event: any) {
+    //   event.preventDefault()
+    //   const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
+    //   if (actor.data.data.attributes[statName].minimize) {
+    //     actor.update({
+    //       ['data.attributes.' + statName + '.minimize']: 0
+    //     })
+    //   } else {
+    //     actor.update({
+    //       ['data.attributes.' + statName + '.minimize']: 1
+    //     })
+    //   }
+    // })
+    html.find('.stat-settings').on('click', (event) => {
       event.preventDefault()
-      const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
-      if (actor.data.data.attributes[statName].minimize) {
-        actor.update({
-          ['data.attributes.' + statName + '.minimize']: 0
-        })
-      } else {
-        actor.update({
-          ['data.attributes.' + statName + '.minimize']: 1
-        })
-      }
+      let statList = 'Epic Test'
+      new Dialog({
+        title: 'Stat Tracker',
+        content: statList,
+        buttons: {}
+      }).render(true)
     })
-
     html.find('.stat-increase').on('click', (event) => {
       event.preventDefault()
       let data: any = actor.data.data
-      const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
-      if (statName == 'experienceRoll') {
-        actor.update({
-          ['data.experienceRolls']: Number(data['experienceRolls']) + 1
-        })
-      } else {
-        let attributes = data.attributes
-        actor.update({
-          ['data.attributes.' + statName + '.value']: Number(attributes[statName].value) + 1
-        })
-      }
+      const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
+      
+      let trackedStats = data.trackedStats
+      actor.update({
+        ['data.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) + 1
+      })
     })
 
     html.find('.stat-decrease').on('click', (event) => {
       event.preventDefault()
       let data: any = actor.data.data
-      const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
-      if (statName == 'experienceRoll') {
-        actor.update({
-          ['data.experienceRolls']: Number(data['experienceRolls']) - 1
-        })
-      } else {
-        let attributes = data.attributes
-        actor.update({
-          ['data.attributes.' + statName + '.value']: Number(attributes[statName].value) - 1
-        })
-      }
+      const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
+      
+      let trackedStats = data.trackedStats
+      actor.update({
+        ['data.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) - 1
+      })
     })
 
     // Drag events for macros.

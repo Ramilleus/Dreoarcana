@@ -3,6 +3,7 @@ import { MYTHRASCONFIG } from '@scripts/config'
 import { ActorMythrasEncumbrance } from './encumbrance'
 import { ActorMythrasFatigue } from './fatigue'
 import { ActorMythrasMovement } from './movement'
+import { ActorMythrasStatTracker } from './stat-tracker'
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
@@ -11,6 +12,7 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
   public encumbrance!: ActorMythrasEncumbrance
   public fatigue!: ActorMythrasFatigue
   public movement!: ActorMythrasMovement
+  public statTracker!: ActorMythrasStatTracker
 
   constructor(data: any, context: any = {}) {
     if (context.mythras?.ready) {
@@ -122,6 +124,7 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
     this.encumbrance = new ActorMythrasEncumbrance(this)
     this.fatigue = new ActorMythrasFatigue(this)
     this.movement = new ActorMythrasMovement(this)
+    this.statTracker = new ActorMythrasStatTracker(this)
   }
 
   damageModCalc(total: any, stepInc: any) {
