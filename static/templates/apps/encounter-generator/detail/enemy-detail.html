@@ -62,7 +62,13 @@
       <p><b>Skills:</b><i>
           {{#each enemy.skills as |skill|}}{{#each skill}}<span>{{@key}} {{this}}%{{#unless @../last}},
             {{/unless}}</span>{{/each}}{{/each}}</i></p>
-
+    </div>
+    {{/if}}
+    {{#if enemy.combat_styles}}
+    <div class="bottom-margin-small">
+      <p><b>Combat Styles:</b><i>
+          {{#each enemy.combat_styles as |combat_style|}}<span>{{ combat_style.name }} {{ combat_style.value }}%{{#unless @last}},
+            {{/unless}}</span>{{/each}}</i></p>
     </div>
     {{/if}}
     {{/if}}

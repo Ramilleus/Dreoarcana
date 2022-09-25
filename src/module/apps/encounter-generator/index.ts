@@ -3,7 +3,6 @@ import { EncounterGeneratorEnemyImporter } from "./importer/enemy-importer"
 import { EncounterGeneratorPartyImporter } from "./importer/party-importer"
 
 export class EncounterGenerator extends Application {
-  protected skollProxyBaseUrl: string = 'http://3.13.17.94/'
   private enemyImporter: EncounterGeneratorEnemyImporter
   private partyImporter: EncounterGeneratorPartyImporter
   constructor(options = {}) {
@@ -99,6 +98,22 @@ export class EncounterGenerator extends Application {
         detail.render(true)
       } else if (type === "party") {
       }
+    })
+
+    const $createEnemyJson = this.element.find('#create-enemy-json')
+    const $createEnemyJsonButton = this.element.find('#create-enemy-button')
+    $createEnemyJsonButton.on('click', (event) => {
+      event.preventDefault()
+      let json = $createEnemyJson.val() as string
+      this.enemyImporter.importEnemyFromJson(JSON.parse(json))
+    })
+
+    const $createPartyJson = this.element.find('#create-party-json')
+    const $createPartyJsonButton = this.element.find('#create-party-button')
+    $createPartyJsonButton.on('click', (event) => {
+      event.preventDefault()
+      let json = $createPartyJson.val() as string
+      this.partyImporter.importPartyFromJson(JSON.parse(json))
     })
   }
 

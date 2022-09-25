@@ -70,12 +70,16 @@ export class EncounterGeneratorPartyImporter extends EncounterGeneratorImporter 
   public async importParty(id: string) {
     let response = await fetch(`${this.skollProxyBaseUrl}generate_party_json?id=${id}`)
     let template = await response.json()
+    this.importPartyFromJson(template)
+  }
+
+  public async importPartyFromJson(jsonObject: any) {
     let folder = await Folder.create({
-      name: `${template['party_name']}`,
+      name: `${jsonObject['party_name']}`,
       type: 'Actor',
       parent: null
     })
-    template.enemies.forEach(async (enemy: any) => {
+    jsonObject.enemies.forEach(async (enemy: any) => {
       await this.actorBuilder.createActor(enemy, folder.id)
     })
   }

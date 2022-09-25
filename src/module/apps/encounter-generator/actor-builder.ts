@@ -335,4 +335,8 @@ export class EncounterGeneratorActorBuilder {
       })
     })
   }
+
+  public parseAbilites() {
+
+  }
 }

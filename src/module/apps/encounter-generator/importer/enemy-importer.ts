@@ -151,7 +151,14 @@ export class EncounterGeneratorEnemyImporter extends EncounterGeneratorImporter 
   public async importEnemy(id: string) {
     let response = await fetch(`${this.skollProxyBaseUrl}generate_enemy_json?id=${id}`)
     let template = await response.json()
-    let skollEnemy = template[0]
+    this.importEnemyFromJson(template)
+  }
+
+  public async importEnemyFromJson(jsonObject: any) {
+    let skollEnemy = jsonObject
+    if (Array.isArray(jsonObject)) {
+      skollEnemy = jsonObject[0]
+    }
     await this.actorBuilder.createActor(skollEnemy, null)
   }
 }
