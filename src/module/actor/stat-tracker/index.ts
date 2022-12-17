@@ -6,6 +6,7 @@ interface TrackedStat {
   attribute: string
   value: number
   display: boolean
+  derivedFrom: string
 }
 
 interface TrackedStatExport extends TrackedStat {
@@ -31,10 +32,12 @@ export class ActorMythrasStatTracker {
           name: stat.name,
           attribute: stat.attribute,
           value: stat.value,
-          display: stat.display
+          display: stat.display,
+          derivedFrom: stat.derivedFrom
         }
-        if (stat.attribute) {
-          exportStat.maxValue = data.attributes[stat.attribute].value
+        if (stat.derivedFrom) {
+          let actorRef = this.actor as any
+          exportStat.maxValue = actorRef[stat.derivedFrom]
         }
         exportData.push(exportStat)
       }

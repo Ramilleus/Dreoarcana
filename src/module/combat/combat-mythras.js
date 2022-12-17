@@ -33,18 +33,17 @@ export class CombatMythras extends Combat {
       if (t.defeated && skip) continue
       if (
         t.actor?.effects.find(
-          (e) =>
-            e.getFlag('core', 'statusId') === CONFIG.Combat.defeatedStatusId
+          (e) => e.getFlag('core', 'statusId') === CONFIG.Combat.defeatedStatusId
         ) &&
         skip
       )
         continue
-      if (t.actor?.data.data.attributes.actionPoints.value < 1) continue
+      if (t.actor?.data.data.trackedStats.actionPoints.value < 1) continue
       if (reduceAP) {
         let c = this.turns[turn]
         c.actor.update({
-          ['data.attributes.actionPoints.value']:
-            Number(c.actor.data.data.attributes.actionPoints.value) - 1
+          ['data.trackedStats.actionPoints.value']:
+            Number(c.actor.data.data.trackedStats.actionPoints.value) - 1
         })
       }
 
@@ -68,9 +67,7 @@ export class CombatMythras extends Combat {
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
       t.actor.update({
-        ['data.attributes.actionPoints.value']: Number(
-          t.actor.data.data.attributes['actionPoints'].max
-        )
+        ['data.trackedStats.actionPoints.value']: Number(t.actor.maxActionPoints)
       })
     }
 
@@ -79,8 +76,7 @@ export class CombatMythras extends Combat {
         return !(
           t.defeated ||
           t.actor?.effects.find(
-            (e) =>
-              e.getFlag('core', 'statusId') === CONFIG.Combat.defeatedStatusId
+            (e) => e.getFlag('core', 'statusId') === CONFIG.Combat.defeatedStatusId
           )
         )
       })
@@ -89,8 +85,7 @@ export class CombatMythras extends Combat {
         turn = 0
       }
     }
-    let advanceTime =
-      Math.max(this.turns.length - this.data.turn, 1) * CONFIG.time.turnTime
+    let advanceTime = Math.max(this.turns.length - this.data.turn, 1) * CONFIG.time.turnTime
     advanceTime += CONFIG.time.roundTime
 
     return this.update(

@@ -20,9 +20,14 @@ export const Init = {
 
       // Set an initiative formula for the system
       CONFIG.Combat.initiative = {
-        formula: (_combatant) => '1d10 + @attributes.initiativeBonus.value',
+        //Weird error below, but it works
+        //TODO: Look into this
+        //@ts-ignore
+        formula: '1d10 + @initiativeBonus',
         decimals: 2
       }
+
+      //CONFIG.debug.hooks = true
 
       // Register Handlebars Helpers
       registerHandlebarsHelpers()
@@ -31,6 +36,9 @@ export const Init = {
       registerTemplates()
 
       SetGameMythras.onInit()
+    })
+    Hooks.on('updateCombatant', function (combatant) {
+      console.log(combatant)
     })
   }
 }

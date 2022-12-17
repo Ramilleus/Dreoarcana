@@ -67,11 +67,8 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
 
   get initiativeBonus() {
     let base = Math.ceil((this.characteristics.int + this.characteristics.dex) / 2)
-    return (
-      base +
-      this.attributeMiscMods.initiativeBonus +
-      this.fatigue.currentLevel.initiativePenalty(base)
-    )
+    let initiativeBonus = base + this.attributeMiscMods.initiativeBonus + this.fatigue.currentLevel.initiativePenalty(base)
+    return initiativeBonus
   }
 
   get maxLuckPoints() {
@@ -125,6 +122,8 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
     this.fatigue = new ActorMythrasFatigue(this)
     this.movement = new ActorMythrasMovement(this)
     this.statTracker = new ActorMythrasStatTracker(this)
+    let data = this.data.data as any
+    data.initiativeBonus = this.initiativeBonus
   }
 
   damageModCalc(total: any, stepInc: any) {

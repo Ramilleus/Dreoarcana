@@ -35,35 +35,40 @@
           }
         },
         "trackedStats": {
-          "stat_bce33a791d7d46c990c3dc4bd039c39c": {
+          "experienceRolls": {
             "name": "Experience Rolls",
             "attribute": "",
             "value": 0,
-            "display": true
+            "display": true,
+            "derivedFrom": ""
           },
-          "stat_f6b707e8e4704e46b8939596fd2c209a": {
+          "tenacity": {
             "name": "Tenacity",
             "attribute": "tenacity",
             "value": 11,
-            "display": true
+            "display": true,
+            "derivedFrom": "maxTenacity"
           },
-          "stat_a4171d50b2b744f9b797487e69dd4807": {
+          "magicPoints": {
             "name": "Magic Points",
             "attribute": "magicPoints",
             "value": 0,
-            "display": true
+            "display": true,
+            "derivedFrom": "maxMagicPoints"
           },
-          "stat_47b5332de0b54794a3e76d8d003ac56a": {
+          "luckPoints": {
             "name": "Luck Points",
             "attribute": "luckPoints",
             "value": 0,
-            "display": true
+            "display": true,
+            "derivedFrom": "maxLuckPoints"
           },
-          "stat_e16bd91fc81b47c591a39495f7e5aec5": {
+          "actionPoints": {
             "name": "Action Points",
             "attribute": "actionPoints",
             "value": 0,
-            "display": true
+            "display": true,
+            "derivedFrom": "maxActionPoints"
           }
         },
         "attributes": {
