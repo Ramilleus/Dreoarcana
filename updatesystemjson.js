@@ -24,7 +24,7 @@ let system = JSON.parse(systemRaw)
 system.version = `${argv.versiontag}`
 system.url = `https://gitlab.com/${argv.gitlabpath}`
 system.manifest = `https://gitlab.com/${argv.gitlabpath}/-/jobs/${argv.jobid}/artifacts/raw/system.json`
-system.download = `https://gitlab.com/${argv.gitlabpath}/-/jobs/${argv.jobid}/artifacts/mythras.zip`
+system.download = `https://gitlab.com/${argv.gitlabpath}/-/jobs/${argv.jobid}/artifacts/raw/mythras.zip`
 
 fs.writeFileSync('system.json', JSON.stringify(system, null, 2))
 
