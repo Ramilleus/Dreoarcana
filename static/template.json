@@ -334,6 +334,9 @@
       "cost": 0,
       "castTime": "",
       "duration": "",
+      "range": "",
+      "area": "",
+      "targets": "",
       "durationMult": 0,
       "traits": "",
       "intensity": {
