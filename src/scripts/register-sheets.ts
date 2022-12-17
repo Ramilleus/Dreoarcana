@@ -1,7 +1,9 @@
-import { ActorSheetMythrasCharacter } from '@actor/sheet/character.js'
 import { ArmorSheetMythras } from '@item/armor/sheet'
 import { SkillSheetMythras } from '@item/skill/sheet'
 import { ItemSheetMythras } from '@item/sheet/base'
+import { CharacterSheetMythras } from '@actor/character/sheet'
+import { PhysicalItemSheetMythras } from '@item/physical/sheet'
+import { MYTHRASCONFIG } from './config'
 
 export function registerSheets() {
   registerItemSheet()
@@ -14,35 +16,10 @@ export function registerSheets() {
 function registerItemSheet() {
   Items.unregisterSheet('core', ItemSheet)
 
-  const itemTypes = [
-    'hitLocation',
-    'melee-weapon',
-    'ranged-weapon',
-    'equipment',
-    'currency',
-    'ability',
-    'spell',
-    'storage',
-    'cultBrotherhood'
-  ]
-  for (const itemType of itemTypes) {
-    Items.registerSheet('mythras', ItemSheetMythras, {
+  let itemType: keyof typeof MYTHRASCONFIG.Item.sheetClasses
+  for (itemType in MYTHRASCONFIG.Item.sheetClasses) {
+    Items.registerSheet('mythras', MYTHRASCONFIG.Item.sheetClasses[itemType], {
       types: [itemType],
-      makeDefault: true
-    })
-  }
-
-  const sheetEntries = [
-    ['armor', ArmorSheetMythras],
-    ['standardSkill', SkillSheetMythras],
-    ['professionalSkill', SkillSheetMythras],
-    ['combatStyle', SkillSheetMythras],
-    ['magicSkill', SkillSheetMythras],
-    ['passion', SkillSheetMythras]
-  ] as const
-  for (const [type, Sheet] of sheetEntries) {
-    Items.registerSheet('mythras', Sheet, {
-      types: [type],
       makeDefault: true
     })
   }
@@ -53,8 +30,11 @@ function registerItemSheet() {
  */
 function registerActorSheet() {
   Actors.unregisterSheet('core', ActorSheet)
-  Actors.registerSheet('mythras', ActorSheetMythrasCharacter as any, {
-    types: ['character'],
-    makeDefault: true
-  })
+  let actorType: keyof typeof MYTHRASCONFIG.Actor.sheetClasses
+  for (actorType in MYTHRASCONFIG.Actor.sheetClasses) {
+    Actors.registerSheet('mythras', MYTHRASCONFIG.Actor.sheetClasses[actorType], {
+      types: [actorType],
+      makeDefault: true
+    })
+  }
 }

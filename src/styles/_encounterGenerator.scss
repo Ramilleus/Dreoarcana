@@ -1,0 +1,119 @@
+@use 'colors' as *;
+
+.encounter-generator-btn-container {
+  padding: 4px;
+  button.encounter-generator-btn {
+    margin: 0;
+    cursor: pointer;
+  }
+}
+#encounter-generator {
+  h2 {
+    border: 0;
+  }
+  .tab {
+    height: 100%;
+  }
+  .sheet-header {
+    flex-wrap: wrap;
+    p {
+      white-space: nowrap;
+    }
+  }
+
+  button:hover {
+    background-color: $sheet-crimson;
+    box-shadow: unset;
+  }
+  .template-list-search:focus {
+    box-shadow: 0px 0px 7px $sheet-crimson;
+  }
+  .template-list-search {
+    width: 300px;
+    height: 30px;
+  }
+  .template-list-section {
+    flex: 1;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .template-list-header-row {
+      padding-right: 7px;
+      min-height: 30px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: rgb(61, 61, 61);
+      div.enemy-type {
+        flex: 2 1 0;
+      }
+      div.party-type {
+        flex: 2 1 0;
+      }
+      div {
+        text-align: center;
+        min-width: 100px;
+        flex: 1 1 0;
+        color: white;
+        font-weight: bold;
+      }
+    }
+    .template-list-rows {
+      flex: 1 0 0;
+      overflow: scroll;
+      overflow-x: hidden;
+      .template-list-row:nth-child(even) {
+        background-color: rgb(204, 204, 204, 0.5);
+      }
+      .template-list-row {
+        position: relative;
+        z-index: 400;
+        border-bottom: 1px solid gray;
+        min-height: 40px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        div.enemy-type {
+          flex: 2 1 0;
+        }
+        div.party-type {
+          flex: 2 1 0;
+        }
+        div {
+          padding: 5px;
+          flex: 1 1 0;
+          text-align: center;
+          min-width: 100px;
+          word-wrap: break-word;
+        }
+      }
+      .template-list-row:hover {
+        background-color: rgba(180, 180, 180, 0.5);
+        box-shadow: 0px 0px 7px $sheet-crimson;
+        z-index: 500;
+        cursor: pointer;
+      }
+      .info-row {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.mini-stat-table {
+  overflow: hidden;
+  > div {
+    padding: 3px;
+  }
+  > div:nth-child(even) {
+    background-color: rgb(204, 204, 204, 0.5);
+  }
+
+  &__header {
+    background-color: rgb(31, 31, 31);
+    color: white;
+  }
+}

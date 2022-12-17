@@ -1,6 +1,7 @@
-import { ActorSheetMythras } from './base.js'
+import { CharacterMythras } from '@actor'
+import { CreatureSheetMythras } from '@actor/creature/sheet'
 
-export class ActorSheetMythrasCharacter extends ActorSheetMythras {
+export class CharacterSheetMythras extends CreatureSheetMythras<CharacterMythras> {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {

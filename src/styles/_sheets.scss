@@ -1,3 +1,4 @@
+@use 'colors' as *;
 .mythras {
   .window-content {
     padding: 0px;
@@ -37,16 +38,16 @@
 
   ::-webkit-scrollbar-thumb {
     border: none;
-    background: #6c0300;
+    background: $sheet-scrollbar-color;
     border-radius: 0px;
   }
 
-  .increased-attribute {
-    color: #4fa04d;
+  .increased {
+    color: $sheet-positive;
   }
 
-  .decreased-attribute {
-    color: #c11f1f;
+  .decreased {
+    color: $sheet-negative;
   }
 
   .flex-table-container {
@@ -86,5 +87,8 @@
         }
       }
     }
+  }
+  section.sheet-body {
+    padding: 10px;
   }
 }

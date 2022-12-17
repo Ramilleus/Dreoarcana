@@ -34,6 +34,43 @@
             "mod": 0
           }
         },
+        "trackedStats": {
+          "experienceRolls": {
+            "name": "Experience Rolls",
+            "attribute": "",
+            "value": 0,
+            "display": true,
+            "derivedFrom": ""
+          },
+          "tenacity": {
+            "name": "Tenacity",
+            "attribute": "tenacity",
+            "value": 11,
+            "display": true,
+            "derivedFrom": "maxTenacity"
+          },
+          "magicPoints": {
+            "name": "Magic Points",
+            "attribute": "magicPoints",
+            "value": 0,
+            "display": true,
+            "derivedFrom": "maxMagicPoints"
+          },
+          "luckPoints": {
+            "name": "Luck Points",
+            "attribute": "luckPoints",
+            "value": 0,
+            "display": true,
+            "derivedFrom": "maxLuckPoints"
+          },
+          "actionPoints": {
+            "name": "Action Points",
+            "attribute": "actionPoints",
+            "value": 0,
+            "display": true,
+            "derivedFrom": "maxActionPoints"
+          }
+        },
         "attributes": {
           "actionPoints": {
             "mod": 0,
@@ -74,10 +111,22 @@
             "walk": 6,
             "mod": 0
           },
+          "walk": {
+            "mod": 0
+          },
+          "run": {
+            "mod": 0
+          },
+          "sprint": {
+            "mod": 0
+          },
           "climb": {
             "mod": 0
           },
-          "jump": {
+          "jumpHorizontal": {
+            "mod": 0
+          },
+          "jumpVertical": {
             "mod": 0
           },
           "swim": {
@@ -102,7 +151,8 @@
         "currentLuckPoints": 2,
         "currentMagicPoints": 11,
         "currentActionPoints": 2,
-        "experienceRolls": 0
+        "experienceRolls": 0,
+        "spellFilterOption": "All"
       },
       "humanoid": {}
     },
@@ -161,6 +211,7 @@
         "fumbled": false
       },
       "item": {
+        "defaultImageSet": false,
         "description": "",
         "encumbrance": 0,
         "quantity": 1,

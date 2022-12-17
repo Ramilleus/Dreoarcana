@@ -1,0 +1,87 @@
+@use 'colors';
+@use 'sass:math';
+
+// Input Mixins
+@mixin input-default {
+  @include input-reset-border;
+  @include input-focus;
+  @include input-hover;
+  &--square {
+    @include input-square;
+  }
+  &--bordered {
+    @include input-bordered;
+  }
+  &--underlined {
+    @include input-underlined;
+  }
+  &--mini {
+    font-size: 0.7em;
+    height: 15px;
+    width: 15px;
+    margin: 0;
+    margin-top: 2px;
+    text-align: left;
+  }
+  &--fit-width {
+    width: fit-content;
+  }
+}
+
+@mixin input-square {
+  width: 50px;
+  height: 50px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+@mixin input-bordered {
+  border: 1px colors.$transparent-black solid;
+}
+
+@mixin input-underlined {
+  border: 0;
+  border-bottom: 1px colors.$transparent-black solid;
+}
+
+@mixin input-hover {
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+@mixin input-focus {
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.1);
+    outline: none;
+    outline-style: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+@mixin input-reset-border {
+  border-radius: 0;
+  border: 0;
+}
+
+// Flex Mixins
+@mixin flex-gap($gap-size) {
+  $-gap-size-half: math.div($gap-size, 2);
+  > * {
+    padding-right: $-gap-size-half;
+    padding-left: $-gap-size-half;
+  }
+  > *:first-child {
+    padding-left: 0px;
+  }
+  > *:last-child {
+    padding-right: 0px;
+  }
+}
+
+// Label Mixins
+@mixin label-small() {
+  margin: 0;
+  font-size: 0.7em;
+}

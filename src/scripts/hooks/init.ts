@@ -1,24 +1,15 @@
-import { ActorMythras } from '@actor/actor.js'
+import { ActorMythras } from '@actor'
 import { CombatMythras } from '@combat/combat-mythras.js'
 import { MythrasCombatTracker } from '@combat/combat-tracker'
-import { MythrasCombatTrackerConfig } from '@combat/combat-config.js'
 import { registerHandlebarsHelpers } from '@scripts/handlebars'
 import { registerTemplates } from '@scripts/register-templates'
 import { MYTHRASCONFIG } from '@scripts/config'
 import { ItemMythras } from '@item/base'
+import { SetGameMythras } from '@scripts/set-game-mythras'
 
 export const Init = {
   listen: (): void => {
     Hooks.once('init', function () {
-      // Setup game.mythras
-      game.mythras = {
-        ActorMythras,
-        ItemMythras,
-        CombatMythras,
-        MythrasCombatTracker,
-        MythrasCombatTrackerConfig
-      }
-
       CONFIG.MYTHRAS = MYTHRASCONFIG
 
       // Define custom Entity classes
@@ -29,15 +20,25 @@ export const Init = {
 
       // Set an initiative formula for the system
       CONFIG.Combat.initiative = {
-        formula: (_combatant) => '1d10 + @attributes.initiativeBonus.value',
+        //Weird error below, but it works
+        //TODO: Look into this
+        //@ts-ignore
+        formula: '1d10 + @initiativeBonus',
         decimals: 2
       }
+
+      //CONFIG.debug.hooks = true
 
       // Register Handlebars Helpers
       registerHandlebarsHelpers()
 
       // Load Handlebars partial templates
       registerTemplates()
+
+      SetGameMythras.onInit()
+    })
+    Hooks.on('updateCombatant', function (combatant) {
+      console.log(combatant)
     })
   }
 }

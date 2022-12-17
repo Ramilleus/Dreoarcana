@@ -22,8 +22,8 @@
             <select name="data.storage" data-dtype="String">
               {{#select data.data.storage}}
               <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
-              {{#each data.data.storageList as |bag|}}
-              <option value="{{bag.id}}">{{bag.name}}</option>
+              {{#each availableStorage as |storage|}}
+              <option value="{{storage.id}}">{{storage.name}}</option>
               {{/each}}
               {{/select}}
             </select>

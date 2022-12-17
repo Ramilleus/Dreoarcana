@@ -7,7 +7,7 @@
           <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
         </h1>
       </div>
-      <h1>{{data.data.totalVal}}</h1>
+      <h1>{{ totalVal }}%</h1>
     </div>
   </header>
 
@@ -57,7 +57,8 @@
               <label>
                 <p>{{localize 'MYTHRAS.ENC_Penalty'}}</p>
               </label>
-              <input type="checkbox" class="char-enc" disabled="disabled" checked="" />
+              <input type="checkbox" data="data.encPenalty" name="data.encPenalty" {{checked encPenalty}}
+                disabled="true" />
             </div>
             <div>
               <label>

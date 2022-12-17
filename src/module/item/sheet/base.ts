@@ -1,7 +1,23 @@
 import { ItemMythras } from '@item/base'
-import { skillTypes } from '@item/skill-helper.js'
+import { itemIsSkill } from '@item/type-guards'
+import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
 export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem> {
+  sheetPostRender!: SheetPostRender
+
+  constructor (item: TItem, options?: Partial<DocumentSheetOptions>) {
+    super(item, options)
+    // Apply styles after renderActorSheet hook
+    Hooks.on('renderItemSheet', () => {
+      this.sheetPostRender = new SheetPostRender(this.element)
+      this.postRender()
+    })
+  }
+
+  private postRender() {
+    this.sheetPostRender.postRender()
+  }
+
   static override get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ['mythras', 'sheet', 'item'],
@@ -29,7 +45,7 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     } else if (itemType === 'combatStyle') {
       // Combat style is considered a skill, but has a unique sheet. This serves as an override
       return `${path}/item-combatStyle-sheet.html`
-    } else if (skillTypes.includes(itemType)) {
+    } else if (itemIsSkill(this.item)) {
       // Loads the default skill sheet that applies to all other skills
       return `${path}/item-skill-sheet.html`
     } else {
@@ -38,8 +54,8 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     }
   }
 
-  override getData() {
-    const data = super.getData()
+  override getData(options?: Partial<DocumentSheetOptions>) {
+    const data = super.getData(options)
     return data
   }
 
@@ -51,8 +67,13 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     return position
   }
 
-  override activateListeners(html: any): void {
-    super.activateListeners(html)
+  override activateListeners($html: JQuery): void {
+    super.activateListeners($html)
+
+    $html.find('input').on('click', function (event) {
+      this.select()
+    })
+
     if (!this.options.editable) return
   }
 }

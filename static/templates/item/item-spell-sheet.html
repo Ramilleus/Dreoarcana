@@ -37,8 +37,8 @@
               <select name="data.sourceID" data-dtype="String">
                 {{#select data.data.sourceID}}
                 <option value="Uncategorized">Uncategorized</option>
-                {{#each data.data.sourceList as |src|}}
-                <option value="{{src.id}}">{{src.name}}</option>
+                {{#each availableMagicSkills as |skill|}}
+                <option value="{{skill.id}}">{{skill.name}}</option>
                 {{/each}}
                 {{/select}}
               </select>
@@ -77,17 +77,19 @@
                 data-dtype="String" />
             </div>
           </div>
-          <div class="spell-info-section">
-            <strong>Description</strong>
-          </div>
-          <p>
-            {{{data.data.description}}}
-          </p>
         </div>
 
         <div class="int-mag-section">
+          {{#each stats}}
+          <div data-stat="{{@key}}" class="derived-stat-with-label derived-stat-with-label--big">
+            <p class="derived-stat__label">
+              {{localize this.label}}
+            </p>
+            {{> systems/mythras/templates/common-components/derived-stat.html stat=this statName=@key}}
+          </div>
+          {{/each}}
 
-          <div class="spell-component-container">
+          {{!-- <div class="spell-component-container">
             <p class="component-label">
               Intensity
             </p>
@@ -99,8 +101,7 @@
                 <span>
                   +
                 </span>
-                <input type="text" name="data.intensity.mod" onclick="this.select()"
-                  value="{{data.data.intensity.mod}}" />
+                <input type="text" name="data.intensity.mod" value="{{data.data.intensity.mod}}" />
               </div>
             </div>
           </div>
@@ -117,11 +118,10 @@
                 <span>
                   +
                 </span>
-                <input type="text" name="data.magnitude.mod" onclick="this.select()"
-                  value="{{data.data.magnitude.mod}}" />
+                <input type="text" name="data.magnitude.mod" value="{{data.data.magnitude.mod}}" />
               </div>
             </div>
-          </div>
+          </div> --}}
         </div>
 
       </div>

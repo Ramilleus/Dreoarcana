@@ -1,6 +1,18 @@
-import { ActorMythras } from '@actor/actor.js'
+import { ActorMythras } from '@actor'
 
 export class ItemMythras extends Item<ActorMythras> {
+  get actorData() {
+    return this.actor ? this.actor.data : undefined
+  }
+
+  get name() {
+    return this.data.name
+  }
+
+  get id() {
+    return this.data._id
+  }
+
   constructor(data: any, context: any = {}) {
     if (context.mythras?.ready) {
       super(data, context)
@@ -8,9 +20,7 @@ export class ItemMythras extends Item<ActorMythras> {
       mergeObject(context, { mythras: { ready: true } })
       const classes = CONFIG.MYTHRAS.Item.documentClasses as any
       const ItemConstructor = classes[data.type]
-      return ItemConstructor
-        ? new ItemConstructor(data, context)
-        : new ItemMythras(data, context)
+      return ItemConstructor ? new ItemConstructor(data, context) : new ItemMythras(data, context)
     }
   }
 }

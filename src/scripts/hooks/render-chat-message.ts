@@ -1,6 +1,6 @@
 export const RenderChatMessage = {
   listen: (): void => {
-    Hooks.on('renderChatMessage', (app, html, data) => {
+    Hooks.on('renderChatMessage', (app, html: any, data) => {
       let chatButtons = [...html[0].querySelectorAll('.apply-damage')]
       let chatMessage = chatButtons[chatButtons.length - 1]
       let revealButton = html[0].querySelector('.revealDamage')
@@ -33,8 +33,7 @@ export const RenderChatMessage = {
                 : 0
 
             hitLocation.update({
-              'data.currentHp':
-                Number(hitLocation.data.data.currentHp) - armorMitigatedDamage
+              'data.currentHp': Number(hitLocation.data.data.currentHp) - armorMitigatedDamage
             })
             chatMessage.textContent = 'Damage Applied'
             chatMessage.style.backgroundColor = 'rgba(88, 88, 88, 0.705)'

@@ -1,4 +1,4 @@
-import { ActorMythras } from '@actor/actor'
+import { CharacterMythras } from '@actor'
 import { ArmorMythras } from '@item/armor'
 import { CombatStyleMythras } from '@item/combat-style'
 import { CultBrotherhoodMythras } from '@item/cult-brotherhood'
@@ -6,16 +6,25 @@ import { CurrencyMythras } from '@item/currency'
 import { EquipmentMythras } from '@item/equipment'
 import { HitLocationMythras } from '@item/hit-location'
 import { MagicSkillMythras } from '@item/magic-skill'
-import { MeleeWeaponMythras } from '@item/melee-weapon'
-import { RangedWeaponMythras } from '@item/ranged-weapon'
+import { MeleeWeaponMythras } from '@item/weapon/melee-weapon'
+import { RangedWeaponMythras } from '@item/weapon/ranged-weapon'
 import { SkillMythras } from '@item/skill'
 import { SpellMythras } from '@item/spell'
 import { StorageMythras } from '@item/storage'
+import { SkillSheetMythras } from '@item/skill/sheet'
+import { ArmorSheetMythras } from '@item/armor/sheet'
+import { ItemSheetMythras } from '@item/sheet/base'
+import { PhysicalItemSheetMythras } from '@item/physical/sheet'
+import { CharacterSheetMythras } from '@actor/character/sheet'
+import { SpellSheetMythras } from '@item/spell/sheet'
 
 export const MYTHRASCONFIG = {
   Actor: {
     documentClasses: {
-      character: ActorMythras
+      character: CharacterMythras
+    },
+    sheetClasses: {
+      character: CharacterSheetMythras
     }
   },
 
@@ -35,6 +44,22 @@ export const MYTHRASCONFIG = {
       spell: SpellMythras,
       storage: StorageMythras,
       cultBrotherhood: CultBrotherhoodMythras
+    },
+    sheetClasses: {
+      standardSkill: SkillSheetMythras,
+      hitLocation: ItemSheetMythras,
+      professionalSkill: SkillSheetMythras,
+      combatStyle: SkillSheetMythras,
+      magicSkill: SkillSheetMythras,
+      passion: SkillSheetMythras,
+      'melee-weapon': PhysicalItemSheetMythras,
+      'ranged-weapon': PhysicalItemSheetMythras,
+      armor: ArmorSheetMythras,
+      equipment: PhysicalItemSheetMythras,
+      currency: PhysicalItemSheetMythras,
+      spell: SpellSheetMythras,
+      storage: PhysicalItemSheetMythras,
+      cultBrotherhood: ItemSheetMythras
     }
   }
 }

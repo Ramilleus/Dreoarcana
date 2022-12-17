@@ -1,0 +1,28 @@
+@use 'mixins';
+
+.labelled-text-input {
+  input#{&}__input {
+    @include mixins.input-default;
+  }
+  &__label {
+    @include mixins.label-small;
+  }
+
+  &--square {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+select.basic-select {
+  @include mixins.input-default;
+}
+
+input.text-input {
+  @include mixins.input-default;
+}
+
+.label-small {
+  @include mixins.label-small;
+}

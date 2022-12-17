@@ -1,0 +1,33 @@
+@use 'colors';
+.basic-table {
+  margin-bottom: 10px;
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+  padding: 5px;
+  table {
+    background: none;
+    border: none;
+  }
+  h3 {
+    margin-bottom: 0px;
+    color: colors.$sheet-crimson;
+  }
+
+  th {
+    text-align: left;
+  }
+
+  thead {
+    background: none;
+    color: black;
+    text-shadow: none;
+  }
+
+  .delete-column {
+    width: 20px;
+  }
+  &__add-button {
+    float: right;
+    margin-right: 10px;
+    font-size: 1.2em;
+  }
+}

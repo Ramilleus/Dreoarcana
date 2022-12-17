@@ -1,3 +1,4 @@
+@use 'colors';
 .item-sheet {
   .profile-img {
     flex: 0 0 64px;
@@ -45,7 +46,8 @@
   .header-flex {
     display: flex;
     align-items: center;
-    background: url('../assets/sheet/header-background-pattern.jpg');
+    background: url('../assets/sheet/header-background-pattern-overlay.png') repeat
+      colors.$sheet-header-color;
     background-repeat: repeat;
     box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
     padding: 10px;

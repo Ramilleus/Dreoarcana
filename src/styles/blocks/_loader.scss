@@ -1,0 +1,57 @@
+$-spinner-size: 30px;
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: $-spinner-size;
+  height: $-spinner-size;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: $-spinner-size * 0.5;
+  width: $-spinner-size * 0.2;
+  height: $-spinner-size * 0.2;
+  border-radius: 50%;
+  background: #000;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: $-spinner-size * 0.1;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: $-spinner-size * 0.1;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: $-spinner-size * 0.4;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: $-spinner-size * 0.7;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate($-spinner-size * 0.3, 0);
+  }
+}

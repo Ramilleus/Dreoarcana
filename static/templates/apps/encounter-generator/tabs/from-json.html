@@ -1,0 +1,38 @@
+<div class="tab from-json" data-group="primary" data-tab="from-json">
+  <div class="d-flex d-flex--column d-flex--center-items height-100">
+    <div class="bottom-margin-medium" style="width: 100%">
+      <p>If the automatic import functionality isn't working or you'd just like to import an enemy or party by hand, you
+        can import it here directly from JSON. Follow the instructions below on how to get the enemy or party JSON.</p>
+    </div>
+    <div class="bottom-margin-medium" style="width: 100%">
+      <h2>Instructions</h2>
+      <ol>
+        <li>
+          Enemies/Parties can be found on the Skoll Mythras Encounter Generator. Once you find an enemy or party that
+          you want,
+          you can find its id in the url bar for that page:
+          <ul>
+            <li>https://skoll.xyz/mythras_eg/enemy_template/XXXX/ | XXXX being that enemy's id or</li>
+            <li>https://skoll.xyz/mythras_eg/party/XXXX/ | XXXX being that party's id.</li>
+          </ul>
+        </li>
+        <li>
+          Navigate your web browser to:
+          <ul>
+            <li>https://skoll.xyz/mythras_eg/generate_enemies_json/?id=XXXX for enemies or</li>
+            <li>https://skoll.xyz/mythras_eg/generate_party_json/?id=XXXX for parties</li>
+          </ul>
+        </li>
+        <li>This will provide you with a JSON string. Copy that string and paste it into the corresponsing field below.
+        </li>
+        <li>Click Create and the actor(s) will be created!</li>
+      </ol>
+    </div>
+    <p>Paste Enemy JSON Here</p>
+    <textarea id="create-enemy-json" class="bottom-margin-medium" style="width: 60%; height: 200px;"></textarea>
+    <button id="create-enemy-button" style="width: 60%;" class="button-red bottom-margin-medium">Create</button>
+    <p>Paste Party JSON Here</p>
+    <textarea id="create-party-json" class="bottom-margin-medium" style="width: 60%; height: 200px;"></textarea>
+    <button id="create-party-button"  style="width: 60%;" class="button-red">Create</button>
+  </div>
+</div>

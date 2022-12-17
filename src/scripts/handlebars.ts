@@ -19,6 +19,28 @@ export function registerHandlebarsHelpers() {
     let secondChar = localizeSkillAbbrev(data.secondaryChar)
     return [primChar, secondChar].filter(Boolean).join(' + ')
   })
+
+  Handlebars.registerHelper('roundNumber', function (num: number, maxDecimalPlaces: number) {
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: maxDecimalPlaces
+    }).format(num)
+  })
+  Handlebars.registerHelper('ifeq', function (a, b, options) {
+    if (a == b) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  })
+  Handlebars.registerHelper('formatSnakeCaseName', function (name: string) {
+    const segs = name.split('_')
+
+    return segs
+      .map((seg) => {
+        return seg[0].toUpperCase() + seg.substring(1)
+      })
+      .join(' ')
+  })
 }
 
 function localizeSkillAbbrev(str: string) {

@@ -1,18 +1,17 @@
-.mythras nav.sheet-tabs {
-  > * {
-    flex: 0;
+@use 'colors';
+nav.sheet-tabs {
+  .item.active {
+    text-shadow: unset;
   }
+
   font-family: 'Suravaram';
   font-size: 1.2em;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  border-bottom: 1px solid colors.$sheet-gray;
+  border-top: 1px solid colors.$sheet-gray;
   flex: 0 0 30px;
-
-  div {
-    display: inline-block;
-    width: 80px;
-  }
 
   a:hover {
     text-shadow: none;
@@ -22,6 +21,7 @@
     width: 7px;
     height: 7px;
     border: 0;
+    flex: 0;
   }
 
   .active {
@@ -41,8 +41,4 @@
   a.active:after {
     transform: scaleX(1);
   }
-}
-
-.mythras section.sheet-body {
-  padding: 10px;
 }

@@ -1,6 +1,10 @@
+@use 'layout';
+@use 'blocks';
+@use 'tables';
 @use 'actor/character';
 @use 'chat';
 @use 'fonts';
 @use 'item';
 @use 'globals';
 @use 'sheets';
+@use 'encounterGenerator';

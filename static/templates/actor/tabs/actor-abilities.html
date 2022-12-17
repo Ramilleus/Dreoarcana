@@ -4,12 +4,12 @@
       {{localize 'MYTHRAS.Abilities'}}
     </h2>
     <div class="section">
-      <div class="mythras-table">
+      <div class="basic-table">
         <h3>
           <span>
             {{localize 'MYTHRAS.Magic_Skills'}}
           </span>
-          <a class="add-skills-button item-create" title="Create item" data-type="magicSkill">
+          <a class="basic-table__add-button item-create" title="Create item" data-type="magicSkill">
             +
           </a>
         </h3>
@@ -35,7 +35,7 @@
             </th>
           </thead>
           <tbody>
-            {{#each actor.magicSkills as |item id|}}
+            {{#each items.magicSkill as |item id|}}
             <tr class="item" data-item-id="{{item.data._id}}">
               <td>
                 <a class="item-name item-control item-edit">
@@ -72,7 +72,7 @@
               <td>
                 <a class="skill-val rollableSkill" data-roll="1d100"
                   data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
-                  {{item.data.data.totalVal}}%
+                  {{item.totalVal}}%
                 </a>
               </td>
               <td>
@@ -89,15 +89,20 @@
     <div class="section section-large">
       <div class="flex-table-container">
         <div class="tables-left">
-          <div class="mythras-table spells-table">
+          <div class="basic-table spells-table">
             <h3 class="table-header-flex">
               <span class="title">
                 {{localize 'MYTHRAS.Spells'}}
               </span>
-              <select id="spellFilter">
-                <option>All</option>
+              <select name="data.spellFilterOption" id="spellFilter">
+                {{#select data.data.spellFilterOption}}
+                <option value="All">All</option>
+                {{#each magicSkillNames as |name|}}
+                <option value="{{name}}">{{name}}</option>
+                {{/each}}
+                {{/select}}
               </select>
-              <a class="add-skills-button item-create" title="Create item" data-type="spell">
+              <a class="basic-table__add-button item-create" title="Create item" data-type="spell">
                 +
               </a>
             </h3>
@@ -114,15 +119,15 @@
                 </th>
               </thead>
               <tbody>
-                {{#each actor.spells as |item id|}}
-                <tr class="item active" data-item-id="{{item.data._id}}" data-item-source="{{item.data.data.source}}">
+                {{#each items.spell as |item id|}}
+                <tr class="item active" data-item-id="{{item.id}}" data-item-source="{{item.magicSkillName}}">
                   <td class="item-profile">
                     <img class="item-img" src="{{item.img}}">
                     <a class="item-name item-control item-edit">
                       {{item.data.name}}
                     </a>
                   </td>
-                  <td>{{item.data.data.source}}</td>
+                  <td>{{item.magicSkillName}}</td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item">
                       <i class="fas fa-trash"></i>
