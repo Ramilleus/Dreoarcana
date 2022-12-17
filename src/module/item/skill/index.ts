@@ -15,7 +15,10 @@ export class SkillMythras extends ItemMythras {
 
   get totalVal() {
     let data: any = this.data
-    this.reRenderOpenSheet()
+    //Was intended to fix the issue where an item sheet is already rendered and its base values from the character sheet are changed (which wouldn't change the item data).
+    //Is commented out because it breaks magic skills for some reason
+    //TODO: figure out why it breaks magic skills
+    //this.reRenderOpenSheet()
     return this.baseVal + Number(data.data.trainingVal) + Number(data.data.miscBonus)
   }
 

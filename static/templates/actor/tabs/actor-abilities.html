@@ -72,7 +72,7 @@
               <td>
                 <a class="skill-val rollableSkill" data-roll="1d100"
                   data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
-                  {{item.data.data.totalVal}}%
+                  {{item.totalVal}}%
                 </a>
               </td>
               <td>
@@ -94,8 +94,13 @@
               <span class="title">
                 {{localize 'MYTHRAS.Spells'}}
               </span>
-              <select id="spellFilter">
-                <option>All</option>
+              <select name="data.spellFilterOption" id="spellFilter">
+                {{#select data.data.spellFilterOption}}
+                <option value="All">All</option>
+                {{#each magicSkillNames as |name|}}
+                <option value="{{name}}">{{name}}</option>
+                {{/each}}
+                {{/select}}
               </select>
               <a class="basic-table__add-button item-create" title="Create item" data-type="spell">
                 +
@@ -115,7 +120,7 @@
               </thead>
               <tbody>
                 {{#each items.spell as |item id|}}
-                <tr class="item active" data-item-id="{{item.id}}">
+                <tr class="item active" data-item-id="{{item.id}}" data-item-source="{{item.magicSkillName}}">
                   <td class="item-profile">
                     <img class="item-img" src="{{item.img}}">
                     <a class="item-name item-control item-edit">

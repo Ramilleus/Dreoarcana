@@ -38,6 +38,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
+      magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
 
       tabs: [
         {
@@ -183,7 +184,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
         }
       }
     }
-
+    console.log(data.magicSkillNames)
     this.sortItems(data)
 
     return mergeObject(baseData, data)
@@ -219,6 +220,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     this.applyEncumbranceStyles()
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
+    this.filterSpells()
   }
 
   private applyEncumbranceStyles() {
@@ -334,9 +336,6 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       li.slideUp(200, () => this.render(false))
     })
 
-    html.find('#spellFilter').on('click', this.filterSpells.bind(this))
-    this.createSpellFilterOptions()
-
     // html.find('.skill-alpha-sort').on('click', (ev) => {
     //   let data = this.getData()
     //   if (ev.currentTarget.id == 'professional-alpha-sort') {
@@ -373,7 +372,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     // })
     html.find('.stat-settings').on('click', (event) => {
       event.preventDefault()
-      let statList = 'Epic Test'
+      let statList = 'Coming soon :)'
       new Dialog({
         title: 'Stat Tracker',
         content: statList,
@@ -485,9 +484,9 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     rollFunction(item)
   }
 
-  private async filterSpells(event: any) {
-    event.preventDefault()
-    let filterBy = event.currentTarget.value
+  private async filterSpells() {
+    let data = this.actor.data.data as any
+    let filterBy = data.spellFilterOption
     let items: any[] = [...document.querySelectorAll('.spell-list-table .item')]
     for (let item of items) {
       switch (filterBy) {
@@ -504,23 +503,4 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     }
   }
 
-  private createSpellFilterOptions() {
-    let spells: any[] = this.actor.items.filter((i) => i.type === 'spell')
-    for (let spell of spells) {
-      let isDuplicate = [...document.querySelectorAll('[data-source]')].some(
-        (i: any) => i.dataset.source == spell.data.data.source
-      )
-
-      switch (isDuplicate) {
-        case true:
-          break
-
-        case false:
-          let option = document.createElement('option')
-          option.dataset.source = spell.data.data.source
-          option.innerHTML = `${spell.data.data.source}`
-          document.querySelector('#spellFilter').append(option)
-      }
-    }
-  }
 }

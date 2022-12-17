@@ -18,6 +18,7 @@ export class MagicSkillMythras extends SkillMythras {
     const actorData: any = this.actor ? this.actor.data : {}
     
     const data = itemData.data
+    
     let cultRank = 0
     let chaValue = 0
     let powValue = 0
@@ -37,31 +38,31 @@ export class MagicSkillMythras extends SkillMythras {
     }
     switch (data.skillType) {
       case 'TR':
-        this._setTRMagicValues(data, data.totalVal)
+        this._setTRMagicValues(data, this.totalVal)
         break
       case 'BI':
-        this._setBIMagicValues(data, data.totalVal, cultRank, chaValue)
+        this._setBIMagicValues(data, this.totalVal, cultRank, chaValue)
         break
       case 'ME':
-        this._setMEMagicValues(data, data.totalVal)
+        this._setMEMagicValues(data, this.totalVal)
         break
       case 'MY':
-        this._setMYMagicValues(data, data.totalVal)
+        this._setMYMagicValues(data, this.totalVal)
         break
       case 'IN':
-        this._setINMagicValues(data, data.totalVal)
+        this._setINMagicValues(data, this.totalVal)
         break
       case 'SH':
-        this._setSHMagicValues(data, data.totalVal)
+        this._setSHMagicValues(data, this.totalVal)
         break
       case 'DE':
-        this._setDEMagicValues(data, data.totalVal, cultRank, powValue)
+        this._setDEMagicValues(data, this.totalVal, cultRank, powValue)
         break
       case 'EX':
-        this._setEXMagicValues(data, data.totalVal)
+        this._setEXMagicValues(data, this.totalVal)
         break
       default:
-        this._setFMMagicValues(data, data.totalVal)
+        this._setFMMagicValues(data, this.totalVal)
         break
     }
   }
