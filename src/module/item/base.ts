@@ -5,13 +5,6 @@ export class ItemMythras extends Item<ActorMythras> {
     return this.actor ? this.actor.data : undefined
   }
 
-  get name() {
-    return this.data.name
-  }
-
-  get id() {
-    return this.data._id
-  }
 
   constructor(data: any, context: any = {}) {
     if (context.mythras?.ready) {
