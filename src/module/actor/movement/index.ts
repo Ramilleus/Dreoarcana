@@ -6,56 +6,56 @@ export class ActorMythrasMovement {
   constructor(private actor: ActorMythras) {}
 
   public get stats() {
-    let data: any = this.actor.data
+    let data: any = this.actor.system
     return {
       walk: {
         label: 'MYTHRAS.WALK',
         derivedName: 'movement.walk',
         derivedValue: this.walk,
         modifierName: 'data.attributes.movement.mod',
-        modifierValue: data.data.attributes.movement.mod
+        modifierValue: data.attributes.movement.mod
       },
       run: {
         label: 'MYTHRAS.RUN',
         derivedName: 'movement.run',
         derivedValue: this.run,
         modifierName: 'data.attributes.run.mod',
-        modifierValue: data.data.attributes.run.mod
+        modifierValue: data.attributes.run.mod
       },
       sprint: {
         label: 'MYTHRAS.SPRINT',
         derivedName: 'movement.sprint',
         derivedValue: this.sprint,
         modifierName: 'data.attributes.sprint.mod',
-        modifierValue: data.data.attributes.sprint.mod
+        modifierValue: data.attributes.sprint.mod
       },
       climb: {
         label: 'MYTHRAS.CLIMB',
         derivedName: 'movement.climb',
         derivedValue: this.climb,
         modifierName: 'data.attributes.climb.mod',
-        modifierValue: data.data.attributes.climb.mod
+        modifierValue: data.attributes.climb.mod
       },
       swim: {
         label: 'MYTHRAS.SWIM',
         derivedName: 'movement.swim',
         derivedValue: this.swim,
         modifierName: 'data.attributes.swim.mod',
-        modifierValue: data.data.attributes.swim.mod
+        modifierValue: data.attributes.swim.mod
       },
       jumpVertical: {
         label: 'MYTHRAS.V._JUMP',
         derivedName: 'movement.jumpVertical',
         derivedValue: this.jumpVertical,
         modifierName: 'data.attributes.jumpVertical.mod',
-        modifierValue: data.data.attributes.jumpVertical.mod
+        modifierValue: data.attributes.jumpVertical.mod
       },
       jumpHorizontal: {
         label: 'MYTHRAS.H._JUMP',
         derivedName: 'movement.jumpHorizontal',
         derivedValue: this.jumpHorizontal,
         modifierName: 'data.attributes.jumpHorizontal.mod',
-        modifierValue: data.data.attributes.jumpHorizontal.mod
+        modifierValue: data.attributes.jumpHorizontal.mod
       }
     }
   }

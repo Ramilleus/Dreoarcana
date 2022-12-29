@@ -29,7 +29,7 @@ export class EncounterGeneratorActorBuilder {
         .getDocuments()
         .then((result: any) => {
           result.forEach((skill: any, index: any) => {
-            standardSkills[skill.data.name.toLocaleLowerCase()] = skill.data.data
+            standardSkills[skill.name.toLocaleLowerCase()] = skill.system
           })
         })) as any
     )
@@ -41,7 +41,7 @@ export class EncounterGeneratorActorBuilder {
         .getDocuments()
         .then((result: any) => {
           result.forEach((skill: any, index: any) => {
-            professionalSkills[skill.data.name.toLocaleLowerCase()] = skill.data.data
+            professionalSkills[skill.name.toLocaleLowerCase()] = skill.system
           })
         })) as any
     )

@@ -39,7 +39,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
       magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
-
+      system: this.actor.system,
       tabs: [
         {
           name: "core",
@@ -184,7 +184,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
         }
       }
     }
-    console.log(data.magicSkillNames)
+    
     this.sortItems(data)
 
     return mergeObject(baseData, data)
@@ -193,25 +193,25 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   private sortItems(sheetData: any) {
     // Assign and return
     sheetData.items.hitLocation.sort((a: any, b: any) => {
-      return a.data.data.rollRangeStart - b.data.data.rollRangeStart
+      return a.system.rollRangeStart - b.system.rollRangeStart
     })
     sheetData.items.standardSkill.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+      return a.name.localeCompare(b.name)
     })
     sheetData.items.professionalSkill.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+      return a.name.localeCompare(b.name)
     })
     sheetData.items.magicSkill.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+      return a.name.localeCompare(b.name)
     })
     sheetData.items.storage.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+      return a.name.localeCompare(b.name)
     })
     sheetData.items.cultBrotherhood.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+      return a.name.localeCompare(b.name)
     })
     sheetData.items.spell.sort((a: any, b: any) => {
-      return a.data.data.source.localeCompare(b.data.data.source)
+      return a.system.source.localeCompare(b.system.source)
     })
   }
 

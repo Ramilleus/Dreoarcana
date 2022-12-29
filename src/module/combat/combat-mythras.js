@@ -38,12 +38,12 @@ export class CombatMythras extends Combat {
         skip
       )
         continue
-      if (t.actor?.data.data.trackedStats.actionPoints.value < 1) continue
+      if (t.actor?.system.trackedStats.actionPoints.value < 1) continue
       if (reduceAP) {
         let c = this.turns[turn]
         c.actor.update({
           ['data.trackedStats.actionPoints.value']:
-            Number(c.actor.data.data.trackedStats.actionPoints.value) - 1
+            Number(c.actor.system.trackedStats.actionPoints.value) - 1
         })
       }
 
