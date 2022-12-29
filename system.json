@@ -4,7 +4,7 @@
   "description": "The Mythras system for FoundryVTT!",
   "version": "2.x.x",
   "minimumCoreVersion": "0.8.9",
-  "compatibleCoreVersion": "9",
+  "compatibleCoreVersion": "10",
   "templateVersion": 5,
   "author": "Jonathan Karkour and Tom Paoloni",
   "esmodules": ["main.bundle.js"],
