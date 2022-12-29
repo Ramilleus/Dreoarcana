@@ -4,9 +4,9 @@ export class CultBrotherhoodMythras extends ItemMythras {
   override prepareData(): void {
     super.prepareData()
 
-    const itemData: any = this.data
+    const itemData: any = this.system
 
-    const data = itemData.data
+    const data = itemData
     switch (data.currentRank) {
       case '4':
         data.currentRankName = data.rankName4

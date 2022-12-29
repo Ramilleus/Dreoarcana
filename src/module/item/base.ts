@@ -2,7 +2,7 @@ import { ActorMythras } from '@actor'
 
 export class ItemMythras extends Item<ActorMythras> {
   get actorData() {
-    return this.actor ? this.actor.data : undefined
+    return this.actor ? this.actor : undefined
   }
 
 
