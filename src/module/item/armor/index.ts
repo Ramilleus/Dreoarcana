@@ -16,15 +16,15 @@ export class ArmorMythras extends PhysicalItemMythras {
   }
 
   get selectedHitLocationId() {
-    return (this.data.data as any).location
+    return (this.system as any).location
   }
 
   get ap() {
-    return Number((this.data.data as any).ap) || 0
+    return Number((this.system as any).ap) || 0
   }
 
   get isEquipped() {
-    return Boolean((this.data.data as any).equipped)
+    return Boolean((this.system as any).equipped)
   }
 
   override async _preCreate(data: any, options: any, user: any): Promise<void> {

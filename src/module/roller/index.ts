@@ -17,7 +17,7 @@ export class Roller {
   }
 
   private async rollDamage(rollTemplate: string, weapon: WeaponMythras) {
-    let roll = new Roll(weapon.damageRoll, this.actor.data.data)
+    let roll = new Roll(weapon.damageRoll, this.actor.system as any)
 
     let labelHtml = await renderTemplate(rollTemplate, {
       weapon: weapon
@@ -30,7 +30,7 @@ export class Roller {
   }
 
   public async rollHitLocation() {
-    let roll = new Roll('1d20', this.actor.data.data)
+    let roll = new Roll('1d20', this.actor.system as any)
     const result: number = Number((await roll.evaluate({ async: true })).result) || 0
     let label = game.i18n.localize('MYTHRAS.Rolling_Location')
 
@@ -49,7 +49,7 @@ export class Roller {
 
   public async rollSkill(
     skill: SkillMythras
-  ): Promise<foundry.data.ChatMessageData<foundry.documents.BaseChatMessage>> {
+  ): Promise<ChatMessage> {
     // Calculate difficulty grades based on skill value
     let difficultyGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
       return Math.ceil(x * Number(skill.totalVal))
@@ -72,7 +72,7 @@ export class Roller {
     let rollLabel = game.i18n.localize('MYTHRAS.Rolling') + ` ${skill.name}`
 
     // Make the roll
-    let roll = new Roll('1d100', this.actor.data.data)
+    let roll = new Roll('1d100', this.actor.system as any)
     const rolled = await roll.evaluate({ async: true })
 
     // Get results of the rolls at given grades, (e.g. Success, Failure, Critical, Fumble)

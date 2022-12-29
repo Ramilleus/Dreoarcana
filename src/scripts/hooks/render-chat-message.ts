@@ -18,7 +18,7 @@ export const RenderChatMessage = {
 
         chatMessage.addEventListener('click', function applyDamage() {
           let targetTokenActor = game.scenes.active.data.tokens.find(
-            (i) => i.id == chatMessage.dataset.targetToken
+            (i: any) => i.id == chatMessage.dataset.targetToken
           )
 
           if (game.user.isGM) {

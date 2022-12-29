@@ -27,8 +27,8 @@ export class EncounterGeneratorActorBuilder {
       (await game.packs
         .get('mythras.standardSkill')
         .getDocuments()
-        .then((result) => {
-          result.forEach((skill: any, index) => {
+        .then((result: any) => {
+          result.forEach((skill: any, index: any) => {
             standardSkills[skill.data.name.toLocaleLowerCase()] = skill.data.data
           })
         })) as any
@@ -39,8 +39,8 @@ export class EncounterGeneratorActorBuilder {
       (await game.packs
         .get('mythras.professionalSkill')
         .getDocuments()
-        .then((result) => {
-          result.forEach((skill: any, index) => {
+        .then((result: any) => {
+          result.forEach((skill: any, index: any) => {
             professionalSkills[skill.data.name.toLocaleLowerCase()] = skill.data.data
           })
         })) as any
@@ -312,7 +312,7 @@ export class EncounterGeneratorActorBuilder {
       Actor.create({
         name: skollEnemy.name,
         type: 'character',
-        data: actorData,
+        system: actorData,
         items: actorItems,
         folder: folder
       }).then((actor) => {

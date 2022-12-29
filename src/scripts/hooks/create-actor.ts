@@ -8,9 +8,9 @@ export const CreateActor = {
         game.packs
           .get('mythras.standardSkill')
           .getDocuments()
-          .then((result) => {
+          .then((result: any) => {
             let skillArray: any[] = []
-            result.forEach((skill, index) => {
+            result.forEach((skill: any, index: any) => {
               if (game.i18n) {
                 skill.data.update({
                   name: game.i18n.localize('MYTHRAS.' + skill.data.name.replace(/ /g, '_')),
@@ -26,9 +26,9 @@ export const CreateActor = {
         game.packs
           .get('mythras.humanoidHitLocations')
           .getDocuments()
-          .then((result) => {
+          .then((result: any) => {
             let hitLocArray: any[] = []
-            result.forEach((hitLoc, index) => {
+            result.forEach((hitLoc: any, index: any) => {
               if (game.i18n) {
                 hitLoc.data.update({
                   name: game.i18n.localize('MYTHRAS.' + hitLoc.data.name.replace(/ /g, '_'))

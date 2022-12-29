@@ -85,7 +85,7 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
 
   // Actor attribute misc modifier convenience getter
   get attributeMiscMods() {
-    let data: any = this.data.data
+    let data: any = this.system
     return {
       actionPoints: Number(data.attributes.actionPoints.mod) || 0,
       damageMod: Number(data.attributes.damageMod.mod) || 0,
@@ -100,7 +100,7 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
 
   // Actor characteristics convenience getter
   get characteristics() {
-    let data: any = this.data.data
+    let data: any = this.system
     return {
       str: Number(data.characteristics.str.value),
       con: Number(data.characteristics.con.value),
@@ -122,7 +122,7 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
     this.fatigue = new ActorMythrasFatigue(this)
     this.movement = new ActorMythrasMovement(this)
     this.statTracker = new ActorMythrasStatTracker(this)
-    let data = this.data.data as any
+    let data = this.system as any
     data.initiativeBonus = this.initiativeBonus
   }
 

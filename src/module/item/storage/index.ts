@@ -22,11 +22,11 @@ export class StorageMythras extends PhysicalItemMythras {
   }
 
   get isCarried(): boolean {
-    return Boolean((this.data.data as any).carried) || false
+    return Boolean((this.system as any).carried) || false
   }
 
   get maxEncumbrance(): number {
-    return Number((this.data.data as any).maxEncumbrance) || 0
+    return Number((this.system as any).maxEncumbrance) || 0
   }
 
   get contentValue() {

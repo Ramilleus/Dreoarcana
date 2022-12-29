@@ -9,11 +9,11 @@ export class HitLocationMythras extends ItemMythras {
   }
 
   get rollRangeStart(): Embedded<ArmorMythras>[] {
-    return (this.data.data as any).rollRangeStart
+    return (this.system as any).rollRangeStart
   }
 
   get rollRangeEnd(): Embedded<ArmorMythras>[] {
-    return (this.data.data as any).rollRangeEnd
+    return (this.system as any).rollRangeEnd
   }
 
   get equippedArmor(): Embedded<ArmorMythras>[] {
@@ -25,7 +25,7 @@ export class HitLocationMythras extends ItemMythras {
   }
 
   get naturalArmor() {
-    return (this.data.data as any).naturalArmor
+    return (this.system as any).naturalArmor
   }
 
   get totalAp() {
@@ -41,7 +41,7 @@ export class HitLocationMythras extends ItemMythras {
 
   get maxHp() {
     let data: any = deepClone(this.data)
-    let actorData: any = this.actor.data.data
+    let actorData: any = this.actor.system
 
     let sizValue = Number(actorData.characteristics.siz.value)
     let conValue = Number(actorData.characteristics.con.value)

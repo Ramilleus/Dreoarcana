@@ -4,11 +4,11 @@ export class MagicSkillMythras extends SkillMythras {
   isMagicSkill: boolean = true
 
   get intensity() {
-    return (this.data.data as any).intensity.max
+    return (this.system as any).intensity.max
   }
 
   get magnitude() {
-    return (this.data.data as any).magnitude.max
+    return (this.system as any).magnitude.max
   }
 
   override prepareData(): void {

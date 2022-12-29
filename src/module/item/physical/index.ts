@@ -18,7 +18,7 @@ export abstract class PhysicalItemMythras extends ItemMythras {
   }
 
   get encumbrance(): number {
-    return Number((this.data.data as any).encumbrance) || 0
+    return Number((this.system as any).encumbrance) || 0
   }
 
   get encumbranceTowardsTotal(): number {
@@ -33,15 +33,15 @@ export abstract class PhysicalItemMythras extends ItemMythras {
   }
 
   get quantity(): number {
-    return Number((this.data.data as any).quantity) || 0
+    return Number((this.system as any).quantity) || 0
   }
 
   get value(): number {
-    return Number((this.data.data as any).value) || 0
+    return Number((this.system as any).value) || 0
   }
 
   get storageId(): string {
-    return (this.data.data as any).storage
+    return (this.system as any).storage
   }
 
   get storageName(): string {

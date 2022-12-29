@@ -239,7 +239,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       (item) => item.type == 'hitLocation'
     )
     for (let hitLocation of hitLocations) {
-      let currentHp = (hitLocation.data.data as any).currentHp
+      let currentHp = (hitLocation.system as any).currentHp
       let hitLocationElement: any = document.querySelector(
         `.hitLocation-table [data-item-id="${hitLocation.id}"]`
       )
@@ -485,7 +485,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   }
 
   private async filterSpells() {
-    let data = this.actor.data.data as any
+    let data = this.actor.system as any
     let filterBy = data.spellFilterOption
     let items: any[] = [...document.querySelectorAll('.spell-list-table .item')]
     for (let item of items) {

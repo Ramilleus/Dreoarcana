@@ -4,7 +4,7 @@ export class SkillMythras extends ItemMythras {
   isSkill: boolean = true
 
   get encPenalty() {
-    const data: any = this.data.data
+    const data: any = this.system
     return (
       data.primaryChar === 'str' ||
       data.primaryChar === 'dex' ||
@@ -25,7 +25,7 @@ export class SkillMythras extends ItemMythras {
   get baseVal() {
     if (this.actor && this.actor.data) {
       let data: any = this.data
-      let actorData: any = this.actor.data.data
+      let actorData: any = this.actor.system
       let primaryChar = data.data.primaryChar
       let secondaryChar = data.data.secondaryChar
       let primaryCharValue = primaryChar ? Number(actorData.characteristics[primaryChar].value) : 0

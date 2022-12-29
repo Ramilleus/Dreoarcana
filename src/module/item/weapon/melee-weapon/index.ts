@@ -2,14 +2,14 @@ import { WeaponMythras } from '@item/weapon/base'
 
 export class MeleeWeaponMythras extends WeaponMythras {
   get traits() {
-    return (this.data.data as any).traits
+    return (this.system as any).traits
   }
 
   get size() {
-    return (this.data.data as any).size
+    return (this.system as any).size
   }
 
   get reach() {
-    return (this.data.data as any).reach
+    return (this.system as any).reach
   }
 }

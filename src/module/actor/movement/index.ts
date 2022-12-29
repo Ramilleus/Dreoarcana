@@ -108,7 +108,7 @@ export class ActorMythrasMovement {
   }
 
   private get actorHeight(): number {
-    return (this.actor.data.data as any).height
+    return (this.actor.system as any).height
   }
 
   private get athleticsSkillValue(): number {
@@ -126,8 +126,8 @@ export class ActorMythrasMovement {
   }
 
   private get baseWalk(): number {
-    const baseMod = (this.actor.data.data as any).attributes.movement.mod
-    let walk = (this.actor.data.data as any).attributes.movement.walk
+    const baseMod = (this.actor.system as any).attributes.movement.mod
+    let walk = (this.actor.system as any).attributes.movement.walk
     if (!walk) walk = 6
     return Number(walk) + Number(baseMod) || 0
   }

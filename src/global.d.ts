@@ -25,11 +25,18 @@ declare global {
       Actors<ActorMythras>,
       ChatMessage<ActorMythras>,
       Combat,
-      Folder,
       ItemMythras,
       Macro,
       Scene,
       User<ActorMythras>
+    >
+
+    var ui: FoundryUI<
+      ActorMythras,
+      ActorDirectory<ActorMythras>,
+      ItemMythras,
+      ChatLog,
+      CompendiumDirectory
     >
   }
 

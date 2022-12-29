@@ -19,7 +19,7 @@ export class SpellMythras extends ItemMythras {
   }
 
   get magicSkillId(): string {
-    return (this.data.data as any).sourceID
+    return (this.system as any).sourceID
   }
 
   get magicSkillName(): string {
@@ -31,14 +31,14 @@ export class SpellMythras extends ItemMythras {
 
   get intensity() {
     if (this.magicSkill) {
-      return this.magicSkill.intensity + Number((this.data.data as any).intensity.mod)
+      return this.magicSkill.intensity + Number((this.system as any).intensity.mod)
     }
     return 0
   }
 
   get magnitude() {
     if (this.magicSkill) {
-      return this.magicSkill.magnitude + Number((this.data.data as any).magnitude.mod)
+      return this.magicSkill.magnitude + Number((this.system as any).magnitude.mod)
     }
     return 0
   }

@@ -2,7 +2,7 @@ import { PhysicalItemMythras } from '@item/physical'
 
 export class WeaponMythras extends PhysicalItemMythras {
   get damageRoll() {
-    const data: any = this.data.data
+    const data: any = this.system
     if (this.damageModifier) {
       return data.damage + '+' + this.actor.damageMod
     } else {
@@ -11,10 +11,10 @@ export class WeaponMythras extends PhysicalItemMythras {
   }
 
   get damageModifier() {
-    return (this.data.data as any).damageModifier
+    return (this.system as any).damageModifier
   }
 
   get combatEffects() {
-    return (this.data.data as any)['combat-effects']
+    return (this.system as any)['combat-effects']
   }
 }
