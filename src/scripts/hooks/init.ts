@@ -6,6 +6,7 @@ import { registerTemplates } from '@scripts/register-templates'
 import { MYTHRASCONFIG } from '@scripts/config'
 import { ItemMythras } from '@item/base'
 import { SetGameMythras } from '@scripts/set-game-mythras'
+import { ActiveEffectMythras } from '@module/active-effect'
 
 export const Init = {
   listen: (): void => {
@@ -17,6 +18,7 @@ export const Init = {
       CONFIG.Item.documentClass = ItemMythras
       CONFIG.Combat.documentClass = CombatMythras
       CONFIG.ui.combat = MythrasCombatTracker as any
+      CONFIG.ActiveEffect.documentClass = ActiveEffectMythras
 
       // Set an initiative formula for the system
       CONFIG.Combat.initiative = {
