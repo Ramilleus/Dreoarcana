@@ -31,7 +31,6 @@ export class ArmorMythras extends PhysicalItemMythras {
     if (this.actorData) {
       this.linkHitLocation(data.system)
     }
-    console.log(data)
     this.updateSource(data, options)
   }
 

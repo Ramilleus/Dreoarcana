@@ -412,7 +412,6 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     const header = event.currentTarget
     // Get the type of item to create.
     const type = header.dataset.type
-    console.log(type)
     // Grab any data associated with this control.
     const data = duplicate(header.dataset)
     // Initialize a default name.

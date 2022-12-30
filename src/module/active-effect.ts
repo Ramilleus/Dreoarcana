@@ -6,8 +6,6 @@ export class ActiveEffectMythras extends ActiveEffect {
     ) {
         data.disabled = true;
         data.transfer = false;
-        console.log(data)
-        console.log(context)
         super(data, context);
     }
 
