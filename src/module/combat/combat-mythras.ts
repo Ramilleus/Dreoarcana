@@ -19,8 +19,8 @@ export class CombatMythras extends Combat {
   async nextTurn() {
     let turn = this.turn
     let skip = this.settings.skipDefeated
-    let reduceAP = this.settings.reduceAP
-    let newMTurn = this.getFlag('mythras', 'cycle')
+    let reduceAp = game.settings.get("mythras", "combat.reduceAp")
+    let newMTurn: number = this.getFlag('mythras', 'cycle') as number
     let l = this.turns.length
     if (turn == l - 1) {
       newMTurn++
@@ -38,19 +38,22 @@ export class CombatMythras extends Combat {
         skip
       )
         continue
-      if (t.actor?.system.trackedStats.actionPoints.value < 1) continue
-      if (reduceAP) {
+
+      const turnSystemData = t.actor?.system as any
+      if (turnSystemData.trackedStats.actionPoints.value < 1) continue
+      if (reduceAp) {
         let c = this.turns[turn]
+        const combatantSystemData = c.actor.system as any
         c.actor.update({
           ['system.trackedStats.actionPoints.value']:
-            Number(c.actor.system.trackedStats.actionPoints.value) - 1
+            Number(combatantSystemData.trackedStats.actionPoints.value) - 1
         })
       }
 
       // Update the encounter
 
-      const advanceTime = CONFIG.time.turnTime
-      this.update({ round: this.round, turn: next }, { advanceTime })
+      const advanceTime = (CONFIG as any).time.turnTime
+      this.update({ round: this.round, turn: next }, { advanceTime } as any)
       return
     }
 
@@ -67,7 +70,7 @@ export class CombatMythras extends Combat {
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
       t.actor.update({
-        ['system.trackedStats.actionPoints.value']: Number(t.actor.maxActionPoints)
+        ['system.trackedStats.actionPoints.value']: Number((t.actor as any).maxActionPoints)
       })
     }
 
@@ -85,15 +88,15 @@ export class CombatMythras extends Combat {
         turn = 0
       }
     }
-    let advanceTime = Math.max(this.turns.length - this.turn, 1) * CONFIG.time.turnTime
-    advanceTime += CONFIG.time.roundTime
+    let advanceTime = Math.max(this.turns.length - this.turn, 1) * (CONFIG as any).time.turnTime
+    advanceTime += (CONFIG as any).time.roundTime
 
     return this.update(
       {
         round: this.round + 1,
         turn: turn
       },
-      { advanceTime }
+      { advanceTime } as any
     )
   }
 }

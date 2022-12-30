@@ -1,4 +1,4 @@
-import { CombatMythras } from './combat-mythras.js'
+import { CombatMythras } from './combat-mythras'
 
 export class MythrasCombatTrackerConfig extends CombatTrackerConfig {
   prepareData() {

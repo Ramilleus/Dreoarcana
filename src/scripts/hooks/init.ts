@@ -1,5 +1,5 @@
 import { ActorMythras } from '@actor'
-import { CombatMythras } from '@combat/combat-mythras.js'
+import { CombatMythras } from '@combat/combat-mythras'
 import { MythrasCombatTracker } from '@combat/combat-tracker'
 import { registerHandlebarsHelpers } from '@scripts/handlebars'
 import { registerTemplates } from '@scripts/register-templates'
@@ -36,6 +36,16 @@ export const Init = {
 
       // Load Handlebars partial templates
       registerTemplates()
+
+      // Set up custom Mythras combat setting
+      game.settings.register("mythras", "combat.reduceAp", {
+        name: "Automatically Reduce AP?",
+        hint: "Automatically reduce Action Points when a combatant's turn is passed?",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean,
+      });
 
       SetGameMythras.onInit()
     })
