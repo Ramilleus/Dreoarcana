@@ -85,7 +85,7 @@ export class CombatMythras extends Combat {
         turn = 0
       }
     }
-    let advanceTime = Math.max(this.turns.length - this.data.turn, 1) * CONFIG.time.turnTime
+    let advanceTime = Math.max(this.turns.length - this.turn, 1) * CONFIG.time.turnTime
     advanceTime += CONFIG.time.roundTime
 
     return this.update(
