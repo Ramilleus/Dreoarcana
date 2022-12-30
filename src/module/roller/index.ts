@@ -130,7 +130,7 @@ export class Roller {
       result.rollValue = rolled.result
 
       // Rolls above 95 are guaranteed Failures or Fumbles
-      if (rolled.result >= 95) {
+      if (rolled.result > 95) {
         // If the roll is 99 or 100, the roll is a fumble
         // (unless the character has a skill >= 100. Then 99 is only a Failure)
         if (rolled.result == 100 || (rolled.result == 99 && difficultyGrades[index] <= 100)) {
