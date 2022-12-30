@@ -36,9 +36,9 @@
       {{/if}}
 
       {{#if combatCount}}
-      {{#if combat.data.round}}
-      <h3 class="encounter-title" style="margin:0">{{localize 'COMBAT.Round'}} {{combat.data.round}} : Cycle
-        {{combat.data.flags.mythras.cycle}}
+      {{#if combat.round}}
+      <h3 class="encounter-title" style="margin:0">{{localize 'COMBAT.Round'}} {{combat.round}} : Cycle
+        {{combat.flags.mythras.cycle}}
       </h3>
       {{else}}
       <h3 class="encounter-title">{{localize 'COMBAT.NotStarted'}}</h3>
