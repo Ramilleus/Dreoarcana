@@ -7,7 +7,7 @@ export const PreCreateItem = {
 
       if (document.type !== 'hitLocation' && !data.defaultImageSet) {
         data.defaultImageSet = true
-        data.img = getItemImage(document.data.type)
+        data.img = getItemImage(document.type)
       }
       document.updateSource(data)
     })

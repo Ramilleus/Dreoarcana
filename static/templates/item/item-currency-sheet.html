@@ -19,8 +19,8 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
-            <select name="data.storage" data-dtype="String">
-              {{#select data.data.storage}}
+            <select name="system.storage" data-dtype="String">
+              {{#select system.storage}}
               <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
               {{#each availableStorage as |storage|}}
               <option value="{{storage.id}}">{{storage.name}}</option>
@@ -32,38 +32,37 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.ENC'}}</h3>
-            <input type="text" name="data.encumbrance" value="{{data.data.encumbrance}}" />
+            <input type="text" name="system.encumbrance" value="{{system.encumbrance}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Quantity'}}</h3>
-            <input type="text" name="data.quantity" value="{{data.data.quantity}}" />
+            <input type="text" name="system.quantity" value="{{system.quantity}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.AP'}}</h3>
-            <input type="text" name="data.ap" value="{{data.data.ap}}" />
+            <input type="text" name="system.ap" value="{{system.ap}}" />
           </div>
           <div>/</div>
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.HP'}}</h3>
-            <input type="text" name="data.hp" value="{{data.data.hp}}" />
+            <input type="text" name="system.hp" value="{{system.hp}}" />
           </div>
         </div>
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Value'}}</h3>
-            <input type="text" name="data.value" value="{{data.data.value}}" />
+            <input type="text" name="system.value" value="{{system.value}}" />
           </div>
         </div>
       </div>
     </div>
     <h2>Description</h2>
     <div class="desc" data-group="primary">
-      {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
-      <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
+      {{editor content=system.description target="system.description" button=true owner=owner editable=editable}}
     </div>
   </section>
 

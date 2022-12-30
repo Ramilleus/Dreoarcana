@@ -9,7 +9,7 @@
           <h3 class="armorLocationHeader">
             <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}:
               {{ armorPenalty }}</span><a class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
-              data-label="{{#each items.hitLocation as |item|}}{{item.data.name}}/{{item.data.data.rollRangeStart}}/{{item.data.data.rollRangeEnd}},{{/each}}">
+              data-label="{{#each items.hitLocation as |item|}}{{item.name}}/{{item.system.rollRangeStart}}/{{item.system.rollRangeEnd}},{{/each}}">
               {{localize 'MYTHRAS.Roll2'}} 1d20</a>
           </h3>
           <table id="hitLocation-edit" class="hitLocation-table">
@@ -28,8 +28,8 @@
                     <span>
                       +
                     </span>
-                    <input id="maxHpMod_all" type="text" name="data.attributes.hitPointMod.mod" class=""
-                      value="{{data.data.attributes.hitPointMod.mod}}" />
+                    <input id="maxHpMod_all" type="text" name="system.attributes.hitPointMod.mod" class=""
+                      value="{{system.attributes.hitPointMod.mod}}" />
                   </span>
                 </div>
               </th>
@@ -38,20 +38,20 @@
               {{#each items.hitLocation as |item id|}}
               <tr class="item" data-item data-item-id="{{ item.id }}">
                 <td class="hitloc-location-cell">
-                  <input type="text" data-item-property="name" data-dtype="text" value="{{item.data.name}}" />
+                  <input type="text" data-item-property="name" data-dtype="text" value="{{item.name}}" />
                 </td>
                 <td class="hitLoc-flex-cell hitloc-range-cell">
-                  <input type="text" data-item-property="rollRangeStart" value="{{item.data.data.rollRangeStart}}" />
+                  <input type="text" data-item-property="rollRangeStart" value="{{item.system.rollRangeStart}}" />
                   <p class="hit-loc-text">-</p>
-                  <input type="text" data-item-property="rollRangeEnd" value="{{item.data.data.rollRangeEnd}}" />
+                  <input type="text" data-item-property="rollRangeEnd" value="{{item.system.rollRangeEnd}}" />
                 </td>
                 <td class="hitloc-wardLocation-cell">
                   <input type="checkbox" style="margin-left: 8px" data-item-property="wardLocation" {{checked
-                    item.data.data.wardLocation}} />
+                    item.system.wardLocation}} />
                 </td>
                 <td class="hitloc-flex-cell hitloc-naturalArmor-cell">
                   <input type="text" data-item-property="naturalArmor" data-dtype="text"
-                    value="{{item.data.data.naturalArmor}}" />
+                    value="{{item.system.naturalArmor}}" />
                 </td>
                 <td class="hitloc-armor-cell">
                   {{item.equippedArmorNames}}
@@ -60,13 +60,13 @@
                   <p class="hit-loc-text">{{item.totalAp}}</p>
                 </td>
                 <td class="hitLoc-flex-cell hitloc-hp-cell">
-                  <input data-item-property="currentHp" type="number" value="{{item.data.data.currentHp}}" />
+                  <input data-item-property="currentHp" type="number" value="{{item.system.currentHp}}" />
                   <p class="max-hp"> / {{item.maxHp}}</p>
                   <div class="max-hp-mod">
                     <span>
                       +
                     </span>
-                    <input data-item-property="maxHpMod" type="text" class="" value="{{item.data.data.maxHpMod}}" />
+                    <input data-item-property="maxHpMod" type="text" class="" value="{{item.system.maxHpMod}}" />
                   </div>
                 </td>
               </tr>
@@ -97,15 +97,15 @@
               <tr class="item" data-item-id="{{item.id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.data.name}}
+                    {{item.name}}
                   </a>
                 </td>
                 <td>
-                  {{formatSkillAbbrev item.data.data}}
+                  {{formatSkillAbbrev item.system}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill">
-                    {{item.data.data.totalVal}}%
+                    {{item.system.totalVal}}%
                   </a>
                 </td>
               </tr>
@@ -114,15 +114,15 @@
               <tr class="item" data-item-id="{{item.id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.data.name}}
+                    {{item.name}}
                   </a>
                 </td>
                 <td>
-                  {{formatSkillAbbrev item.data.data}}
+                  {{formatSkillAbbrev item.system}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill">
-                    {{item.data.data.totalVal}}%
+                    {{item.system.totalVal}}%
                   </a>
                 </td>
               </tr>
@@ -131,15 +131,15 @@
               <tr class="item" data-item-id="{{item.id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.data.name}}
+                    {{item.name}}
                   </a>
                 </td>
                 <td>
-                  {{formatSkillAbbrev item.data.data}}
+                  {{formatSkillAbbrev item.system}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill">
-                    {{item.data.data.totalVal}}%
+                    {{item.system.totalVal}}%
                   </a>
                 </td>
               </tr>
@@ -148,15 +148,15 @@
               <tr class="item" data-item-id="{{item.id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.data.name}}
+                    {{item.name}}
                   </a>
                 </td>
                 <td>
-                  {{formatSkillAbbrev item.data.data}}
+                  {{formatSkillAbbrev item.system}}
                 </td>
                 <td>
                   <a class="skill-val rollableSkill">
-                    {{item.data.data.totalVal}}%
+                    {{item.system.totalVal}}%
                   </a>
                 </td>
               </tr>
@@ -168,7 +168,7 @@
           <h3>
             <span>{{localize 'MYTHRAS.Wounds_and_Conditions'}}</span>
           </h3>
-          <textarea name="data.conditionsAndWounds">{{data.data.conditionsAndWounds}}</textarea>
+          <textarea name="system.conditionsAndWounds">{{system.conditionsAndWounds}}</textarea>
         </div>
       </div>
     </div>
@@ -207,21 +207,21 @@
           <tr class="item" data-item-id="{{item.id}}">
             <td>
               <a class="item-name item-control item-edit">
-                {{item.data.name}}
+                {{item.name}}
               </a>
             </td>
             <td>
-              {{formatSkillAbbrev item.data.data}}
+              {{formatSkillAbbrev item.system}}
             </td>
             <td>
-              {{item.data.data.traits}}
+              {{item.system.traits}}
             </td>
             <td>
-              {{item.data.data.weapons}}
+              {{item.system.weapons}}
             </td>
             <td>
               <a class="skill-val rollableSkill">
-                {{item.data.data.totalVal}}%
+                {{item.system.totalVal}}%
               </a>
             </td>
             <td>
@@ -275,25 +275,25 @@
           <tr class="item" data-item-id="{{item.id}}">
             <td>
               <a class="item-name item-control item-edit">
-                {{item.data.name}}
+                {{item.name}}
               </a>
             </td>
             <td>
               <a class="rollableMeleeDamage">
-                {{item.data.data.damage}}
+                {{item.system.damage}}
               </a>
             </td>
             <td>
-              <input type="checkbox" name="data.data.damageModifier" {{checked data.data.damageModifier}} />
+              <input type="checkbox" name="system.damageModifier" {{checked system.damageModifier}} />
             </td>
             <td>
-              {{item.data.data.size}}
+              {{item.system.size}}
             </td>
             <td>
-              {{item.data.data.reach}}
+              {{item.system.reach}}
             </td>
             <td>
-              {{item.data.data.ap}} / {{item.data.data.hp}}
+              {{item.system.ap}} / {{item.system.hp}}
             </td>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item">
@@ -348,31 +348,31 @@
           <tr class="item" data-item-id="{{item.id}}">
             <td>
               <a class="item-name item-control item-edit">
-                {{item.data.name}}
+                {{item.name}}
               </a>
             </td>
             <td>
               <a class="rollableRangedDamage">
-                {{item.data.data.damage}}
+                {{item.system.damage}}
               </a>
             </td>
             <td>
-              <input type="checkbox" name="damageModifier" {{checked data.data.damageModifier}} />
+              <input type="checkbox" name="damageModifier" {{checked system.damageModifier}} />
             </td>
             <td>
-              {{item.data.data.force}}
+              {{item.system.force}}
             </td>
             <td>
-              {{item.data.data.impale-size}}
+              {{item.system.impale-size}}
             </td>
             <td>
-              {{item.data.data.range.close}}/{{item.data.data.range.effective}}/{{item.data.data.range.long }}
+              {{item.system.range.close}}/{{item.system.range.effective}}/{{item.system.range.long }}
             </td>
             <th>
-              {{item.data.data.load}}
+              {{item.system.load}}
             </th>
             <th>
-              {{item.data.data.ammo}}
+              {{item.system.ammo}}
             </th>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item">

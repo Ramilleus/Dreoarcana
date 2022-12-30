@@ -14,55 +14,53 @@ export class MagicSkillMythras extends SkillMythras {
   override prepareData(): void {
     super.prepareData()
 
-    const itemData: any = this.data
-    const actorData: any = this.actor ? this.actor.data : {}
-    
-    const data = itemData.data
+    const system: any = this.system
+    const actorData: any = this.actor ? this.actor.system : {}
     
     let cultRank = 0
     let chaValue = 0
     let powValue = 0
     if (actorData !== undefined && actorData.items !== undefined) {
       const cults = actorData.items.filter(
-        (item: any) => item.data.type === 'cultBrotherhood'
+        (item: any) => item.type === 'cultBrotherhood'
       )
-      data.cults = cults
-      if (data.cultId !== undefined) {
-        const theCult = cults.find((item: any) => item.id === data.cultId)
+      system.cults = cults
+      if (system.cultId !== undefined) {
+        const theCult = cults.find((item: any) => item.id === system.cultId)
         if (theCult !== undefined) {
           cultRank = Number(theCult.data.data.currentRank)
         }
       }
-      chaValue = Number(actorData.data.characteristics['cha'].value)
-      powValue = Number(actorData.data.characteristics['pow'].value)
+      chaValue = Number(actorData.characteristics['cha'].value)
+      powValue = Number(actorData.characteristics['pow'].value)
     }
-    switch (data.skillType) {
+    switch (system.skillType) {
       case 'TR':
-        this._setTRMagicValues(data, this.totalVal)
+        this._setTRMagicValues(system, this.totalVal)
         break
       case 'BI':
-        this._setBIMagicValues(data, this.totalVal, cultRank, chaValue)
+        this._setBIMagicValues(system, this.totalVal, cultRank, chaValue)
         break
       case 'ME':
-        this._setMEMagicValues(data, this.totalVal)
+        this._setMEMagicValues(system, this.totalVal)
         break
       case 'MY':
-        this._setMYMagicValues(data, this.totalVal)
+        this._setMYMagicValues(system, this.totalVal)
         break
       case 'IN':
-        this._setINMagicValues(data, this.totalVal)
+        this._setINMagicValues(system, this.totalVal)
         break
       case 'SH':
-        this._setSHMagicValues(data, this.totalVal)
+        this._setSHMagicValues(system, this.totalVal)
         break
       case 'DE':
-        this._setDEMagicValues(data, this.totalVal, cultRank, powValue)
+        this._setDEMagicValues(system, this.totalVal, cultRank, powValue)
         break
       case 'EX':
-        this._setEXMagicValues(data, this.totalVal)
+        this._setEXMagicValues(system, this.totalVal)
         break
       default:
-        this._setFMMagicValues(data, this.totalVal)
+        this._setFMMagicValues(system, this.totalVal)
         break
     }
   }

@@ -40,15 +40,15 @@ export class HitLocationMythras extends ItemMythras {
   }
 
   get maxHp() {
-    let data: any = deepClone(this.data)
+    let system: any = deepClone(this.system)
     let actorData: any = this.actor.system
 
     let sizValue = Number(actorData.characteristics.siz.value)
     let conValue = Number(actorData.characteristics.con.value)
 
     let overallHpMod = Number(actorData.attributes.hitPointMod.mod)
-    let hitLocationbaseHp = Number(data.data.baseHp)
-    let hitLocationHpMod = Number(data.data.maxHpMod)
+    let hitLocationbaseHp = Number(system.baseHp)
+    let hitLocationHpMod = Number(system.maxHpMod)
     let maxHp =
       hitLocationbaseHp + Math.ceil((sizValue + conValue) / 5) + hitLocationHpMod + overallHpMod
     if (maxHp < 1) {

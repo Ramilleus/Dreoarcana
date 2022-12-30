@@ -8,23 +8,23 @@
         <div class="d-flex d-flex--gap-small">
           <div class="flex-1">
             {{> systems/mythras/templates/common-components/basic-labelled-input.html
-            label=(localize 'MYTHRAS.CAREER') name='data.career' value=data.data.career}}
+            label=(localize 'MYTHRAS.CAREER') name='system.career' value=system.career}}
             {{> systems/mythras/templates/common-components/basic-labelled-input.html
-            label=(localize 'MYTHRAS.SOCIAL_CLASS') name='data.socialClass' value=data.data.socialClass}}
+            label=(localize 'MYTHRAS.SOCIAL_CLASS') name='system.socialClass' value=system.socialClass}}
             {{> systems/mythras/templates/common-components/basic-labelled-input.html
-            label=(localize 'MYTHRAS.GENDER') name='data.gender' value=data.data.gender}}
+            label=(localize 'MYTHRAS.GENDER') name='system.gender' value=system.gender}}
             {{> systems/mythras/templates/common-components/basic-labelled-input.html
-            label=(localize 'MYTHRAS.HANDEDNESS') name='data.handedness' value=data.data.handedness}}
+            label=(localize 'MYTHRAS.HANDEDNESS') name='system.handedness' value=system.handedness}}
           </div>
           <div class="flex-1">
             {{> systems/mythras/templates/common-components/basic-labelled-input.html
-            label=(localize 'MYTHRAS.HOMELAND') name='data.homeland' value=data.data.homeland}}
+            label=(localize 'MYTHRAS.HOMELAND') name='system.homeland' value=system.homeland}}
             {{> systems/mythras/templates/common-components/basic-labelled-input.html
-            label=(localize 'MYTHRAS.CULTURE') name='data.raceCulture' value=data.data.raceCulture}}
+            label=(localize 'MYTHRAS.CULTURE') name='system.raceCulture' value=system.raceCulture}}
             <div class="d-flex d-flex--gap-tiny">
               <div class="flex-3">
                 {{> systems/mythras/templates/common-components/basic-labelled-input.html
-                label=(localize 'MYTHRAS.AGE') name='data.age' value=data.data.age}}
+                label=(localize 'MYTHRAS.AGE') name='system.age' value=system.age}}
               </div>
               <div class="flex-4">
                 <div class="labelled-text-input">
@@ -32,7 +32,7 @@
                     {{localize 'MYTHRAS.HEIGHT'}}
                   </p>
                   <input class="labelled-text-input__input labelled-text-input__input--underlined" type="text"
-                    name="data.height" value="{{data.data.height}}" />
+                    name="system.height" value="{{system.height}}" />
                   <span style="margin-left: -20px; font-size: small;">
                     cm
                   </span>
@@ -40,11 +40,11 @@
               </div>
               <div class="flex-4">
                 {{> systems/mythras/templates/common-components/basic-labelled-input.html
-                label=(localize 'MYTHRAS.WEIGHT') name='data.weight' value=data.data.weight}}
+                label=(localize 'MYTHRAS.WEIGHT') name='system.weight' value=system.weight}}
               </div>
             </div>
             {{> systems/mythras/templates/common-components/basic-labelled-input.html
-            label=(localize 'MYTHRAS.FRAME') name='data.frame' value=data.data.frame}}
+            label=(localize 'MYTHRAS.FRAME') name='system.frame' value=system.frame}}
           </div>
         </div>
       </div>
@@ -53,8 +53,8 @@
           {{localize 'MYTHRAS.Fatigue'}}
         </h2>
         <div class="d-flex d-flex--space-between d-flex--center-items">
-          <select class="basic-select" name="data.attributes.fatigue.value" data-dtype="String">
-            {{#select data.data.attributes.fatigue.value}}
+          <select class="basic-select" name="system.attributes.fatigue.value" data-dtype="String">
+            {{#select system.attributes.fatigue.value}}
             <option value="fresh">
               {{localize 'MYTHRAS.Fresh'}}
             </option>
@@ -181,14 +181,14 @@
             </thead>
             <tbody>
               {{#each items.cultBrotherhood as |item id|}}
-              <tr class="item" data-item-id="{{item.data._id}}">
+              <tr class="item" data-item-id="{{item.id}}">
                 <td>
                   <a class="item-name item-control item-edit">
-                    {{item.data.name}}
+                    {{item.name}}
                   </a>
                 </td>
                 <td>
-                  {{item.data.data.currentRankName}}
+                  {{item.system.currentRankName}}
                 </td>
                 <td>
                   <a class="item-control item-delete delete-column" title="Delete Item">

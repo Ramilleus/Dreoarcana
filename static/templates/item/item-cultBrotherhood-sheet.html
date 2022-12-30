@@ -7,7 +7,7 @@
                     <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
                 </h1>
             </div>
-            <h1>{{data.data.currentRank}}</h1>
+            <h1>{{system.currentRank}}</h1>
         </div>
     </header>
 
@@ -28,31 +28,31 @@
                 <div class="cult-core-section">
                     <div>
                         <h4>{{localize 'MYTHRAS.Rank_Name4'}}</h4>
-                        <input type="text" name="data.rankName4" value="{{data.data.rankName4}}" />
+                        <input type="text" name="system.rankName4" value="{{system.rankName4}}" />
                         <h4>{{localize 'MYTHRAS.Rank_Name1'}}</h4>
-                        <input type="text" name="data.rankName1" value="{{data.data.rankName1}}" />
+                        <input type="text" name="system.rankName1" value="{{system.rankName1}}" />
                     </div>
                 </div>
                 <div class="cult-core-section">
                     <div>
                         <h4>{{localize 'MYTHRAS.Rank_Name3'}}</h4>
-                        <input type="text" name="data.rankName3" value="{{data.data.rankName3}}" />
+                        <input type="text" name="system.rankName3" value="{{system.rankName3}}" />
                         <h4>{{localize 'MYTHRAS.Rank_Name0'}}</h4>
-                        <input type="text" name="data.rankName0" value="{{data.data.rankName0}}" />
+                        <input type="text" name="system.rankName0" value="{{system.rankName0}}" />
                     </div>
                 </div>
                 <div class="cult-core-section">
                     <div>
                         <h4>{{localize 'MYTHRAS.Rank_Name2'}}</h4>
-                        <input type="text" name="data.rankName2" value="{{data.data.rankName2}}" />
+                        <input type="text" name="system.rankName2" value="{{system.rankName2}}" />
                         <h4>{{localize 'MYTHRAS.Current_Rank'}}</h4>
-                        <select name="data.currentRank" data-dtype="String">
-                            {{#select data.data.currentRank}}
-                            <option value="0">{{data.data.rankName0}}</option>
-                            <option value="1">{{data.data.rankName1}}</option>
-                            <option value="2">{{data.data.rankName2}}</option>
-                            <option value="3">{{data.data.rankName3}}</option>
-                            <option value="4">{{data.data.rankName4}}</option>
+                        <select name="system.currentRank" data-dtype="String">
+                            {{#select system.currentRank}}
+                            <option value="0">{{system.rankName0}}</option>
+                            <option value="1">{{system.rankName1}}</option>
+                            <option value="2">{{system.rankName2}}</option>
+                            <option value="3">{{system.rankName3}}</option>
+                            <option value="4">{{system.rankName4}}</option>
                             {{/select}}
                         </select>
                     </div>
@@ -62,8 +62,7 @@
 
         <h2>Description</h2>
         <div class="desc" data-group="primary">
-            {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
-            <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
+            {{editor content=system.description target="system.description" button=true owner=owner editable=editable}}
         </div>
     </section>
 

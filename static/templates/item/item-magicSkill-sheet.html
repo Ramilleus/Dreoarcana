@@ -21,8 +21,8 @@
         <div class="skill-section">
           <h3>{{localize 'MYTHRAS.Base_Characteristics'}}</h3>
           <span class="resource">
-            <select id="char-change" name="data.primaryChar" data-dtype="String">
-              {{#select data.data.primaryChar}}
+            <select id="char-change" name="system.primaryChar" data-dtype="String">
+              {{#select system.primaryChar}}
               <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
               <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
               <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
@@ -35,8 +35,8 @@
           </span>
           <span>+</span>
           <span class="resource">
-            <select id="char-change" name="data.secondaryChar" data-dtype="String">
-              {{#select data.data.secondaryChar}}
+            <select id="char-change" name="system.secondaryChar" data-dtype="String">
+              {{#select system.secondaryChar}}
               <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
               <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
               <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
@@ -52,8 +52,8 @@
         <div class="skill-section">
           <h3>{{localize 'MYTHRAS.Magic_Skill_Type'}}</h3>
           <span class="resource">
-            <select name="data.skillType" data-dtype="String">
-              {{#select data.data.skillType}}
+            <select name="system.skillType" data-dtype="String">
+              {{#select system.skillType}}
               <option value=""></option>
               <option value="FM">{{localize 'MYTHRAS.Folk_Magic'}}</option>
               <option value="TR">{{localize 'MYTHRAS.Trance'}}</option>
@@ -66,36 +66,36 @@
               <option value="EX">{{localize 'MYTHRAS.Exhort'}}</option>
               {{/select}}
             </select>
-            {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
-            {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
+            {{#unless (eq system.combinedTalentIntensity.max 0) }}
+            {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{system.combinedTalentIntensity.max}}
             {{/unless}}
-            {{#unless (eq data.data.maxShapingPoints 0) }}
-            {{localize 'MYTHRAS.Shaping_Points'}}={{data.data.maxShapingPoints}}
+            {{#unless (eq system.maxShapingPoints 0) }}
+            {{localize 'MYTHRAS.Shaping_Points'}}={{system.maxShapingPoints}}
             {{/unless}}
-            {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
-            {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{data.data.maxSpiritBoundedPow}}
+            {{#unless (eq system.maxSpiritBoundedPow 0) }}
+            {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{system.maxSpiritBoundedPow}}
             {{/unless}}
           </span>
         </div>
 
         <div class="skill-section">
           <h3>{{localize 'MYTHRAS.Cult_Brotherhood'}}</h3>
-          {{#unless (eq data.data.devotionalPool.max 0) }}
+          {{#unless (eq system.devotionalPool.max 0) }}
           {{/unless}}
           <span class="resource">
-            <select name="data.cultId" data-dtype="String">
-              {{#select data.data.cultId}}
+            <select name="system.cultId" data-dtype="String">
+              {{#select system.cultId}}
               <option value=""></option>
-              {{#each data.data.cults as |cult|}}
+              {{#each system.cults as |cult|}}
               <option value="{{cult.id}}">{{cult.name}}</option>
               {{/each}}
               {{/select}}
             </select>
-            {{#unless (eq data.data.devotionalPool.max 0) }}
-            {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
+            {{#unless (eq system.devotionalPool.max 0) }}
+            {{localize 'MYTHRAS.Devotional_Pool'}}={{system.devotionalPool.max}}
             {{/unless}}
-            {{#unless (eq data.data.spiritBounded.max 0) }}
-            {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
+            {{#unless (eq system.spiritBounded.max 0) }}
+            {{localize 'MYTHRAS.Spirits_Bounded'}}={{system.spiritBounded.max}}
             {{/unless}}
           </span>
         </div>
@@ -113,15 +113,15 @@
               <label>
                 <p>{{localize 'MYTHRAS.Trained'}}</p>
               </label>
-              <input id="train-check" type="checkbox" data="data.trained" name="data.trained" {{checked
-                data.data.trained}} />
+              <input id="train-check" type="checkbox" data="system.trained" name="system.trained" {{checked
+                system.trained}} />
             </div>
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.Fumbled'}}</p>
               </label>
-              <input id="fumble-check" type="checkbox" data="data.fumbled" name="data.fumbled" {{checked
-                data.data.fumbled}} />
+              <input id="fumble-check" type="checkbox" data="system.fumbled" name="system.fumbled" {{checked
+                system.fumbled}} />
             </div>
           </div>
         </div>
@@ -134,29 +134,29 @@
               <label>
                 <p>{{localize 'MYTHRAS.TRAINING'}}</p>
               </label>
-              <input id="skill-mod" type="text" name="data.trainingVal" value="{{data.data.trainingVal}}" />%
+              <input id="skill-mod" type="text" name="system.trainingVal" value="{{system.trainingVal}}" />%
             </div>
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.MISC'}}</p>
               </label>
-              <input id="skill-mod" class="misc-input" type="text" name="data.miscBonus"
-                value="{{data.data.miscBonus}}" />%
+              <input id="skill-mod" class="misc-input" type="text" name="system.miscBonus"
+                value="{{system.miscBonus}}" />%
             </div>
-            {{#unless (eq data.data.intensity.max 0) }}
+            {{#unless (eq system.intensity.max 0) }}
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.Intensity'}}</p>
-                <input class="misc-input" type="text" disabled="disabled" value="{{data.data.intensity.max}}" />
+                <input class="misc-input" type="text" disabled="disabled" value="{{system.intensity.max}}" />
               </label><span style="color:transparent !important">%</span>
             </div>
             {{/unless}}
-            {{#unless (eq data.data.magnitude.max 0) }}
+            {{#unless (eq system.magnitude.max 0) }}
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.Magnitude'}}</p>
               </label>
-              <input class="misc-input" type="text" disabled="disabled" value="{{data.data.magnitude.max}}" /><span
+              <input class="misc-input" type="text" disabled="disabled" value="{{system.magnitude.max}}" /><span
                 style="color:transparent !important">%</span>
             </div>
             {{/unless}}
@@ -167,8 +167,7 @@
     </div>
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc skill-section" data-group="primary">
-      {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
-      <!--<textarea class="editor" name="data.description">{{data.data.description}}</textarea>-->
+      {{editor content=system.description target="system.description" button=true owner=owner editable=editable}}
     </div>
   </section>
 

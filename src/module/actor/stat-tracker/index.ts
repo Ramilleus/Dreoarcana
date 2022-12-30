@@ -23,7 +23,6 @@ export class ActorMythrasStatTracker {
 
   get exportedStats(): TrackedStatExport[] {
     let exportData: TrackedStatExport[] = []
-    let data: any = this.actor.system
     for (const key of Object.keys(this.trackedStats)) {
       let stat = this.trackedStats[key]
       if (stat.display) {

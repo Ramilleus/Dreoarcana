@@ -14,6 +14,17 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     })
   }
 
+  override async getData(options?: Partial<DocumentSheetOptions>) {
+    const itemData = super.getData(options) as any
+
+    return {
+      ...itemData,
+      system: this.item.system,
+      item: this.item,
+      options
+    }
+  }
+
   private postRender() {
     this.sheetPostRender.postRender()
   }
@@ -36,7 +47,7 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
   override get template() {
     const path = 'systems/mythras/templates/item'
 
-    const itemType = this.item.data.type
+    const itemType = this.item.type
 
     // Return a unique template based on item type
     if (itemType === 'magicSkill') {
@@ -52,11 +63,6 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
       // Loads a unique sheet for all remaining types (armor, melee-weapon, etc.)
       return `${path}/item-${itemType}-sheet.html`
     }
-  }
-
-  override getData(options?: Partial<DocumentSheetOptions>) {
-    const data = super.getData(options)
-    return data
   }
 
   override setPosition(options = {}) {

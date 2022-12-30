@@ -34,8 +34,8 @@
               <label class="resource-label">
                 <strong>{{localize 'MYTHRAS.Magic_Skill'}}</strong>
               </label>
-              <select name="data.sourceID" data-dtype="String">
-                {{#select data.data.sourceID}}
+              <select name="system.sourceID" data-dtype="String">
+                {{#select system.sourceID}}
                 <option value="Uncategorized">Uncategorized</option>
                 {{#each availableMagicSkills as |skill|}}
                 <option value="{{skill.id}}">{{skill.name}}</option>
@@ -49,7 +49,7 @@
               <label class="resource-label">
                 <strong>Traits</strong>
               </label>
-              <input class="long-input" type="text" name="data.traits" value="{{data.data.traits}}"
+              <input class="long-input" type="text" name="system.traits" value="{{system.traits}}"
                 data-dtype="String" />
             </div>
           </div>
@@ -58,14 +58,14 @@
               <label class="resource-label">
                 Cost
               </label>
-              <input class="short-input" type="text" name="data.cost" value="{{data.data.cost}}" data-dtype="Number" />
+              <input class="short-input" type="text" name="system.cost" value="{{system.cost}}" data-dtype="Number" />
             </div>
 
             <div class="resource centered">
               <label class="resource-label">
                 Cast Time
               </label>
-              <input class="short-input" type="text" name="data.castTime" value="{{data.data.castTime}}"
+              <input class="short-input" type="text" name="system.castTime" value="{{system.castTime}}"
                 data-dtype="String" />
             </div>
 
@@ -73,7 +73,7 @@
               <label class="resource-label">
                 Duration
               </label>
-              <input class="long-input" type="text" name="data.duration" value="{{data.data.duration}}"
+              <input class="long-input" type="text" name="system.duration" value="{{system.duration}}"
                 data-dtype="String" />
             </div>
           </div>
@@ -94,14 +94,14 @@
               Intensity
             </p>
             <div class="spell-component">
-              <p class="{{data.data.intensity.applyClass}}" name="data.intensity.value">
-                {{data.data.intensity.value}}
+              <p class="{{system.intensity.applyClass}}" name="system.intensity.value">
+                {{system.intensity.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.intensity.mod" value="{{data.data.intensity.mod}}" />
+                <input type="text" name="system.intensity.mod" value="{{system.intensity.mod}}" />
               </div>
             </div>
           </div>
@@ -111,14 +111,14 @@
               Magnitude
             </p>
             <div class="spell-component">
-              <p class="{{data.data.magnitude.applyClass}}" name="data.intensity.value">
-                {{data.data.magnitude.value}}
+              <p class="{{system.magnitude.applyClass}}" name="system.intensity.value">
+                {{system.magnitude.value}}
               </p>
               <div>
                 <span>
                   +
                 </span>
-                <input type="text" name="data.magnitude.mod" value="{{data.data.magnitude.mod}}" />
+                <input type="text" name="system.magnitude.mod" value="{{system.magnitude.mod}}" />
               </div>
             </div>
           </div> --}}
@@ -128,7 +128,7 @@
     </div>
     {{! Description Tab }}
     <div class="desc tab" data-group="primary" data-tab="description">
-      {{ editor content=data.data.description target='data.description' button=true owner=owner editable=editable }}
+      {{ editor content=system.description target='system.description' button=true owner=owner editable=editable }}
     </div>
   </section>
   {{!-- Decorative Symbol Divider --}}

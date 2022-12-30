@@ -42,7 +42,7 @@ export class CombatMythras extends Combat {
       if (reduceAP) {
         let c = this.turns[turn]
         c.actor.update({
-          ['data.trackedStats.actionPoints.value']:
+          ['system.trackedStats.actionPoints.value']:
             Number(c.actor.system.trackedStats.actionPoints.value) - 1
         })
       }
@@ -67,7 +67,7 @@ export class CombatMythras extends Combat {
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
       t.actor.update({
-        ['data.trackedStats.actionPoints.value']: Number(t.actor.maxActionPoints)
+        ['system.trackedStats.actionPoints.value']: Number(t.actor.maxActionPoints)
       })
     }
 

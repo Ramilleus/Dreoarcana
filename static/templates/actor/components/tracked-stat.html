@@ -1,7 +1,7 @@
 <div class="stats-container" data-stat-name="{{stat.id}}">
   <div class="number-input-container">
     <div>
-      <input name="data.trackedStats.{{stat.id}}.value" type="text" value="{{stat.value}}" placeholder="" />
+      <input name="system.trackedStats.{{stat.id}}.value" type="text" value="{{stat.value}}" placeholder="" />
       {{#if stat.maxValue includeZero=true}}<p class="point-total">/{{ stat.maxValue }}</p>{{/if}}
     </div>
     <div class="plus-minus-buttons">

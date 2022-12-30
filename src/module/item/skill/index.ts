@@ -14,20 +14,20 @@ export class SkillMythras extends ItemMythras {
   }
 
   get totalVal() {
-    let data: any = this.data
+    const system: any = this.system
     //Was intended to fix the issue where an item sheet is already rendered and its base values from the character sheet are changed (which wouldn't change the item data).
     //Is commented out because it breaks magic skills for some reason
     //TODO: figure out why it breaks magic skills
     //this.reRenderOpenSheet()
-    return this.baseVal + Number(data.data.trainingVal) + Number(data.data.miscBonus)
+    return this.baseVal + Number(system.trainingVal) + Number(system.miscBonus)
   }
 
   get baseVal() {
-    if (this.actor && this.actor.data) {
-      let data: any = this.data
+    if (this.actor && this.actor.system) {
+      let system: any = this.system
       let actorData: any = this.actor.system
-      let primaryChar = data.data.primaryChar
-      let secondaryChar = data.data.secondaryChar
+      let primaryChar = system.primaryChar
+      let secondaryChar = system.secondaryChar
       let primaryCharValue = primaryChar ? Number(actorData.characteristics[primaryChar].value) : 0
       let secondaryCharValue = secondaryChar
         ? Number(actorData.characteristics[secondaryChar].value)

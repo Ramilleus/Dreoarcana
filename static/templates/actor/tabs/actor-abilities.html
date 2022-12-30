@@ -36,42 +36,42 @@
           </thead>
           <tbody>
             {{#each items.magicSkill as |item id|}}
-            <tr class="item" data-item-id="{{item.data._id}}">
+            <tr class="item" data-item-id="{{item.id}}">
               <td>
                 <a class="item-name item-control item-edit">
-                  {{item.data.name}}
+                  {{item.name}}
                 </a>
               </td>
               <td>
-                {{#unless (eq data.data.intensity.max 0) }}
-                {{data.data.intensity.max}}
+                {{#unless (eq system.intensity.max 0) }}
+                {{system.intensity.max}}
                 {{/unless}}
               </td>
               <td>
-                {{#unless (eq data.data.magnitude.max 0) }}
-                {{data.data.magnitude.max}}
+                {{#unless (eq system.magnitude.max 0) }}
+                {{system.magnitude.max}}
                 {{/unless}}
               </td>
               <td>
-                {{#unless (eq data.data.combinedTalentIntensity.max 0) }}
-                {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{data.data.combinedTalentIntensity.max}}
+                {{#unless (eq system.combinedTalentIntensity.max 0) }}
+                {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{system.combinedTalentIntensity.max}}
                 {{/unless}}
-                {{#unless (eq data.data.maxShapingPoints 0) }}
-                {{localize 'MYTHRAS.Shaping_Points'}}={{data.data.maxShapingPoints}}
+                {{#unless (eq system.maxShapingPoints 0) }}
+                {{localize 'MYTHRAS.Shaping_Points'}}={{system.maxShapingPoints}}
                 {{/unless}}
-                {{#unless (eq data.data.maxSpiritBoundedPow 0) }}
-                {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{data.data.maxSpiritBoundedPow}} <br />
+                {{#unless (eq system.maxSpiritBoundedPow 0) }}
+                {{localize 'MYTHRAS.Spirit_Bounded_Pow'}}={{system.maxSpiritBoundedPow}} <br />
                 {{/unless}}
-                {{#unless (eq data.data.spiritBounded.max 0) }}
-                {{localize 'MYTHRAS.Spirits_Bounded'}}={{data.data.spiritBounded.max}}
+                {{#unless (eq system.spiritBounded.max 0) }}
+                {{localize 'MYTHRAS.Spirits_Bounded'}}={{system.spiritBounded.max}}
                 {{/unless}}
-                {{#unless (eq data.data.devotionalPool.max 0) }}
-                {{localize 'MYTHRAS.Devotional_Pool'}}={{data.data.devotionalPool.max}}
+                {{#unless (eq system.devotionalPool.max 0) }}
+                {{localize 'MYTHRAS.Devotional_Pool'}}={{system.devotionalPool.max}}
                 {{/unless}}
               </td>
               <td>
                 <a class="skill-val rollableSkill" data-roll="1d100"
-                  data-label="{{item.data.name}},{{item.data.data.totalVal}},{{item.id}}">
+                  data-label="{{item.name}},{{item.system.totalVal}},{{item.id}}">
                   {{item.totalVal}}%
                 </a>
               </td>
@@ -94,8 +94,8 @@
               <span class="title">
                 {{localize 'MYTHRAS.Spells'}}
               </span>
-              <select name="data.spellFilterOption" id="spellFilter">
-                {{#select data.data.spellFilterOption}}
+              <select name="system.spellFilterOption" id="spellFilter">
+                {{#select system.spellFilterOption}}
                 <option value="All">All</option>
                 {{#each magicSkillNames as |name|}}
                 <option value="{{name}}">{{name}}</option>
@@ -124,7 +124,7 @@
                   <td class="item-profile">
                     <img class="item-img" src="{{item.img}}">
                     <a class="item-name item-control item-edit">
-                      {{item.data.name}}
+                      {{item.name}}
                     </a>
                   </td>
                   <td>{{item.magicSkillName}}</td>
@@ -144,7 +144,7 @@
             <h3>
               {{localize 'MYTHRAS.Abilities'}}
             </h3>
-            {{editor data-dtype='String' content=data.data.abilitiesDesc target="data.abilitiesDesc" button=true
+            {{editor data-dtype='String' content=system.abilitiesDesc target="system.abilitiesDesc" button=true
             owner=owner
             editable=editable }}
           </div>
