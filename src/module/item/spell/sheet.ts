@@ -3,8 +3,8 @@ import { ItemSheetMythras } from '@item/sheet/base';
 
 export class SpellSheetMythras extends ItemSheetMythras<SpellMythras> {
   override async getData(options?: Partial<DocumentSheetOptions>) {
-    const itemData = super.getData(options) as any
-
+    const itemData = await super.getData(options) as any
+    
     return {
       ...itemData,
       options,

@@ -15,7 +15,7 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
   }
 
   override async getData(options?: Partial<DocumentSheetOptions>) {
-    const itemData = super.getData(options) as any
+    const itemData = await super.getData(options) as any
 
     return {
       ...itemData,

@@ -40,6 +40,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
       magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
+      editable: this.isEditable,
       system: actorData.system,
       actor: actorData,
       options,
