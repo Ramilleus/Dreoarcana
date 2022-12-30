@@ -17,8 +17,8 @@ export class ActorMythrasStatTracker {
   constructor(private actor: ActorMythras) {}
 
   get trackedStats(): Record<string, TrackedStat> {
-    let data: any = this.actor.system
-    return data.trackedStats
+    const actorData: any = this.actor.system
+    return actorData.trackedStats
   }
 
   get exportedStats(): TrackedStatExport[] {

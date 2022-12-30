@@ -1,6 +1,11 @@
 import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
 import { HitLocationMythras } from '@item/hit-location'
+import { CultBrotherhoodMythras } from '@module/item/cult-brotherhood'
+import { MagicSkillMythras } from '@module/item/magic-skill'
+import { SkillMythras } from '@module/item/skill'
+import { SpellMythras } from '@module/item/spell'
+import { StorageMythras } from '@module/item/storage'
 import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
@@ -194,26 +199,26 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
 
   private sortItems(sheetData: any) {
     // Assign and return
-    sheetData.items.hitLocation.sort((a: any, b: any) => {
+    sheetData.items.hitLocation.sort((a: HitLocationMythras, b: HitLocationMythras) => {
       return a.system.rollRangeStart - b.system.rollRangeStart
     })
-    sheetData.items.standardSkill.sort((a: any, b: any) => {
+    sheetData.items.standardSkill.sort((a: SkillMythras, b: SkillMythras) => {
       return a.name.localeCompare(b.name)
     })
-    sheetData.items.professionalSkill.sort((a: any, b: any) => {
+    sheetData.items.professionalSkill.sort((a: SkillMythras, b: SkillMythras) => {
       return a.name.localeCompare(b.name)
     })
-    sheetData.items.magicSkill.sort((a: any, b: any) => {
+    sheetData.items.magicSkill.sort((a: MagicSkillMythras, b: MagicSkillMythras) => {
       return a.name.localeCompare(b.name)
     })
-    sheetData.items.storage.sort((a: any, b: any) => {
+    sheetData.items.storage.sort((a: StorageMythras, b: StorageMythras) => {
       return a.name.localeCompare(b.name)
     })
-    sheetData.items.cultBrotherhood.sort((a: any, b: any) => {
+    sheetData.items.cultBrotherhood.sort((a: CultBrotherhoodMythras, b: CultBrotherhoodMythras) => {
       return a.name.localeCompare(b.name)
     })
-    sheetData.items.spell.sort((a: any, b: any) => {
-      return a.system.source.localeCompare(b.system.source)
+    sheetData.items.spell.sort((a: SpellMythras, b: SpellMythras) => {
+      return a.magicSkillName.localeCompare(b.magicSkillName)
     })
   }
 
@@ -241,7 +246,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
       (item) => item.type == 'hitLocation'
     )
     for (let hitLocation of hitLocations) {
-      let currentHp = (hitLocation.system as any).currentHp
+      let currentHp = hitLocation.system.currentHp
       let hitLocationElement: any = document.querySelector(
         `.hitLocation-table [data-item-id="${hitLocation.id}"]`
       )
@@ -439,8 +444,8 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   }
 
   private async filterSpells() {
-    let data = this.actor.system as any
-    let filterBy = data.spellFilterOption
+    const actorData = this.actor.system
+    let filterBy = actorData.spellFilterOption
     let items: any[] = [...document.querySelectorAll('.spell-list-table .item')]
     for (let item of items) {
       switch (filterBy) {

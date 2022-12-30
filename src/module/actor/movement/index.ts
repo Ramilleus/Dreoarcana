@@ -6,56 +6,56 @@ export class ActorMythrasMovement {
   constructor(private actor: ActorMythras) {}
 
   public get stats() {
-    let data: any = this.actor.system
+    const actorData = this.actor.system
     return {
       walk: {
         label: 'MYTHRAS.WALK',
         derivedName: 'movement.walk',
         derivedValue: this.walk,
         modifierName: 'system.attributes.movement.mod',
-        modifierValue: data.attributes.movement.mod
+        modifierValue: actorData.attributes.movement.mod
       },
       run: {
         label: 'MYTHRAS.RUN',
         derivedName: 'movement.run',
         derivedValue: this.run,
         modifierName: 'system.attributes.run.mod',
-        modifierValue: data.attributes.run.mod
+        modifierValue: actorData.attributes.run.mod
       },
       sprint: {
         label: 'MYTHRAS.SPRINT',
         derivedName: 'movement.sprint',
         derivedValue: this.sprint,
         modifierName: 'system.attributes.sprint.mod',
-        modifierValue: data.attributes.sprint.mod
+        modifierValue: actorData.attributes.sprint.mod
       },
       climb: {
         label: 'MYTHRAS.CLIMB',
         derivedName: 'movement.climb',
         derivedValue: this.climb,
         modifierName: 'system.attributes.climb.mod',
-        modifierValue: data.attributes.climb.mod
+        modifierValue: actorData.attributes.climb.mod
       },
       swim: {
         label: 'MYTHRAS.SWIM',
         derivedName: 'movement.swim',
         derivedValue: this.swim,
         modifierName: 'system.attributes.swim.mod',
-        modifierValue: data.attributes.swim.mod
+        modifierValue: actorData.attributes.swim.mod
       },
       jumpVertical: {
         label: 'MYTHRAS.V._JUMP',
         derivedName: 'movement.jumpVertical',
         derivedValue: this.jumpVertical,
         modifierName: 'system.attributes.jumpVertical.mod',
-        modifierValue: data.attributes.jumpVertical.mod
+        modifierValue: actorData.attributes.jumpVertical.mod
       },
       jumpHorizontal: {
         label: 'MYTHRAS.H._JUMP',
         derivedName: 'movement.jumpHorizontal',
         derivedValue: this.jumpHorizontal,
         modifierName: 'system.attributes.jumpHorizontal.mod',
-        modifierValue: data.attributes.jumpHorizontal.mod
+        modifierValue: actorData.attributes.jumpHorizontal.mod
       }
     }
   }
@@ -103,12 +103,12 @@ export class ActorMythrasMovement {
     )
   }
 
-  private getStatMod(statName: string): number {
-    return Number((this.actor.system as any).attributes[statName].mod) || 0
+  private getStatMod(statName: 'run' | 'sprint' | 'jumpHorizontal' | 'jumpVertical' | 'climb' | 'swim'): number {
+    return Number(this.actor.system.attributes[statName].mod) || 0
   }
 
   private get actorHeight(): number {
-    return (this.actor.system as any).height
+    return this.actor.system.height
   }
 
   private get athleticsSkillValue(): number {
@@ -126,8 +126,8 @@ export class ActorMythrasMovement {
   }
 
   private get baseWalk(): number {
-    const baseMod = (this.actor.system as any).attributes.movement.mod
-    let walk = (this.actor.system as any).attributes.movement.walk
+    const baseMod = this.actor.system.attributes.movement.mod
+    let walk = this.actor.system.attributes.movement.walk
     if (!walk) walk = 6
     return Number(walk) + Number(baseMod) || 0
   }

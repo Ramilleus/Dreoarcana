@@ -5,8 +5,7 @@ export class ActorMythrasFatigue {
   constructor(private actor: ActorMythras) {}
 
   public get currentLevelName(): string {
-    let data: any = this.actor.system
-    return data.attributes.fatigue.value
+    return this.actor.system.attributes.fatigue.value
   }
 
   public get currentLevel(): FatigueLevel {

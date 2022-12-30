@@ -1,14 +1,31 @@
 import { ArmorMythras } from '@item/armor/index.js'
 import { MYTHRASCONFIG } from '@scripts/config'
+import { ActorAttributes } from './attribute'
+import { ActorCharacteristics } from './characteristic'
 import { ActorMythrasEncumbrance } from './encumbrance'
 import { ActorMythrasFatigue } from './fatigue'
 import { ActorMythrasMovement } from './movement'
 import { ActorMythrasStatTracker } from './stat-tracker'
+
+
+interface ActorData {
+  initiativeBonus: number
+  attributes: ActorAttributes
+  characteristics: ActorCharacteristics
+  height: number
+  spellFilterOption: string
+  items: ItemTypeMap
+}
+
+interface ActorMythras {
+  readonly system: ActorData
+}
+
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
  */
-export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
+class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
   public encumbrance!: ActorMythrasEncumbrance
   public fatigue!: ActorMythrasFatigue
   public movement!: ActorMythrasMovement
@@ -85,30 +102,28 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
 
   // Actor attribute misc modifier convenience getter
   get attributeMiscMods() {
-    let data: any = this.system
     return {
-      actionPoints: Number(data.attributes.actionPoints.mod) || 0,
-      damageMod: Number(data.attributes.damageMod.mod) || 0,
-      experienceMod: Number(data.attributes.experienceMod.mod) || 0,
-      healingRate: Number(data.attributes.healingRate.mod) || 0,
-      initiativeBonus: Number(data.attributes.initiativeBonus.mod) || 0,
-      luckPoints: Number(data.attributes.luckPoints.mod) || 0,
-      magicPoints: Number(data.attributes.magicPoints.mod) || 0,
-      tenacity: Number(data.attributes.tenacity.mod) || 0
+      actionPoints: Number(this.system.attributes.actionPoints.mod) || 0,
+      damageMod: Number(this.system.attributes.damageMod.mod) || 0,
+      experienceMod: Number(this.system.attributes.experienceMod.mod) || 0,
+      healingRate: Number(this.system.attributes.healingRate.mod) || 0,
+      initiativeBonus: Number(this.system.attributes.initiativeBonus.mod) || 0,
+      luckPoints: Number(this.system.attributes.luckPoints.mod) || 0,
+      magicPoints: Number(this.system.attributes.magicPoints.mod) || 0,
+      tenacity: Number(this.system.attributes.tenacity.mod) || 0
     }
   }
 
-  // Actor characteristics convenience getter
+  // Actor characteristics convenience gette
   get characteristics() {
-    let data: any = this.system
     return {
-      str: Number(data.characteristics.str.value),
-      con: Number(data.characteristics.con.value),
-      siz: Number(data.characteristics.siz.value),
-      dex: Number(data.characteristics.dex.value),
-      int: Number(data.characteristics.int.value),
-      pow: Number(data.characteristics.pow.value),
-      cha: Number(data.characteristics.cha.value)
+      str: Number(this.system.characteristics.str.value),
+      con: Number(this.system.characteristics.con.value),
+      siz: Number(this.system.characteristics.siz.value),
+      dex: Number(this.system.characteristics.dex.value),
+      int: Number(this.system.characteristics.int.value),
+      pow: Number(this.system.characteristics.pow.value),
+      cha: Number(this.system.characteristics.cha.value)
     }
   }
 
@@ -122,8 +137,7 @@ export class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap
     this.fatigue = new ActorMythrasFatigue(this)
     this.movement = new ActorMythrasMovement(this)
     this.statTracker = new ActorMythrasStatTracker(this)
-    let data = this.system as any
-    data.initiativeBonus = this.initiativeBonus
+    this.system.initiativeBonus = this.initiativeBonus
   }
 
   damageModCalc(total: any, stepInc: any) {
@@ -180,3 +194,5 @@ type ItemType = keyof typeof MYTHRASCONFIG.Item.documentClasses
 type ItemTypeMap = {
   [K in ItemType]: InstanceType<ConfigMythras["MYTHRAS"]["Item"]["documentClasses"][K]>;
 };
+
+export { ActorData, ActorMythras }

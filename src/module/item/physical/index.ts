@@ -2,7 +2,18 @@ import { ItemMythras } from '@item/base'
 import type { StorageMythras } from '@item/storage'
 import { itemIsStorageType } from '@item/type-guards'
 
-export abstract class PhysicalItemMythras extends ItemMythras {
+interface PhysicalItemData {
+  encumbrance: number
+  quantity: number
+  value: number
+  storage: string
+}
+
+interface PhysicalItemMythras {
+  readonly system: PhysicalItemData
+}
+
+abstract class PhysicalItemMythras extends ItemMythras {
   isPhysical: boolean = true
 
   get availableStorage() {
@@ -18,7 +29,7 @@ export abstract class PhysicalItemMythras extends ItemMythras {
   }
 
   get encumbrance(): number {
-    return Number((this.system as any).encumbrance) || 0
+    return this.system.encumbrance || 0
   }
 
   get encumbranceTowardsTotal(): number {
@@ -33,15 +44,15 @@ export abstract class PhysicalItemMythras extends ItemMythras {
   }
 
   get quantity(): number {
-    return Number((this.system as any).quantity) || 0
+    return this.system.quantity || 0
   }
 
   get value(): number {
-    return Number((this.system as any).value) || 0
+    return this.system.value || 0
   }
 
   get storageId(): string {
-    return (this.system as any).storage
+    return this.system.storage
   }
 
   get storageName(): string {
@@ -61,3 +72,5 @@ export abstract class PhysicalItemMythras extends ItemMythras {
     return undefined
   }
 }
+
+export { PhysicalItemData, PhysicalItemMythras }

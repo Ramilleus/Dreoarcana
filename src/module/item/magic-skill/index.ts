@@ -1,34 +1,62 @@
-import { SkillMythras } from '@item/skill'
+import { SkillData, SkillMythras } from '@item/skill'
+import { ActorData } from '@module/actor/base'
+import { ItemMythras } from '../base'
+import { CultBrotherhoodMythras } from '../cult-brotherhood'
+import { itemIsCultBrotherhood } from '../type-guards'
 
-export class MagicSkillMythras extends SkillMythras {
+interface MagicSkillAttribute {
+  min?: number
+  max: number
+  base?: number
+  used?: number
+}
+
+interface MagicSkillData extends SkillData {
+  cults: CultBrotherhoodMythras[]
+  cultId: string
+  skillType: string
+  intensity: MagicSkillAttribute
+  magnitude: MagicSkillAttribute
+  spiritBounded: MagicSkillAttribute
+  combinedTalentIntensity: MagicSkillAttribute
+  devotionalPool: MagicSkillAttribute
+  maxSpiritBoundedPow: number
+  maxShapingPoints: number
+}
+
+interface MagicSkillMythras {
+  readonly system: MagicSkillData
+}
+
+class MagicSkillMythras extends SkillMythras {
   isMagicSkill: boolean = true
 
   get intensity() {
-    return (this.system as any).intensity.max
+    return this.system.intensity.max
   }
 
   get magnitude() {
-    return (this.system as any).magnitude.max
+    return this.system.magnitude.max
   }
 
   override prepareData(): void {
     super.prepareData()
 
-    const system: any = this.system
-    const actorData: any = this.actor ? this.actor.system : {}
+    const system = this.system
+    const actorData = this.actor ? this.actor.system : {} as ActorData
     
     let cultRank = 0
     let chaValue = 0
     let powValue = 0
     if (actorData !== undefined && actorData.items !== undefined) {
-      const cults = actorData.items.filter(
-        (item: any) => item.type === 'cultBrotherhood'
+      const cults: CultBrotherhoodMythras[] = this.actor.items.filter(
+        (item: ItemMythras) => itemIsCultBrotherhood(item)
       )
       system.cults = cults
       if (system.cultId !== undefined) {
-        const theCult = cults.find((item: any) => item.id === system.cultId)
+        const theCult = cults.find((item: CultBrotherhoodMythras) => item.id === system.cultId)
         if (theCult !== undefined) {
-          cultRank = Number(theCult.data.data.currentRank)
+          cultRank = Number(theCult.system.currentRank)
         }
       }
       chaValue = Number(actorData.characteristics['cha'].value)
@@ -70,7 +98,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setFMMagicValues(data: any, skillValue: any) {
+  _setFMMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 1, max: 1, base: 1 }
     data.magnitude = { min: 1, max: 1, base: 1 }
     data.spiritBounded.max = 0
@@ -85,7 +113,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setTRMagicValues(data: any, skillValue: any) {
+  _setTRMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -102,7 +130,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} cult rank
    * @param {*} charisma Value
    */
-  _setBIMagicValues(data: any, skillValue: any, cultRank: any, chaValue: any) {
+  _setBIMagicValues(data: MagicSkillData, skillValue: number, cultRank: number, chaValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = Math.ceil((chaValue * cultRank) / 4)
@@ -117,7 +145,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setMEMagicValues(data: any, skillValue: any) {
+  _setMEMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -132,7 +160,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setMYMagicValues(data: any, skillValue: any) {
+  _setMYMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 1, max: Math.ceil(skillValue / 20), base: 1 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -147,7 +175,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setINMagicValues(data: any, skillValue: any) {
+  _setINMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = {
       min: 1,
       max: Math.ceil(skillValue / 10),
@@ -166,7 +194,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setSHMagicValues(data: any, skillValue: any) {
+  _setSHMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 1, max: Math.ceil(skillValue / 10), base: 1 }
     data.spiritBounded.max = 0
@@ -183,7 +211,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} cult rank
    * @param {*} power Value
    */
-  _setDEMagicValues(data: any, skillValue: any, cultRank: any, powValue: any) {
+  _setDEMagicValues(data: MagicSkillData, skillValue: number, cultRank: number, powValue: number) {
     data.intensity = {
       min: Math.ceil(skillValue / 10),
       max: Math.ceil(skillValue / 10),
@@ -206,7 +234,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setEXMagicValues(data: any, skillValue: any) {
+  _setEXMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -216,3 +244,5 @@ export class MagicSkillMythras extends SkillMythras {
     data.devotionalPool.max = 0
   }
 }
+
+export { MagicSkillData, MagicSkillMythras }

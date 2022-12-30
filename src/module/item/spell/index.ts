@@ -1,7 +1,17 @@
 import { ItemMythras } from '@item/base'
 import { MagicSkillMythras } from '../magic-skill'
 
-export class SpellMythras extends ItemMythras {
+interface SpellData {
+  sourceID: string
+  intensity: { mod: number }
+  magnitude: { mod: number }
+}
+
+interface SpellMythras {
+  readonly system: SpellData
+}
+
+class SpellMythras extends ItemMythras {
   get availableMagicSkills(): MagicSkillMythras[] {
     if (this.actorData) {
       return this.actor.itemTypes.magicSkill
@@ -19,7 +29,7 @@ export class SpellMythras extends ItemMythras {
   }
 
   get magicSkillId(): string {
-    return (this.system as any).sourceID
+    return this.system.sourceID
   }
 
   get magicSkillName(): string {
@@ -31,14 +41,14 @@ export class SpellMythras extends ItemMythras {
 
   get intensity() {
     if (this.magicSkill) {
-      return this.magicSkill.intensity + Number((this.system as any).intensity.mod)
+      return this.magicSkill.intensity + Number(this.system.intensity.mod)
     }
     return 0
   }
 
   get magnitude() {
     if (this.magicSkill) {
-      return this.magicSkill.magnitude + Number((this.system as any).magnitude.mod)
+      return this.magicSkill.magnitude + Number(this.system.magnitude.mod)
     }
     return 0
   }
@@ -74,3 +84,5 @@ export class SpellMythras extends ItemMythras {
   //   data.magnitude.value = data.magnitude.base + Number(data.magnitude.mod)
   // }
 }
+
+export { SpellData, SpellMythras }

@@ -1,9 +1,19 @@
 import { HitLocationMythras } from '@item/hit-location'
-import { PhysicalItemMythras } from '@item/physical'
+import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
 
-export class ArmorMythras extends PhysicalItemMythras {
+interface ArmorData extends PhysicalItemData {
+  location: string
+  locationName: string
+  ap: number
+  equipped: boolean
+}
+
+interface ArmorMythras {
+  readonly system: ArmorData
+}
+
+class ArmorMythras extends PhysicalItemMythras {
   isArmor: boolean = true
-  
   get availableHitLocations(): HitLocationMythras[] {
     if (this.actorData) {
       let availableHitLocations: HitLocationMythras[] = this.actorData.items
@@ -16,15 +26,15 @@ export class ArmorMythras extends PhysicalItemMythras {
   }
 
   get selectedHitLocationId() {
-    return (this.system as any).location
+    return this.system.location
   }
 
   get ap() {
-    return Number((this.system as any).ap) || 0
+    return Number(this.system.ap) || 0
   }
 
   get isEquipped() {
-    return Boolean((this.system as any).equipped)
+    return Boolean(this.system.equipped)
   }
 
   override async _preCreate(data: any, options: any, user: any): Promise<void> {
@@ -49,7 +59,7 @@ export class ArmorMythras extends PhysicalItemMythras {
     super._onCreate(data, options, userId)
   }
 
-  linkHitLocation(systemData: any) {
+  linkHitLocation(systemData: ArmorData) {
     systemData.locationName = this.availableHitLocations[0].name
     if (systemData.location === 'Unequipped' && systemData.locationName.length > 0) {
       let hitlocID = this.availableHitLocations.filter(function (value: Item) {
@@ -66,3 +76,5 @@ export class ArmorMythras extends PhysicalItemMythras {
     }
   }
 }
+
+export { ArmorMythras }

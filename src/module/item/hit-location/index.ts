@@ -1,19 +1,32 @@
 import { ArmorMythras } from '@item/armor'
 import { ItemMythras } from '@item/base'
 
-export class HitLocationMythras extends ItemMythras {
+interface HitLocationData {
+  baseHp: number
+  currentHp: number
+  maxHpMod: number
+  rollRangeStart: number
+  rollRangeEnd: number
+  naturalArmor: number
+}
+
+interface HitLocationMythras {
+  readonly system: HitLocationData
+}
+
+class HitLocationMythras extends ItemMythras {
   get attachedArmor(): Embedded<ArmorMythras>[] {
     return this.actor.items.filter((value: ItemMythras) => {
       return value.type === 'armor' && (value as ArmorMythras).selectedHitLocationId === this.id
     })
   }
 
-  get rollRangeStart(): Embedded<ArmorMythras>[] {
-    return (this.system as any).rollRangeStart
+  get rollRangeStart(): number {
+    return this.system.rollRangeStart
   }
 
-  get rollRangeEnd(): Embedded<ArmorMythras>[] {
-    return (this.system as any).rollRangeEnd
+  get rollRangeEnd(): number {
+    return this.system.rollRangeEnd
   }
 
   get equippedArmor(): Embedded<ArmorMythras>[] {
@@ -25,7 +38,7 @@ export class HitLocationMythras extends ItemMythras {
   }
 
   get naturalArmor() {
-    return (this.system as any).naturalArmor
+    return this.system.naturalArmor
   }
 
   get totalAp() {
@@ -40,15 +53,15 @@ export class HitLocationMythras extends ItemMythras {
   }
 
   get maxHp() {
-    let system: any = deepClone(this.system)
-    let actorData: any = this.actor.system
+    const system = deepClone(this.system)
+    const actorData = this.actor.system
 
-    let sizValue = Number(actorData.characteristics.siz.value)
-    let conValue = Number(actorData.characteristics.con.value)
+    const sizValue = Number(actorData.characteristics.siz.value)
+    const conValue = Number(actorData.characteristics.con.value)
 
-    let overallHpMod = Number(actorData.attributes.hitPointMod.mod)
-    let hitLocationbaseHp = Number(system.baseHp)
-    let hitLocationHpMod = Number(system.maxHpMod)
+    const overallHpMod = Number(actorData.attributes.hitPointMod.mod)
+    const hitLocationbaseHp = Number(system.baseHp)
+    const hitLocationHpMod = Number(system.maxHpMod)
     let maxHp =
       hitLocationbaseHp + Math.ceil((sizValue + conValue) / 5) + hitLocationHpMod + overallHpMod
     if (maxHp < 1) {
@@ -57,3 +70,5 @@ export class HitLocationMythras extends ItemMythras {
     return maxHp
   }
 }
+
+export { HitLocationData, HitLocationMythras }

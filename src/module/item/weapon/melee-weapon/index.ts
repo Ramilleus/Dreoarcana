@@ -1,15 +1,27 @@
-import { WeaponMythras } from '@item/weapon/base'
+import { WeaponData, WeaponMythras } from '@item/weapon/base'
 
-export class MeleeWeaponMythras extends WeaponMythras {
+interface MeleeWeaponData extends WeaponData {
+  traits: string
+  size: string
+  reach: string
+}
+
+interface MeleeWeaponMythras {
+  readonly system: MeleeWeaponData
+}
+
+class MeleeWeaponMythras extends WeaponMythras {
   get traits() {
-    return (this.system as any).traits
+    return this.system.traits
   }
 
   get size() {
-    return (this.system as any).size
+    return this.system.size
   }
 
   get reach() {
-    return (this.system as any).reach
+    return this.system.reach
   }
 }
+
+export { MeleeWeaponData, MeleeWeaponMythras }
