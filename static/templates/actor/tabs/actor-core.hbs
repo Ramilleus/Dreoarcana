@@ -7,23 +7,23 @@
         </h2>
         <div class="d-flex d-flex--gap-small">
           <div class="flex-1">
-            {{> systems/mythras/templates/common-components/basic-labelled-input.html
+            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
             label=(localize 'MYTHRAS.CAREER') name='system.career' value=system.career}}
-            {{> systems/mythras/templates/common-components/basic-labelled-input.html
+            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
             label=(localize 'MYTHRAS.SOCIAL_CLASS') name='system.socialClass' value=system.socialClass}}
-            {{> systems/mythras/templates/common-components/basic-labelled-input.html
+            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
             label=(localize 'MYTHRAS.GENDER') name='system.gender' value=system.gender}}
-            {{> systems/mythras/templates/common-components/basic-labelled-input.html
+            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
             label=(localize 'MYTHRAS.HANDEDNESS') name='system.handedness' value=system.handedness}}
           </div>
           <div class="flex-1">
-            {{> systems/mythras/templates/common-components/basic-labelled-input.html
+            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
             label=(localize 'MYTHRAS.HOMELAND') name='system.homeland' value=system.homeland}}
-            {{> systems/mythras/templates/common-components/basic-labelled-input.html
+            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
             label=(localize 'MYTHRAS.CULTURE') name='system.raceCulture' value=system.raceCulture}}
             <div class="d-flex d-flex--gap-tiny">
               <div class="flex-3">
-                {{> systems/mythras/templates/common-components/basic-labelled-input.html
+                {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
                 label=(localize 'MYTHRAS.AGE') name='system.age' value=system.age}}
               </div>
               <div class="flex-4">
@@ -39,11 +39,11 @@
                 </div>
               </div>
               <div class="flex-4">
-                {{> systems/mythras/templates/common-components/basic-labelled-input.html
+                {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
                 label=(localize 'MYTHRAS.WEIGHT') name='system.weight' value=system.weight}}
               </div>
             </div>
-            {{> systems/mythras/templates/common-components/basic-labelled-input.html
+            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
             label=(localize 'MYTHRAS.FRAME') name='system.frame' value=system.frame}}
           </div>
         </div>
@@ -99,7 +99,7 @@
           {{localize 'MYTHRAS.Characteristics'}}
         </h2>
         <div class="d-flex d-flex--space-between">
-          {{#each characteristics}} {{> systems/mythras/templates/actor/components/characteristic.html
+          {{#each characteristics}} {{> systems/mythras/templates/actor/components/characteristic.hbs
           characteristic=this characteristicName=@key}} {{/each}}
         </div>
       </div>
@@ -111,7 +111,7 @@
           {{#each stats}}
           {{#if this.isAttribute}}
           <div data-stat="{{@key}}" class="derived-stat-with-label">
-            {{> systems/mythras/templates/common-components/derived-stat.html stat=this statName=@key}}
+            {{> systems/mythras/templates/common-components/derived-stat.hbs stat=this statName=@key}}
             <p class="derived-stat__label derived-stat__label top-margin-small">
               {{localize this.label}}
             </p>
@@ -127,7 +127,7 @@
         <div class="d-flex d-flex--space-between">
           {{#each movement.stats}}
           <div data-stat="{{@key}}" class="derived-stat-with-label">
-            {{> systems/mythras/templates/common-components/derived-stat.html stat=this statName=@key}}
+            {{> systems/mythras/templates/common-components/derived-stat.hbs stat=this statName=@key}}
             <p class="derived-stat__label derived-stat__label top-margin-small">
               {{localize this.label}}
             </p>
@@ -145,18 +145,18 @@
     </h2>
     <div class="d-flex d-flex--gap-medium">
       <div class="flex-1">
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize 'MYTHRAS.Standard_Skills')
+        {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize 'MYTHRAS.Standard_Skills')
         skillType="standardSkill" skills=items.standardSkill}}
       </div>
       <div class="flex-1">
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize
         'MYTHRAS.Professional_Skills') skillType="professionalSkill"
         skills=items.professionalSkill}}
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize
         'MYTHRAS.Combat_Styles') skillType="combatStyle" skills=items.combatStyle}}
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize
         'MYTHRAS.Magic_Skills') skillType="magicSkill" skills=items.magicSkill}}
-        {{> systems/mythras/templates/actor/skills/skill-table.html tableTitle=(localize
+        {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize
         'MYTHRAS.Passions') skillType="passion" skills=items.passion}}
         <div class="basic-table">
           <h3>

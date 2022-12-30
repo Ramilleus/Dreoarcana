@@ -9,11 +9,11 @@ export class Roller {
   constructor(private actor: ActorMythras) {}
 
   public async rollMeleeDamage(weapon: MeleeWeaponMythras) {
-    await this.rollDamage('systems/mythras/templates/chat/damage/melee-roll.html', weapon)
+    await this.rollDamage('systems/mythras/templates/chat/damage/melee-roll.hbs', weapon)
   }
 
   public async rollRangedDamage(weapon: RangedWeaponMythras) {
-    await this.rollDamage('systems/mythras/templates/chat/damage/ranged-roll.html', weapon)
+    await this.rollDamage('systems/mythras/templates/chat/damage/ranged-roll.hbs', weapon)
   }
 
   private async rollDamage(rollTemplate: string, weapon: WeaponMythras) {
@@ -79,7 +79,7 @@ export class Roller {
     let rollResults = this.getSkillRollResults(difficultyNames, difficultyGrades, rolled)
 
     // Render the skill roll chat message content
-    let htmlContent = await renderTemplate('systems/mythras/templates/chat/skill-roll.html', {
+    let htmlContent = await renderTemplate('systems/mythras/templates/chat/skill-roll.hbs', {
       game: game,
       rollResults: rollResults,
       modifiers: modifiers

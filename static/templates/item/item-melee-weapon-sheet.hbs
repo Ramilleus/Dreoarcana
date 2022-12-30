@@ -11,7 +11,7 @@
   </header>
 
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.html}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
 
   {{!-- Sheet Body --}}
   <section class="sheet-body flexcol">
@@ -73,9 +73,9 @@
             <input type="checkbox" name="system.damageModifier" {{checked system.damageModifier}} />
           </div>
           <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Force'}}</h3>
-            <select id="char-change" name="system.force" data-dtype="String">
-              {{#select system.force}}
+            <h3 class="core-info">{{localize 'MYTHRAS.Size'}}</h3>
+            <select id="char-change" name="system.size" data-dtype="String">
+              {{#select system.size}}
               <option value="S">{{localize 'MYTHRAS.Small'}}</option>
               <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
               <option value="L">{{localize 'MYTHRAS.Large'}}</option>
@@ -86,49 +86,25 @@
             </select>
           </div>
           <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Impale_Size'}}</h3>
-            <select id="char-change" name="system.impale-size" data-dtype="String">
-              {{#select system.impale-size}}
-              <option value="S">{{localize 'MYTHRAS.Small'}}</option>
+            <h3 class="core-info">{{localize 'MYTHRAS.Reach'}}</h3>
+            <select id="char-change" name="system.reach" data-dtype="reach">
+              {{#select system.reach}}
+              <option value="T">{{localize 'MYTHRAS.Touch'}}</option>
+              <option value="S">{{localize 'MYTHRAS.Short'}}</option>
               <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
-              <option value="L">{{localize 'MYTHRAS.Large'}}</option>
-              <option value="H">{{localize 'MYTHRAS.Huge'}}</option>
-              <option value="E">{{localize 'MYTHRAS.Enormous'}}</option>
-              <option value="BE">{{localize 'MYTHRAS.Beyond_Enormous'}}</option>
+              <option value="L">{{localize 'MYTHRAS.Long'}}</option>
+              <option value="VL">{{localize 'MYTHRAS.Very_Long'}}</option>
               {{/select}}
             </select>
-          </div>
-        </div>
-        <div class="weapon-core-section">
-          <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Range'}}</h3>
-            <div class="range-info">
-              <div class="weapon-piece">
-                <h3 class="range-piece">{{localize 'MYTHRAS.Close'}}</h3>
-                <input type="text" name="system.range.close" value="{{system.range.close}}" />
-              </div>
-              <div class="weapon-piece">
-                <h3 class="range-piece">{{localize 'MYTHRAS.Effective'}}</h3>
-                <input type="text" name="system.range.effective" value="{{system.range.effective}}" />
-              </div>
-              <div class="weapon-piece">
-                <h3 class="range-piece">{{localize 'MYTHRAS.Long'}}</h3>
-                <input type="text" name="system.range.long" value="{{system.range.long}}" />
-              </div>
-            </div>
-          </div>
-          <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Load'}}</h3>
-            <input type="text" name="system.load" value="{{system.load}}" />
-          </div>
-          <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Ammo'}}</h3>
-            <input type="text" name="system.ammo" value="{{system.ammo}}" />
           </div>
         </div>
         <div>
           <h3 class="core-info">{{localize 'MYTHRAS.Combat_Effects'}}</h3>
           <input type="text" name="system.combat-effects" value="{{system.combat-effects}}" />
+        </div>
+        <div>
+          <h3 class="core-info">{{localize 'MYTHRAS.Traits'}}</h3>
+          <input type="text" name="system.traits" value="{{system.traits}}" />
         </div>
       </div>
     </div>
@@ -139,5 +115,5 @@
   </section>
 
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.html}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
 </form>

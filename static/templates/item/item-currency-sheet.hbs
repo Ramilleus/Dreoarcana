@@ -4,14 +4,13 @@
       <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="50" width="50" />
       <div class="header-fields">
         <h1 class="charname">
-          <input data-handler="changeName" id="armorChange_name" name="name" type="text" value="{{item.name}}"
-            placeholder="Name" />
+          <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
         </h1>
       </div>
     </div>
   </header>
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.html}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
 
   {{!-- Sheet Body --}}
   <section class="sheet-body flexcol">
@@ -21,14 +20,12 @@
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
             <select name="system.storage" data-dtype="String">
-              <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
-              {{#unless system.equipped}}
               {{#select system.storage}}
+              <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
               {{#each availableStorage as |storage|}}
               <option value="{{storage.id}}">{{storage.name}}</option>
               {{/each}}
               {{/select}}
-              {{/unless}}
             </select>
           </div>
         </div>
@@ -47,7 +44,7 @@
         <div class="equip-core-section">
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.AP'}}</h3>
-            <input data-handler="changeAp" id="armorChange_ap" type="text" name="system.ap" value="{{system.ap}}" />
+            <input type="text" name="system.ap" value="{{system.ap}}" />
           </div>
           <div>/</div>
           <div>
@@ -63,36 +60,12 @@
         </div>
       </div>
     </div>
-    <div class="equip-section">
-      <div class="weapon-core">
-        <div class="weapon-core-section">
-          <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Armor_Location'}}</h3>
-            <select name="system.location" data-dtype="String">
-              {{#select system.location}}
-              {{#each availableHitLocations as |loc|}}
-              <option value="{{loc.id}}">{{loc.name}}</option>
-              {{/each}}
-              {{/select}}
-            </select>
-          </div>
-          <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Type'}}</h3>
-            <input type="text" name="system.armorType" value="{{system.armorType}}" />
-          </div>
-          <div class="weapon-piece">
-            <h3 class="core-info">{{localize 'MYTHRAS.Equipped'}}</h3>
-            <input data-handler="toggleEquipped" type="checkbox" name="system.equipped" {{checked system.equipped}} />
-          </div>
-        </div>
-      </div>
-    </div>
-    <h2>{{localize 'MYTHRAS.Description'}}</h2>
+    <h2>Description</h2>
     <div class="desc" data-group="primary">
       {{editor content=system.description target="system.description" button=true owner=owner editable=editable}}
     </div>
   </section>
 
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.html}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
 </form>

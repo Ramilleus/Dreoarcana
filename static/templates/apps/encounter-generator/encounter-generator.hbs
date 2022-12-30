@@ -1,0 +1,14 @@
+<div class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header flex-0">
+    <h2>Mythras Encounter Generator</h2>
+    <p><i>Create actors using data from the <a class="link-important"
+          href="https://mythras.skoll.xyz/about/">Mythras&nbsp;Encounter&nbsp;Generator</a></i></p>
+  </header>
+  {{> systems/mythras/templates/common-components/tab-navigator.hbs tabs=tabs}}
+  <section class="sheet-body">
+    {{> systems/mythras/templates/apps/encounter-generator/tabs/enemies.hbs}}
+    {{> systems/mythras/templates/apps/encounter-generator/tabs/parties.hbs}}
+    {{> systems/mythras/templates/apps/encounter-generator/tabs/from-json.hbs}}
+    {{> systems/mythras/templates/apps/encounter-generator/tabs/credits.hbs}}
+  </section>
+</div>

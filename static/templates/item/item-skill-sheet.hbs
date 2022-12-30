@@ -7,12 +7,12 @@
           <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
         </h1>
       </div>
-      <h1>{{totalVal}}%</h1>
+      <h1>{{ totalVal }}%</h1>
     </div>
   </header>
 
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.html}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
 
   {{!-- Sheet Body --}}
   <section class="sheet-body flexcol">
@@ -23,6 +23,7 @@
           <span class="resource">
             <select id="char-change" name="system.primaryChar" data-dtype="String">
               {{#select system.primaryChar}}
+              <option value=""></option>
               <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
               <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
               <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
@@ -37,6 +38,7 @@
           <span class="resource">
             <select id="char-change" name="system.secondaryChar" data-dtype="String">
               {{#select system.secondaryChar}}
+              <option value=""></option>
               <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
               <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
               <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
@@ -55,19 +57,22 @@
               <label>
                 <p>{{localize 'MYTHRAS.ENC_Penalty'}}</p>
               </label>
-              <input type="checkbox" class="char-enc" disabled="disabled" checked="" />
+              <input type="checkbox" data="system.encPenalty" name="system.encPenalty" {{checked encPenalty}}
+                disabled="true" />
             </div>
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.Trained'}}</p>
               </label>
-              <input id="train-check" type="checkbox" data="system.trained" {{checked system.trained}} />
+              <input id="train-check" type="checkbox" data="system.trained" name="system.trained" {{checked
+                system.trained}} />
             </div>
             <div>
               <label>
                 <p>{{localize 'MYTHRAS.Fumbled'}}</p>
               </label>
-              <input id="fumble-check" type="checkbox" data="system.fumbled" {{checked system.fumbled}} />
+              <input id="fumble-check" type="checkbox" data="system.fumbled" name="system.fumbled" {{checked
+                system.fumbled}} />
             </div>
           </div>
         </div>
@@ -93,12 +98,6 @@
         </div>
       </div>
     </div>
-    <div class="combat-flex">
-      <h3>{{localize 'MYTHRAS.Weapons'}}</h3>
-      <input type="text" name="system.weapons" value="{{system.weapons}}" />
-      <h3>{{localize 'MYTHRAS.Traits'}}</h3>
-      <input type="text" name="system.traits" value="{{system.traits}}" />
-    </div>
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc skill-section" data-group="primary">
       {{editor content=system.description target="system.description" button=true owner=owner editable=editable}}
@@ -106,5 +105,5 @@
   </section>
 
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.html}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
 </form>

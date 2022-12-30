@@ -13,7 +13,7 @@ export class MythrasCombatTrackerConfig extends CombatTrackerConfig {
     console.log(this)
   }
   get template() {
-    return 'systems/mythras/templates/combat/combat-config.html'
+    return 'systems/mythras/templates/combat/combat-config.hbs'
   }
   async _updateObject(event, formData) {
     return game.settings.set('core', CombatMythras.CONFIG_SETTING, {

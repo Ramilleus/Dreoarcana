@@ -52,16 +52,16 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     // Return a unique template based on item type
     if (itemType === 'magicSkill') {
       // A magic skill is considered a skill, but has a unique sheet. This serves as an override
-      return `${path}/item-magicSkill-sheet.html`
+      return `${path}/item-magicSkill-sheet.hbs`
     } else if (itemType === 'combatStyle') {
       // Combat style is considered a skill, but has a unique sheet. This serves as an override
-      return `${path}/item-combatStyle-sheet.html`
+      return `${path}/item-combatStyle-sheet.hbs`
     } else if (itemIsSkill(this.item)) {
       // Loads the default skill sheet that applies to all other skills
-      return `${path}/item-skill-sheet.html`
+      return `${path}/item-skill-sheet.hbs`
     } else {
       // Loads a unique sheet for all remaining types (armor, melee-weapon, etc.)
-      return `${path}/item-${itemType}-sheet.html`
+      return `${path}/item-${itemType}-sheet.hbs`
     }
   }
 
