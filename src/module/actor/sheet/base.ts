@@ -140,7 +140,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
           isAttribute: false,
           tracked: true,
           // TODO: Localize
-          label: 'TENACITY',
+          label: 'MYTHRAS.TENACITY',
           derivedName: 'maxTenacity',
           currentValue: actorData.system.attributes.tenacity.value,
           derivedValue: this.actor.maxTenacity,
