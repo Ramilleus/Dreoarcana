@@ -31,14 +31,14 @@ export class SpellMythras extends ItemMythras {
 
   get intensity() {
     if (this.magicSkill) {
-      return (this.magicSkill.system as any).intensity + Number((this.system as any).intensity.mod)
+      return this.magicSkill.intensity + Number((this.system as any).intensity.mod)
     }
     return 0
   }
 
   get magnitude() {
     if (this.magicSkill) {
-      return (this.magicSkill.system as any).magnitude + Number((this.system as any).magnitude.mod)
+      return this.magicSkill.magnitude + Number((this.system as any).magnitude.mod)
     }
     return 0
   }
