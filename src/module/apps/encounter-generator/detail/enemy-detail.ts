@@ -48,7 +48,6 @@ export class EncounterGeneratorEnemyDetail extends Application {
 
   private async getEnemyData() {
     this.enemy = await this.loadEnemy()
-    console.log(this.enemy)
     this.showLoader = false
     this.dataReady = true
     this.render(true)
