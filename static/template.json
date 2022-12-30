@@ -36,35 +36,35 @@
         },
         "trackedStats": {
           "experienceRolls": {
-            "name": "Experience Rolls",
+            "name": "MYTHRAS.EXPERIENCE_ROLLS",
             "attribute": "",
             "value": 0,
             "display": true,
             "derivedFrom": ""
           },
           "tenacity": {
-            "name": "Tenacity",
+            "name": "MYTHRAS.TENACITY",
             "attribute": "tenacity",
             "value": 11,
             "display": true,
             "derivedFrom": "maxTenacity"
           },
           "magicPoints": {
-            "name": "Magic Points",
+            "name": "MYTHRAS.MAGIC_POINTS",
             "attribute": "magicPoints",
             "value": 0,
             "display": true,
             "derivedFrom": "maxMagicPoints"
           },
           "luckPoints": {
-            "name": "Luck Points",
+            "name": "MYTHRAS.LUCK_POINTS",
             "attribute": "luckPoints",
             "value": 0,
             "display": true,
             "derivedFrom": "maxLuckPoints"
           },
           "actionPoints": {
-            "name": "Action Points",
+            "name": "MYTHRAS.ACTION_POINTS",
             "attribute": "actionPoints",
             "value": 0,
             "display": true,
