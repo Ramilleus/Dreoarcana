@@ -1,3 +1,5 @@
+import { ItemMythras } from "@module/item/base"
+
 export function registerHandlebarsHelpers() {
   Handlebars.registerHelper('localizeSkillAbbrev', function (str) {
     return localizeSkillAbbrev(str)
@@ -12,7 +14,7 @@ export function registerHandlebarsHelpers() {
     if (game.i18n) {
       itemName = game.i18n.localize('MYTHRAS.' + itemName.replace(/ /g, '_'))
     }
-    return items.find((entry: any) => entry.name === itemName)
+    return items.find((entry: ItemMythras) => entry.name === itemName)
   })
   Handlebars.registerHelper('formatSkillAbbrev', function (data) {
     let primChar = localizeSkillAbbrev(data.primaryChar)

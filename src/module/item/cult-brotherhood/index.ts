@@ -1,12 +1,27 @@
 import { ItemMythras } from '@item/base'
 
-export class CultBrotherhoodMythras extends ItemMythras {
+interface CultBrotherhoodData {
+  rankName0: string
+  rankName1: string
+  rankName2: string
+  rankName3: string
+  rankName4: string
+  currentRank: string
+  currentRankName: string
+}
+
+interface CultBrotherhoodMythras {
+  readonly system: CultBrotherhoodData
+}
+
+class CultBrotherhoodMythras extends ItemMythras {
+  isCultBrotherhood: boolean = true
   override prepareData(): void {
     super.prepareData()
 
-    const itemData: any = this.data
+    const itemData = this.system
 
-    const data = itemData.data
+    const data = itemData
     switch (data.currentRank) {
       case '4':
         data.currentRankName = data.rankName4
@@ -26,3 +41,5 @@ export class CultBrotherhoodMythras extends ItemMythras {
     }
   }
 }
+
+export { CultBrotherhoodData, CultBrotherhoodMythras }

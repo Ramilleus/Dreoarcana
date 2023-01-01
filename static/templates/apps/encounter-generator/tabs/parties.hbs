@@ -1,0 +1,74 @@
+<div class="tab parties" data-group="primary" data-tab="parties">
+  <div class="d-flex d-flex--column height-100">
+    <section class="template-list-filters flex-0 bottom-margin-medium">
+      <div class="d-flex d-flex--gap-medium d-flex--center-items">
+        <div>
+          <input type="text" data-dtype="String" class="template-list-search" name="searchTerm"
+            value="{{ parties.filters.search }}" />
+        </div>
+        <div>
+          <button class="button-red search-button">Search</button>
+        </div>
+        <div>
+          <a class="advanced-filters-button">Advanced Filters</a>
+        </div>
+      </div>
+      <section class="d-flex d-flex--gap-medium advanced-filters-section top-margin-medium">
+        <div>
+          <p><b>Tags:</b></p>
+          <div data-filter-list="tags" style="height: 200px; width: fit-content; overflow: scroll; overflow-x: hidden;">
+            {{#each parties.tagList}}
+            <div class="d-flex d-flex--center-items">
+              <input class="tag" style="width: 15px; height: 15px" type="checkbox" data-tag-name="{{@key}}" {{#if
+                this}}checked="checked" {{/if}} />
+              <p>{{@key}}</p>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        <div>
+          <p><b>Owners:</b></p>
+          <div data-filter-list="owners"
+            style="height: 200px; width: fit-content; overflow: scroll; overflow-x: hidden;">
+            {{#each parties.ownerList}}
+            <div class="d-flex d-flex--center-items">
+              <input class="owner" style="width: 15px; height: 15px" type="checkbox" data-owner-name="{{@key}}" {{#if
+                this}}checked="checked" {{/if}} />
+              <p>{{@key}}</p>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </section>
+    </section>
+    <section class="template-list-section flex-1">
+      <div class="template-list-header-row">
+        <div class="party-type">Party Type</div>
+        <div>Owner</div>
+        <div></div>
+      </div>
+      <div class="template-list-rows party-template-list-rows">
+        {{#each parties.templatesPage as |template|}}
+        <div data-template-id="{{ template.id }}" data-template-type="party" data-template-name="{{ template.name }}"
+          class="template-list-row">
+          <div class="party-type">{{ template.name }}</div>
+          <div>{{ template.owner }}</div>
+          <div><button class="button-red import-button">Import <i class="fas fa-arrow-right"></i></button></div>
+        </div>
+        {{/each}}
+        {{#if showPartyLoader}}
+        <div class="info-row">
+          {{> systems/mythras/templates/common-components/loader.hbs}}
+        </div>
+        {{/if}}
+        {{#unless parties.showLoader}}
+        {{#unless parties.templatesPage}}
+        <div class="info-row">
+          No Results
+        </div>
+        {{/unless}}
+        {{/unless}}
+      </div>
+    </section>
+  </div>
+</div>

@@ -2,16 +2,9 @@ import { ActorMythras } from '@actor'
 
 export class ItemMythras extends Item<ActorMythras> {
   get actorData() {
-    return this.actor ? this.actor.data : undefined
+    return this.actor ? this.actor : undefined
   }
 
-  get name() {
-    return this.data.name
-  }
-
-  get id() {
-    return this.data._id
-  }
 
   constructor(data: any, context: any = {}) {
     if (context.mythras?.ready) {

@@ -9,15 +9,15 @@ export class Roller {
   constructor(private actor: ActorMythras) {}
 
   public async rollMeleeDamage(weapon: MeleeWeaponMythras) {
-    await this.rollDamage('systems/mythras/templates/chat/damage/melee-roll.html', weapon)
+    await this.rollDamage('systems/mythras/templates/chat/damage/melee-roll.hbs', weapon)
   }
 
   public async rollRangedDamage(weapon: RangedWeaponMythras) {
-    await this.rollDamage('systems/mythras/templates/chat/damage/ranged-roll.html', weapon)
+    await this.rollDamage('systems/mythras/templates/chat/damage/ranged-roll.hbs', weapon)
   }
 
   private async rollDamage(rollTemplate: string, weapon: WeaponMythras) {
-    let roll = new Roll(weapon.damageRoll, this.actor.data.data)
+    let roll = new Roll(weapon.damageRoll, this.actor.system as any)
 
     let labelHtml = await renderTemplate(rollTemplate, {
       weapon: weapon
@@ -30,7 +30,7 @@ export class Roller {
   }
 
   public async rollHitLocation() {
-    let roll = new Roll('1d20', this.actor.data.data)
+    let roll = new Roll('1d20', this.actor.system as any)
     const result: number = Number((await roll.evaluate({ async: true })).result) || 0
     let label = game.i18n.localize('MYTHRAS.Rolling_Location')
 
@@ -49,7 +49,7 @@ export class Roller {
 
   public async rollSkill(
     skill: SkillMythras
-  ): Promise<foundry.data.ChatMessageData<foundry.documents.BaseChatMessage>> {
+  ): Promise<ChatMessage> {
     // Calculate difficulty grades based on skill value
     let difficultyGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
       return Math.ceil(x * Number(skill.totalVal))
@@ -72,14 +72,14 @@ export class Roller {
     let rollLabel = game.i18n.localize('MYTHRAS.Rolling') + ` ${skill.name}`
 
     // Make the roll
-    let roll = new Roll('1d100', this.actor.data.data)
+    let roll = new Roll('1d100', this.actor.system as any)
     const rolled = await roll.evaluate({ async: true })
 
     // Get results of the rolls at given grades, (e.g. Success, Failure, Critical, Fumble)
     let rollResults = this.getSkillRollResults(difficultyNames, difficultyGrades, rolled)
 
     // Render the skill roll chat message content
-    let htmlContent = await renderTemplate('systems/mythras/templates/chat/skill-roll.html', {
+    let htmlContent = await renderTemplate('systems/mythras/templates/chat/skill-roll.hbs', {
       game: game,
       rollResults: rollResults,
       modifiers: modifiers
@@ -130,7 +130,7 @@ export class Roller {
       result.rollValue = rolled.result
 
       // Rolls above 95 are guaranteed Failures or Fumbles
-      if (rolled.result >= 95) {
+      if (rolled.result > 95) {
         // If the roll is 99 or 100, the roll is a fumble
         // (unless the character has a skill >= 100. Then 99 is only a Failure)
         if (rolled.result == 100 || (rolled.result == 99 && difficultyGrades[index] <= 100)) {

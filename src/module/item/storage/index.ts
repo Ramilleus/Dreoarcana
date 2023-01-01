@@ -1,8 +1,17 @@
 import { ItemMythras } from '@item/base'
-import { PhysicalItemMythras } from '@item/physical'
+import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
 import { itemIsPhysical } from '@item/type-guards'
 
-export class StorageMythras extends PhysicalItemMythras {
+interface StorageData extends PhysicalItemData {
+  carried: boolean
+  maxEncumbrance: number
+}
+
+interface StorageMythras {
+  readonly system: StorageData
+}
+
+class StorageMythras extends PhysicalItemMythras {
   isStorage: boolean = true
 
   get contentEncumbrance() {
@@ -22,11 +31,11 @@ export class StorageMythras extends PhysicalItemMythras {
   }
 
   get isCarried(): boolean {
-    return Boolean((this.data.data as any).carried) || false
+    return Boolean(this.system.carried) || false
   }
 
   get maxEncumbrance(): number {
-    return Number((this.data.data as any).maxEncumbrance) || 0
+    return Number(this.system.maxEncumbrance) || 0
   }
 
   get contentValue() {
@@ -45,3 +54,5 @@ export class StorageMythras extends PhysicalItemMythras {
     return []
   }
 }
+
+export { StorageData, StorageMythras }

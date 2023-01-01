@@ -1,0 +1,71 @@
+<form class="{{cssClass}} item-sheet cult-sheet flexcol" autocomplete="off">
+    <header class="sheet-header">
+        <div class="header-flex">
+            <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
+            <div class="header-fields">
+                <h1 class="charname">
+                    <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
+                </h1>
+            </div>
+            <h1>{{system.currentRank}}</h1>
+        </div>
+    </header>
+
+    {{!-- Decorative Symbol Divider --}}
+    {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body flexcol">
+        <div class="cult-section">
+            <div class="cult-core">
+                <div class="cult-core-section">
+                    <div>
+                        <h3>{{localize 'MYTHRAS.Ranks'}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="cult-core">
+                <div class="cult-core-section">
+                    <div>
+                        <h4>{{localize 'MYTHRAS.Rank_Name4'}}</h4>
+                        <input type="text" name="system.rankName4" value="{{system.rankName4}}" />
+                        <h4>{{localize 'MYTHRAS.Rank_Name1'}}</h4>
+                        <input type="text" name="system.rankName1" value="{{system.rankName1}}" />
+                    </div>
+                </div>
+                <div class="cult-core-section">
+                    <div>
+                        <h4>{{localize 'MYTHRAS.Rank_Name3'}}</h4>
+                        <input type="text" name="system.rankName3" value="{{system.rankName3}}" />
+                        <h4>{{localize 'MYTHRAS.Rank_Name0'}}</h4>
+                        <input type="text" name="system.rankName0" value="{{system.rankName0}}" />
+                    </div>
+                </div>
+                <div class="cult-core-section">
+                    <div>
+                        <h4>{{localize 'MYTHRAS.Rank_Name2'}}</h4>
+                        <input type="text" name="system.rankName2" value="{{system.rankName2}}" />
+                        <h4>{{localize 'MYTHRAS.Current_Rank'}}</h4>
+                        <select name="system.currentRank" data-dtype="String">
+                            {{#select system.currentRank}}
+                            <option value="0">{{system.rankName0}}</option>
+                            <option value="1">{{system.rankName1}}</option>
+                            <option value="2">{{system.rankName2}}</option>
+                            <option value="3">{{system.rankName3}}</option>
+                            <option value="4">{{system.rankName4}}</option>
+                            {{/select}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Description</h2>
+        <div class="desc" data-group="primary">
+            {{ editor system.description target="system.description" button=true editable=editable}}
+        </div>
+    </section>
+
+    {{!-- Decorative Symbol Divider --}}
+    {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+</form>

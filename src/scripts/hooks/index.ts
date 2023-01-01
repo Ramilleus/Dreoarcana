@@ -5,6 +5,7 @@ import { RenderChatMessage } from './render-chat-message'
 import { Setup } from './setup'
 import { RenderActorDirectory } from './render-actor-directory'
 import { Ready } from './ready'
+import { RenderCombatTrackerConfig } from './render-combat-tracker-config'
 
 export const HooksMythras = {
   listen(): void {
@@ -14,6 +15,7 @@ export const HooksMythras = {
       RenderActorDirectory,
       Setup,
       RenderChatMessage,
+      RenderCombatTrackerConfig,
       CreateActor,
       PreCreateItem
     ]

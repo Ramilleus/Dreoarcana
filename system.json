@@ -1,12 +1,25 @@
 {
-  "name": "mythras",
+  "id": "mythras",
   "title": "Mythras",
   "description": "The Mythras system for FoundryVTT!",
   "version": "2.x.x",
-  "minimumCoreVersion": "0.8.9",
-  "compatibleCoreVersion": "9",
-  "templateVersion": 5,
-  "author": "Jonathan Karkour and Tom Paoloni",
+  "compatibility": {
+    "minimum": 10,
+    "verified": "10.291"
+  },
+  "templateVersion": 6,
+  "authors": [
+    {
+      "name": "Jonathan Karkour",
+      "email": "greshbolt@gmail.com",
+      "discord": "Greshbolt#1682"
+    },
+    {
+      "name": "Tom Paoloni",
+      "email": "tpaoloni@protonmail.com",
+      "discord": "goog#9039"
+    }
+  ],
   "esmodules": ["main.bundle.js"],
   "styles": ["./styles/main.css"],
   "scripts": [],
@@ -65,6 +78,11 @@
       "lang": "pt-br",
       "name": "Brazilian Portuguese",
       "path": "lang/ptbr.json"
+    },
+    {
+      "lang": "de",
+      "name": "German",
+      "path": "lang/de.json"
     }
   ],
   "socket": true,

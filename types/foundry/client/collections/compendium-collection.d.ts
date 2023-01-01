@@ -17,7 +17,12 @@ declare global {
         /** A subsidiary collection which contains the more minimal index of the pack */
         index: CompendiumIndex;
 
+        /** A debounced function which will clear the contents of the Compendium pack if it is not accessed frequently. */
         protected _flush: () => unknown;
+
+        /** Has this Compendium pack been fully indexed? */
+        indexed: boolean;
+
         /**
          * The amount of time that Document instances within this CompendiumCollection are held in memory.
          * Accessing the contents of the Compendium pack extends the duration of this lifetime.
@@ -26,6 +31,9 @@ declare global {
 
         /** The named game setting which contains Compendium configurations. */
         static CONFIG_SETTING: "compendiumConfiguration";
+
+        /** The default index fields which should be retrieved for each Compendium document type */
+        static INDEX_FIELDS: Record<CompendiumDocumentType, string[]>;
 
         /**
          * Create a new Compendium Collection using provided metadata.
@@ -135,21 +143,21 @@ declare global {
 
         protected override _onCreateDocuments(
             documents: TDocument[],
-            result: TDocument["data"]["_source"][],
+            result: TDocument["_source"][],
             options: DocumentModificationContext,
             userId: string
         ): void;
 
         protected override _onUpdateDocuments(
             documents: TDocument[],
-            result: TDocument["data"]["_source"][],
+            result: TDocument["_source"][],
             options: DocumentModificationContext,
             userId: string
         ): void;
 
         protected override _onDeleteDocuments(
             documents: TDocument[],
-            result: TDocument["data"]["_source"][],
+            result: TDocument["_source"][],
             options: DocumentModificationContext,
             userId: string
         ): void;
@@ -161,10 +169,30 @@ declare global {
     type CompendiumDocumentType = typeof CONST.COMPENDIUM_DOCUMENT_TYPES[number];
     type CompendiumUUID = `Compendium.${string}.${string}`;
     type DocumentUUID = WorldDocumentUUID | CompendiumUUID | TokenDocumentUUID;
+
+    function fromUuid<T extends CompendiumDocument = CompendiumDocument>(uuid: CompendiumUUID): Promise<T | null>;
     function fromUuid<T extends ClientDocument = ClientDocument>(uuid: string): Promise<T | null>;
+
+    /**
+     * Retrieve a Document by its Universally Unique Identifier (uuid) synchronously. If the uuid resolves to a compendium
+     * document, that document's index entry will be returned instead.
+     * @param uuid The uuid of the Document to retrieve.
+     * @param {} [relative]  A document to resolve relative UUIDs against.
+     * @returns The Document or its index entry if it resides in a Compendium, otherwise null.
+     * @throws If the uuid resolves to a Document that cannot be retrieved synchronously.
+     */
+    function fromUuidSync(
+        uuid: WorldDocumentUUID,
+        relative?: ClientDocument | CompendiumIndexData | null
+    ): ClientDocument | null;
+    function fromUuidSync(
+        uuid: string,
+        relative?: ClientDocument | CompendiumIndexData | null
+    ): ClientDocument | CompendiumIndexData | null;
 
     interface CompendiumMetadata<T extends CompendiumDocument = CompendiumDocument> {
         readonly type: T["documentName"];
+        id: string;
         name: string;
         label: string;
         path: string;
@@ -178,7 +206,8 @@ declare global {
         _id: string;
         type: string;
         name: string;
-        img?: ImagePath;
+        img: ImagePath;
+        pack?: string;
         [key: string]: any;
     }
 

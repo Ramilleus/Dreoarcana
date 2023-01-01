@@ -17,13 +17,12 @@ export class ActorMythrasStatTracker {
   constructor(private actor: ActorMythras) {}
 
   get trackedStats(): Record<string, TrackedStat> {
-    let data: any = this.actor.data.data
-    return data.trackedStats
+    const actorData: any = this.actor.system
+    return actorData.trackedStats
   }
 
   get exportedStats(): TrackedStatExport[] {
     let exportData: TrackedStatExport[] = []
-    let data: any = this.actor.data.data
     for (const key of Object.keys(this.trackedStats)) {
       let stat = this.trackedStats[key]
       if (stat.display) {

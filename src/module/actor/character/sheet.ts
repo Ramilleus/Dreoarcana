@@ -6,7 +6,7 @@ export class CharacterSheetMythras extends CreatureSheetMythras<CharacterMythras
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ['mythras', 'sheet', 'actor'],
-      template: 'systems/mythras/templates/actor/actor-sheet.html',
+      template: 'systems/mythras/templates/actor/actor-sheet.hbs',
       width: 800,
       height: 900,
       tabs: [

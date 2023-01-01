@@ -1,0 +1,136 @@
+<form class="{{cssClass}} item-sheet spell-sheet" autocomplete="off">
+  <header class="sheet-header">
+    <div class="header-flex">
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+      <div class="header-fields">
+        <h1 class="charname">
+          <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
+        </h1>
+      </div>
+    </div>
+  </header>
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+
+  {{! Sheet Tab Navigation }}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="attributes">
+      {{localize 'MYTHRAS.Attributes'}}
+    </a>
+    <a class="item" data-tab="description">
+      {{localize 'MYTHRAS.Description'}}
+    </a>
+  </nav>
+
+  {{! Sheet Body }}
+  <section class="sheet-body flexcol">
+
+    {{! Attributes Tab }}
+    <div class="attributes tab" data-group="primary" data-tab="attributes">
+      <div class="spell-core">
+        <div class="spell-info">
+          <div class="spell-info-section">
+            <div class="resource">
+              <label class="resource-label">
+                <strong>{{localize 'MYTHRAS.Magic_Skill'}}</strong>
+              </label>
+              <select name="system.sourceID" data-dtype="String">
+                {{#select system.sourceID}}
+                <option value="Uncategorized">Uncategorized</option>
+                {{#each availableMagicSkills as |skill|}}
+                <option value="{{skill.id}}">{{skill.name}}</option>
+                {{/each}}
+                {{/select}}
+              </select>
+            </div>
+          </div>
+          <div class="spell-info-section">
+            <div class="resource">
+              <label class="resource-label">
+                <strong>Traits</strong>
+              </label>
+              <input class="long-input" type="text" name="system.traits" value="{{system.traits}}"
+                data-dtype="String" />
+            </div>
+          </div>
+          <div class="spell-info-section">
+            <div class="resource centered">
+              <label class="resource-label">
+                Cost
+              </label>
+              <input class="short-input" type="text" name="system.cost" value="{{system.cost}}" data-dtype="Number" />
+            </div>
+
+            <div class="resource centered">
+              <label class="resource-label">
+                Cast Time
+              </label>
+              <input class="short-input" type="text" name="system.castTime" value="{{system.castTime}}"
+                data-dtype="String" />
+            </div>
+
+            <div class="resource centered">
+              <label class="resource-label">
+                Duration
+              </label>
+              <input class="long-input" type="text" name="system.duration" value="{{system.duration}}"
+                data-dtype="String" />
+            </div>
+          </div>
+        </div>
+
+        <div class="int-mag-section">
+          {{#each stats}}
+          <div data-stat="{{@key}}" class="derived-stat-with-label derived-stat-with-label--big">
+            <p class="derived-stat__label">
+              {{localize this.label}}
+            </p>
+            {{> systems/mythras/templates/common-components/derived-stat.hbs stat=this statName=@key}}
+          </div>
+          {{/each}}
+
+          {{!-- <div class="spell-component-container">
+            <p class="component-label">
+              Intensity
+            </p>
+            <div class="spell-component">
+              <p class="{{system.intensity.applyClass}}" name="system.intensity.value">
+                {{system.intensity.value}}
+              </p>
+              <div>
+                <span>
+                  +
+                </span>
+                <input type="text" name="system.intensity.mod" value="{{system.intensity.mod}}" />
+              </div>
+            </div>
+          </div>
+
+          <div class="spell-component-container">
+            <p class="component-label">
+              Magnitude
+            </p>
+            <div class="spell-component">
+              <p class="{{system.magnitude.applyClass}}" name="system.intensity.value">
+                {{system.magnitude.value}}
+              </p>
+              <div>
+                <span>
+                  +
+                </span>
+                <input type="text" name="system.magnitude.mod" value="{{system.magnitude.mod}}" />
+              </div>
+            </div>
+          </div> --}}
+        </div>
+
+      </div>
+    </div>
+    {{! Description Tab }}
+    <div class="desc tab" data-group="primary" data-tab="description">
+      {{ editor system.description target='system.description' button=true editable=editable }}
+    </div>
+  </section>
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+</form>

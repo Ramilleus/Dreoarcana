@@ -1,9 +1,19 @@
 import { HitLocationMythras } from '@item/hit-location'
-import { PhysicalItemMythras } from '@item/physical'
+import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
 
-export class ArmorMythras extends PhysicalItemMythras {
+interface ArmorData extends PhysicalItemData {
+  location: string
+  locationName: string
+  ap: number
+  equipped: boolean
+}
+
+interface ArmorMythras {
+  readonly system: ArmorData
+}
+
+class ArmorMythras extends PhysicalItemMythras {
   isArmor: boolean = true
-  
   get availableHitLocations(): HitLocationMythras[] {
     if (this.actorData) {
       let availableHitLocations: HitLocationMythras[] = this.actorData.items
@@ -16,68 +26,55 @@ export class ArmorMythras extends PhysicalItemMythras {
   }
 
   get selectedHitLocationId() {
-    return (this.data.data as any).location
+    return this.system.location
   }
 
   get ap() {
-    return Number((this.data.data as any).ap) || 0
+    return Number(this.system.ap) || 0
   }
 
   get isEquipped() {
-    return Boolean((this.data.data as any).equipped)
+    return Boolean(this.system.equipped)
   }
 
   override async _preCreate(data: any, options: any, user: any): Promise<void> {
     if (this.actorData) {
-      this.linkHitLocation(data)
+      this.linkHitLocation(data.system)
     }
-    this.data.update(data)
+    this.updateSource(data, options)
   }
 
   override async _onCreate(data: any, options: any, userId: any): Promise<void> {
     if (this.actorData) {
-      this.linkHitLocation(data)
-      this.data.update(data)
+      this.linkHitLocation(data.system)
+      this.updateSource(data)
       this.actor.updateEmbeddedDocuments('Item', [
         {
+          type: this.type,
           _id: this.id,
-          data: data
+          system: data
         }
       ])
     }
     super._onCreate(data, options, userId)
   }
 
-  override prepareData(): void {
-    const itemData: any = this.data
-    // Move the armor out of storage if its equipped
-    if (this.isEquipped) {
-      itemData.data.storage = undefined
-    }
-
-    if (this.actorData) {
-      this.linkHitLocation(itemData)
-    }
-
-    this.data.update(itemData)
-    super.prepareData()
-  }
-
-  linkHitLocation(itemData: any) {
-    const data = itemData.data
-    data.locationName = this.availableHitLocations[0].data.name
-    if (data.location === 'Unequipped' && data.locationName.length > 0) {
+  linkHitLocation(systemData: ArmorData) {
+    systemData.locationName = this.availableHitLocations[0].name
+    if (systemData.location === 'Unequipped' && systemData.locationName.length > 0) {
       let hitlocID = this.availableHitLocations.filter(function (value: Item) {
-        return value.name === data.locationName
+        return value.name === systemData.locationName
       })
-      data.location = hitlocID[0].id
+      systemData.location = hitlocID[0].id
     }
 
     let hitLocName = this.availableHitLocations.filter(function (value: Item) {
-      return value.id === data.location
+      return value.id === systemData.location
     })
     if (hitLocName.length > 0) {
-      data.locationName = hitLocName[0].name
+      systemData.locationName = hitLocName[0].name
     }
   }
 }
+
+export { ArmorMythras }

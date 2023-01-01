@@ -17,6 +17,6 @@ if (BUILD_MODE === 'development' && module.hot) {
       for (const appId in ui.windows) {
         ui.windows[Number(appId)].render(true)
       }
-    })
+    }) 
   }
 }

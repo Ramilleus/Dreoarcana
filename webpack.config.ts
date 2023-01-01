@@ -16,7 +16,7 @@ const isProductionBuild = buildMode === 'production'
 
 const allTemplates = () => {
   return glob
-    .sync('**/*.html', { cwd: path.join(__dirname, 'static/templates') })
+    .sync('**/*.hbs', { cwd: path.join(__dirname, 'static/templates') })
     .map((file: string) => `"systems/mythras/templates/${file}"`)
     .join(', ')
 }
@@ -68,11 +68,11 @@ const config: WebpackConfiguration = {
     rules: [
       !isProductionBuild
         ? {
-            test: /\.html$/,
+            test: /\.hbs$/,
             loader: 'raw-loader'
           }
         : {
-            test: /\.html$/,
+            test: /\.hbs$/,
             loader: 'null-loader'
           },
       {

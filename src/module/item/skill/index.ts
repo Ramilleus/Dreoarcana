@@ -1,10 +1,22 @@
 import { ItemMythras } from '@item/base'
+import { CharacteristicOption } from '@module/actor/characteristic'
 
-export class SkillMythras extends ItemMythras {
+interface SkillData {
+  primaryChar: string
+  secondaryChar: string
+  trainingVal: number
+  miscBonus: number
+}
+
+interface SkillMythras {
+  readonly system: SkillData
+}
+
+class SkillMythras extends ItemMythras {
   isSkill: boolean = true
 
   get encPenalty() {
-    const data: any = this.data.data
+    const data = this.system
     return (
       data.primaryChar === 'str' ||
       data.primaryChar === 'dex' ||
@@ -14,24 +26,21 @@ export class SkillMythras extends ItemMythras {
   }
 
   get totalVal() {
-    let data: any = this.data
+    const systemData = this.system
     //Was intended to fix the issue where an item sheet is already rendered and its base values from the character sheet are changed (which wouldn't change the item data).
     //Is commented out because it breaks magic skills for some reason
     //TODO: figure out why it breaks magic skills
     //this.reRenderOpenSheet()
-    return this.baseVal + Number(data.data.trainingVal) + Number(data.data.miscBonus)
+    return this.baseVal + Number(systemData.trainingVal) + Number(systemData.miscBonus)
   }
 
   get baseVal() {
-    if (this.actor && this.actor.data) {
-      let data: any = this.data
-      let actorData: any = this.actor.data.data
-      let primaryChar = data.data.primaryChar
-      let secondaryChar = data.data.secondaryChar
-      let primaryCharValue = primaryChar ? Number(actorData.characteristics[primaryChar].value) : 0
-      let secondaryCharValue = secondaryChar
-        ? Number(actorData.characteristics[secondaryChar].value)
-        : 0
+    if (this.actor && this.actor.system) {
+      const system = this.system
+      let primaryChar = system.primaryChar as CharacteristicOption
+      let secondaryChar = system.secondaryChar as CharacteristicOption
+      let primaryCharValue = Number(this.getCharacteristicValue(primaryChar))
+      let secondaryCharValue = Number(this.getCharacteristicValue(secondaryChar))
       return primaryCharValue + secondaryCharValue
     } else {
       return 0
@@ -46,4 +55,10 @@ export class SkillMythras extends ItemMythras {
       }
     }
   }
+
+  private getCharacteristicValue(characteristicName?: CharacteristicOption) {
+    return characteristicName ? this.actor.system.characteristics[characteristicName].value : 0
+  }
 }
+
+export { SkillData, SkillMythras }

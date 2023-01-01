@@ -21,7 +21,7 @@ export class EncounterGeneratorEnemyDetail extends Application {
     return mergeObject(super.defaultOptions, {
       id: "encounter-generator-enemy-detail",
       classes: ['mythras', 'sheet'],
-      template: "systems/mythras/templates/apps/encounter-generator/detail/enemy-detail.html",
+      template: "systems/mythras/templates/apps/encounter-generator/detail/enemy-detail.hbs",
       width: 550,
       height: 600,
       resizable: true
@@ -48,7 +48,6 @@ export class EncounterGeneratorEnemyDetail extends Application {
 
   private async getEnemyData() {
     this.enemy = await this.loadEnemy()
-    console.log(this.enemy)
     this.showLoader = false
     this.dataReady = true
     this.render(true)

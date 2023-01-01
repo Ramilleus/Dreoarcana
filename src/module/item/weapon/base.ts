@@ -1,20 +1,32 @@
-import { PhysicalItemMythras } from '@item/physical'
+import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
 
-export class WeaponMythras extends PhysicalItemMythras {
+interface WeaponData extends PhysicalItemData {
+  damageModifier: string
+  'combat-effects': string
+  damage: string
+}
+
+interface WeaponMythras {
+  readonly system: WeaponData
+}
+
+class WeaponMythras extends PhysicalItemMythras {
   get damageRoll() {
-    const data: any = this.data.data
+    const systemData = this.system
     if (this.damageModifier) {
-      return data.damage + '+' + this.actor.damageMod
+      return systemData.damage + '+' + this.actor.damageMod
     } else {
-      return data.damage
+      return systemData.damage
     }
   }
 
   get damageModifier() {
-    return (this.data.data as any).damageModifier
+    return this.system.damageModifier
   }
 
   get combatEffects() {
-    return (this.data.data as any)['combat-effects']
+    return this.system['combat-effects']
   }
 }
+
+export { WeaponData, WeaponMythras }

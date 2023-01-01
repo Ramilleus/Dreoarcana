@@ -18,7 +18,6 @@ declare global {
         TActors extends Actors<TActor> = Actors<TActor>,
         TChatMessage extends ChatMessage<TActor> = ChatMessage<TActor>,
         TCombat extends Combat = Combat,
-        TFolder extends Folder = Folder,
         TItem extends Item<TActor> = Item<TActor>,
         TMacro extends Macro = Macro,
         TScene extends Scene = Scene,
@@ -30,10 +29,13 @@ declare global {
          */
         view: string;
 
+        // Undocumented
+        _documentsReady?: boolean;
+
         /** The object of world data passed from the server */
         data: {
-            actors: TActor["data"]["_source"][];
-            items: TItem["data"]["_source"][];
+            actors: TActor["_source"][];
+            items: TItem["_source"][];
             macros: foundry.data.MacroSource[];
             messages: foundry.data.ChatMessageSource[];
             packs: CompendiumMetadata[];
@@ -41,6 +43,9 @@ declare global {
             users: foundry.data.UserSource[];
             version: string;
         };
+
+        /** The game World which is currently active */
+        world: object;
 
         /** Localization support */
         i18n: Localization;
@@ -52,11 +57,16 @@ declare global {
         modules: Map<
             string,
             {
+                id: string;
                 active: boolean;
-                data: {
-                    compatibleCoreVersion: string | undefined;
-                    flags: Record<string, Record<string, unknown>>;
-                    title: string;
+                esmodules: Set<string>;
+                scripts: Set<string>;
+                flags: Record<string, Record<string, unknown>>;
+                title: string;
+                compatibility: {
+                    minimum?: string;
+                    verified?: string;
+                    maximum?: string;
                 };
             }
         >;
@@ -90,6 +100,15 @@ declare global {
         /** A singleton instance of the Video Helper class */
         video: VideoHelper;
 
+        /** A singleton instance of the TooltipManger class */
+        tooltip: TooltipManager;
+
+        /** A singleton instance of the Tours class */
+        tours: Tours;
+
+        /** The global document index. */
+        documentIndex: DocumentIndex;
+
         /** Whether the Game is running in debug mode */
         debug: boolean;
 
@@ -114,21 +133,25 @@ declare global {
         };
 
         /* -------------------------------------------- */
-        /*  Entities                                    */
+        /*  World Collections                           */
         /* -------------------------------------------- */
 
-        users: Users<TUser>;
-        messages: Messages<TChatMessage>;
-        scenes: Scenes<TScene>;
         actors: TActors;
+        collections: Collection<
+            WorldCollection<TActor | TItem | JournalEntry | TMacro | Playlist | RollTable | TScene>
+        >;
+
+        combats: CombatEncounters<TCombat>;
+        folders: Folders<Folder>;
         items: Items<TItem>;
         journal: Journal;
         macros: Macros<TMacro>;
-        playlists: Playlists;
-        combats: CombatEncounters<TCombat>;
-        tables: RollTables;
-        folders: Folders<TFolder>;
+        messages: Messages<TChatMessage>;
         packs: Collection<CompendiumCollection<TActor | TItem | JournalEntry | TMacro | Playlist | RollTable | TScene>>;
+        playlists: Playlists;
+        scenes: Scenes<TScene>;
+        tables: RollTables;
+        users: Users<TUser>;
 
         constructor(view: string, worldData: {}, sessionId: string, socket: io.Socket);
 
@@ -141,78 +164,55 @@ declare global {
          */
         static create(): Promise<Game>;
 
-        /**
-         * Request World data from server and return it
-         */
-        static getWorldData(socket: io.Socket): Promise<any>;
+        /** Request World data from server and return it */
+        static getWorldData(socket: io.Socket): Promise<object>;
 
-        /**
-         * Request setup data from server and return it
-         */
-        static getSetupData(socket: io.Socket): Promise<any>;
+        /** Request setup data from server and return it */
+        static getSetupData(socket: io.Socket): Promise<object>;
 
-        /**
-         * Initialize the Game for the current window location
-         */
+        /** Initialize the Game for the current window location */
         initialize(): Promise<void>;
 
-        /**
-         * Fully set up the game state, initializing Entities, UI applications, and the Canvas
-         */
+        /** Fully set up the game state, initializing Entities, UI applications, and the Canvas */
         setupGame(): Promise<void>;
 
-        /**
-         * Initialize game state data by creating Collections for all Entity types
-         */
+        /** Initialize game state data by creating Collections for all Entity types */
         initializeEntities(): void;
 
-        /**
-         * Initialization actions for compendium packs
-         */
+        /** Initialization actions for compendium packs */
         initializePacks(config: any): Promise<void>;
 
-        /**
-         * Initialize the WebRTC implementation
-         */
+        /** Initialize the WebRTC implementation */
         initializeRTC(): void;
 
-        /**
-         * Initialize core UI elements
-         */
+        /** Initialize core UI elements */
         initializeUI(): void;
 
-        /**
-         * Initialize the game Canvas
-         */
+        /** Initialize the game Canvas */
         initializeCanvas(): Promise<void>;
 
-        /**
-         * Initialize Keyboard and Mouse controls
-         */
+        /** Initialize Keyboard controls */
         initializeKeyboard(): void;
+
+        /** Initialize Mouse controls */
+        initializeMouse(): void;
 
         /**
          * Register core game settings
          */
         registerSettings(): void;
 
-        /**
-         * The currently connected User
-         */
+        /** The currently connected User */
         get user(): Active<TUser>;
-
-        /**
-         * Metadata regarding the current game World
-         */
-        get world(): any;
 
         /**
          * Metadata regarding the game System which powers this World
          */
         get system(): {
             id: string;
+            version: string;
+            gridUnits: string;
             data: {
-                author: string;
                 authors: string[];
                 availability: number;
                 bugs: string;
@@ -222,7 +222,6 @@ declare global {
                 download: string;
                 esmodules: string[];
                 gridDistance: number;
-                gridUnits: string;
                 initiative: string;
                 keywords: string[];
                 languages: {
@@ -251,7 +250,6 @@ declare global {
                 title: string;
                 unavailable: boolean;
                 url: string;
-                version: string;
             };
             documentTypes: {
                 Actor: string[];

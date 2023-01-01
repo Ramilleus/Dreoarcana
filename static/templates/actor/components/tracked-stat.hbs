@@ -1,0 +1,15 @@
+<div class="stats-container" data-stat-name="{{stat.id}}">
+  <div class="number-input-container">
+    <div>
+      <input name="system.trackedStats.{{stat.id}}.value" type="text" value="{{stat.value}}" placeholder="" />
+      {{#if stat.maxValue includeZero=true}}<p class="point-total">/{{ stat.maxValue }}</p>{{/if}}
+    </div>
+    <div class="plus-minus-buttons">
+      <a class="stat-increase">+</a>
+      <a class="stat-decrease">-</a>
+    </div>
+  </div>
+  <p class="stat-minimizer input-label">
+    <span>{{localize stat.name}}</span>
+  </p>
+</div>

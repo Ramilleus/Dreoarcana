@@ -1,7 +1,17 @@
-import { WeaponMythras } from '@item/weapon/base'
+import { WeaponData, WeaponMythras } from '@item/weapon/base'
 
-export class RangedWeaponMythras extends WeaponMythras {
+interface RangedWeaponData extends WeaponData {
+  force: string
+}
+
+interface RangedWeaponMythras {
+  readonly system: RangedWeaponData
+}
+
+class RangedWeaponMythras extends WeaponMythras {
   get force() {
-    return (this.data.data as any).force
+    return this.system.force
   }
 }
+
+export { RangedWeaponData, RangedWeaponMythras }

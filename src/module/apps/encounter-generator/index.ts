@@ -22,7 +22,7 @@ export class EncounterGenerator extends Application {
     return mergeObject(super.defaultOptions, {
       id: "encounter-generator",
       classes: ['mythras', 'sheet'],
-      template: "systems/mythras/templates/apps/encounter-generator/encounter-generator.html",
+      template: "systems/mythras/templates/apps/encounter-generator/encounter-generator.hbs",
       width: 800,
       height: 700,
       resizable: true,

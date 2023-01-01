@@ -14,6 +14,17 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
     })
   }
 
+  override async getData(options?: Partial<DocumentSheetOptions>) {
+    const itemData = await super.getData(options) as any
+
+    return {
+      ...itemData,
+      system: this.item.system,
+      item: this.item,
+      options
+    }
+  }
+
   private postRender() {
     this.sheetPostRender.postRender()
   }
@@ -36,27 +47,22 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
   override get template() {
     const path = 'systems/mythras/templates/item'
 
-    const itemType = this.item.data.type
+    const itemType = this.item.type
 
     // Return a unique template based on item type
     if (itemType === 'magicSkill') {
       // A magic skill is considered a skill, but has a unique sheet. This serves as an override
-      return `${path}/item-magicSkill-sheet.html`
+      return `${path}/item-magicSkill-sheet.hbs`
     } else if (itemType === 'combatStyle') {
       // Combat style is considered a skill, but has a unique sheet. This serves as an override
-      return `${path}/item-combatStyle-sheet.html`
+      return `${path}/item-combatStyle-sheet.hbs`
     } else if (itemIsSkill(this.item)) {
       // Loads the default skill sheet that applies to all other skills
-      return `${path}/item-skill-sheet.html`
+      return `${path}/item-skill-sheet.hbs`
     } else {
       // Loads a unique sheet for all remaining types (armor, melee-weapon, etc.)
-      return `${path}/item-${itemType}-sheet.html`
+      return `${path}/item-${itemType}-sheet.hbs`
     }
-  }
-
-  override getData(options?: Partial<DocumentSheetOptions>) {
-    const data = super.getData(options)
-    return data
   }
 
   override setPosition(options = {}) {

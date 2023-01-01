@@ -1,10 +1,15 @@
 import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
 import { HitLocationMythras } from '@item/hit-location'
+import { CultBrotherhoodMythras } from '@module/item/cult-brotherhood'
+import { MagicSkillMythras } from '@module/item/magic-skill'
+import { SkillMythras } from '@module/item/skill'
+import { SpellMythras } from '@module/item/spell'
+import { StorageMythras } from '@module/item/storage'
 import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
-export abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
+abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
   TActor,
   ItemMythras
 > {
@@ -28,10 +33,11 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     this.roller = new Roller(this.actor)
   }
 
-  override getData() {
-    const baseData: any = super.getData()
-    baseData.dtypes = ['String', 'Number', 'Boolean']
-    const data = {
+  override async getData(options: ActorSheetOptions = this.options): Promise<ActorSheetData<TActor>> {
+    options.id ||= this.id;
+
+    const actorData = this.actor.toObject(false) as any
+    const data: any = {
       items: { ...this.actor.itemTypes },
       armorPenalty: this.actor.armorPenalty,
       fatigue: this.actor.fatigue,
@@ -39,7 +45,10 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
       magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
-
+      editable: this.isEditable,
+      system: actorData.system,
+      actor: actorData,
+      options,
       tabs: [
         {
           name: "core",
@@ -62,18 +71,17 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: "MYTHRAS.Journal"
         }
       ],
-
       stats: {
         actionPoints: {
           isAttribute: true,
           tracked: true,
           label: 'MYTHRAS.ACTION_POINTS',
           derivedName: 'maxActionPoints',
-          currentValue: baseData.data.data.attributes.actionPoints.value,
+          currentValue: actorData.system.attributes.actionPoints.value,
           derivedValue: this.actor.maxActionPoints,
-          modifierName: "data.attributes.actionPoints.mod",
-          modifierValue: baseData.data.data.attributes.actionPoints.mod,
-          minimized: baseData.data.data.attributes.actionPoints.minimize
+          modifierName: "system.attributes.actionPoints.mod",
+          modifierValue: actorData.system.attributes.actionPoints.mod,
+          minimized: actorData.system.attributes.actionPoints.minimize
         },
         damageMod: {
           isAttribute: true,
@@ -81,8 +89,8 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.DAMAGE_MOD',
           derivedName: 'damageMod',
           derivedValue: this.actor.damageMod,
-          modifierName: "data.attributes.damageMod.mod",
-          modifierValue: baseData.data.data.attributes.damageMod.mod
+          modifierName: "system.attributes.damageMod.mod",
+          modifierValue: actorData.system.attributes.damageMod.mod
         },
         experienceMod: {
           isAttribute: true,
@@ -90,8 +98,8 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.EXPERIENCE_MOD',
           derivedName: 'experienceMod',
           derivedValue: this.actor.experienceMod,
-          modifierName: "data.attributes.experienceMod.mod",
-          modifierValue: baseData.data.data.attributes.experienceMod.mod
+          modifierName: "system.attributes.experienceMod.mod",
+          modifierValue: actorData.system.attributes.experienceMod.mod
         },
         healingRate: {
           isAttribute: true,
@@ -99,8 +107,8 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.HEALING_RATE',
           derivedName: 'healingRate',
           derivedValue: this.actor.healingRate,
-          modifierName: "data.attributes.healingRate.mod",
-          modifierValue: baseData.data.data.attributes.healingRate.mod
+          modifierName: "system.attributes.healingRate.mod",
+          modifierValue: actorData.system.attributes.healingRate.mod
         },
         initiativeBonus: {
           isAttribute: true,
@@ -108,49 +116,49 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
           label: 'MYTHRAS.INITIATIVE_BONUS',
           derivedName: 'initiativeBonus',
           derivedValue: this.actor.initiativeBonus,
-          modifierName: "data.attributes.initiativeBonus.mod",
-          modifierValue: baseData.data.data.attributes.initiativeBonus.mod
+          modifierName: "system.attributes.initiativeBonus.mod",
+          modifierValue: actorData.system.attributes.initiativeBonus.mod
         },
         luckPoints: {
           isAttribute: true,
           tracked: true,
           label: 'MYTHRAS.LUCK_POINTS',
           derivedName: 'maxLuckPoints',
-          currentValue: baseData.data.data.attributes.luckPoints.value,
+          currentValue: actorData.system.attributes.luckPoints.value,
           derivedValue: this.actor.maxLuckPoints,
-          modifierName: "data.attributes.luckPoints.mod",
-          modifierValue: baseData.data.data.attributes.luckPoints.mod,
-          minimized: baseData.data.data.attributes.luckPoints.minimize
+          modifierName: "system.attributes.luckPoints.mod",
+          modifierValue: actorData.system.attributes.luckPoints.mod,
+          minimized: actorData.system.attributes.luckPoints.minimize
         },
         magicPoints: {
           isAttribute: true,
           tracked: true,
           label: 'MYTHRAS.MAGIC_POINTS',
           derivedName: 'maxMagicPoints',
-          currentValue: baseData.data.data.attributes.magicPoints.value,
+          currentValue: actorData.system.attributes.magicPoints.value,
           derivedValue: this.actor.maxMagicPoints,
-          modifierName: "data.attributes.magicPoints.mod",
-          modifierValue: baseData.data.data.attributes.magicPoints.mod,
-          minimized: baseData.data.data.attributes.magicPoints.minimize
+          modifierName: "system.attributes.magicPoints.mod",
+          modifierValue: actorData.system.attributes.magicPoints.mod,
+          minimized: actorData.system.attributes.magicPoints.minimize
         },
         tenacity: {
           isAttribute: false,
           tracked: true,
           // TODO: Localize
-          label: 'TENACITY',
+          label: 'MYTHRAS.TENACITY',
           derivedName: 'maxTenacity',
-          currentValue: baseData.data.data.attributes.tenacity.value,
+          currentValue: actorData.system.attributes.tenacity.value,
           derivedValue: this.actor.maxTenacity,
-          modifierName: "data.attributes.tenacity.mod",
-          modifierValue: baseData.data.data.attributes.tenacity.mod,
-          minimized: baseData.data.data.attributes.tenacity.minimize
+          modifierName: "system.attributes.tenacity.mod",
+          modifierValue: actorData.system.attributes.tenacity.mod,
+          minimized: actorData.system.attributes.tenacity.minimize
         },
         experienceRoll: {
           isAttribute: false,
           tracked: true,
           label: 'MYTHRAS.EXPERIENCE_ROLLS',
-          currentValue: baseData.data.data.experienceRolls,
-          minimized: baseData.data.data.attributes.experienceRoll.minimize
+          currentValue: actorData.system.experienceRolls,
+          minimized: actorData.system.attributes.experienceRoll.minimize
         }
       },
       characteristics: {
@@ -184,34 +192,33 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
         }
       }
     }
-    console.log(data.magicSkillNames)
+    
     this.sortItems(data)
-
-    return mergeObject(baseData, data)
+    return data
   }
 
   private sortItems(sheetData: any) {
     // Assign and return
-    sheetData.items.hitLocation.sort((a: any, b: any) => {
-      return a.data.data.rollRangeStart - b.data.data.rollRangeStart
+    sheetData.items.hitLocation.sort((a: HitLocationMythras, b: HitLocationMythras) => {
+      return a.system.rollRangeStart - b.system.rollRangeStart
     })
-    sheetData.items.standardSkill.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+    sheetData.items.standardSkill.sort((a: SkillMythras, b: SkillMythras) => {
+      return a.name.localeCompare(b.name)
     })
-    sheetData.items.professionalSkill.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+    sheetData.items.professionalSkill.sort((a: SkillMythras, b: SkillMythras) => {
+      return a.name.localeCompare(b.name)
     })
-    sheetData.items.magicSkill.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+    sheetData.items.magicSkill.sort((a: MagicSkillMythras, b: MagicSkillMythras) => {
+      return a.name.localeCompare(b.name)
     })
-    sheetData.items.storage.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+    sheetData.items.storage.sort((a: StorageMythras, b: StorageMythras) => {
+      return a.name.localeCompare(b.name)
     })
-    sheetData.items.cultBrotherhood.sort((a: any, b: any) => {
-      return a.data.name.localeCompare(b.data.name)
+    sheetData.items.cultBrotherhood.sort((a: CultBrotherhoodMythras, b: CultBrotherhoodMythras) => {
+      return a.name.localeCompare(b.name)
     })
-    sheetData.items.spell.sort((a: any, b: any) => {
-      return a.data.data.source.localeCompare(b.data.data.source)
+    sheetData.items.spell.sort((a: SpellMythras, b: SpellMythras) => {
+      return a.magicSkillName.localeCompare(b.magicSkillName)
     })
   }
 
@@ -239,7 +246,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       (item) => item.type == 'hitLocation'
     )
     for (let hitLocation of hitLocations) {
-      let currentHp = (hitLocation.data.data as any).currentHp
+      let currentHp = hitLocation.system.currentHp
       let hitLocationElement: any = document.querySelector(
         `.hitLocation-table [data-item-id="${hitLocation.id}"]`
       )
@@ -259,7 +266,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       const bubble = $(stat).find('.number-input-container')
       const label = $(stat).find('.stat-minimizer')
       const actor: any = this.actor
-      // if (actor.data.data.attributes[statName].minimize) {
+      // if (actor.system.attributes[statName].minimize) {
       //   bubble.addClass('hidden')
       //   label.addClass('sideways-text')
       // } else {
@@ -290,7 +297,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
         newValue = target.checked
       }
       if (propertyName != 'name') {
-        propertyName = 'data.' + propertyName
+        propertyName = 'system.' + propertyName
       }
       await this.actor.updateEmbeddedDocuments('Item', [
         {
@@ -320,7 +327,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
 
       new Dialog({
         title: 'Delete',
-        content: `Are you sure you want to delete ${item.data.name}`,
+        content: `Are you sure you want to delete ${item.name}`,
         buttons: {
           ok: {
             label: 'Yes',
@@ -356,20 +363,7 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
       event.preventDefault()
       this.roller.rollHitLocation()
     })
-    
-    // html.find('.stat-minimizer').on('click', function (event: any) {
-    //   event.preventDefault()
-    //   const statName = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
-    //   if (actor.data.data.attributes[statName].minimize) {
-    //     actor.update({
-    //       ['data.attributes.' + statName + '.minimize']: 0
-    //     })
-    //   } else {
-    //     actor.update({
-    //       ['data.attributes.' + statName + '.minimize']: 1
-    //     })
-    //   }
-    // })
+
     html.find('.stat-settings').on('click', (event) => {
       event.preventDefault()
       let statList = 'Coming soon :)'
@@ -381,23 +375,23 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     })
     html.find('.stat-increase').on('click', (event) => {
       event.preventDefault()
-      let data: any = actor.data.data
+      let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
       
       let trackedStats = data.trackedStats
       actor.update({
-        ['data.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) + 1
+        ['system.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) + 1
       })
     })
 
     html.find('.stat-decrease').on('click', (event) => {
       event.preventDefault()
-      let data: any = actor.data.data
+      let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
       
       let trackedStats = data.trackedStats
       actor.update({
-        ['data.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) - 1
+        ['system.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) - 1
       })
     })
 
@@ -435,46 +429,11 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
     const itemData: any = {
       name: name,
       type: type,
-      data: data
+      system: data
     }
 
     // Finally, create the item!
     return this.actor.createEmbeddedDocuments('Item', [itemData])
-  }
-
-  private doesTypeHaveTemplate(type: any, template: any) {
-    let system: any = game.system
-    let itemTemplates = system.template.Item[type].templates
-    if (itemTemplates === undefined) return false
-
-    return itemTemplates.includes(template)
-  }
-
-  private rollSkillAlt(event: any) {
-    event.preventDefault()
-    let skills = this.actor.items.filter(function (value) {
-      return this.doesTypeHaveTemplate(value.data.type, 'skill')
-    })
-    let skillSelect = `<select id="skill-mod">`
-    skills.forEach((skill: any, index) => {
-      skillSelect += `<option value="${skill.data.name},${skill.data.data.totalVal}">${skill.data.name}</option>`
-    })
-    skillSelect += '</select>'
-    if (event.ctrlKey) {
-      new Dialog({
-        title: 'Epic Dropdown Test',
-        content: skillSelect,
-        buttons: {
-          ok: {
-            label: 'Roll',
-            callback: async (html) => {}
-          },
-          cancel: {
-            label: 'Cancel'
-          }
-        }
-      }).render(true)
-    }
   }
 
   private handleItemRoll<TItem extends ItemMythras>(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: TItem) => any) {
@@ -485,8 +444,8 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   }
 
   private async filterSpells() {
-    let data = this.actor.data.data as any
-    let filterBy = data.spellFilterOption
+    const actorData = this.actor.system
+    let filterBy = actorData.spellFilterOption
     let items: any[] = [...document.querySelectorAll('.spell-list-table .item')]
     for (let item of items) {
       switch (filterBy) {
@@ -504,3 +463,5 @@ export abstract class ActorSheetMythras<TActor extends ActorMythras> extends Act
   }
 
 }
+
+export { ActorSheetMythras }

@@ -1,0 +1,76 @@
+<div class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header flex-0">
+    <div>
+      <h2>{{enemyName}}</h2>
+      <p class="label-small"><i>Tags: {{#each tags as |tag|}}<span>{{tag}}{{#unless @last}},
+            {{/unless}}</span>{{/each}}</i></p>
+    </div>
+    <div class="d-flex d-flex--space-between">
+      <div></div>
+      <div class="d-flex">
+        <button class="button-red refresh-button" style="margin-right: 10px;">Re-roll <i
+            class="fas fa-undo"></i></button>
+        <button class="button-white import-button">Import <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </header>
+  <section class="sheet-body">
+    {{#if showLoader}}
+    <div class="d-flex d-flex--center-content d-flex--center-items height-100">
+      {{> systems/mythras/templates/common-components/loader.hbs}}
+    </div>
+    {{/if}}
+    {{#if dataReady}}
+    <div class="d-flex d-flex--gap-medium bottom-margin-medium">
+      <div class="d-flex d-flex--column flex-2 mini-stat-table">
+        <div class="mini-stat-table__header">Characteristics</div>
+        {{#each enemy.stats as |stat|}}
+        {{#each stat}}
+        <div>{{@key}}: {{this}}</div>
+        {{/each}}
+        {{/each}}
+      </div>
+      <div class="d-flex d-flex--column flex-3  mini-stat-table">
+        <div class="mini-stat-table__header">Attributes</div>
+        {{#each enemy.attributes}}
+        <div>{{formatSnakeCaseName @key}}: {{this}}</div>
+        {{/each}}
+      </div>
+      <div class="d-flex d-flex--column flex-4  mini-stat-table">
+        <div class="d-flex d-flex--gap-tiny mini-stat-table__header">
+          <div class="flex-1">1D20</div>
+          <div class="flex-2">Location</div>
+          <div class="flex-1">AP/HP</div>
+        </div>
+        {{#each enemy.hit_locations as |hitLocation|}}
+        <div class="d-flex d-flex--gap-tiny">
+          <div class="flex-1">{{hitLocation.range}}</div>
+          <div class="flex-2">{{hitLocation.name}}</div>
+          <div class="flex-1">{{hitLocation.ap}}/{{hitLocation.hp}}</div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+    {{#if enemy.cults}}
+    <div class="bottom-margin-small">
+      <p><b>Cults:</b><i>
+          {{#each enemy.cults as |cult|}}<span>{{ cult }}{{#unless @last}}, {{/unless}}</span>{{/each}}</i></p>
+    </div>
+    {{/if}}
+    {{#if enemy.skills}}
+    <div class="bottom-margin-small">
+      <p><b>Skills:</b><i>
+          {{#each enemy.skills as |skill|}}{{#each skill}}<span>{{@key}} {{this}}%{{#unless @../last}},
+            {{/unless}}</span>{{/each}}{{/each}}</i></p>
+    </div>
+    {{/if}}
+    {{#if enemy.combat_styles}}
+    <div class="bottom-margin-small">
+      <p><b>Combat Styles:</b><i>
+          {{#each enemy.combat_styles as |combat_style|}}<span>{{ combat_style.name }} {{ combat_style.value }}%{{#unless @last}},
+            {{/unless}}</span>{{/each}}</i></p>
+    </div>
+    {{/if}}
+    {{/if}}
+  </section>
+</div>

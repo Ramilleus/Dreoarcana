@@ -6,56 +6,56 @@ export class ActorMythrasMovement {
   constructor(private actor: ActorMythras) {}
 
   public get stats() {
-    let data: any = this.actor.data
+    const actorData = this.actor.system
     return {
       walk: {
         label: 'MYTHRAS.WALK',
         derivedName: 'movement.walk',
         derivedValue: this.walk,
-        modifierName: 'data.attributes.movement.mod',
-        modifierValue: data.data.attributes.movement.mod
+        modifierName: 'system.attributes.movement.mod',
+        modifierValue: actorData.attributes.movement.mod
       },
       run: {
         label: 'MYTHRAS.RUN',
         derivedName: 'movement.run',
         derivedValue: this.run,
-        modifierName: 'data.attributes.run.mod',
-        modifierValue: data.data.attributes.run.mod
+        modifierName: 'system.attributes.run.mod',
+        modifierValue: actorData.attributes.run.mod
       },
       sprint: {
         label: 'MYTHRAS.SPRINT',
         derivedName: 'movement.sprint',
         derivedValue: this.sprint,
-        modifierName: 'data.attributes.sprint.mod',
-        modifierValue: data.data.attributes.sprint.mod
+        modifierName: 'system.attributes.sprint.mod',
+        modifierValue: actorData.attributes.sprint.mod
       },
       climb: {
         label: 'MYTHRAS.CLIMB',
         derivedName: 'movement.climb',
         derivedValue: this.climb,
-        modifierName: 'data.attributes.climb.mod',
-        modifierValue: data.data.attributes.climb.mod
+        modifierName: 'system.attributes.climb.mod',
+        modifierValue: actorData.attributes.climb.mod
       },
       swim: {
         label: 'MYTHRAS.SWIM',
         derivedName: 'movement.swim',
         derivedValue: this.swim,
-        modifierName: 'data.attributes.swim.mod',
-        modifierValue: data.data.attributes.swim.mod
+        modifierName: 'system.attributes.swim.mod',
+        modifierValue: actorData.attributes.swim.mod
       },
       jumpVertical: {
         label: 'MYTHRAS.V._JUMP',
         derivedName: 'movement.jumpVertical',
         derivedValue: this.jumpVertical,
-        modifierName: 'data.attributes.jumpVertical.mod',
-        modifierValue: data.data.attributes.jumpVertical.mod
+        modifierName: 'system.attributes.jumpVertical.mod',
+        modifierValue: actorData.attributes.jumpVertical.mod
       },
       jumpHorizontal: {
         label: 'MYTHRAS.H._JUMP',
         derivedName: 'movement.jumpHorizontal',
         derivedValue: this.jumpHorizontal,
-        modifierName: 'data.attributes.jumpHorizontal.mod',
-        modifierValue: data.data.attributes.jumpHorizontal.mod
+        modifierName: 'system.attributes.jumpHorizontal.mod',
+        modifierValue: actorData.attributes.jumpHorizontal.mod
       }
     }
   }
@@ -103,31 +103,31 @@ export class ActorMythrasMovement {
     )
   }
 
-  private getStatMod(statName: string): number {
-    return Number((this.actor.data as any).data.attributes[statName].mod) || 0
+  private getStatMod(statName: 'run' | 'sprint' | 'jumpHorizontal' | 'jumpVertical' | 'climb' | 'swim'): number {
+    return Number(this.actor.system.attributes[statName].mod) || 0
   }
 
   private get actorHeight(): number {
-    return (this.actor.data.data as any).height
+    return this.actor.system.height
   }
 
   private get athleticsSkillValue(): number {
     let athletics: SkillMythras = this.actor.items.find(
-      (entry: ItemMythras) => entry.data.name === game.i18n.localize('MYTHRAS.Athletics')
+      (entry: ItemMythras) => entry.name === game.i18n.localize('MYTHRAS.Athletics')
     )
     return athletics ? athletics.totalVal : 0
   }
 
   private get swimSkillValue(): number {
     let swim: SkillMythras = this.actor.items.find(
-      (entry: ItemMythras) => entry.data.name === game.i18n.localize('MYTHRAS.Swim')
+      (entry: ItemMythras) => entry.name === game.i18n.localize('MYTHRAS.Swim')
     )
     return swim ? swim.totalVal : 0
   }
 
   private get baseWalk(): number {
-    const baseMod = (this.actor.data.data as any).attributes.movement.mod
-    let walk = (this.actor.data.data as any).attributes.movement.walk
+    const baseMod = this.actor.system.attributes.movement.mod
+    let walk = this.actor.system.attributes.movement.walk
     if (!walk) walk = 6
     return Number(walk) + Number(baseMod) || 0
   }

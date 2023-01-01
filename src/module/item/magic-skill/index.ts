@@ -1,68 +1,94 @@
-import { SkillMythras } from '@item/skill'
+import { SkillData, SkillMythras } from '@item/skill'
+import { ActorData } from '@module/actor/base'
+import { ItemMythras } from '../base'
+import { CultBrotherhoodMythras } from '../cult-brotherhood'
+import { itemIsCultBrotherhood } from '../type-guards'
 
-export class MagicSkillMythras extends SkillMythras {
+interface MagicSkillAttribute {
+  min?: number
+  max: number
+  base?: number
+  used?: number
+}
+
+interface MagicSkillData extends SkillData {
+  cults: CultBrotherhoodMythras[]
+  cultId: string
+  skillType: string
+  intensity: MagicSkillAttribute
+  magnitude: MagicSkillAttribute
+  spiritBounded: MagicSkillAttribute
+  combinedTalentIntensity: MagicSkillAttribute
+  devotionalPool: MagicSkillAttribute
+  maxSpiritBoundedPow: number
+  maxShapingPoints: number
+}
+
+interface MagicSkillMythras {
+  readonly system: MagicSkillData
+}
+
+class MagicSkillMythras extends SkillMythras {
   isMagicSkill: boolean = true
 
   get intensity() {
-    return (this.data.data as any).intensity.max
+    return this.system.intensity.max
   }
 
   get magnitude() {
-    return (this.data.data as any).magnitude.max
+    return this.system.magnitude.max
   }
 
   override prepareData(): void {
     super.prepareData()
 
-    const itemData: any = this.data
-    const actorData: any = this.actor ? this.actor.data : {}
-    
-    const data = itemData.data
+    const system = this.system
+    const actorData = this.actor ? this.actor.system : {} as ActorData
     
     let cultRank = 0
     let chaValue = 0
     let powValue = 0
     if (actorData !== undefined && actorData.items !== undefined) {
-      const cults = actorData.items.filter(
-        (item: any) => item.data.type === 'cultBrotherhood'
+      const cults: CultBrotherhoodMythras[] = this.actor.items.filter(
+        (item: ItemMythras) => itemIsCultBrotherhood(item)
       )
-      data.cults = cults
-      if (data.cultId !== undefined) {
-        const theCult = cults.find((item: any) => item.id === data.cultId)
+      system.cults = cults
+      if (system.cultId !== undefined) {
+        const theCult = cults.find((item: CultBrotherhoodMythras) => item.id === system.cultId)
         if (theCult !== undefined) {
-          cultRank = Number(theCult.data.data.currentRank)
+          cultRank = Number(theCult.system.currentRank)
         }
       }
-      chaValue = Number(actorData.data.characteristics['cha'].value)
-      powValue = Number(actorData.data.characteristics['pow'].value)
+      chaValue = Number(actorData.characteristics['cha'].value)
+      powValue = Number(actorData.characteristics['pow'].value)
     }
-    switch (data.skillType) {
+    switch (system.skillType) {
       case 'TR':
-        this._setTRMagicValues(data, this.totalVal)
+        this._setTRMagicValues(system, this.totalVal)
         break
       case 'BI':
-        this._setBIMagicValues(data, this.totalVal, cultRank, chaValue)
+        this._setBIMagicValues(system, this.totalVal, cultRank, chaValue)
         break
       case 'ME':
-        this._setMEMagicValues(data, this.totalVal)
+        this._setMEMagicValues(system, this.totalVal)
         break
       case 'MY':
-        this._setMYMagicValues(data, this.totalVal)
+        this._setMYMagicValues(system, this.totalVal)
         break
       case 'IN':
-        this._setINMagicValues(data, this.totalVal)
+        this._setINMagicValues(system, this.totalVal)
         break
       case 'SH':
-        this._setSHMagicValues(data, this.totalVal)
+        this._setSHMagicValues(system, this.totalVal)
         break
       case 'DE':
-        this._setDEMagicValues(data, this.totalVal, cultRank, powValue)
+        this._setDEMagicValues(system, this.totalVal, cultRank, powValue)
         break
       case 'EX':
-        this._setEXMagicValues(data, this.totalVal)
+        this._setEXMagicValues(system, this.totalVal)
         break
       default:
-        this._setFMMagicValues(data, this.totalVal)
+        this._setFMMagicValues(system, this.totalVal)
         break
     }
   }
@@ -72,7 +98,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setFMMagicValues(data: any, skillValue: any) {
+  _setFMMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 1, max: 1, base: 1 }
     data.magnitude = { min: 1, max: 1, base: 1 }
     data.spiritBounded.max = 0
@@ -87,7 +113,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setTRMagicValues(data: any, skillValue: any) {
+  _setTRMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -104,7 +130,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} cult rank
    * @param {*} charisma Value
    */
-  _setBIMagicValues(data: any, skillValue: any, cultRank: any, chaValue: any) {
+  _setBIMagicValues(data: MagicSkillData, skillValue: number, cultRank: number, chaValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = Math.ceil((chaValue * cultRank) / 4)
@@ -119,7 +145,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setMEMagicValues(data: any, skillValue: any) {
+  _setMEMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -134,7 +160,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setMYMagicValues(data: any, skillValue: any) {
+  _setMYMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 1, max: Math.ceil(skillValue / 20), base: 1 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -149,7 +175,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setINMagicValues(data: any, skillValue: any) {
+  _setINMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = {
       min: 1,
       max: Math.ceil(skillValue / 10),
@@ -168,7 +194,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setSHMagicValues(data: any, skillValue: any) {
+  _setSHMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 1, max: Math.ceil(skillValue / 10), base: 1 }
     data.spiritBounded.max = 0
@@ -185,7 +211,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} cult rank
    * @param {*} power Value
    */
-  _setDEMagicValues(data: any, skillValue: any, cultRank: any, powValue: any) {
+  _setDEMagicValues(data: MagicSkillData, skillValue: number, cultRank: number, powValue: number) {
     data.intensity = {
       min: Math.ceil(skillValue / 10),
       max: Math.ceil(skillValue / 10),
@@ -208,7 +234,7 @@ export class MagicSkillMythras extends SkillMythras {
    * @param {*} itemData data
    * @param {*} skillValue
    */
-  _setEXMagicValues(data: any, skillValue: any) {
+  _setEXMagicValues(data: MagicSkillData, skillValue: number) {
     data.intensity = { min: 0, max: 0, base: 0 }
     data.magnitude = { min: 0, max: 0, base: 0 }
     data.spiritBounded.max = 0
@@ -218,3 +244,5 @@ export class MagicSkillMythras extends SkillMythras {
     data.devotionalPool.max = 0
   }
 }
+
+export { MagicSkillData, MagicSkillMythras }
