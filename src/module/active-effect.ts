@@ -8,8 +8,4 @@ export class ActiveEffectMythras extends ActiveEffect {
         data.transfer = false;
         super(data, context);
     }
-
-    static override async createDocuments<T extends foundry.abstract.Document>(this: ConstructorOf<T>): Promise<T[]> {
-        return [];
-    }
 }

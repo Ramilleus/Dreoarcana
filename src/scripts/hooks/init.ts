@@ -18,7 +18,8 @@ export const Init = {
       CONFIG.Item.documentClass = ItemMythras
       CONFIG.Combat.documentClass = CombatMythras
       CONFIG.ui.combat = MythrasCombatTracker as any
-      CONFIG.ActiveEffect.documentClass = ActiveEffectMythras
+      //TODO: Figure out how to use the active effects class for further Mythras customization
+      //CONFIG.ActiveEffect.documentClass = ActiveEffectMythras
 
       // Set an initiative formula for the system
       CONFIG.Combat.initiative = {

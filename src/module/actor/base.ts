@@ -52,9 +52,10 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
       return item.type === 'armor' && item.isEquipped
     })
     let totalArmorEncumbrance = equippedArmor.reduce(
-      (weight: number, armor: ArmorMythras) => weight + armor.encumbrance,
+      (weight: number, armor: ArmorMythras) => weight + Number(armor.encumbrance),
       0
     )
+
     return Math.ceil(Number(totalArmorEncumbrance) / 5)
   }
 
@@ -84,7 +85,7 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
 
   get initiativeBonus() {
     let base = Math.ceil((this.characteristics.int + this.characteristics.dex) / 2)
-    let initiativeBonus = base + this.attributeMiscMods.initiativeBonus + this.fatigue.currentLevel.initiativePenalty(base)
+    let initiativeBonus = base + this.attributeMiscMods.initiativeBonus + this.fatigue.currentLevel.initiativePenalty(base) - this.armorPenalty
     return initiativeBonus
   }
 

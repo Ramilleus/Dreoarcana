@@ -14,11 +14,15 @@ interface ArmorMythras {
 
 class ArmorMythras extends PhysicalItemMythras {
   isArmor: boolean = true
+
   get availableHitLocations(): HitLocationMythras[] {
     if (this.actorData) {
       let availableHitLocations: HitLocationMythras[] = this.actorData.items
         .filter(function (value: Item) {
           return value.type === 'hitLocation'
+        })
+        availableHitLocations.sort((a: HitLocationMythras, b: HitLocationMythras) => {
+          return a.system.rollRangeStart - b.system.rollRangeStart
         })
       return availableHitLocations
     }
@@ -57,6 +61,20 @@ class ArmorMythras extends PhysicalItemMythras {
       ])
     }
     super._onCreate(data, options, userId)
+  }
+
+  override prepareData(): void {
+    let systemData = this.system
+    // Move the armor out of storage if its equipped
+    if (systemData.equipped) {
+      systemData.storage = undefined
+    }
+
+    if (this.actorData) {
+      this.linkHitLocation(systemData)
+    }
+
+    super.prepareData()
   }
 
   linkHitLocation(systemData: ArmorData) {
