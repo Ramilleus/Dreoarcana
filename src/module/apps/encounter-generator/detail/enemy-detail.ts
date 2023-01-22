@@ -1,7 +1,7 @@
 import { EncounterGeneratorActorBuilder } from "../actor-builder"
 
 export class EncounterGeneratorEnemyDetail extends Application {
-  private skollProxyBaseUrl: string = "https://megproxy.com/"
+  private skollProxyBaseUrl: string = "https://www.megproxy.com/"
   private dataReady: boolean = false
   private showLoader: boolean = true
   private enemy: any = {}

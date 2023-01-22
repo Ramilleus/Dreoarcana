@@ -33,7 +33,7 @@ export abstract class EncounterGeneratorImporter {
   protected abstract prepareFilters(): void
   protected abstract filterTemplates(template: any): void
 
-  protected skollProxyBaseUrl: string = 'https://megproxy.com/'
+  protected skollProxyBaseUrl: string = 'https://www.megproxy.com/'
   protected scrollLimitHit: boolean = false
   protected scrollLimit: number = 100
   protected totalTemplateCount: number = 0
