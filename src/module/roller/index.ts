@@ -30,21 +30,48 @@ export class Roller {
   }
 
   public async rollHitLocation() {
-    let roll = new Roll('1d20', this.actor.system as any)
-    const result: number = Number((await roll.evaluate({ async: true })).result) || 0
-    let label = game.i18n.localize('MYTHRAS.Rolling_Location')
+      let roll = new Roll('1d20', this.actor.system as any)
+      const normalRoll: number = Number((await roll.evaluate({ async: true })).result) || 0
+      let label = game.i18n.localize('MYTHRAS.Rolling_Location')
 
-    const locationsHit = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
-      return result >= Number(location.rollRangeStart) && result <= Number(location.rollRangeEnd)
-    })
-    locationsHit.forEach((location) => {
-      label += '<br><h2>' + location.name + '</h2>'
-    })
+      let lowerRoll = Math.ceil(Number(normalRoll) / 2);
+      let upperRoll = lowerRoll + 10;
 
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: label
-    })
+      //hit location roll with half the d20 roll + 10 (similar to rolling a d10 but I prefered to keep the roll the same)
+      //for upper body hits (such as when striking someone behind cover and such)
+      const upperHit = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
+          return upperRoll >= Number(location.rollRangeStart) && upperRoll <= Number(location.rollRangeEnd)
+      })[0].name;
+      //normal hit location roll of d20
+      const normalHit = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
+          return normalRoll >= Number(location.rollRangeStart) && normalRoll <= Number(location.rollRangeEnd)
+      })[0].name;
+      //hit location roll with half the d20 roll
+      //for lower body hits (such as when striking a rider)
+      const lowerHit = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
+          return lowerRoll >= Number(location.rollRangeStart) && lowerRoll <= Number(location.rollRangeEnd)
+      })[0].name;
+
+      roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flavor: label
+      });
+
+      let htmlContent = await renderTemplate("systems/mythras/templates/chat/location-roll.hbs", {
+          game: game,
+          upperHit: upperHit,
+          upperRoll: upperRoll,
+          normalHit: normalHit,
+          normalRoll: normalRoll,
+          lowerHit: lowerHit,
+          lowerRoll: lowerRoll
+      });
+      return roll.toMessage({
+          user: game.user.id,
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flavor: label,
+          content: htmlContent
+      });
   }
 
   public async rollSkill(

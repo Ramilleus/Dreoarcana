@@ -1,0 +1,21 @@
+<div class="mythras">
+    {{user}}
+    <table>
+        <tr>
+            <th>{{ localize 'MYTHRAS.Hit_Location'}}</th>
+            <th>{{ localize 'MYTHRAS.Roll'}}</th>
+        </tr>
+        <tr>
+            <td>{{ localize this.upperHit }} </td>
+            <td>[[{{ this.upperRoll }}]]</td>
+        </tr>
+        <tr>
+            <td><b>{{ localize this.normalHit }} </b></td>
+            <td><b>[[{{ this.normalRoll }}]]</b></td>
+        </tr>
+        <tr>
+            <td>{{ localize this.lowerHit }} </td>
+            <td>[[{{ this.lowerRoll }}]]</td>
+        </tr>
+    </table>
+</div>
