@@ -227,7 +227,8 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     this.applyEncumbranceStyles()
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
-    this.filterSpells()
+    this.filterSpells(),
+    this.applySkillFumbledNotifier()
   }
 
   private applyEncumbranceStyles() {
@@ -460,7 +461,22 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
           break
       }
     }
-  }
+    }
+
+    applySkillFumbledNotifier() {
+        event.preventDefault();
+        console.error(this.actor.items.entries())
+        this.actor.items.forEach((item) => {
+            if (item.type == "standardSkill" || item.type == "professionalSkill" || item.type == "passion" || item.type == "combatStyle") {
+                console.error(item)
+                if (item.system.fumbled) {
+                    item.applyClass = "fumbled-notifier";
+                } else {
+                    item.applyClass = "";
+                }
+            }
+        });
+    }
 
 }
 
