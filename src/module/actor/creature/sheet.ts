@@ -1,6 +1,6 @@
 import { CreatureMythras } from '@actor'
-import { ActorSheetMythras } from '@actor/sheet/base'
+import { ActorSheetBase } from '@actor'
 
-export abstract class CreatureSheetMythras<
-  TActor extends CreatureMythras
-> extends ActorSheetMythras<TActor> {}
+export abstract class CreatureSheetMythras<TActor extends CreatureMythras>
+  extends ActorSheetBase<TActor> {
+}

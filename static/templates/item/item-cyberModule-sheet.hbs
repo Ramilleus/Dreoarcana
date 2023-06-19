@@ -1,0 +1,72 @@
+<form class="{{cssClass}} item-sheet equipment-sheet flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <div class="header-flex">
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="50" width="50" />
+      <div class="header-fields">
+        <h1 class="charname">
+          <input data-handler="changeName" id="cyberModuleChange_name" name="name" type="text" value="{{item.name}}"
+            placeholder="Name" />
+        </h1>
+      </div>
+    </div>
+  </header>
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body flexcol">
+    <div class="equip-section">
+      <div class="weapon-core">
+        <div class="weapon-core-section">
+          <div class="weapon-piece">
+            <h3 class="core-info">{{localize 'MYTHRAS.Location'}}</h3>
+            <select name="system.installLocationId" data-dtype="String">
+              {{#select system.installLocationId}}
+              {{#each availableHitLocations as |loc|}}
+              <option value="{{loc.id}}">{{loc.name}}</option>
+              {{/each}}
+              {{/select}}
+            </select>
+          </div>
+          <div class="weapon-piece">
+            <h3 class="core-info">{{localize 'MYTHRAS.SPACE.CyberModuleSize'}}</h3>
+            <input type="text" name="system.moduleSize" value="{{system.moduleSize}}" />
+          </div>
+          <div class="equip-core-section">
+            <h3 class="core-info">{{localize 'MYTHRAS.SPACE.Availibility'}}</h3>
+            <select name="system.cyberModuleAvailibility" data-dtype="String">
+              {{#select system.cyberModuleAvailibility}}
+              {{#each cyberModuleAvailibilities as |availibility|}}
+              <option value="{{availibility}}">{{localize availibility}}</option>
+              {{/each}}
+              {{/select}}
+            </select>
+          </div>
+          <div class="equip-core-section">
+            <h3 class="core-info">{{localize 'MYTHRAS.Value'}}</h3>
+            <input type="text" name="system.value" value="{{system.value}}" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="equip-section">
+        <div class="weapon-core-section">
+          <div class="weapon-piece">
+            <h3 class="core-info">{{localize 'MYTHRAS.SPACE.CyberModuleInstalled'}}</h3>
+            <input data-handler="toggleEquipped" type="checkbox" name="system.equipped" {{checked system.equipped}} />
+          </div>
+          <div class="weapon-piece">
+            <h3 class="core-info">{{localize 'MYTHRAS.SPACE.CyberModuleEnabled'}}</h3>
+            <input data-handler="toggleEquipped" type="checkbox" name="system.cyberModuleEnabled" {{checked system.cyberModuleEnabled}} />
+          </div>
+        </div>
+    </div>
+    <h2>{{localize 'MYTHRAS.Description'}}</h2>
+    <div class="desc" data-group="primary">
+      {{ editor system.description target="system.description" button=true editable=editable}}
+    </div>
+  </section>
+
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+</form>

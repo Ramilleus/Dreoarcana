@@ -1,6 +1,7 @@
 import { ArmorMythras } from './armor'
 import { ItemMythras } from './base'
 import { CultBrotherhoodMythras } from './cult-brotherhood'
+import { CyberModuleMythras } from './cyber-module'
 import { MagicSkillMythras } from './magic-skill'
 import { PhysicalItemMythras } from './physical'
 import { SkillMythras } from './skill'
@@ -28,4 +29,8 @@ export function itemIsMagicSkill(item: ItemMythras): item is MagicSkillMythras {
 
 export function itemIsCultBrotherhood(item: ItemMythras): item is CultBrotherhoodMythras {
   return (item as CultBrotherhoodMythras).isCultBrotherhood !== undefined
+}
+
+export function itemIsCyberModuleType(item: ItemMythras): item is CyberModuleMythras {
+  return (item as CyberModuleMythras).isCyberModule !== undefined
 }

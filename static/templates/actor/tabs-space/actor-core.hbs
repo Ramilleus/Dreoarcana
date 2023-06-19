@@ -8,19 +8,18 @@
         <div class="d-flex d-flex--gap-small">
           <div class="flex-1">
             {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
-            label=(localize 'MYTHRAS.CAREER') name='system.career' value=system.career}}
+              label=(localize 'MYTHRAS.CAREER') name='system.career' value=system.career}}
             {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
-            label=(localize 'MYTHRAS.SOCIAL_CLASS') name='system.socialClass' value=system.socialClass}}
+              label=(localize 'MYTHRAS.SOCIAL_CLASS') name='system.socialClass' value=system.socialClass}}
             {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
-            label=(localize 'MYTHRAS.GENDER') name='system.gender' value=system.gender}}
-            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
-            label=(localize 'MYTHRAS.HANDEDNESS') name='system.handedness' value=system.handedness}}
+              label=(localize 'MYTHRAS.GENDER') name='system.gender' value=system.gender}}
           </div>
           <div class="flex-1">
             {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
-            label=(localize 'MYTHRAS.HOMELAND') name='system.homeland' value=system.homeland}}
+              label=(localize 'MYTHRAS.SPACE.HOME_WORLD') name='system.homeland' value=system.homeland}}
             {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
-            label=(localize 'MYTHRAS.CULTURE') name='system.raceCulture' value=system.raceCulture}}
+              label=(localize 'MYTHRAS.CULTURE') name='system.raceCulture' value=system.raceCulture}}
+              <!-- TODO add char species or race -->
             <div class="d-flex d-flex--gap-tiny">
               <div class="flex-3">
                 {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
@@ -32,10 +31,10 @@
                     {{localize 'MYTHRAS.HEIGHT'}}
                   </p>
                   <input class="labelled-text-input__input labelled-text-input__input--underlined" type="text"
-                    name="system.height" value="{{system.height}}" />
+                         name="system.height" value="{{system.height}}"/>
                   <span style="margin-left: -20px; font-size: small;">
-                    cm
-                  </span>
+                              cm
+                          </span>
                 </div>
               </div>
               <div class="flex-4">
@@ -43,8 +42,6 @@
                 label=(localize 'MYTHRAS.WEIGHT') name='system.weight' value=system.weight}}
               </div>
             </div>
-            {{> systems/mythras/templates/common-components/basic-labelled-input.hbs
-            label=(localize 'MYTHRAS.FRAME') name='system.frame' value=system.frame}}
           </div>
         </div>
       </div>
@@ -97,6 +94,9 @@
       <div class="titled-section">
         <h2 class="titled-section__title">
           {{localize 'MYTHRAS.Characteristics'}}
+          <a class="skill-val recoverCharacteristicPools">
+            (Recover pools)
+          </a>
         </h2>
         <div class="d-flex d-flex--space-between">
           {{#each characteristics}}
@@ -105,9 +105,9 @@
           {{/each}}
         </div>
       </div>
-      <div class="titled-section">
-        <h2 class="titled-section__title">
-          {{localize 'MYTHRAS.Attributes'}}
+    <div class="titled-section">
+      <h2 class="titled-section__title">
+        {{localize 'MYTHRAS.Attributes'}}
         </h2>
         <div class="d-flex d-flex--space-between">
           {{#each stats}}
@@ -157,13 +157,13 @@
         {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize
         'MYTHRAS.Combat_Styles') skillType="combatStyle" skills=items.combatStyle}}
         {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize
-        'MYTHRAS.Magic_Skills') skillType="magicSkill" skills=items.magicSkill}}
+        'MYTHRAS.SPACE.Power_Skills') skillType="magicSkill" skills=items.magicSkill}}
         {{> systems/mythras/templates/actor/skills/skill-table.hbs tableTitle=(localize
         'MYTHRAS.Passions') skillType="passion" skills=items.passion}}
         <div class="basic-table">
           <h3>
             <span>
-              {{localize 'MYTHRAS.Cults_Brotherhoods'}}
+              {{localize 'MYTHRAS.SPACE.SOCIAL_CIRCLES'}}
             </span>
             <a class="basic-table__add-button item-create" title="Create item" data-type="cultBrotherhood">
               +

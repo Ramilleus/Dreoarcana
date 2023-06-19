@@ -1,13 +1,15 @@
 import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
 import { MYTHRASCONFIG } from '@scripts/config'
-import { EncounterGenerator } from './module/apps/encounter-generator'
+import { EncounterGenerator } from '@apps/encounter-generator'
+import { ThemeManager } from "@apps/theme-settings/themeManager";
 
 export {}
 
 declare global {
   interface Game {
     mythras: {
+      theme: ThemeManager
       encounterGenerator: EncounterGenerator
     }
   }
@@ -29,7 +31,7 @@ declare global {
       Macro,
       Scene,
       User<ActorMythras>
-    >
+    >;
 
     var ui: FoundryUI<
       ActorMythras,

@@ -4,9 +4,9 @@ import { CreatureSheetMythras } from '@actor/creature/sheet'
 export class CharacterSheetMythras extends CreatureSheetMythras<CharacterMythras> {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    const options = super.defaultOptions;
+    mergeObject(options, {
       classes: ['mythras', 'sheet', 'actor'],
-      template: 'systems/mythras/templates/actor/actor-sheet.hbs',
       width: 800,
       height: 900,
       tabs: [
@@ -17,5 +17,10 @@ export class CharacterSheetMythras extends CreatureSheetMythras<CharacterMythras
         }
       ]
     })
+    return options;
+  }
+
+  override get template(): string {
+    return game.mythras.theme.getTheme().getCharacterActorTemplate()
   }
 }

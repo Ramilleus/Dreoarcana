@@ -11,20 +11,12 @@ import { RangedWeaponMythras } from '@item/weapon/ranged-weapon'
 import { SkillMythras } from '@item/skill'
 import { SpellMythras } from '@item/spell'
 import { StorageMythras } from '@item/storage'
-import { SkillSheetMythras } from '@item/skill/sheet'
-import { ArmorSheetMythras } from '@item/armor/sheet'
-import { ItemSheetMythras } from '@item/sheet/base'
-import { PhysicalItemSheetMythras } from '@item/physical/sheet'
-import { CharacterSheetMythras } from '@actor/character/sheet'
-import { SpellSheetMythras } from '@item/spell/sheet'
+import { CyberModuleMythras } from '@module/item/cyber-module'
 
 export const MYTHRASCONFIG = {
   Actor: {
     documentClasses: {
       character: CharacterMythras
-    },
-    sheetClasses: {
-      character: CharacterSheetMythras
     }
   },
 
@@ -43,23 +35,8 @@ export const MYTHRASCONFIG = {
       currency: CurrencyMythras,
       spell: SpellMythras,
       storage: StorageMythras,
+      cyberModule: CyberModuleMythras,
       cultBrotherhood: CultBrotherhoodMythras
-    },
-    sheetClasses: {
-      standardSkill: SkillSheetMythras,
-      hitLocation: ItemSheetMythras,
-      professionalSkill: SkillSheetMythras,
-      combatStyle: SkillSheetMythras,
-      magicSkill: SkillSheetMythras,
-      passion: SkillSheetMythras,
-      'melee-weapon': PhysicalItemSheetMythras,
-      'ranged-weapon': PhysicalItemSheetMythras,
-      armor: ArmorSheetMythras,
-      equipment: PhysicalItemSheetMythras,
-      currency: PhysicalItemSheetMythras,
-      spell: SpellSheetMythras,
-      storage: PhysicalItemSheetMythras,
-      cultBrotherhood: ItemSheetMythras
     }
   }
 }

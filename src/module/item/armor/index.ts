@@ -15,20 +15,6 @@ interface ArmorMythras {
 class ArmorMythras extends PhysicalItemMythras {
   isArmor: boolean = true
 
-  get availableHitLocations(): HitLocationMythras[] {
-    if (this.actorData) {
-      let availableHitLocations: HitLocationMythras[] = this.actorData.items
-        .filter(function (value: Item) {
-          return value.type === 'hitLocation'
-        })
-        availableHitLocations.sort((a: HitLocationMythras, b: HitLocationMythras) => {
-          return a.system.rollRangeStart - b.system.rollRangeStart
-        })
-      return availableHitLocations
-    }
-    return []
-  }
-
   get selectedHitLocationId() {
     return this.system.location
   }
@@ -78,15 +64,16 @@ class ArmorMythras extends PhysicalItemMythras {
   }
 
   linkHitLocation(systemData: ArmorData) {
-    systemData.locationName = this.availableHitLocations[0].name
+    let availableHitLocations: HitLocationMythras[] = this.availableHitLocations
+    systemData.locationName = availableHitLocations[0].name
     if (systemData.location === 'Unequipped' && systemData.locationName.length > 0) {
-      let hitlocID = this.availableHitLocations.filter(function (value: Item) {
+      let hitlocID = availableHitLocations.filter(function (value: Item) {
         return value.name === systemData.locationName
       })
       systemData.location = hitlocID[0].id
     }
 
-    let hitLocName = this.availableHitLocations.filter(function (value: Item) {
+    let hitLocName = availableHitLocations.filter(function (value: Item) {
       return value.id === systemData.location
     })
     if (hitLocName.length > 0) {

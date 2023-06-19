@@ -1,6 +1,7 @@
 import { ItemMythras } from '@item/base'
 import type { StorageMythras } from '@item/storage'
 import { itemIsStorageType } from '@item/type-guards'
+import { HitLocationMythras } from "@item/hit-location";
 
 interface PhysicalItemData {
   encumbrance: number
@@ -70,6 +71,21 @@ abstract class PhysicalItemMythras extends ItemMythras {
       }
     }
     return undefined
+  }
+
+  /**
+   * Find all HitLocationMythras assigned to actor or empty array
+   */
+  get availableHitLocations(): HitLocationMythras[] {
+    if (this.actorData) {
+      let availableHitLocations: HitLocationMythras[] = this.actorData.items
+        .filter((value: Item) => value.type === 'hitLocation')
+      availableHitLocations.sort((a: HitLocationMythras, b: HitLocationMythras) => {
+        return a.system.rollRangeStart - b.system.rollRangeStart
+      })
+      return availableHitLocations
+    }
+    return []
   }
 }
 

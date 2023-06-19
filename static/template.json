@@ -6,32 +6,46 @@
         "name": "",
         "characteristics": {
           "str": {
+            "label": "MYTHRAS.STRENGTH",
             "value": 11,
-            "mod": 0
+            "mod": 0,
+            "pool": 11
           },
           "con": {
+            "label": "MYTHRAS.CONSTITUTION",
             "value": 11,
-            "mod": 0
+            "mod": 0,
+            "pool": 11
           },
           "siz": {
+            "label": "MYTHRAS.SIZE",
             "value": 11,
-            "mod": 0
+            "mod": 0,
+            "pool": 11
           },
           "dex": {
+            "label": "MYTHRAS.DEXTERITY",
             "value": 11,
-            "mod": 0
+            "mod": 0,
+            "pool": 11
           },
           "int": {
+            "label": "MYTHRAS.INTELLIGENCE",
             "value": 11,
-            "mod": 0
+            "mod": 0,
+            "pool": 11
           },
           "pow": {
+            "label": "MYTHRAS.POWER",
             "value": 11,
-            "mod": 0
+            "mod": 0,
+            "pool": 11
           },
           "cha": {
+            "label": "MYTHRAS.CHARISMA",
             "value": 11,
-            "mod": 0
+            "mod": 0,
+            "pool": 11
           }
         },
         "trackedStats": {
@@ -168,6 +182,7 @@
       "height": "",
       "weight": "",
       "raceCulture": "",
+      "species": "",
       "journal": "",
       "abilitiesDesc": "",
       "cult information": "",
@@ -186,6 +201,7 @@
       "ranged-weapon",
       "armor",
       "equipment",
+      "cyberModule",
       "currency",
       "ability",
       "spell",
@@ -223,6 +239,15 @@
         "storage": "Unknown",
         "storageList": []
       }
+    },
+    "cyberModule": {
+      "templates": ["item"],
+      "moduleSize": 1,
+      "cyberModuleAvailibility": "",
+      "installLocationName": "Unequipped",
+      "installLocationId": "Unequipped",
+      "cyberModuleEnabled": true,
+      "cyberModuleInstalled": false
     },
     "storage": {
       "templates": ["item"],

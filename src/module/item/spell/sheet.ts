@@ -1,7 +1,7 @@
 import { SpellMythras } from '.'
-import { ItemSheetMythras } from '@item/sheet/base';
+import { ItemSheetBase } from '@item/ItemSheetBase';
 
-export class SpellSheetMythras extends ItemSheetMythras<SpellMythras> {
+export class SpellSheetMythras extends ItemSheetBase<SpellMythras> {
   override async getData(options?: Partial<DocumentSheetOptions>) {
     const itemData = await super.getData(options) as any
     
@@ -26,5 +26,9 @@ export class SpellSheetMythras extends ItemSheetMythras<SpellMythras> {
         },
       }
     }
+  }
+
+  override get template(): string {
+    return `systems/mythras/templates/item/item-spell-sheet.hbs`
   }
 }

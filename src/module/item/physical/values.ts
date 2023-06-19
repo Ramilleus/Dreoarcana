@@ -4,5 +4,6 @@ const PHYSICAL_ITEM_TYPES = new Set([
   'equipment',
   'melee-weapon',
   'ranged-weapon',
-  'currency'
+  'currency',
+  'cyberModule'
 ] as const)

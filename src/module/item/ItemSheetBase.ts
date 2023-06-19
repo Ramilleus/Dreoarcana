@@ -1,28 +1,16 @@
 import { ItemMythras } from '@item/base'
-import { itemIsSkill } from '@item/type-guards'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
-export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem> {
+export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   sheetPostRender!: SheetPostRender
 
-  constructor (item: TItem, options?: Partial<DocumentSheetOptions>) {
+  constructor(item: TItem, options?: Partial<DocumentSheetOptions>) {
     super(item, options)
     // Apply styles after renderActorSheet hook
     Hooks.on('renderItemSheet', () => {
       this.sheetPostRender = new SheetPostRender(this.element)
       this.postRender()
     })
-  }
-
-  override async getData(options?: Partial<DocumentSheetOptions>) {
-    const itemData = await super.getData(options) as any
-
-    return {
-      ...itemData,
-      system: this.item.system,
-      item: this.item,
-      options
-    }
   }
 
   private postRender() {
@@ -45,23 +33,19 @@ export class ItemSheetMythras<TItem extends ItemMythras> extends ItemSheet<TItem
   }
 
   override get template() {
-    const path = 'systems/mythras/templates/item'
-
     const itemType = this.item.type
+    return `systems/mythras/templates/item/item-${itemType}-sheet.hbs`
+  }
 
-    // Return a unique template based on item type
-    if (itemType === 'magicSkill') {
-      // A magic skill is considered a skill, but has a unique sheet. This serves as an override
-      return `${path}/item-magicSkill-sheet.hbs`
-    } else if (itemType === 'combatStyle') {
-      // Combat style is considered a skill, but has a unique sheet. This serves as an override
-      return `${path}/item-combatStyle-sheet.hbs`
-    } else if (itemIsSkill(this.item)) {
-      // Loads the default skill sheet that applies to all other skills
-      return `${path}/item-skill-sheet.hbs`
-    } else {
-      // Loads a unique sheet for all remaining types (armor, melee-weapon, etc.)
-      return `${path}/item-${itemType}-sheet.hbs`
+  override async getData(options?: Partial<DocumentSheetOptions>) {
+    const itemData = await super.getData(options) as any
+
+    return {
+      ...itemData,
+      system: this.item.system,
+      item: this.item,
+      isClassicTheme: game.mythras.theme.isClassic(),
+      options
     }
   }
 
