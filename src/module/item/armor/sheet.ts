@@ -11,4 +11,8 @@ export class ArmorSheetMythras extends PhysicalItemSheetMythras<ArmorMythras> {
       availableHitLocations: this.item.availableHitLocations
     }
   }
+
+  override get template(): string {
+    return `systems/mythras/templates/item/item-armor-sheet.hbs`
+  }
 }

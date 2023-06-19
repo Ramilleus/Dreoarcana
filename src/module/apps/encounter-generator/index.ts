@@ -5,14 +5,13 @@ import { EncounterGeneratorPartyImporter } from "./importer/party-importer"
 export class EncounterGenerator extends Application {
   private enemyImporter: EncounterGeneratorEnemyImporter
   private partyImporter: EncounterGeneratorPartyImporter
-  constructor(options = {}) {
-    super(options);
 
+  onReady() {
+    console.log("Mythras | Initializing app: EncounterGenerator")
     this.enemyImporter = new EncounterGeneratorEnemyImporter(this)
     this.partyImporter = new EncounterGeneratorPartyImporter(this)
     this.injectActorDirectory()
   }
-  
 
   override get title() {
     return "Mythras Encounter Generator";

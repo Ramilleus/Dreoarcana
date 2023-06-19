@@ -1,0 +1,36 @@
+<form class="{{cssClass}} char-sheet flexcol" autocomplete="off">
+  {{!-- Sheet Header --}}
+  <header class="sheet-header actor-sheet-header">
+    <div class="header-personal">
+      <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" /> 
+      <div class="names">
+        <input class="char-name" name="name" type="text" value="{{actor.name}}" placeholder="" />
+        <p class="input-label">{{localize 'MYTHRAS.CHARACTER_NAME'}}</p>
+        <input class="player-name" name="system.playerName" type="text" value="{{system.playerName}}" placeholder="" />
+        <p class="input-label">{{localize 'MYTHRAS.PLAYER_NAME'}}</p>
+      </div>
+    </div>
+    {{!-- Tracked stats --}}
+    <div>
+      <div class="header-settings">
+        <span class="stat-settings">&#9881;</span>
+      </div>
+      <div class="header-stats">
+        {{#each statTracker.exportedStats}} {{> systems/mythras/templates/actor/components/tracked-stat.hbs
+        stat=this}} {{/each}}
+      </div>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  {{> systems/mythras/templates/common-components/tab-navigator.hbs tabs=tabs}}
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    {{> systems/mythras/templates/actor/tabs-space/actor-core.hbs}}
+    {{> systems/mythras/templates/actor/tabs-space/actor-combat.hbs}}
+    {{> systems/mythras/templates/actor/tabs-space/actor-abilities.hbs}}
+    {{> systems/mythras/templates/actor/tabs-space/actor-equipment.hbs}}
+    {{> systems/mythras/templates/actor/tabs-space/actor-notes.hbs}}
+  </section>
+</form>

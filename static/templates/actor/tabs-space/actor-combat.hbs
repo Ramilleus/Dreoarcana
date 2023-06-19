@@ -1,0 +1,388 @@
+<div class="tab combat" data-group="primary" data-tab="combat">
+  <div class="combat-tables">
+
+    <h2>{{localize 'MYTHRAS.Combat'}}</h2>
+    <div class="top-combat-tables">
+      <div class="tables-left">
+
+        <div>
+          <h3 class="armorLocationHeader">
+            <span>{{localize 'MYTHRAS.Hit_Locations'}}</span><span>{{localize 'MYTHRAS.Armor_Penalty'}}:
+              {{ armorPenalty }}</span><a class="roll-hitlocations-button" title="Roll 1d20" data-roll="1d20"
+              data-label="{{#each items.hitLocation as |item|}}{{item.name}}/{{item.system.rollRangeStart}}/{{item.system.rollRangeEnd}},{{/each}}">
+              {{localize 'MYTHRAS.Roll2'}} 1d20</a>
+          </h3>
+          <table id="hitLocation-edit" class="hitLocation-table">
+            <thead>
+              <th class="hitloc-location-cell">{{localize 'MYTHRAS.Location'}}</th>
+              <th class="hitloc-range-cell">{{localize 'MYTHRAS.Range2'}}</th>
+              <th class="hitloc-ward-cell" style="width: 35px"><img class="table-header-icon"
+                  src="icons/svg/shield.svg" /></th>
+              <th class="hitloc-naturalArmor-cell">Natural AP</th>
+              <th class="hitloc-armor-cell">{{localize 'MYTHRAS.Armor'}}</th>
+              <th class="hitloc-ap-cell">{{localize 'MYTHRAS.AP'}}</th>
+              <th class="hitloc-hp-cell ">
+                <div class="hitLoc-flex-cell">
+                  <p class="hit-loc-text">{{localize 'MYTHRAS.HP'}}</p>
+                  <span class="max-hp-mod">
+                    <span>
+                      +
+                    </span>
+                    <input id="maxHpMod_all" type="text" name="system.attributes.hitPointMod.mod" class=""
+                      value="{{system.attributes.hitPointMod.mod}}" />
+                  </span>
+                </div>
+              </th>
+            </thead>
+            <tbody>
+              {{#each items.hitLocation as |item id|}}
+              <tr class="item" data-item data-item-id="{{ item.id }}">
+                <td class="hitloc-location-cell">
+                  <input type="text" data-item-property="name" data-dtype="text" value="{{item.name}}" />
+                </td>
+                <td class="hitLoc-flex-cell hitloc-range-cell">
+                  <input type="text" data-item-property="rollRangeStart" value="{{item.system.rollRangeStart}}" />
+                  <p class="hit-loc-text">-</p>
+                  <input type="text" data-item-property="rollRangeEnd" value="{{item.system.rollRangeEnd}}" />
+                </td>
+                <td class="hitloc-wardLocation-cell">
+                  <input type="checkbox" style="margin-left: 8px" data-item-property="wardLocation" {{checked
+                    item.system.wardLocation}} />
+                </td>
+                <td class="hitloc-flex-cell hitloc-naturalArmor-cell">
+                  <input type="text" data-item-property="naturalArmor" data-dtype="text"
+                    value="{{item.system.naturalArmor}}" />
+                </td>
+                <td class="hitloc-armor-cell">
+                  {{item.equippedArmorNames}}
+                </td>
+                <td class="hitloc-ap-cell">
+                  <p class="hit-loc-text">{{item.totalAp}}</p>
+                </td>
+                <td class="hitLoc-flex-cell hitloc-hp-cell">
+                  <input data-item-property="currentHp" type="number" value="{{item.system.currentHp}}" />
+                  <p class="max-hp"> / {{item.maxHp}}</p>
+                  <div class="max-hp-mod">
+                    <span>
+                      +
+                    </span>
+                    <input data-item-property="maxHpMod" type="text" class="" value="{{item.system.maxHpMod}}" />
+                  </div>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tables-right">
+        <div>
+          <h3>
+            <span>{{localize 'MYTHRAS.Resistances'}}</span>
+          </h3>
+          <table class="resistances-table">
+            <thead>
+              <th>
+                {{localize 'MYTHRAS.Name'}}
+              </th>
+              <th>
+                {{localize 'MYTHRAS.Base_Char'}}
+              </th>
+              <th>
+                {{localize 'MYTHRAS.Roll'}}
+              </th>
+            </thead>
+            <tbody>
+              {{#with (findItemByName items.standardSkill "Brawn") as |item|}}
+              <tr class="item" data-item-id="{{item.id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{formatSkillAbbrev item.system}}
+                </td>
+                <td>
+                  <a class="skill-val rollableSkill">
+                    {{item.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+              {{#with (findItemByName items.standardSkill "Endurance") as |item|}}
+              <tr class="item" data-item-id="{{item.id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{formatSkillAbbrev item.system}}
+                </td>
+                <td>
+                  <a class="skill-val rollableSkill">
+                    {{item.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+              {{#with (findItemByName items.standardSkill "Evade") as |item|}}
+              <tr class="item" data-item-id="{{item.id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{formatSkillAbbrev item.system}}
+                </td>
+                <td>
+                  <a class="skill-val rollableSkill">
+                    {{item.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+              {{#with (findItemByName items.standardSkill "Willpower") as |item|}}
+              <tr class="item" data-item-id="{{item.id}}">
+                <td>
+                  <a class="item-name item-control item-edit">
+                    {{item.name}}
+                  </a>
+                </td>
+                <td>
+                  {{formatSkillAbbrev item.system}}
+                </td>
+                <td>
+                  <a class="skill-val rollableSkill">
+                    {{item.totalVal}}%
+                  </a>
+                </td>
+              </tr>
+              {{/with}}
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>
+            <span>{{localize 'MYTHRAS.Wounds_and_Conditions'}}</span>
+          </h3>
+          <textarea name="system.conditionsAndWounds">{{system.conditionsAndWounds}}</textarea>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>
+        <span>
+          {{localize 'MYTHRAS.Combat_Styles'}}
+        </span>
+        <a class="add-skills-button item-create" title="Create item" data-type="combatStyle">
+          +
+        </a>
+      </h3>
+      <table>
+        <thead>
+          <th>
+            {{localize 'MYTHRAS.Name'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Base_Char'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Traits'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Weapons'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Roll'}}
+          </th>
+          <th class="delete-column">
+            <i class="fas fa-trash"></i>
+          </th>
+        </thead>
+        <tbody>
+          {{#each items.combatStyle as |item id|}}
+          <tr class="item" data-item-id="{{item.id}}">
+            <td>
+              <a class="item-name item-control item-edit">
+                {{item.name}}
+              </a>
+            </td>
+            <td>
+              {{formatSkillAbbrev item.system}}
+            </td>
+            <td>
+              {{item.system.traits}}
+            </td>
+            <td>
+              {{item.system.weapons}}
+            </td>
+            <td>
+              <a class="skill-val rollableSkill">
+                {{item.totalVal}}%
+              </a>
+            </td>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <h2>
+      {{localize 'MYTHRAS.Weapons'}}
+    </h2>
+    <div>
+      <h3>
+        <span>
+          {{localize 'MYTHRAS.Ranged_Weapons'}}
+        </span>
+        <a class="add-equipment-button item-create" title="Create item" data-type="ranged-weapon">
+          +
+        </a>
+      </h3>
+      <table class="weapons-table">
+        <thead>
+          <th>
+            {{localize 'MYTHRAS.Name'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Damage'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.DM'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Force'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Impale_Size'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Range'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Load'}}
+          </th>
+          <th>
+            {{localize 'MYTHRAS.Ammo'}}
+          </th>
+          <th class="delete-column">
+            <i class="fas fa-trash"></i>
+          </th>
+        </thead>
+        <tbody>
+          {{#each items.[ranged-weapon] as |item id|}}
+          <tr class="item" data-item-id="{{item.id}}">
+            <td>
+              <a class="item-name item-control item-edit">
+                {{item.name}}
+              </a>
+            </td>
+            <td>
+              <a class="rollableRangedDamage">
+                {{item.system.damage}}
+              </a>
+            </td>
+            <td>
+              <input type="checkbox" name="damageModifier" {{checked system.damageModifier}} />
+            </td>
+            <td>
+              {{item.system.force}}
+            </td>
+            <td>
+              {{item.system.impale-size}}
+            </td>
+            <td>
+              {{item.system.range.close}}/{{item.system.range.effective}}/{{item.system.range.long }}
+            </td>
+            <th>
+              {{item.system.load}}
+            </th>
+            <th>
+              {{item.system.ammo}}
+            </th>
+            <td>
+              <a class="item-control item-delete delete-column" title="Delete Item">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <hr />
+      <h3>
+        <span>
+            {{localize 'MYTHRAS.Melee_Weapons'}}
+        </span>
+            <a class="add-equipment-button item-create" title="Create item" data-type="melee-weapon">
+                +
+            </a>
+        </h3>
+        <table class="weapons-table">
+            <thead>
+            <th>
+                {{localize 'MYTHRAS.Name'}}
+            </th>
+            <th>
+                {{localize 'MYTHRAS.Damage'}}
+            </th>
+            <th>
+                {{localize 'MYTHRAS.DM'}}
+            </th>
+            <th>
+                {{localize 'MYTHRAS.Size'}}
+            </th>
+            <th>
+                {{localize 'MYTHRAS.Reach'}}
+            </th>
+            <th>
+                {{localize 'MYTHRAS.AP/HP'}}
+            </th>
+            <th class="delete-column">
+                <i class="fas fa-trash"></i>
+            </th>
+            </thead>
+            <tbody>
+            {{#each items.[melee-weapon] as |item id|}}
+                <tr class="item" data-item-id="{{item.id}}">
+                    <td>
+                        <a class="item-name item-control item-edit">
+                            {{item.name}}
+                        </a>
+                    </td>
+                    <td>
+                        <a class="rollableMeleeDamage">
+                            {{item.system.damage}}
+                        </a>
+                    </td>
+                    <td>
+                        <input type="checkbox" name="system.damageModifier" {{checked system.damageModifier}} />
+                    </td>
+                    <td>
+                        {{item.system.size}}
+                    </td>
+                    <td>
+                        {{item.system.reach}}
+                    </td>
+                    <td>
+                        {{item.system.ap}} / {{item.system.hp}}
+                    </td>
+                    <td>
+                        <a class="item-control item-delete delete-column" title="Delete Item">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>

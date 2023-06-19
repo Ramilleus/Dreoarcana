@@ -1,5 +1,8 @@
-import { ActorMythras } from '../base'
+import { ActorMythras } from '@actor'
 
+/**
+ * see Actor.templates.common.trackedStats in template.json
+ */
 interface TrackedStat {
   id: string
   name: string
@@ -14,7 +17,8 @@ interface TrackedStatExport extends TrackedStat {
 }
 
 export class ActorMythrasStatTracker {
-  constructor(private actor: ActorMythras) {}
+  constructor(private actor: ActorMythras) {
+  }
 
   get trackedStats(): Record<string, TrackedStat> {
     const actorData: any = this.actor.system
@@ -24,11 +28,11 @@ export class ActorMythrasStatTracker {
   get exportedStats(): TrackedStatExport[] {
     let exportData: TrackedStatExport[] = []
     for (const key of Object.keys(this.trackedStats)) {
-      let stat = this.trackedStats[key]
+      let stat: TrackedStat = this.trackedStats[key]
       if (stat.display) {
         let exportStat: TrackedStatExport = {
           id: key,
-          name: stat.name,
+          name: this.relabelFromTheme(stat.name),
           attribute: stat.attribute,
           value: stat.value,
           display: stat.display,
@@ -43,5 +47,9 @@ export class ActorMythrasStatTracker {
     }
 
     return exportData
+  }
+
+  private relabelFromTheme(statName: string): string {
+    return game.mythras.theme.getTheme().relabel("stat-tracker", statName)
   }
 }

@@ -6,16 +6,19 @@ import { registerTemplates } from '@scripts/register-templates'
 import { MYTHRASCONFIG } from '@scripts/config'
 import { ItemMythras } from '@item/base'
 import { SetGameMythras } from '@scripts/set-game-mythras'
-import { ActiveEffectMythras } from '@module/active-effect'
+import { ActorSheetClassRegistry } from "@actor/ActorSheetClassRegistry";
+import { ItemSheetClassRegistry } from "@item/ItemSheetClassRegistry";
 
 export const Init = {
   listen: (): void => {
     Hooks.once('init', function () {
+      console.log(`Mythras | Initializing the Mythras Game System`);
       CONFIG.MYTHRAS = MYTHRASCONFIG
-
       // Define custom Entity classes
       CONFIG.Actor.documentClass = ActorMythras
+      ActorSheetClassRegistry.registerSheetClasses()
       CONFIG.Item.documentClass = ItemMythras
+      ItemSheetClassRegistry.registerSheetClasses()
       CONFIG.Combat.documentClass = CombatMythras
       CONFIG.ui.combat = MythrasCombatTracker as any
       //TODO: Figure out how to use the active effects class for further Mythras customization
@@ -29,8 +32,6 @@ export const Init = {
         formula: '1d10 + @initiativeBonus',
         decimals: 2
       }
-
-      //CONFIG.debug.hooks = true
 
       // Register Handlebars Helpers
       registerHandlebarsHelpers()
@@ -48,10 +49,22 @@ export const Init = {
         type: Boolean,
       });
 
+      game.settings.register("mythras", "debugging", {
+        name: "Debugging Mode",
+        hint: "Enables additional debug logging.",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean,
+      });
+
       SetGameMythras.onInit()
     })
+
     Hooks.on('updateCombatant', function (combatant) {
-      console.log(combatant)
+      if (game.settings.get("mythras", "debugging")) {
+        console.log(combatant)
+      }
     })
   }
 }
