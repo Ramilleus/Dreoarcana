@@ -16,6 +16,12 @@
     text-align: left;
   }
 
+  .table-header-icon {
+    border: none;
+    height: 18px;
+    filter: invert(90%);
+  }
+
   thead {
     background: none;
     color: black;
