@@ -15,6 +15,12 @@
       <th>
         {{localize 'MYTHRAS.Base_Char'}}
       </th>
+      <th style="padding-left: 5px" title="{{localize 'MYTHRAS.Trained'}}">
+        <img class="table-header-icon" src="systems/mythras/assets/sheet/lightningbolt.svg" />
+      </th>
+      <th style="padding-left: 5px" title="{{localize 'MYTHRAS.Fumbled'}}">
+        <img class="table-header-icon" src="systems/mythras/assets/sheet/checkmark.svg" />
+      </th>
       <th>
         {{localize 'MYTHRAS.Roll'}}
       </th>
@@ -24,7 +30,7 @@
     </thead>
     <tbody>
       {{#each skills as |item id|}}
-      <tr class="item" data-item-id="{{item.id}}">
+      <tr class="item" data-item data-item-id="{{item.id}}">
         <td>
           <a class="item-name item-control item-edit {{item.applyClass}}">
             {{item.name}}
@@ -32,6 +38,12 @@
         </td>
         <td>
           {{formatSkillAbbrev item.system}}
+        </td>
+        <td class="skill-trained-cell">
+          <input type="checkbox" name="system.trained" data-item-property="trained" {{checked system.trained}} />
+        </td>
+        <td class="skill-fumbled-cell">
+            <input type="checkbox" name="system.fumbled" data-item-property="trained" {{checked system.fumbled}} />
         </td>
         <td>
           <a class="skill-val rollableSkill">
