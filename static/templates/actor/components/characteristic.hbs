@@ -1,10 +1,18 @@
 <div class="flex-1 labelled-text-input labelled-text-input--square">
   <input class="labelled-text-input__input labelled-text-input__input--square"
          name="system.characteristics.{{@key}}.value" value="{{this.value}}" type="text"/>
+    <div class="derived-stat__modifier">
+      <span>
+        +
+      </span>
+      <input placeholder="0" type="text" name="system.characteristics.{{@key}}.mod" class="modifier text-input text-input--mini"
+        value="{{this.mod}}" />
+    </div>
   {{#if isClassicTheme}}
     <!--characteristic pool values are used in M-Space -->
     <input placeholder="0" type="number" name="system.characteristics.{{@key}}.pool"
            class="modifier text-input text-input--mini" value="{{this.pool}}"/>
+
   {{/if}}
   <label class="labelled-text-input__label top-margin-small">
     {{localize this.label}}

@@ -1,18 +1,24 @@
-import { ActorData, ActorMythras } from '@actor/base'
+import { ActorMythras } from '@actor'
 import { ItemMythras } from '@item/base'
 import { HitLocationMythras } from '@item/hit-location'
-import { CultBrotherhoodMythras } from '@item/cult-brotherhood'
-import { MagicSkillMythras } from '@item/magic-skill'
-import { SkillMythras } from '@item/skill'
-import { SpellMythras } from '@item/spell'
-import { StorageMythras } from '@item/storage'
+import { CultBrotherhoodMythras } from '@module/item/cult-brotherhood'
+import { MagicSkillMythras } from '@module/item/magic-skill'
+import { SkillMythras } from '@module/item/skill'
+import { SpellMythras } from '@module/item/spell'
+import { StorageMythras } from '@module/item/storage'
 import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
-import { ActorAttributes } from "@actor/attribute";
-import { ActorCharacteristic, ActorCharacteristics } from "@actor/characteristic";
 
-export abstract class ActorSheetBase<TActor extends ActorMythras>
-  extends ActorSheet<TActor, ItemMythras> {
+abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
+  TActor,
+  ItemMythras
+> {
+  static override get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      dragDrop: [{ dragSelector: ['.item'], dropSelector: null }]
+    })
+  }
+
   roller!: Roller
   sheetPostRender!: SheetPostRender
 
@@ -27,22 +33,12 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     this.roller = new Roller(this.actor)
   }
 
-  static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      dragDrop: [{dragSelector: ['.item'], dropSelector: null}]
-    })
-  }
-
-  /**
-   * @returns All data needed to render the template of this actor
-   */
   override async getData(options: ActorSheetOptions = this.options): Promise<ActorSheetData<TActor>> {
     options.id ||= this.id;
 
-    let actorSystem: ActorData = this.actor.system;
-    let actorAttributes: ActorAttributes = actorSystem.attributes;
+    const actorData = this.actor.toObject(false) as any
     const data: any = {
-      items: {...this.actor.itemTypes},
+      items: { ...this.actor.itemTypes },
       armorPenalty: this.actor.armorPenalty,
       fatigue: this.actor.fatigue,
       encumbrance: this.actor.encumbrance,
@@ -50,9 +46,8 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       statTracker: this.actor.statTracker,
       magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
       editable: this.isEditable,
-      system: actorSystem,
-      actor: this.actor,
-      isClassicTheme: game.mythras.theme.isClassic(),
+      system: actorData.system,
+      actor: actorData,
       options,
       tabs: [
         {
@@ -82,10 +77,11 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           tracked: true,
           label: 'MYTHRAS.ACTION_POINTS',
           derivedName: 'maxActionPoints',
-          currentValue: actorAttributes.actionPoints.value,
+          currentValue: actorData.system.attributes.actionPoints.value,
           derivedValue: this.actor.maxActionPoints,
           modifierName: "system.attributes.actionPoints.mod",
-          modifierValue: actorAttributes.actionPoints.mod,
+          modifierValue: actorData.system.attributes.actionPoints.mod,
+          minimized: actorData.system.attributes.actionPoints.minimize
         },
         damageMod: {
           isAttribute: true,
@@ -94,7 +90,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           derivedName: 'damageMod',
           derivedValue: this.actor.damageMod,
           modifierName: "system.attributes.damageMod.mod",
-          modifierValue: actorAttributes.damageMod.mod
+          modifierValue: actorData.system.attributes.damageMod.mod
         },
         experienceMod: {
           isAttribute: true,
@@ -103,7 +99,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           derivedName: 'experienceMod',
           derivedValue: this.actor.experienceMod,
           modifierName: "system.attributes.experienceMod.mod",
-          modifierValue: actorAttributes.experienceMod.mod
+          modifierValue: actorData.system.attributes.experienceMod.mod
         },
         healingRate: {
           isAttribute: true,
@@ -112,7 +108,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           derivedName: 'healingRate',
           derivedValue: this.actor.healingRate,
           modifierName: "system.attributes.healingRate.mod",
-          modifierValue: actorAttributes.healingRate.mod
+          modifierValue: actorData.system.attributes.healingRate.mod
         },
         initiativeBonus: {
           isAttribute: true,
@@ -121,48 +117,82 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           derivedName: 'initiativeBonus',
           derivedValue: this.actor.initiativeBonus,
           modifierName: "system.attributes.initiativeBonus.mod",
-          modifierValue: actorAttributes.initiativeBonus.mod
+          modifierValue: actorData.system.attributes.initiativeBonus.mod
         },
         luckPoints: {
           isAttribute: true,
           tracked: true,
           label: 'MYTHRAS.LUCK_POINTS',
           derivedName: 'maxLuckPoints',
-          currentValue: actorAttributes.luckPoints.value,
+          currentValue: actorData.system.attributes.luckPoints.value,
           derivedValue: this.actor.maxLuckPoints,
           modifierName: "system.attributes.luckPoints.mod",
-          modifierValue: actorAttributes.luckPoints.mod
+          modifierValue: actorData.system.attributes.luckPoints.mod,
+          minimized: actorData.system.attributes.luckPoints.minimize
         },
         magicPoints: {
           isAttribute: true,
           tracked: true,
-          label: game.mythras.theme.getTheme().relabel("Actor-getData", 'MYTHRAS.MAGIC_POINTS'),
+          label: 'MYTHRAS.MAGIC_POINTS',
           derivedName: 'maxMagicPoints',
-          currentValue: actorAttributes.magicPoints.value,
+          currentValue: actorData.system.attributes.magicPoints.value,
           derivedValue: this.actor.maxMagicPoints,
           modifierName: "system.attributes.magicPoints.mod",
-          modifierValue: actorAttributes.magicPoints.mod
+          modifierValue: actorData.system.attributes.magicPoints.mod,
+          minimized: actorData.system.attributes.magicPoints.minimize
         },
         tenacity: {
           isAttribute: false,
           tracked: true,
+          // TODO: Localize
           label: 'MYTHRAS.TENACITY',
           derivedName: 'maxTenacity',
-          currentValue: actorAttributes.tenacity.value,
+          currentValue: actorData.system.attributes.tenacity.value,
           derivedValue: this.actor.maxTenacity,
           modifierName: "system.attributes.tenacity.mod",
-          modifierValue: actorAttributes.tenacity.mod
+          modifierValue: actorData.system.attributes.tenacity.mod,
+          minimized: actorData.system.attributes.tenacity.minimize
         },
         experienceRoll: {
           isAttribute: false,
           tracked: true,
           label: 'MYTHRAS.EXPERIENCE_ROLLS',
-          currentValue: actorAttributes.experienceRoll
+          currentValue: actorData.system.experienceRolls,
+          minimized: actorData.system.attributes.experienceRoll.minimize
         }
       },
-      characteristics: actorSystem.characteristics
+      characteristics: {
+        str: {
+          value: this.actor.characteristics.str,
+          label: 'MYTHRAS.STRENGTH'
+        },
+        con: {
+          value: this.actor.characteristics.con,
+          label: 'MYTHRAS.CONSTITUTION'
+        },
+        siz: {
+          value: this.actor.characteristics.siz,
+          label: 'MYTHRAS.SIZE'
+        },
+        dex: {
+          value: this.actor.characteristics.dex,
+          label: 'MYTHRAS.DEXTERITY'
+        },
+        int: {
+          value: this.actor.characteristics.int,
+          label: 'MYTHRAS.INTELLIGENCE'
+        },
+        pow: {
+          value: this.actor.characteristics.pow,
+          label: 'MYTHRAS.POWER'
+        },
+        cha: {
+          value: this.actor.characteristics.cha,
+          label: 'MYTHRAS.CHARISMA'
+        }
+      }
     }
-
+    
     this.sortItems(data)
     return data
   }
@@ -221,13 +251,12 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       let hitLocationElement: any = document.querySelector(
         `.hitLocation-table [data-item-id="${hitLocation.id}"]`
       )
-
       if (currentHp <= hitLocation.maxHp * -1) {
         hitLocationElement.style.backgroundColor = '#c5000094'
-
+        continue
       } else if (currentHp <= 0) {
         hitLocationElement.style.backgroundColor = '#ed5b1585'
-
+        continue
       }
     }
   }
@@ -336,9 +365,6 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       this.roller.rollHitLocation()
     })
 
-    // Skill roll button listener
-    html.find('.recoverCharacteristicPools').on('click', (event) => this.handleRecoverCharacteristicPools(event))
-
     html.find('.stat-settings').on('click', (event) => {
       event.preventDefault()
       let statList = 'Coming soon :)'
@@ -352,7 +378,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
-
+      
       let trackedStats = data.trackedStats
       actor.update({
         ['system.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) + 1
@@ -363,7 +389,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
-
+      
       let trackedStats = data.trackedStats
       actor.update({
         ['system.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) - 1
@@ -452,18 +478,6 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     //     });
     // }
 
-  /**
-   * Theme M-Space introduced a conflict pool mechanic which is based on the primary characteristics.
-   * These pools are depleted by use and need to be refilled by resting.
-   */
-  private handleRecoverCharacteristicPools(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) {
-    let k: keyof ActorCharacteristics;
-    for (k in this.actor.system.characteristics) {
-      const actorCharacteristic: ActorCharacteristic = this.actor.system.characteristics[k];
-      if (actorCharacteristic.value != actorCharacteristic.pool) {
-        actorCharacteristic.pool = actorCharacteristic.value;
-      }
-    }
-    this.render(false)
-  }
 }
+
+export { ActorSheetMythras }

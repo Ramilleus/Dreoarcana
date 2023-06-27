@@ -28,6 +28,7 @@ class ArmorMythras extends PhysicalItemMythras {
   }
 
   override async _preCreate(data: any, options: any, user: any): Promise<void> {
+    super._preCreate(data,options,user)
     if (this.actorData) {
       this.linkHitLocation(data.system)
     }
@@ -65,6 +66,7 @@ class ArmorMythras extends PhysicalItemMythras {
 
   linkHitLocation(systemData: ArmorData) {
     let availableHitLocations: HitLocationMythras[] = this.availableHitLocations
+    //if (availableHitLocations.length > 0 ){}
     systemData.locationName = availableHitLocations[0].name
     if (systemData.location === 'Unequipped' && systemData.locationName.length > 0) {
       let hitlocID = availableHitLocations.filter(function (value: Item) {

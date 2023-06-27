@@ -115,16 +115,29 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
     }
   }
 
-  // Actor characteristics convenience gette
+  // Actor characteristics mod convenience getter
+  get characteristicsMod() {
+    return {
+      str: Number(this.system.characteristics.str.mod),
+      con: Number(this.system.characteristics.con.mod),
+      siz: Number(this.system.characteristics.siz.mod),
+      dex: Number(this.system.characteristics.dex.mod),
+      int: Number(this.system.characteristics.int.mod),
+      pow: Number(this.system.characteristics.pow.mod),
+      cha: Number(this.system.characteristics.cha.mod)
+    }
+  }
+
+  // Actor characteristics convenience getter
   get characteristics() {
     return {
-      str: Number(this.system.characteristics.str.value),
-      con: Number(this.system.characteristics.con.value),
-      siz: Number(this.system.characteristics.siz.value),
-      dex: Number(this.system.characteristics.dex.value),
-      int: Number(this.system.characteristics.int.value),
-      pow: Number(this.system.characteristics.pow.value),
-      cha: Number(this.system.characteristics.cha.value)
+      str: Number(this.system.characteristics.str.value) + this.characteristicsMod.str,
+      con: Number(this.system.characteristics.con.value) + this.characteristicsMod.con,
+      siz: Number(this.system.characteristics.siz.value) + this.characteristicsMod.siz,
+      dex: Number(this.system.characteristics.dex.value) + this.characteristicsMod.dex,
+      int: Number(this.system.characteristics.int.value) + this.characteristicsMod.int,
+      pow: Number(this.system.characteristics.pow.value) + this.characteristicsMod.pow,
+      cha: Number(this.system.characteristics.cha.value) + this.characteristicsMod.cha
     }
   }
 

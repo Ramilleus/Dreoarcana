@@ -27,30 +27,25 @@
     {
       "name": "standardSkill",
       "label": "Standard Skills",
-      "system": "mythras",
       "path": "packs/standardskill.db",
-      "entity": "Item"
+      "type": "Item",
+      "system": "mythras"
     },
     {
       "name": "professionalSkill",
       "label": "Professional Skills",
-      "system": "mythras",
       "path": "packs/professionalskill.db",
-      "entity": "Item"
+      "type": "Item",
+      "system": "mythras"
+
     },
     {
       "name": "humanoidHitLocations",
       "label": "Humanoid Hit Locations",
-      "system": "mythras",
       "path": "packs/humanoidHitLocations.db",
-      "entity": "Item"
-    },
-    {
-      "name": "mythrasMacros",
-      "label": "Mythras Macros",
-      "system": "mythras",
-      "path": "packs/mythras-macros.db",
-      "entity": "Macro"
+      "type": "Item",
+      "system": "mythras"
+
     }
   ],
   "languages": [

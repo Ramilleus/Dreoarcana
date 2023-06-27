@@ -1,17 +1,23 @@
 import { ItemMythras } from '@item/base'
 
 export const PreCreateItem = {
-  listen: (): void => {
-    Hooks.on('preCreateItem', (document: ItemMythras, _options, _userID) => {
-      const data: any = document.system
+  // listen: (): void => {
+  //   Hooks.on('preCreateItem', (document: ItemMythras, _options, _userID) => {
+  //     const data: any = document.system
 
-      if (document.type !== 'hitLocation' && !data.defaultImageSet) {
-        data.defaultImageSet = true
-        data.img = getItemImage(document.type)
-      }
-      document.updateSource(data)
-    })
-  }
+  //     console.log(document)
+  //     if (document.type !== 'hitLocation' && !data.defaultImageSet && data.img !== 'icons/svg/item-bag.svg') {
+  //       console.log(data)
+  //       console.log(document)
+  //       console.log("test")
+  //       data.defaultImageSet = true
+        
+  //       data.img = getItemImage(document.type)
+  //     }
+  //     console.log(data)
+  //     document.updateSource(data)
+  //   })
+  // }
 }
 
 function getItemImage(itemType: string) {

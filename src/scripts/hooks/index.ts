@@ -16,8 +16,7 @@ export const HooksMythras = {
       Setup,
       RenderChatMessage,
       RenderCombatTrackerConfig,
-      CreateActor,
-      PreCreateItem
+      CreateActor
     ]
     for (const listener of listeners) {
       listener.listen()
