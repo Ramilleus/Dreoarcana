@@ -57,7 +57,7 @@ class SkillMythras extends ItemMythras {
   }
 
   private getCharacteristicValue(characteristicName?: CharacteristicOption) {
-    return characteristicName ? this.actor.system.characteristics[characteristicName].value : 0
+    return characteristicName ? Number(this.actor.system.characteristics[characteristicName].value) + Number(this.actor.system.characteristics[characteristicName].mod) : 0
   }
 }
 

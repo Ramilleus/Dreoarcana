@@ -16,15 +16,15 @@
         {{localize 'MYTHRAS.Base_Char'}}
       </th>
       <th style="padding-left: 5px" title="{{localize 'MYTHRAS.Trained'}}">
-        <img class="table-header-icon" src="systems/mythras/assets/sheet/lightningbolt.svg" />
+        <img class="table-header-icon" src="systems/mythras/assets/sheet/checkmark.svg" />
       </th>
       <th style="padding-left: 5px" title="{{localize 'MYTHRAS.Fumbled'}}">
-        <img class="table-header-icon" src="systems/mythras/assets/sheet/checkmark.svg" />
+        <img class="table-header-icon" src="systems/mythras/assets/sheet/lightningbolt.svg" />
       </th>
       <th>
         {{localize 'MYTHRAS.Roll'}}
       </th>
-      <th class="delete-column">
+      <th class="delete-column" title="Delete">
         <i class="fas fa-trash"></i>
       </th>
     </thead>
@@ -43,7 +43,7 @@
           <input type="checkbox" name="system.trained" data-item-property="trained" {{checked system.trained}} />
         </td>
         <td class="skill-fumbled-cell">
-            <input type="checkbox" name="system.fumbled" data-item-property="trained" {{checked system.fumbled}} />
+            <input type="checkbox" name="system.fumbled" data-item-property="fumbled" {{checked system.fumbled}} />
         </td>
         <td>
           <a class="skill-val rollableSkill">

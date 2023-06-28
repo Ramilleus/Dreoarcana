@@ -5,7 +5,7 @@
   "version": "2.x.x",
   "compatibility": {
     "minimum": 10,
-    "verified": "10.291"
+    "verified": "11"
   },
   "templateVersion": 6,
   "authors": [

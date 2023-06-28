@@ -41,6 +41,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
 
     let actorSystem: ActorData = this.actor.system;
     let actorAttributes: ActorAttributes = actorSystem.attributes;
+    let actorChar: any = actorSystem.characteristics;
     const data: any = {
       items: {...this.actor.itemTypes},
       armorPenalty: this.actor.armorPenalty,
@@ -160,7 +161,50 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           currentValue: actorAttributes.experienceRoll
         }
       },
-      characteristics: actorSystem.characteristics
+      characteristics: {
+        str:{
+          derivedValue: this.actor.characteristics.str,
+          value: actorChar.str.value,
+          mod: this.actor.characteristicsMod.str,
+          label: "MYTHRAS.STRENGTH"
+        },
+        con:{
+          derivedValue: this.actor.characteristics.con,
+          value: actorChar.con.value,
+          mod: this.actor.characteristicsMod.con,
+          label: "MYTHRAS.CONSTITUTION"
+        },
+        siz:{
+          derivedValue: this.actor.characteristics.siz,
+          value: actorChar.siz.value,
+          mod: this.actor.characteristicsMod.siz,
+          label: "MYTHRAS.SIZE"
+        },
+        dex:{
+          derivedValue: this.actor.characteristics.dex,
+          value: actorChar.dex.value,
+          mod: this.actor.characteristicsMod.dex,
+          label: "MYTHRAS.DEXTERITY"
+        },
+        int:{
+          derivedValue: this.actor.characteristics.int,
+          value: actorChar.int.value,
+          mod: this.actor.characteristicsMod.int,
+          label: "MYTHRAS.INTELLIGENCE"
+        },
+        pow:{
+          derivedValue: this.actor.characteristics.pow,
+          value: actorChar.pow.value,
+          mod: this.actor.characteristicsMod.pow,
+          label: "MYTHRAS.POWER"
+        },
+        cha:{
+          derivedValue: this.actor.characteristics.cha,
+          value: actorChar.cha.value,
+          mod: this.actor.characteristicsMod.cha,
+          label: "MYTHRAS.CHARISMA"
+        }
+      }
     }
 
     this.sortItems(data)
