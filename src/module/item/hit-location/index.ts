@@ -56,8 +56,8 @@ class HitLocationMythras extends ItemMythras {
     const system = deepClone(this.system)
     const actorData = this.actor.system
 
-    const sizValue = Number(actorData.characteristics.siz.value)
-    const conValue = Number(actorData.characteristics.con.value)
+    const sizValue = Number(this.actor.characteristics.siz)
+    const conValue = Number(this.actor.characteristics.con)
 
     const overallHpMod = Number(actorData.attributes.hitPointMod.mod)
     const hitLocationbaseHp = Number(system.baseHp)
