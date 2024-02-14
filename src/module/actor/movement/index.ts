@@ -91,17 +91,29 @@ export class ActorMythrasMovement {
 
   public get jumpVertical(): number {
     return (
-      (this.actorHeight * 0.5 + 20 * Math.floor(this.athleticsSkillValue / 20)) / 100 +
-      this.getStatMod('jumpVertical') - 
-      Math.floor(this.actor.armorPenalty*0.5)
+      Math.floor(
+        Math.max(
+          (this.actorHeight / 2) / 100 + //convert to meters
+          (this.athleticsSkillValue / 100) + // 20 cm per 20% in Athletics
+          this.getStatMod('jumpVertical') - 
+          (this.actor.armorPenalty / 2), 
+          0 // minimum height of 1 step
+        ) * 100
+      ) / 100 //truncate to 2 decimal places
     )
   }
 
   public get jumpHorizontal(): number {
     return (
-      (this.actorHeight * 2 + 100 * Math.floor(this.athleticsSkillValue / 20)) / 100 +
-      this.getStatMod('jumpHorizontal') - 
-      Math.floor(this.actor.armorPenalty*0.5)
+      Math.floor(
+        Math.max(
+          (this.actorHeight * 2) / 100 + //convert to meters
+          (this.athleticsSkillValue / 20) + //1 meter per 20% in Athletics
+          this.getStatMod('jumpHorizontal') - 
+          (this.actor.armorPenalty / 2), //jumping in Armor is hard
+          0 //minimum jump of 1 step
+        ) * 100
+      ) / 100 //truncate to 2 decimal places
     )
   }
 
