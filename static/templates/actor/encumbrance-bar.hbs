@@ -3,7 +3,7 @@
     {{#each encumbrance.barSegments as |segment id|}}
     <div style="flex: {{ segment.width }};{{#if @first}}justify-content: space-between;{{/if}}" class="bar-label">
       {{#if @first}}<p>{{localize 'MYTHRAS.Current_ENC'}}: {{ ../encumbrance.currentEncumbrance }}</p> {{/if}}
-      <p>{{ segment.levelName }}</p>
+      <p>{{localize (concat 'MYTHRAS.' segment.levelName)}}</p>
     </div>
     {{/each}}
   </div>
