@@ -20,7 +20,8 @@
             <tbody>
               {{#each items.storage as |item id|}}
               <tr class="item" data-item data-item-id="{{ item.id }}">
-                <td>
+                <td class="item-profile">
+                  <img class="item-img" src="{{item.img}}">
                   <a class="item-name item-control item-edit">{{item.name}}</a>
                 </td>
                 <td>
@@ -58,7 +59,8 @@
             <tbody>
               {{#each items.currency as |item id|}}
               <tr class="item" data-item-id="{{item.id}}">
-                <td>
+                <td class="item-profile">
+                  <img class="item-img" src="{{item.img}}">
                   <a class="item-name item-control item-edit">{{item.name}}</a>
                 </td>
                 <td>
@@ -98,7 +100,8 @@
         <tbody>
           {{#each items.equipment as |item id|}}
           <tr class="item" data-item-id="{{item.id}}">
-            <td>
+            <td class="item-profile">
+              <img class="item-img" src="{{item.img}}">
               <a class="item-name item-control item-edit">{{item.name}}</a>
             </td>
             <td>
@@ -145,7 +148,8 @@
         <tbody>
           {{#each items.armor as |item id|}}
           <tr class="item" data-item data-item-id="{{ item.id }}">
-            <td>
+            <td class="item-profile">
+              <img class="item-img" src="{{item.img}}">
               <a class="item-name item-control item-edit">{{item.name}}</a>
             </td>
             <td>
@@ -190,7 +194,8 @@
         <tbody>
           {{#each items.[melee-weapon] as |item id|}}
           <tr class="item" data-item data-item-id="{{item.id}}">
-            <td>
+            <td class="item-profile">
+              <img class="item-img" src="{{item.img}}">
               <a class="item-name item-control item-edit">{{item.name}}</a>
             </td>
             <td>
@@ -238,7 +243,8 @@
         <tbody>
           {{#each items.[ranged-weapon] as |item id|}}
           <tr class="item" data-item data-item-id="{{item.id}}">
-            <td>
+            <td class="item-profile">
+              <img class="item-img" src="{{item.img}}">
               <a class="item-name item-control item-edit">{{item.name}}</a>
             </td>
             <td>
