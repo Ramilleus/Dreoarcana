@@ -207,6 +207,13 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       }
     }
 
+    // Journal HTML enrichment
+    data.journalHTML = await TextEditor.enrichHTML(data.system.journal, {
+      secrets: this.actor.isOwner,
+      rollData: data.rollData,
+      async: true
+    });
+    
     this.sortItems(data)
     return data
   }
