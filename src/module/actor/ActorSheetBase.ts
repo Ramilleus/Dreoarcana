@@ -253,7 +253,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
   }
 
   private applyEncumbranceStyles() {
-    const segments = $('.encumbrance-bar .percent-segment-filled')
+    const segments = $(`#CharacterSheetMythras-Actor-${this.actor.id} .encumbrance-bar .percent-segment-filled`)
     if (this.actor.encumbrance.isOverMaxLoad) {
       segments.removeClass('burdened overloaded').addClass('maxload')
     } else if (this.actor.encumbrance.isOverloaded) {
@@ -270,13 +270,13 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     for (let hitLocation of hitLocations) {
       let currentHp = hitLocation.system.currentHp
       let hitLocationElement: any = document.querySelector(
-        `.hitLocation-table [data-item-id="${hitLocation.id}"]`
+        `#CharacterSheetMythras-Actor-${this.actor.id} .hitLocation-table [data-item-id="${hitLocation.id}"]`
       )
 
-      if (currentHp <= hitLocation.maxHp * -1) {
+      if (currentHp <= hitLocation.maxHp * -1 && !!hitLocationElement) {
         hitLocationElement.style.backgroundColor = '#c5000094'
 
-      } else if (currentHp <= 0) {
+      } else if (currentHp <= 0 && !!hitLocationElement) {
         hitLocationElement.style.backgroundColor = '#ed5b1585'
 
       }
