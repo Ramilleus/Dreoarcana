@@ -68,12 +68,10 @@
         <div class="weapon-core-section">
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Armor_Location'}}</h3>
-            <select name="system.location" data-dtype="String">
-              {{#select system.location}}
-              {{#each availableHitLocations as |loc|}}
-              <option value="{{loc.id}}">{{loc.name}}</option>
-              {{/each}}
-              {{/select}}
+            <select name="system.location" multiple data-dtype="String">
+              
+                {{selectOptions availableHitLocations selected=system.location localize=true nameAttr='id' labelAttr='name' blank=''}}
+              
             </select>
           </div>
           <div class="weapon-piece">
