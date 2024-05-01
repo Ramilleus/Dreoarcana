@@ -39,18 +39,32 @@ export class Roller {
 
       //hit location roll with half the d20 roll + 10 (similar to rolling a d10 but I prefered to keep the roll the same)
       //for upper body hits (such as when striking someone behind cover and such)
-      const upperHit = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
-          return upperRoll >= Number(location.rollRangeStart) && upperRoll <= Number(location.rollRangeEnd)
-      })[0].name;
+      const upperHitLocation = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
+        return upperRoll >= Number(location.rollRangeStart) && upperRoll <= Number(location.rollRangeEnd)
+      })[0];
+      let upperHit = upperHitLocation.name;
+      if (upperHitLocation.wardLocation) {
+        upperHit += " (Warded)";
+      }
+
       //normal hit location roll of d20
-      const normalHit = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
-          return normalRoll >= Number(location.rollRangeStart) && normalRoll <= Number(location.rollRangeEnd)
-      })[0].name;
+      const normalHitLocation = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
+        return normalRoll >= Number(location.rollRangeStart) && normalRoll <= Number(location.rollRangeEnd)
+      })[0];
+      let normalHit = normalHitLocation.name;
+      if (normalHitLocation.wardLocation) {
+        normalHit += " (Warded)";
+      }
+
       //hit location roll with half the d20 roll
       //for lower body hits (such as when striking a rider)
-      const lowerHit = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
-          return lowerRoll >= Number(location.rollRangeStart) && lowerRoll <= Number(location.rollRangeEnd)
-      })[0].name;
+      const lowerHitLocation = this.actor.itemTypes.hitLocation.filter((location: HitLocationMythras) => {
+        return lowerRoll >= Number(location.rollRangeStart) && lowerRoll <= Number(location.rollRangeEnd)
+      })[0];
+      let lowerHit = lowerHitLocation.name;
+      if (lowerHitLocation.wardLocation) {
+        lowerHit += " (Warded)";
+      }
 
       roll.toMessage({
           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -142,6 +156,7 @@ export class Roller {
         })
       }
     }
+
     return modifiers
   }
 
