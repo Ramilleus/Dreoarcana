@@ -213,6 +213,13 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       rollData: data.rollData,
       async: true
     });
+
+    // Abilities HTML enrichment
+    data.abilitiesDesc = await TextEditor.enrichHTML(data.system.abilitiesDesc, {
+      secrets: this.actor.isOwner,
+      rollData: data.rollData,
+      async: true
+    });
     
     this.sortItems(data)
     return data
