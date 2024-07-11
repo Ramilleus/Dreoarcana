@@ -44,15 +44,17 @@ class MagicSkillMythras extends SkillMythras {
 
     const system = this.system
     const actorData = this.actor ? this.actor.system : {} as ActorData
+    const actorItemData = this.actor ? this.actor.items : {} as ActorData
     
     let cultRank = 0
     let chaValue = 0
     let powValue = 0
-    if (actorData !== undefined && actorData.items !== undefined) {
+    if (actorData !== undefined && actorItemData !== undefined) {
       const cults: CultBrotherhoodMythras[] = this.actor.items.filter(
         (item: ItemMythras) => itemIsCultBrotherhood(item)
       )
       system.cults = cults
+
       if (system.cultId !== undefined) {
         const theCult = cults.find((item: CultBrotherhoodMythras) => item.id === system.cultId)
         if (theCult !== undefined) {

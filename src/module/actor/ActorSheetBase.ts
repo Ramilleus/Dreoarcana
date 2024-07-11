@@ -42,6 +42,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     let actorSystem: ActorData = this.actor.system;
     let actorAttributes: ActorAttributes = actorSystem.attributes;
     let actorChar: any = actorSystem.characteristics;
+
     const data: any = {
       items: {...this.actor.itemTypes},
       armorPenalty: this.actor.armorPenalty,

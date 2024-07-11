@@ -86,7 +86,7 @@
             <select name="system.cultId" data-dtype="String">
               {{#select system.cultId}}
               <option value=""></option>
-              {{#each system.cults as |cult|}}
+              {{#each system.cults as |cult id|}}
               <option value="{{cult.id}}">{{cult.name}}</option>
               {{/each}}
               {{/select}}
