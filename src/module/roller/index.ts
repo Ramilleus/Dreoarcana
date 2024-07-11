@@ -155,6 +155,28 @@ export class Roller {
           value: this.actor.encumbrance.skillPenalty
         })
       }
+      
+      //Include Optional Penalty for Serious Wounds in locations only for skills that suffer ENC penalty
+      //Also note if a Major Wound incapacitates target
+      const hitLocations: HitLocationMythras[] = this.actor.items.filter(
+        (item) => item.type == 'hitLocation'
+      )
+      for (let hitLocation of hitLocations) {
+        let currentHp = hitLocation.system.currentHp
+        if (currentHp <= hitLocation.maxHp * -1) {
+          modifiers.push({
+            name: 'M. Wound ' + hitLocation.data.name,
+            value: 'Herculean Difficulty'
+          })
+          continue
+        } else if (currentHp <= 0) {
+          modifiers.push({
+            name: 'S. Wound ' + hitLocation.data.name,
+            value: 'One Step Penalty'
+          })
+          continue
+        }
+      }
     }
 
     return modifiers
