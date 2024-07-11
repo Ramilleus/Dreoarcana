@@ -17,7 +17,7 @@ interface HitLocationMythras {
 class HitLocationMythras extends ItemMythras {
   get attachedArmor(): Embedded<ArmorMythras>[] {
     return this.actor.items.filter((value: ItemMythras) => {
-      return value.type === 'armor' && (value as ArmorMythras).selectedHitLocationId === this.id
+      return value.type === 'armor' && (value as ArmorMythras).selectedHitLocationId.includes(this.id)
     })
   }
 
