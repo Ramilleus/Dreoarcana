@@ -8,6 +8,7 @@ interface HitLocationData {
   rollRangeStart: number
   rollRangeEnd: number
   naturalArmor: number
+  wardLocation: boolean
 }
 
 interface HitLocationMythras {
@@ -19,6 +20,10 @@ class HitLocationMythras extends ItemMythras {
     return this.actor.items.filter((value: ItemMythras) => {
       return value.type === 'armor' && (value as ArmorMythras).selectedHitLocationId.includes(this.id)
     })
+  }
+
+  get wardLocation(): boolean {
+    return this.system.wardLocation
   }
 
   get rollRangeStart(): number {
