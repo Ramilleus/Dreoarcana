@@ -33,7 +33,7 @@ export class CombatMythras extends Combat {
       if (t.defeated && skip) continue
       if (
         t.actor?.effects.find(
-          (e) => e.getFlag('core', 'statusId') === CONFIG.Combat.defeatedStatusId
+          (e) => e.name === "Dead"
         ) &&
         skip
       )

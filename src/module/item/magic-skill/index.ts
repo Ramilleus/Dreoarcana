@@ -49,7 +49,7 @@ class MagicSkillMythras extends SkillMythras {
     let cultRank = 0
     let chaValue = 0
     let powValue = 0
-    if (actorData !== undefined && actorItemData !== undefined) {
+    if (this.actor !== null && actorItemData !== undefined) {
       const cults: CultBrotherhoodMythras[] = this.actor.items.filter(
         (item: ItemMythras) => itemIsCultBrotherhood(item)
       )
