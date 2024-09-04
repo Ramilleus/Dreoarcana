@@ -18,7 +18,7 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   }
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ['mythras', 'sheet', 'item'],
       width: 495,
       height: 550,
@@ -40,6 +40,7 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   override async getData(options?: Partial<DocumentSheetOptions>) {
     const itemData = await super.getData(options) as any
     const item = itemData.item;
+    console.log(item)
 
     // Enrich HTML description
     itemData.descriptionHTML = await TextEditor.enrichHTML(item.system.description, {
@@ -69,7 +70,7 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   override activateListeners($html: JQuery): void {
     super.activateListeners($html)
 
-    $html.find('input').on('click', function (event) {
+    $html.find('input').on('click', function (event: any) {
       this.select()
     })
 

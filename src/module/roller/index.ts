@@ -95,6 +95,7 @@ export class Roller {
     let difficultyGrades = [2, 1.5, 1, 2 / 3, 0.5, 0.1].map(function (x) {
       return Math.ceil(x * Number(skill.totalVal))
     })
+    console.log(skill)
 
     // Difficulty name code. Are localized in the template
     let difficultyNames = [
@@ -114,7 +115,8 @@ export class Roller {
 
     // Make the roll
     let roll = new Roll('1d100', this.actor.system as any)
-    const rolled = await roll.evaluate({ async: true })
+    // @ts-ignore
+    const rolled = await roll.evaluate()
 
     // Get results of the rolls at given grades, (e.g. Success, Failure, Critical, Fumble)
     let rollResults = this.getSkillRollResults(difficultyNames, difficultyGrades, rolled)

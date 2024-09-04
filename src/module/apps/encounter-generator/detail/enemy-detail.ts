@@ -18,7 +18,7 @@ export class EncounterGeneratorEnemyDetail extends Application {
   }
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "encounter-generator-enemy-detail",
       classes: ['mythras', 'sheet'],
       template: "systems/mythras/templates/apps/encounter-generator/detail/enemy-detail.hbs",

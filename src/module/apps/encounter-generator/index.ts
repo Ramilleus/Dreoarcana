@@ -18,7 +18,7 @@ export class EncounterGenerator extends Application {
   }
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "encounter-generator",
       classes: ['mythras', 'sheet'],
       template: "systems/mythras/templates/apps/encounter-generator/encounter-generator.hbs",

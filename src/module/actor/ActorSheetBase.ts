@@ -28,7 +28,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
   }
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       dragDrop: [{dragSelector: ['.item'], dropSelector: null}]
     })
   }
@@ -318,7 +318,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     // Listens for item-input updates. Element with [data-item] that contain inputs
     // are listened to. If an input changes, update the embedded document associated with
     // that data-item using the data-item-id attribute on that same element
-    html.find('[data-item] input, [data-item] select').on('change', async (event) => {
+    html.find('[data-item] input, [data-item] select').on('change', async (event: any) => {
       let target = event.target as HTMLInputElement
       let itemId = $(target.closest('[data-item]')).attr('data-item-id')
       let propertyName = $(target).attr('data-item-property')
@@ -381,24 +381,24 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     // })
 
     // Skill roll button listener
-    html.find('.rollableSkill').on('click', (event) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)))
+    html.find('.rollableSkill').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)))
 
     // Melee Weapon roll button listener
-    html.find('.rollableMeleeDamage').on('click', (event) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)))
+    html.find('.rollableMeleeDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)))
 
     // Ranged Weapon roll button listener
-    html.find('.rollableRangedDamage').on('click', (event) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)))
+    html.find('.rollableRangedDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)))
 
     // Hit Location roll button listener
-    html.find('.roll-hitlocations-button').on('click', (event) => {
+    html.find('.roll-hitlocations-button').on('click', (event: any) => {
       event.preventDefault()
       this.roller.rollHitLocation()
     })
 
     // Skill roll button listener
-    html.find('.recoverCharacteristicPools').on('click', (event) => this.handleRecoverCharacteristicPools(event))
+    html.find('.recoverCharacteristicPools').on('click', (event: any) => this.handleRecoverCharacteristicPools(event))
 
-    html.find('.stat-settings').on('click', (event) => {
+    html.find('.stat-settings').on('click', (event: any) => {
       event.preventDefault()
       let statList = 'Coming soon :)'
       new Dialog({
@@ -407,7 +407,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
         buttons: {}
       }).render(true)
     })
-    html.find('.stat-increase').on('click', (event) => {
+    html.find('.stat-increase').on('click', (event: any) => {
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
@@ -418,7 +418,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       })
     })
 
-    html.find('.stat-decrease').on('click', (event) => {
+    html.find('.stat-decrease').on('click', (event: any) => {
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')

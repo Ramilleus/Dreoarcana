@@ -35,7 +35,7 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
     if (context.mythras?.ready) {
       super(data, context)
     } else {
-      mergeObject(context, { mythras: { ready: true } })
+      foundry.utils.mergeObject(context, { mythras: { ready: true } })
       const documentClasses = CONFIG.MYTHRAS.Actor.documentClasses
       let type: keyof typeof documentClasses = data.type
       const ActorConstructor = documentClasses[type]

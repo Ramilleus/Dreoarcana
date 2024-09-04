@@ -15,7 +15,7 @@ export class CharacterMythras extends CreatureMythras {
   //   console.log('bigtest')
   //   data.prototypeToken.actorLink = true
   //   console.log(data)
-  //   // mergeObject(
+  //   // foundry.utils.mergeObject(
   //   //   data.token,
   //   //   {
   //   //     vision: true,

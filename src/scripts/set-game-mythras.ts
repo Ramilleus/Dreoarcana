@@ -9,7 +9,7 @@ export const SetGameMythras = {
     Object.defineProperty(globalThis.game, 'mythras', {value: {}})
     const initSafe: Partial<typeof game['mythras']> = {}
 
-    mergeObject(game.mythras, initSafe)
+    foundry.utils.mergeObject(game.mythras, initSafe)
 
     Object.defineProperty(globalThis.game.mythras, 'theme', {value: new ThemeManager()})
     Object.defineProperty(globalThis.game.mythras, 'encounterGenerator', {value: new EncounterGenerator()})
