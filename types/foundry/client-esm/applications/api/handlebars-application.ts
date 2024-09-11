@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import type ApplicationV2 from "./application.d.ts";
 
 /** Augment an Application class with [Handlebars](https://handlebarsjs.com) template rendering behavior. */

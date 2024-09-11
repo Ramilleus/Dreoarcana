@@ -1,3 +1,4 @@
+/* global $ */
 import { ActorData, ActorMythras } from '@actor/base'
 import { ItemMythras } from '@item/base'
 import { HitLocationMythras } from '@item/hit-location'
@@ -211,15 +212,13 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     // Journal HTML enrichment
     data.journalHTML = await TextEditor.enrichHTML(data.system.journal, {
       secrets: this.actor.isOwner,
-      rollData: data.rollData,
-      async: true
+      rollData: data.rollData
     });
 
     // Abilities HTML enrichment
     data.abilitiesDesc = await TextEditor.enrichHTML(data.system.abilitiesDesc, {
       secrets: this.actor.isOwner,
-      rollData: data.rollData,
-      async: true
+      rollData: data.rollData
     });
     
     this.sortItems(data)
@@ -272,6 +271,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
   }
 
   private applyWoundedHitLocationStyles() {
+    //@ts-ignore
     const hitLocations: HitLocationMythras[] = this.actor.items.filter(
       (item) => item.type == 'hitLocation'
     )
@@ -292,7 +292,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
   }
 
   private hideMinimizedStats() {
-    this.element.find('[data-stat-name]').each((_, stat: HTMLInputElement) => {
+    this.element.find('[data-stat-name]').each((_: any, stat: HTMLInputElement) => {
       const statName = $(stat).attr('data-stat-name')
       const bubble = $(stat).find('.number-input-container')
       const label = $(stat).find('.stat-minimizer')
@@ -452,7 +452,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     // Get the type of item to create.
     const type = header.dataset.type
     // Grab any data associated with this control.
-    const data = duplicate(header.dataset)
+    const data = foundry.utils.duplicate(header.dataset)
     // Initialize a default name.
     var name = `New ${type.capitalize().replace(/([a-z])([A-Z])/g, '$1 $2')}`
     if (game.i18n) {
@@ -470,10 +470,11 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     return this.actor.createEmbeddedDocuments('Item', [itemData])
   }
 
-  private handleItemRoll<TItem extends ItemMythras>(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: TItem) => any) {
+  //@ts-ignore
+  private handleItemRoll(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: Item<ActorMythras>) => any) {
     event.preventDefault()
     const itemId = $(event.currentTarget.closest('[data-item-id]')).attr('data-item-id')
-    const item: TItem = this.actor.items.get(itemId)
+    const item = this.actor.items.get(itemId)
     rollFunction(item)
   }
 
@@ -515,6 +516,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
    * Theme M-Space introduced a conflict pool mechanic which is based on the primary characteristics.
    * These pools are depleted by use and need to be refilled by resting.
    */
+  //@ts-ignore
   private handleRecoverCharacteristicPools(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) {
     let k: keyof ActorCharacteristics;
     for (k in this.actor.system.characteristics) {

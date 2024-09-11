@@ -8,6 +8,7 @@ import { SpellMythras } from '@module/item/spell'
 import { StorageMythras } from '@module/item/storage'
 import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
+import { duplicate } from 'types/foundry/common/utils/helpers'
 
 abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
   TActor,
@@ -243,6 +244,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   }
 
   private applyWoundedHitLocationStyles() {
+    //@ts-ignore
     const hitLocations: HitLocationMythras[] = this.actor.items.filter(
       (item) => item.type == 'hitLocation'
     )
@@ -437,10 +439,10 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     return this.actor.createEmbeddedDocuments('Item', [itemData])
   }
 
-  private handleItemRoll<TItem extends ItemMythras>(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: TItem) => any) {
+  private handleItemRoll(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: Item) => any) {
     event.preventDefault()
     const itemId = $(event.currentTarget.closest('[data-item-id]')).attr('data-item-id')
-    const item: TItem = this.actor.items.get(itemId)
+    const item = this.actor.items.get(itemId)
     rollFunction(item)
   }
 

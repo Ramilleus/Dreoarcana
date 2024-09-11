@@ -71,7 +71,7 @@ export abstract class EncounterGeneratorImporter {
         const maxValue = this.totalTemplateCount ?? 0
         if (currentValue < maxValue && !this.scrollLimitHit) {
           this.scrollLimitHit = true
-          const newValue = Math.clamped(currentValue + 100, 100, maxValue)
+          const newValue = Math.clamp(currentValue + 100, 100, maxValue)
           this.scrollLimit = newValue
           this.lastScrollTop = target.scrollTop
           this.dataReady = false

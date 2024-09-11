@@ -1,4 +1,5 @@
 import { WeaponData, WeaponMythras } from '@item/weapon/base'
+import { ActorMythras } from '@module/actor'
 
 interface MeleeWeaponData extends WeaponData {
   traits: string
@@ -10,7 +11,7 @@ interface MeleeWeaponMythras {
   readonly system: MeleeWeaponData
 }
 
-class MeleeWeaponMythras extends WeaponMythras {
+class MeleeWeaponMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends  WeaponMythras<TParent> {
   get traits() {
     return this.system.traits
   }

@@ -1,4 +1,5 @@
 import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
+import { ActorMythras } from '@module/actor'
 
 interface CyberModuleData extends PhysicalItemData {
   moduleSize: number
@@ -15,7 +16,7 @@ interface CyberModuleMythras {
   readonly system: CyberModuleData
 }
 
-class CyberModuleMythras extends PhysicalItemMythras {
+class CyberModuleMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends PhysicalItemMythras<TParent> {
   isCyberModule: boolean = true
 
   get cyberModuleAvailibilities(): Array<string> {

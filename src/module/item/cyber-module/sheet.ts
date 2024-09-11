@@ -13,6 +13,6 @@ export class CyberModuleSheetMythras extends PhysicalItemSheetMythras<CyberModul
   }
 
   override get template(): string {
-    return `systems/mythras/templates/item/item-cyberModule-sheet.hbs`
+    return 'systems/mythras/templates/item/item-cyberModule-sheet.hbs'
   }
 }

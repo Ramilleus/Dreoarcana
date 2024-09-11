@@ -1,5 +1,5 @@
 import { SkillData, SkillMythras } from '@item/skill'
-import { ActorData } from '@module/actor/base'
+import { ActorData, ActorMythras } from '@module/actor/base'
 import { ItemMythras } from '../base'
 import { CultBrotherhoodMythras } from '../cult-brotherhood'
 import { itemIsCultBrotherhood } from '../type-guards'
@@ -28,7 +28,7 @@ interface MagicSkillMythras {
   readonly system: MagicSkillData
 }
 
-class MagicSkillMythras extends SkillMythras {
+class MagicSkillMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends SkillMythras<TParent> {
   isMagicSkill: boolean = true
 
   get intensity() {
@@ -50,7 +50,9 @@ class MagicSkillMythras extends SkillMythras {
     let chaValue = 0
     let powValue = 0
     if (this.actor !== null && actorItemData !== undefined) {
+      //@ts-ignore
       const cults: CultBrotherhoodMythras[] = this.actor.items.filter(
+        //@ts-ignore
         (item: ItemMythras) => itemIsCultBrotherhood(item)
       )
       system.cults = cults

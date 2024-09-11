@@ -14,7 +14,7 @@ export class MSpaceThemeSettings extends ThemeSettings {
   }
 
   unregisterThemeSpecificSheetClasses() {
-    Items.unregisterSheet('mythras', CyberModuleSheetMythras, ["cyberModule"])
+    Items.unregisterSheet('mythras', CyberModuleSheetMythras, {types:["cyberModule"]})
   }
 
   relabel(contextName: string, labelKey: string): string {

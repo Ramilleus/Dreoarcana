@@ -14,7 +14,7 @@ export class PhysicalItemSheetMythras<TItem extends PhysicalItemMythras> extends
 
   //["melee-weapon", "ranged-weapon", "equipment", "currency", "storage"]
 
-  override get template() {
+  override get template(): string {
     const path = 'systems/mythras/templates/item'
 
     const itemType = this.item.type
@@ -33,7 +33,7 @@ export class PhysicalItemSheetMythras<TItem extends PhysicalItemMythras> extends
     } else if (itemType === "storage") {
       // Loads the default skill sheet that applies to all other skills
       return `${path}/item-storage-sheet.hbs`
-    } else {
+    }else {
       throw new Error('ItemType uses PhysicalItemSheetMythras class but type is not known: ' + itemType)
     }
   }

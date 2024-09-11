@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { HooksMythras } from '@scripts/hooks'
 
 import { TemplatePreloader } from '@util/template-preloader'

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import type * as fields from "../../../../common/data/fields.d.ts";
 
 export interface PrimaryCanvasObjectData {

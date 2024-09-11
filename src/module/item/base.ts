@@ -1,6 +1,6 @@
 import { ActorMythras } from '@actor'
 
-export class ItemMythras extends Item<ActorMythras> {
+export class ItemMythras<TParent extends ActorMythras | null = ActorMythras | null> extends Item<TParent> {
   get actorData() {
     return this.actor ? this.actor : undefined
   }
@@ -48,3 +48,20 @@ export class ItemMythras extends Item<ActorMythras> {
   }
   
 }
+
+const ItemProxyMythras = new Proxy(ItemMythras, {
+  construct(
+      _target,
+      args: [source: PreCreate<foundry.documents.ItemSource>, context?: DocumentConstructionContext<ActorMythras | null>],
+  ) {
+      const source = args[0];
+      const type = source?.type as keyof typeof CONFIG.MYTHRAS.Item.documentClasses;
+
+      const ItemClass: typeof ItemMythras = CONFIG.MYTHRAS.Item.documentClasses[type];
+      if (!ItemClass) {
+          throw Error(`Item type ${type} does not exist and item module sub-types are not supported`);
+      }
+      return new ItemClass(...args);
+  },
+});
+export { ItemProxyMythras }

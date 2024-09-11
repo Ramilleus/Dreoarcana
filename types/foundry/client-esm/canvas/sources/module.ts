@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export { default as BaseEffectSource } from "./base-effect-source.ts";
 export { default as BaseLightSource } from "./base-light-source.ts";
 export { default as GlobalLightSource } from "./global-light-source.ts";

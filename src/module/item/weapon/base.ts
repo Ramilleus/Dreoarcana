@@ -1,4 +1,5 @@
 import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
+import { ActorMythras } from '@module/actor'
 
 interface WeaponData extends PhysicalItemData {
   damageModifier: string
@@ -10,7 +11,7 @@ interface WeaponMythras {
   readonly system: WeaponData
 }
 
-class WeaponMythras extends PhysicalItemMythras {
+class WeaponMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends  PhysicalItemMythras<TParent> {
   get damageRoll() {
     const systemData = this.system
     if (this.damageModifier) {

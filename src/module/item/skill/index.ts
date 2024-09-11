@@ -1,4 +1,5 @@
 import { ItemMythras } from '@item/base'
+import { ActorMythras } from '@module/actor'
 import { CharacteristicOption } from '@module/actor/characteristic'
 
 interface SkillData {
@@ -13,11 +14,10 @@ interface SkillMythras {
   readonly system: SkillData
 }
 
-class SkillMythras extends ItemMythras {
+class SkillMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends ItemMythras<TParent> {
   isSkill: boolean = true
 
   override prepareData(): void {
-    console.log('CALLED PREPARE DATA FOR SKILL')
     super.prepareData()
   }
 
@@ -38,17 +38,12 @@ class SkillMythras extends ItemMythras {
     //Is commented out because it breaks magic skills for some reason
     //TODO: figure out why it breaks magic skills
     //this.reRenderOpenSheet()
-    console.log('SYSTEM DATA')
-    console.log(systemData)
 
     return this.baseVal + Number(systemData.trainingVal) + Number(systemData.miscBonus)
   }
 
   get baseVal() {
-    console.log('ACTOR DATA')
-    console.log(this.actor)
     if (this.actor && this.actor.system) {
-      console.log('INSIDE IF STATEMENT YIPEEE')
       const system = this.system
       let primaryChar = system.primaryChar as CharacteristicOption
       let secondaryChar = system.secondaryChar as CharacteristicOption

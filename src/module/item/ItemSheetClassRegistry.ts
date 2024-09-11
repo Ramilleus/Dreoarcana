@@ -3,6 +3,7 @@ import { ItemSheetBase } from "@item/ItemSheetBase";
 import { PhysicalItemSheetMythras } from "@item/physical/sheet";
 import { SpellSheetMythras } from "@item/spell/sheet";
 import { ArmorSheetMythras } from "@item/armor/sheet";
+import { ItemMythras } from "./base";
 
 export class ItemSheetClassRegistry {
 
@@ -22,7 +23,7 @@ export class ItemSheetClassRegistry {
     // Todo gun sheet for type "ranged-weapon"?
   }
 
-  private static doRegister(documentClass: ConstructorOf<ItemSheet>, types: string[], isDefault: boolean) {
+  private static doRegister(documentClass: ConstructorOf<ItemSheet<ItemMythras,DocumentSheetOptions>>, types: string[], isDefault: boolean) {
     Items.registerSheet('mythras', documentClass, {
       types: types,
       makeDefault: isDefault

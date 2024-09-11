@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { PrimaryCanvasObjectMixin } from "./primary-canvas-object.ts";
 
 /**

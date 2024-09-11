@@ -1,4 +1,5 @@
 import { ItemMythras } from '@item/base'
+import { ActorMythras } from '@module/actor'
 
 interface CultBrotherhoodData {
   rankName0: string
@@ -14,7 +15,7 @@ interface CultBrotherhoodMythras {
   readonly system: CultBrotherhoodData
 }
 
-class CultBrotherhoodMythras extends ItemMythras {
+class CultBrotherhoodMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends ItemMythras<TParent> {
   isCultBrotherhood: boolean = true
   override prepareData(): void {
     super.prepareData()

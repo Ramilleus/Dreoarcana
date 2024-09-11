@@ -1,7 +1,7 @@
 import { ItemMythras } from '@item/base'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
-export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
+export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, DocumentSheetOptions> {
   sheetPostRender!: SheetPostRender
 
   constructor(item: TItem, options?: Partial<DocumentSheetOptions>) {
@@ -44,7 +44,6 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
     // Enrich HTML description
     itemData.descriptionHTML = await TextEditor.enrichHTML(item.system.description, {
       secrets: item.isOwner,
-      async: true,
       documents: true,
       rollData: itemData.rollData
     });
@@ -59,9 +58,9 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   }
 
   override setPosition(options = {}) {
-    const position = super.setPosition(options)
+    const position = super.setPosition(options) as ApplicationPosition
     const sheetBody = this.element.find('.sheet-body')
-    const bodyHeight = position.height - 192
+    const bodyHeight = Number(position.height) - 192
     sheetBody.css('height', bodyHeight)
     return position
   }
