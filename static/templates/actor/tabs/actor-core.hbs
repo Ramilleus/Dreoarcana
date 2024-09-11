@@ -127,6 +127,7 @@
           {{localize 'MYTHRAS.Movement'}}
         </h2>
         <div class="d-flex d-flex--space-between">
+          
           {{#each movement.stats}}
           <div data-stat="{{@key}}" class="derived-stat-with-label">
             {{> systems/mythras/templates/common-components/derived-stat.hbs stat=this statName=@key}}

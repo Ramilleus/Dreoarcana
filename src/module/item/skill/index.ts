@@ -16,6 +16,12 @@ interface SkillMythras {
 class SkillMythras extends ItemMythras {
   isSkill: boolean = true
 
+  override prepareData(): void {
+    console.log('CALLED PREPARE DATA FOR SKILL')
+    super.prepareData()
+  }
+
+
   get encPenalty() {
     const data = this.system
     return (
@@ -32,23 +38,22 @@ class SkillMythras extends ItemMythras {
     //Is commented out because it breaks magic skills for some reason
     //TODO: figure out why it breaks magic skills
     //this.reRenderOpenSheet()
-    console.log('TESTESTESTESTESTESDTESDTESTES')
+    console.log('SYSTEM DATA')
     console.log(systemData)
 
     return this.baseVal + Number(systemData.trainingVal) + Number(systemData.miscBonus)
   }
 
   get baseVal() {
-    console.log('TESTESTESTESTESTESDTESDTESTES')
+    console.log('ACTOR DATA')
     console.log(this.actor)
-    console.log(this.actor.system)
     if (this.actor && this.actor.system) {
+      console.log('INSIDE IF STATEMENT YIPEEE')
       const system = this.system
       let primaryChar = system.primaryChar as CharacteristicOption
       let secondaryChar = system.secondaryChar as CharacteristicOption
       let primaryCharValue = Number(this.getCharacteristicValue(primaryChar))
       let secondaryCharValue = Number(this.getCharacteristicValue(secondaryChar))
-      console.log('TESTESTESTESTESTESDTESDTESTES')
       return primaryCharValue + secondaryCharValue
     } else {
       return 0

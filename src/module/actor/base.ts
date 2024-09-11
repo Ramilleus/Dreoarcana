@@ -147,6 +147,8 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
 
   prepareData() {
     super.prepareData()
+    console.log('CALLED PREPARE DATA FOR ACTOR')
+
     this.encumbrance = new ActorMythrasEncumbrance(this)
     this.fatigue = new ActorMythrasFatigue(this)
     this.movement = new ActorMythrasMovement(this)

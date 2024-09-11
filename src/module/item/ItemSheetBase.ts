@@ -40,7 +40,6 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   override async getData(options?: Partial<DocumentSheetOptions>) {
     const itemData = await super.getData(options) as any
     const item = itemData.item;
-    console.log(item)
 
     // Enrich HTML description
     itemData.descriptionHTML = await TextEditor.enrichHTML(item.system.description, {
