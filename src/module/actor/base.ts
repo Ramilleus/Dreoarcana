@@ -6,6 +6,7 @@ import { ActorMythrasEncumbrance } from './encumbrance'
 import { ActorMythrasFatigue } from './fatigue'
 import { ActorMythrasMovement } from './movement'
 import { ActorMythrasStatTracker } from './stat-tracker'
+import { TokenDocumentMythras } from '@module/scene/token-document/document'
 
 
 interface ActorData {
@@ -26,7 +27,7 @@ interface ActorMythras {
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
  */
-class ActorMythras<TParent extends TokenDocument | null = TokenDocument | null> extends Actor<TParent> {
+class ActorMythras<TParent extends TokenDocumentMythras | null = TokenDocumentMythras | null> extends Actor<TParent> {
   public encumbrance!: ActorMythrasEncumbrance
   public fatigue!: ActorMythrasFatigue
   public movement!: ActorMythrasMovement

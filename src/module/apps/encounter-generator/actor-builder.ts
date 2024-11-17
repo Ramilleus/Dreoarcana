@@ -1,3 +1,5 @@
+import { ActorMythras } from "@module/actor"
+
 export class EncounterGeneratorActorBuilder {
   public async createActor(skollEnemy: any, folder: string) {
     /**************** Setup ******************/
@@ -309,7 +311,7 @@ export class EncounterGeneratorActorBuilder {
 
     /*********** Create the Actor *************/
     promiseChain.then(() => {
-      Actor.create({
+      ActorMythras.create({
         name: skollEnemy.name,
         type: 'character',
         system: actorData,

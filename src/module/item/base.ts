@@ -52,6 +52,7 @@ export class ItemMythras<TParent extends ActorMythras | null = ActorMythras | nu
 const ItemProxyMythras = new Proxy(ItemMythras, {
   construct(
       _target,
+      // @ts-ignore: Weird circular reference error (does not break anything I think)
       args: [source: PreCreate<foundry.documents.ItemSource>, context?: DocumentConstructionContext<ActorMythras | null>],
   ) {
       const source = args[0];
