@@ -17,7 +17,7 @@ export const RenderChatMessage = {
         })
 
         chatMessage.addEventListener('click', function applyDamage() {
-          let targetTokenActor = game.scenes.active.data.tokens.find(
+          let targetTokenActor = (game.scenes.active as any).data.tokens.find(
             (i: any) => i.id == chatMessage.dataset.targetToken
           )
 
