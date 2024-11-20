@@ -51,7 +51,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
-      magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
+      magicSkillNames: this.actor.itemTypes.spell.map(spell => ({ value: spell.magicSkillName, label: spell.magicSkillName })).filter((v, i, a) => a.indexOf(v) === i),
       editable: this.isEditable,
       system: actorSystem,
       actor: this.actor,
