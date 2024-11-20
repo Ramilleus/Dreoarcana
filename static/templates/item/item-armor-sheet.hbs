@@ -23,11 +23,7 @@
             <select name="system.storage" data-dtype="String">
               <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
               {{#unless system.equipped}}
-              {{#select system.storage}}
-              {{#each availableStorage as |storage|}}
-              <option value="{{storage.id}}">{{storage.name}}</option>
-              {{/each}}
-              {{/select}}
+              {{selectOptions availableStorage valueAttr="id" labelAttr="name" selected=system.storage localize=true }}
               {{/unless}}
             </select>
           </div>

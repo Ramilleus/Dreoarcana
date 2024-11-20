@@ -21,12 +21,8 @@
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
             <select name="system.storage" data-dtype="String">
-              {{#select system.storage}}
               <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
-              {{#each availableStorage as |storage|}}
-              <option value="{{storage.id}}">{{storage.name}}</option>
-              {{/each}}
-              {{/select}}
+              {{selectOptions availableStorage valueAttr="id" labelAttr="name" selected=system.storage localize=true }}
             </select>
           </div>
         </div>

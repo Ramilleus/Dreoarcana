@@ -84,12 +84,8 @@
           {{/unless}}
           <span class="resource">
             <select name="system.cultId" data-dtype="String">
-              {{#select system.cultId}}
               <option value=""></option>
-              {{#each system.cults as |cult id|}}
-              <option value="{{cult.id}}">{{cult.name}}</option>
-              {{/each}}
-              {{/select}}
+              {{selectOptions system.cults selected=system.cultId valueAttr="id" labelAttr="name" }}
             </select>
             {{#unless (eq system.devotionalPool.max 0) }}
             {{localize 'MYTHRAS.Devotional_Pool'}}={{system.devotionalPool.max}}
