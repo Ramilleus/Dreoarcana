@@ -51,7 +51,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
-      magicSkillNames: this.actor.itemTypes.spell.map(spell => ({ value: spell.magicSkillName, label: spell.magicSkillName })).filter((v, i, a) => a.indexOf(v) === i),
+      magicSkillNames: this.actor.itemTypes.spell.map(spell => ({ value: spell.magicSkillName, label: spell.magicSkillName })).filter((v, i, a) => a.findIndex(o => o.value === v.value) === i),
       editable: this.isEditable,
       system: actorSystem,
       actor: this.actor,
@@ -206,7 +206,19 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           mod: this.actor.characteristicsMod.cha,
           label: "MYTHRAS.CHARISMA"
         }
-      }
+      },    
+      fatigueLevelLabels: [
+        { value: 'fresh', label: 'MYTHRAS.Fresh' },
+        { value: 'winded', label: 'MYTHRAS.Winded' },
+        { value: 'tired', label: 'MYTHRAS.Tired' },
+        { value: 'wearied', label: 'MYTHRAS.Wearied' },
+        { value: 'exhausted', label: 'MYTHRAS.Exhausted' },
+        { value: 'debilitated', label: 'MYTHRAS.Debilitated' },
+        { value: 'incapacitated', label: 'MYTHRAS.Incapacitated' },
+        { value: 'semi-conscious', label: 'MYTHRAS.Semi-Conscious' },
+        { value: 'comatose', label: 'MYTHRAS.Comatose' },
+        { value: 'dead', label: 'MYTHRAS.Dead' }
+      ]
     }
 
     // Journal HTML enrichment

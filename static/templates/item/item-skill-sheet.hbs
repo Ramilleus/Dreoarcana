@@ -22,31 +22,13 @@
           <h3>{{localize 'MYTHRAS.Base_Characteristics'}}</h3>
           <span class="resource">
             <select id="char-change" name="system.primaryChar" data-dtype="String">
-              {{#select system.primaryChar}}
-              <option value=""></option>
-              <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
-              <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
-              <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
-              <option value="dex">{{localize 'MYTHRAS.Dexterity'}}</option>
-              <option value="int">{{localize 'MYTHRAS.Intelligence'}}</option>
-              <option value="pow">{{localize 'MYTHRAS.Power'}}</option>
-              <option value="cha">{{localize 'MYTHRAS.Charisma'}}</option>
-              {{/select}}
+              {{selectOptions characteristicsLabels selected=system.primaryChar valueAttr="value" labelAttr="label" }}
             </select>
           </span>
           <span>+</span>
           <span class="resource">
             <select id="char-change" name="system.secondaryChar" data-dtype="String">
-              {{#select system.secondaryChar}}
-              <option value=""></option>
-              <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
-              <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
-              <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
-              <option value="dex">{{localize 'MYTHRAS.Dexterity'}}</option>
-              <option value="int">{{localize 'MYTHRAS.Intelligence'}}</option>
-              <option value="pow">{{localize 'MYTHRAS.Power'}}</option>
-              <option value="cha">{{localize 'MYTHRAS.Charisma'}}</option>
-              {{/select}}
+              {{selectOptions characteristicsLabels selected=system.secondaryChar valueAttr="value" labelAttr="label" localize=true}}
             </select>
           </span>
         </div>

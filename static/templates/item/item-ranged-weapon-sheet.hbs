@@ -71,27 +71,13 @@
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Force'}}</h3>
             <select id="char-change" name="system.force" data-dtype="String">
-              {{#select system.force}}
-              <option value="S">{{localize 'MYTHRAS.Small'}}</option>
-              <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
-              <option value="L">{{localize 'MYTHRAS.Large'}}</option>
-              <option value="H">{{localize 'MYTHRAS.Huge'}}</option>
-              <option value="E">{{localize 'MYTHRAS.Enormous'}}</option>
-              <option value="BE">{{localize 'MYTHRAS.Beyond_Enormous'}}</option>
-              {{/select}}
+              {{selectOptions weaponSizeLabels selected=system.force valueAttr="value" labelAttr="label" localize=true}}
             </select>
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Impale_Size'}}</h3>
             <select id="char-change" name="system.impale-size" data-dtype="String">
-              {{#select system.impale-size}}
-              <option value="S">{{localize 'MYTHRAS.Small'}}</option>
-              <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
-              <option value="L">{{localize 'MYTHRAS.Large'}}</option>
-              <option value="H">{{localize 'MYTHRAS.Huge'}}</option>
-              <option value="E">{{localize 'MYTHRAS.Enormous'}}</option>
-              <option value="BE">{{localize 'MYTHRAS.Beyond_Enormous'}}</option>
-              {{/select}}
+              {{selectOptions weaponSizeLabels selected=system.impale-size valueAttr="value" labelAttr="label" localize=true}}
             </select>
           </div>
         </div>

@@ -8,7 +8,7 @@ export class CyberModuleSheetMythras extends PhysicalItemSheetMythras<CyberModul
     return {
       ...sheetData,
       availableHitLocations: this.item.availableHitLocations,
-      cyberModuleAvailibilities: this.item.cyberModuleAvailibilities
+      cyberModuleAvailibilityLabels: this.item.cyberModuleAvailibilityLabels
     }
   }
 

@@ -9,6 +9,7 @@ interface CultBrotherhoodData {
   rankName4: string
   currentRank: string
   currentRankName: string
+  rankLabels: string[]
 }
 
 interface CultBrotherhoodMythras {
@@ -40,6 +41,14 @@ class CultBrotherhoodMythras<TParent extends ActorMythras | null = ActorMythras 
         data.currentRankName = data.rankName0
         break
     }
+
+    data.rankLabels = [
+      data.rankName0,
+      data.rankName1,
+      data.rankName2,
+      data.rankName3,
+      data.rankName4
+    ]
   }
 }
 

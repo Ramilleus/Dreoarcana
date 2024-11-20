@@ -22,29 +22,13 @@
           <h3>{{localize 'MYTHRAS.Base_Characteristics'}}</h3>
           <span class="resource">
             <select id="char-change" name="system.primaryChar" data-dtype="String">
-              {{#select system.primaryChar}}
-              <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
-              <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
-              <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
-              <option value="dex">{{localize 'MYTHRAS.Dexterity'}}</option>
-              <option value="int">{{localize 'MYTHRAS.Intelligence'}}</option>
-              <option value="pow">{{localize 'MYTHRAS.Power'}}</option>
-              <option value="cha">{{localize 'MYTHRAS.Charisma'}}</option>
-              {{/select}}
+              {{selectOptions characteristicsLabels selected=system.primaryChar valueAttr="value" labelAttr="label" localize=true}}
             </select>
           </span>
           <span>+</span>
           <span class="resource">
             <select id="char-change" name="system.secondaryChar" data-dtype="String">
-              {{#select system.secondaryChar}}
-              <option value="str">{{localize 'MYTHRAS.Strength'}}</option>
-              <option value="con">{{localize 'MYTHRAS.Constitution'}}</option>
-              <option value="siz">{{localize 'MYTHRAS.Size'}}</option>
-              <option value="dex">{{localize 'MYTHRAS.Dexterity'}}</option>
-              <option value="int">{{localize 'MYTHRAS.Intelligence'}}</option>
-              <option value="pow">{{localize 'MYTHRAS.Power'}}</option>
-              <option value="cha">{{localize 'MYTHRAS.Charisma'}}</option>
-              {{/select}}
+              {{selectOptions characteristicsLabels selected=system.secondaryChar valueAttr="value" labelAttr="label" localize=true}}
             </select>
           </span>
         </div>
@@ -53,18 +37,8 @@
           <h3>{{localize 'MYTHRAS.Magic_Skill_Type'}}</h3>
           <span class="resource">
             <select name="system.skillType" data-dtype="String">
-              {{#select system.skillType}}
               <option value=""></option>
-              <option value="FM">{{localize 'MYTHRAS.Folk_Magic'}}</option>
-              <option value="TR">{{localize 'MYTHRAS.Trance'}}</option>
-              <option value="BI">{{localize 'MYTHRAS.Binding'}}</option>
-              <option value="ME">{{localize 'MYTHRAS.Meditation'}}</option>
-              <option value="MY">{{localize 'MYTHRAS.Mysticism'}}</option>
-              <option value="IN">{{localize 'MYTHRAS.Invocation'}}</option>
-              <option value="SH">{{localize 'MYTHRAS.Shaping'}}</option>
-              <option value="DE">{{localize 'MYTHRAS.Devotion'}}</option>
-              <option value="EX">{{localize 'MYTHRAS.Exhort'}}</option>
-              {{/select}}
+              {{selectOptions magicSkillTypeLabels selected=system.skillType valueAttr="value" labelAttr="label" localize=true}}
             </select>
             {{#unless (eq system.combinedTalentIntensity.max 0) }}
             {{localize 'MYTHRAS.Combined_Talent_Intensity'}}={{system.combinedTalentIntensity.max}}
