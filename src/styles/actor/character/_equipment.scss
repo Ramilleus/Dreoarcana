@@ -49,5 +49,13 @@ div.equipment {
         }
       }
     }
+  }  
+  .equipment-table {    
+    .item {
+      display: none;
+    }
+    .active {
+      display: table-row;
+    }
   }
 }

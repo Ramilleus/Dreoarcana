@@ -11,6 +11,7 @@ import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 import { ActorAttributes } from "@actor/attribute";
 import { ActorCharacteristic, ActorCharacteristics } from "@actor/characteristic";
+import { EquipmentTypes } from '@item/equipment'
 
 export abstract class ActorSheetBase<TActor extends ActorMythras>
   extends ActorSheet<TActor, ItemMythras> {
@@ -218,7 +219,8 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
         { value: 'semi-conscious', label: 'MYTHRAS.Semi-Conscious' },
         { value: 'comatose', label: 'MYTHRAS.Comatose' },
         { value: 'dead', label: 'MYTHRAS.Dead' }
-      ]
+      ],
+      equipmentTypes: EquipmentTypes
     }
 
     // Journal HTML enrichment
@@ -268,6 +270,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
     this.filterSpells()
+    this.filterEquipment()
     //this.applySkillFumbledNotifier()
   }
 
@@ -507,7 +510,26 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           break
       }
     }
+  }
+
+  private async filterEquipment() {
+    const actorData = this.actor.system
+    let filterBy = actorData.equipmentFilterOption
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item')]
+    for (let item of items) {
+      switch (filterBy) {
+        case 'All':
+          item.classList.add('active')
+          break
+
+        case `${filterBy}`:
+          item.dataset.itemType !== `${filterBy}`
+            ? item.classList.remove('active')
+            : item.classList.add('active')
+          break
+      }
     }
+  }
 
     // applySkillFumbledNotifier() {
     //     event.preventDefault();

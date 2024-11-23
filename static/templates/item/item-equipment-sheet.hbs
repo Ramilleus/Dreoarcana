@@ -56,6 +56,17 @@
           </div>
         </div>
       </div>
+      <div class="equipment-core">
+        <div class="equip-core-section">
+          <div>
+            <h3 class="core-info">{{localize 'MYTHRAS.Type'}}</h3>
+            <select name="system.equipmentType" data-dtype="String">
+                <option></option>
+                {{selectOptions equipmentTypes valueAttr="type" labelAttr="type" selected=system.equipmentType localize=true }}
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
     <h2>{{localize 'MYTHRAS.Description'}}</h2>
     <div class="desc" data-group="primary">

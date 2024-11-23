@@ -9,6 +9,7 @@ import { StorageMythras } from '@module/item/storage'
 import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 import { duplicate } from 'types/foundry/common/utils/helpers'
+import { EquipmentTypes } from '@item/equipment'
 
 abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
   TActor,
@@ -203,7 +204,8 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
         { value: 'semi-conscious', label: 'MYTHRAS.Semi-Conscious' },
         { value: 'comatose', label: 'MYTHRAS.Comatose' },
         { value: 'dead', label: 'MYTHRAS.Dead' }
-      ]
+      ],
+      equipmentTypeLabels: EquipmentTypes
     }
     
     this.sortItems(data)
@@ -241,6 +243,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
     this.filterSpells()
+    this.filterEquipment()
     //this.applySkillFumbledNotifier()
   }
 
@@ -475,7 +478,26 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
           break
       }
     }
+  }
+
+  private async filterEquipment() {
+    const actorData = this.actor.system
+    let filterBy = actorData.equipmentFilterOption
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item')]
+    for (let item of items) {
+      switch (filterBy) {
+        case 'All':
+          item.classList.add('active')
+          break
+
+        case `${filterBy}`:
+          item.dataset.itemType !== `${filterBy}`
+            ? item.classList.remove('active')
+            : item.classList.add('active')
+          break
+      }
     }
+  }
 
     // applySkillFumbledNotifier() {
     //     event.preventDefault();

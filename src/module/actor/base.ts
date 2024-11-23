@@ -16,6 +16,7 @@ interface ActorData {
   height: number
   spellFilterOption: string
   items: ItemTypeMap
+  equipmentFilterOption: string
 }
 
 interface ActorMythras {
