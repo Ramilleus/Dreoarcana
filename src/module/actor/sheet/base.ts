@@ -413,6 +413,11 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
       })
     })
 
+    html.find('#equipmentSearch').on('input', async (event: any) => {
+      let target = event.target as HTMLInputElement;
+      this.searchEquipment($(target).val());
+    });
+
     // Drag events for macros.
     if (actor.isOwner) {
       let sheet: any = this
@@ -496,6 +501,17 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
             : item.classList.add('active')
           break
       }
+    }
+  }
+
+  private async searchEquipment(searchBy: string) {
+    this.filterEquipment();
+    
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item.active')]
+    for (let item of items) {      
+      item.dataset.itemName.includes(searchBy)
+        ? item.classList.add('active')
+        : item.classList.remove('active');
     }
   }
 

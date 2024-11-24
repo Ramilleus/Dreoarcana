@@ -49,7 +49,32 @@ div.equipment {
         }
       }
     }
-  }  
+  }
+  .equipmentSearchContainer {
+    width: 20%;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 4px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    i {
+      margin-right: 4px;
+    }
+    #equipmentSearch {
+      border: none;
+      outline: none;
+      background: rgba(0, 0, 0, 0);
+    }
+    #equipmentSearch:focus {
+      box-shadow: none;
+    }
+  }
+  #equipmentFilter {
+    border: none;
+  }
+  #equipmentFilter:focus {
+    box-shadow: none;
+  }
   .equipment-table {    
     .item {
       display: none;

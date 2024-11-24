@@ -105,4 +105,10 @@ div.abilities {
       }
     }
   }
+  #spellFilter {
+    border: none;
+  }
+  #spellFilter:focus {
+    box-shadow: none;
+  }
 }
