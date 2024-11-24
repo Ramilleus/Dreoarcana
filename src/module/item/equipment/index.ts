@@ -17,7 +17,7 @@ class EquipmentMythras<TParent extends ActorMythras | null = ActorMythras  | nul
 
 const EquipmentTypes = [
   { type: "MYTHRAS.Clothing" },
-  { type: "MYTHRAS.Food" },
+  { type: "MYTHRAS.Consumables" },
   { type: "MYTHRAS.Materials" },
   { type: "MYTHRAS.Texts" },
   { type: "MYTHRAS.Tools" },
