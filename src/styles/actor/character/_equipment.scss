@@ -57,6 +57,7 @@ div.equipment {
     padding: 0 4px;
     background: rgba(0, 0, 0, 0.05);
     border-radius: 3px;
+    font-size: var(--font-size-14);
     i {
       margin-right: 4px;
     }
@@ -71,6 +72,7 @@ div.equipment {
   }
   #equipmentFilter {
     border: none;
+    font-size: var(--font-size-14);
   }
   #equipmentFilter:focus {
     box-shadow: none;
