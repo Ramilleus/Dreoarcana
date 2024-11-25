@@ -103,14 +103,14 @@ export class EncounterGeneratorActorBuilder {
           actorItems.push({
             name: name,
             type: type,
-            data: weaponData
+            system: weaponData
           })
         })
         skillData.weapons = weaponNames.join(', ')
         actorItems.push({
           name: skillName,
           type: skillType,
-          data: skillData
+          system: skillData
         })
       })
     })
@@ -181,7 +181,7 @@ export class EncounterGeneratorActorBuilder {
         actorItems.push({
           name: skillName,
           type: skillType,
-          data: skillData
+          system: skillData
         })
       })
     })
@@ -220,7 +220,7 @@ export class EncounterGeneratorActorBuilder {
         actorItems.push({
           name: name,
           type: type,
-          data: data
+          system: data
         })
       })
     })

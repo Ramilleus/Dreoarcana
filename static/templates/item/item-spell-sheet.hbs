@@ -35,12 +35,8 @@
                 <strong>{{localize 'MYTHRAS.Magic_Skill'}}</strong>
               </label>
               <select name="system.sourceID" data-dtype="String">
-                {{#select system.sourceID}}
                 <option value="Uncategorized">Uncategorized</option>
-                {{#each availableMagicSkills as |skill|}}
-                <option value="{{skill.id}}">{{skill.name}}</option>
-                {{/each}}
-                {{/select}}
+                {{selectOptions availableMagicSkills selected=system.sourceID valueAttr="id" labelAttr="name" localize=true}}
               </select>
             </div>
           </div>

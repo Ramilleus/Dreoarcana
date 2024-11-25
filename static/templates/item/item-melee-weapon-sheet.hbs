@@ -21,12 +21,8 @@
           <div>
             <h3 class="core-info">{{localize 'MYTHRAS.Storage'}}</h3>
             <select name="system.storage" data-dtype="String">
-              {{#select system.storage}}
               <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
-              {{#each availableStorage as |storage|}}
-              <option value="{{storage.id}}">{{storage.name}}</option>
-              {{/each}}
-              {{/select}}
+              {{selectOptions availableStorage valueAttr="id" labelAttr="name" selected=system.storage localize=true }}
             </select>
           </div>
         </div>
@@ -75,26 +71,13 @@
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Size'}}</h3>
             <select id="char-change" name="system.size" data-dtype="String">
-              {{#select system.size}}
-              <option value="S">{{localize 'MYTHRAS.Small'}}</option>
-              <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
-              <option value="L">{{localize 'MYTHRAS.Large'}}</option>
-              <option value="H">{{localize 'MYTHRAS.Huge'}}</option>
-              <option value="E">{{localize 'MYTHRAS.Enormous'}}</option>
-              <option value="BE">{{localize 'MYTHRAS.Beyond_Enormous'}}</option>
-              {{/select}}
+              {{selectOptions weaponSizeLabels selected=system.size valueAttr="value" labelAttr="label" localize=true}}
             </select>
           </div>
           <div class="weapon-piece">
             <h3 class="core-info">{{localize 'MYTHRAS.Reach'}}</h3>
             <select id="char-change" name="system.reach" data-dtype="reach">
-              {{#select system.reach}}
-              <option value="T">{{localize 'MYTHRAS.Touch'}}</option>
-              <option value="S">{{localize 'MYTHRAS.Short'}}</option>
-              <option value="M">{{localize 'MYTHRAS.Medium'}}</option>
-              <option value="L">{{localize 'MYTHRAS.Long'}}</option>
-              <option value="VL">{{localize 'MYTHRAS.Very_Long'}}</option>
-              {{/select}}
+              {{selectOptions weaponReachLabels selected=system.reach valueAttr="value" labelAttr="label" localize=true}}
             </select>
           </div>
         </div>

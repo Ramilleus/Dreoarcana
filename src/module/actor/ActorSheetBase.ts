@@ -11,6 +11,7 @@ import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 import { ActorAttributes } from "@actor/attribute";
 import { ActorCharacteristic, ActorCharacteristics } from "@actor/characteristic";
+import { EquipmentTypes } from '@item/equipment'
 
 export abstract class ActorSheetBase<TActor extends ActorMythras>
   extends ActorSheet<TActor, ItemMythras> {
@@ -51,7 +52,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
-      magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
+      magicSkillNames: this.actor.itemTypes.spell.map(spell => ({ value: spell.magicSkillName, label: spell.magicSkillName })).filter((v, i, a) => a.findIndex(o => o.value === v.value) === i),
       editable: this.isEditable,
       system: actorSystem,
       actor: this.actor,
@@ -206,7 +207,20 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           mod: this.actor.characteristicsMod.cha,
           label: "MYTHRAS.CHARISMA"
         }
-      }
+      },    
+      fatigueLevelLabels: [
+        { value: 'fresh', label: 'MYTHRAS.Fresh' },
+        { value: 'winded', label: 'MYTHRAS.Winded' },
+        { value: 'tired', label: 'MYTHRAS.Tired' },
+        { value: 'wearied', label: 'MYTHRAS.Wearied' },
+        { value: 'exhausted', label: 'MYTHRAS.Exhausted' },
+        { value: 'debilitated', label: 'MYTHRAS.Debilitated' },
+        { value: 'incapacitated', label: 'MYTHRAS.Incapacitated' },
+        { value: 'semi-conscious', label: 'MYTHRAS.Semi-Conscious' },
+        { value: 'comatose', label: 'MYTHRAS.Comatose' },
+        { value: 'dead', label: 'MYTHRAS.Dead' }
+      ],
+      equipmentTypes: EquipmentTypes
     }
 
     // Journal HTML enrichment
@@ -256,6 +270,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
     this.filterSpells()
+    this.filterEquipment()
     //this.applySkillFumbledNotifier()
   }
 
@@ -429,6 +444,11 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       })
     })
 
+    html.find('#equipmentSearch').on('input', async (event: any) => {
+      let target = event.target as HTMLInputElement;
+      this.searchEquipment($(target).val());
+    });
+
     // Drag events for macros.
     if (actor.isOwner) {
       let sheet: any = this
@@ -495,7 +515,37 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           break
       }
     }
+  }
+
+  private async filterEquipment() {
+    const actorData = this.actor.system
+    let filterBy = actorData.equipmentFilterOption
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item')]
+    for (let item of items) {
+      switch (filterBy) {
+        case 'All':
+          item.classList.add('active')
+          break
+
+        case `${filterBy}`:
+          item.dataset.itemType !== `${filterBy}`
+            ? item.classList.remove('active')
+            : item.classList.add('active')
+          break
+      }
     }
+  }
+
+  private async searchEquipment(searchBy: string) {
+    this.filterEquipment();
+
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item.active')]
+    for (let item of items) {      
+      item.dataset.itemName.includes(searchBy)
+        ? item.classList.add('active')
+        : item.classList.remove('active');
+    }
+  }
 
     // applySkillFumbledNotifier() {
     //     event.preventDefault();

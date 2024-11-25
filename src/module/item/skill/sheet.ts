@@ -7,7 +7,27 @@ export class SkillSheetMythras extends ItemSheetBase<SkillMythras> {
     return {
       ...sheetData,
       encPenalty: this.item.encPenalty,
-      totalVal: this.item.totalVal
+      totalVal: this.item.totalVal,
+      characteristicsLabels: [
+        { value: "str", label: "MYTHRAS.Strength" },
+        { value: "con", label: "MYTHRAS.Constitution" },
+        { value: "siz", label: "MYTHRAS.Size" },
+        { value: "dex", label: "MYTHRAS.Dexterity" },
+        { value: "int", label: "MYTHRAS.Intelligence" },
+        { value: "pow", label: "MYTHRAS.Power" },
+        { value: "cha", label: "MYTHRAS.Charisma" }
+      ],
+      magicSkillTypeLabels: [
+        { value: "FM", label: "MYTHRAS.Folk_Magic"},
+        { value: "TR", label: "MYTHRAS.Trance"},
+        { value: "BI", label: "MYTHRAS.Binding"},
+        { value: "ME", label: "MYTHRAS.Meditation"},
+        { value: "MY", label: "MYTHRAS.Mysticism"},
+        { value: "IN", label: "MYTHRAS.Invocation"},
+        { value: "SH", label: "MYTHRAS.Shaping"},
+        { value: "DE", label: "MYTHRAS.Devotion"},
+        { value: "EX", label: "MYTHRAS.Exhort"}
+      ]
     }
   }
 

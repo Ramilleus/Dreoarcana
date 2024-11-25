@@ -166,7 +166,8 @@
         "currentMagicPoints": 11,
         "currentActionPoints": 2,
         "experienceRolls": 0,
-        "spellFilterOption": "All"
+        "spellFilterOption": "All",        
+        "equipmentFilterOption": "All"
       },
       "humanoid": {}
     },

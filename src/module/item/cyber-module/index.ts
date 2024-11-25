@@ -19,8 +19,8 @@ interface CyberModuleMythras {
 class CyberModuleMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends PhysicalItemMythras<TParent> {
   isCyberModule: boolean = true
 
-  get cyberModuleAvailibilities(): Array<string> {
-    return ["MYTHRAS.Common", "MYTHRAS.Rare", "MYTHRAS.Classified"]
+  get cyberModuleAvailibilityLabels(): Array<{value: string; label: string}> {
+    return [{ value: "common", label: "MYTHRAS.Common" }, { value: "rare", label: "MYTHRAS.Rare" }, { value: "classified", label: "MYTHRAS.Classified" }];
   }
 
   getInstallLocationName(installLocationId: string): string {
