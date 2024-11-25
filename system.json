@@ -4,8 +4,8 @@
   "description": "The Mythras system for FoundryVTT!",
   "version": "2.x.x",
   "compatibility": {
-    "minimum": 10,
-    "verified": "11"
+    "minimum": 11,
+    "verified": "12"
   },
   "templateVersion": 6,
   "authors": [
