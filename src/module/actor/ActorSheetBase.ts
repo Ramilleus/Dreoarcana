@@ -1,3 +1,4 @@
+/* global $ */
 import { ActorData, ActorMythras } from '@actor/base'
 import { ItemMythras } from '@item/base'
 import { HitLocationMythras } from '@item/hit-location'
@@ -10,6 +11,7 @@ import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 import { ActorAttributes } from "@actor/attribute";
 import { ActorCharacteristic, ActorCharacteristics } from "@actor/characteristic";
+import { EquipmentTypes } from '@item/equipment'
 
 export abstract class ActorSheetBase<TActor extends ActorMythras>
   extends ActorSheet<TActor, ItemMythras> {
@@ -28,7 +30,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
   }
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       dragDrop: [{dragSelector: ['.item'], dropSelector: null}]
     })
   }
@@ -50,7 +52,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
-      magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
+      magicSkillNames: this.actor.itemTypes.spell.map(spell => ({ value: spell.magicSkillName, label: spell.magicSkillName })).filter((v, i, a) => a.findIndex(o => o.value === v.value) === i),
       editable: this.isEditable,
       system: actorSystem,
       actor: this.actor,
@@ -205,21 +207,32 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           mod: this.actor.characteristicsMod.cha,
           label: "MYTHRAS.CHARISMA"
         }
-      }
+      },    
+      fatigueLevelLabels: [
+        { value: 'fresh', label: 'MYTHRAS.Fresh' },
+        { value: 'winded', label: 'MYTHRAS.Winded' },
+        { value: 'tired', label: 'MYTHRAS.Tired' },
+        { value: 'wearied', label: 'MYTHRAS.Wearied' },
+        { value: 'exhausted', label: 'MYTHRAS.Exhausted' },
+        { value: 'debilitated', label: 'MYTHRAS.Debilitated' },
+        { value: 'incapacitated', label: 'MYTHRAS.Incapacitated' },
+        { value: 'semi-conscious', label: 'MYTHRAS.Semi-Conscious' },
+        { value: 'comatose', label: 'MYTHRAS.Comatose' },
+        { value: 'dead', label: 'MYTHRAS.Dead' }
+      ],
+      equipmentTypes: EquipmentTypes
     }
 
     // Journal HTML enrichment
     data.journalHTML = await TextEditor.enrichHTML(data.system.journal, {
       secrets: this.actor.isOwner,
-      rollData: data.rollData,
-      async: true
+      rollData: data.rollData
     });
 
     // Abilities HTML enrichment
     data.abilitiesDesc = await TextEditor.enrichHTML(data.system.abilitiesDesc, {
       secrets: this.actor.isOwner,
-      rollData: data.rollData,
-      async: true
+      rollData: data.rollData
     });
     
     this.sortItems(data)
@@ -257,6 +270,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
     this.filterSpells()
+    this.filterEquipment()
     //this.applySkillFumbledNotifier()
   }
 
@@ -272,6 +286,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
   }
 
   private applyWoundedHitLocationStyles() {
+    //@ts-ignore
     const hitLocations: HitLocationMythras[] = this.actor.items.filter(
       (item) => item.type == 'hitLocation'
     )
@@ -292,7 +307,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
   }
 
   private hideMinimizedStats() {
-    this.element.find('[data-stat-name]').each((_, stat: HTMLInputElement) => {
+    this.element.find('[data-stat-name]').each((_: any, stat: HTMLInputElement) => {
       const statName = $(stat).attr('data-stat-name')
       const bubble = $(stat).find('.number-input-container')
       const label = $(stat).find('.stat-minimizer')
@@ -318,7 +333,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     // Listens for item-input updates. Element with [data-item] that contain inputs
     // are listened to. If an input changes, update the embedded document associated with
     // that data-item using the data-item-id attribute on that same element
-    html.find('[data-item] input, [data-item] select').on('change', async (event) => {
+    html.find('[data-item] input, [data-item] select').on('change', async (event: any) => {
       let target = event.target as HTMLInputElement
       let itemId = $(target.closest('[data-item]')).attr('data-item-id')
       let propertyName = $(target).attr('data-item-property')
@@ -381,24 +396,24 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     // })
 
     // Skill roll button listener
-    html.find('.rollableSkill').on('click', (event) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)))
+    html.find('.rollableSkill').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)))
 
     // Melee Weapon roll button listener
-    html.find('.rollableMeleeDamage').on('click', (event) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)))
+    html.find('.rollableMeleeDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)))
 
     // Ranged Weapon roll button listener
-    html.find('.rollableRangedDamage').on('click', (event) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)))
+    html.find('.rollableRangedDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)))
 
     // Hit Location roll button listener
-    html.find('.roll-hitlocations-button').on('click', (event) => {
+    html.find('.roll-hitlocations-button').on('click', (event: any) => {
       event.preventDefault()
       this.roller.rollHitLocation()
     })
 
     // Skill roll button listener
-    html.find('.recoverCharacteristicPools').on('click', (event) => this.handleRecoverCharacteristicPools(event))
+    html.find('.recoverCharacteristicPools').on('click', (event: any) => this.handleRecoverCharacteristicPools(event))
 
-    html.find('.stat-settings').on('click', (event) => {
+    html.find('.stat-settings').on('click', (event: any) => {
       event.preventDefault()
       let statList = 'Coming soon :)'
       new Dialog({
@@ -407,7 +422,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
         buttons: {}
       }).render(true)
     })
-    html.find('.stat-increase').on('click', (event) => {
+    html.find('.stat-increase').on('click', (event: any) => {
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
@@ -418,7 +433,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       })
     })
 
-    html.find('.stat-decrease').on('click', (event) => {
+    html.find('.stat-decrease').on('click', (event: any) => {
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
@@ -428,6 +443,11 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
         ['system.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) - 1
       })
     })
+
+    html.find('#equipmentSearch').on('input', async (event: any) => {
+      let target = event.target as HTMLInputElement;
+      this.searchEquipment($(target).val());
+    });
 
     // Drag events for macros.
     if (actor.isOwner) {
@@ -452,7 +472,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     // Get the type of item to create.
     const type = header.dataset.type
     // Grab any data associated with this control.
-    const data = duplicate(header.dataset)
+    const data = foundry.utils.duplicate(header.dataset)
     // Initialize a default name.
     var name = `New ${type.capitalize().replace(/([a-z])([A-Z])/g, '$1 $2')}`
     if (game.i18n) {
@@ -470,10 +490,11 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     return this.actor.createEmbeddedDocuments('Item', [itemData])
   }
 
-  private handleItemRoll<TItem extends ItemMythras>(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: TItem) => any) {
+  //@ts-ignore
+  private handleItemRoll(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: Item<ActorMythras>) => any) {
     event.preventDefault()
     const itemId = $(event.currentTarget.closest('[data-item-id]')).attr('data-item-id')
-    const item: TItem = this.actor.items.get(itemId)
+    const item = this.actor.items.get(itemId)
     rollFunction(item)
   }
 
@@ -494,7 +515,37 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           break
       }
     }
+  }
+
+  private async filterEquipment() {
+    const actorData = this.actor.system
+    let filterBy = actorData.equipmentFilterOption
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item')]
+    for (let item of items) {
+      switch (filterBy) {
+        case 'All':
+          item.classList.add('active')
+          break
+
+        case `${filterBy}`:
+          item.dataset.itemType !== `${filterBy}`
+            ? item.classList.remove('active')
+            : item.classList.add('active')
+          break
+      }
     }
+  }
+
+  private async searchEquipment(searchBy: string) {
+    this.filterEquipment();
+
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item.active')]
+    for (let item of items) {      
+      item.dataset.itemName.includes(searchBy)
+        ? item.classList.add('active')
+        : item.classList.remove('active');
+    }
+  }
 
     // applySkillFumbledNotifier() {
     //     event.preventDefault();
@@ -515,6 +566,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
    * Theme M-Space introduced a conflict pool mechanic which is based on the primary characteristics.
    * These pools are depleted by use and need to be refilled by resting.
    */
+  //@ts-ignore
   private handleRecoverCharacteristicPools(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) {
     let k: keyof ActorCharacteristics;
     for (k in this.actor.system.characteristics) {

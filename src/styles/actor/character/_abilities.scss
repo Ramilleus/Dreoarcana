@@ -105,4 +105,11 @@ div.abilities {
       }
     }
   }
+  #spellFilter {
+    border: none;
+    font-size: var(--font-size-14);
+  }
+  #spellFilter:focus {
+    box-shadow: none;
+  }
 }

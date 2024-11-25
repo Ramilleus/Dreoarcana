@@ -4,7 +4,7 @@ import { MythrasCombatTracker } from '@combat/combat-tracker'
 import { registerHandlebarsHelpers } from '@scripts/handlebars'
 import { registerTemplates } from '@scripts/register-templates'
 import { MYTHRASCONFIG } from '@scripts/config'
-import { ItemMythras } from '@item/base'
+import { ItemMythras, ItemProxyMythras } from '@item/base'
 import { SetGameMythras } from '@scripts/set-game-mythras'
 import { ActorSheetClassRegistry } from "@actor/ActorSheetClassRegistry";
 import { ItemSheetClassRegistry } from "@item/ItemSheetClassRegistry";
@@ -17,12 +17,13 @@ export const Init = {
       // Define custom Entity classes
       CONFIG.Actor.documentClass = ActorMythras
       ActorSheetClassRegistry.registerSheetClasses()
-      CONFIG.Item.documentClass = ItemMythras
+      CONFIG.Item.documentClass = ItemProxyMythras
       ItemSheetClassRegistry.registerSheetClasses()
       CONFIG.Combat.documentClass = CombatMythras
       CONFIG.ui.combat = MythrasCombatTracker as any
       //TODO: Figure out how to use the active effects class for further Mythras customization
       //CONFIG.ActiveEffect.documentClass = ActiveEffectMythras
+
 
       // Set an initiative formula for the system
       CONFIG.Combat.initiative = {

@@ -1,6 +1,7 @@
 import { ItemMythras } from '@item/base'
 import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
 import { itemIsPhysical } from '@item/type-guards'
+import { ActorMythras } from '@module/actor'
 
 interface StorageData extends PhysicalItemData {
   carried: boolean
@@ -11,7 +12,7 @@ interface StorageMythras {
   readonly system: StorageData
 }
 
-class StorageMythras extends PhysicalItemMythras {
+class StorageMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends  PhysicalItemMythras<TParent> {
   isStorage: boolean = true
 
   get contentEncumbrance() {
@@ -47,6 +48,7 @@ class StorageMythras extends PhysicalItemMythras {
 
   get storedItems(): PhysicalItemMythras[] {
     if (this.actorData) {
+      //@ts-ignore
       return this.actorData.items.filter((item: ItemMythras) => {
         return itemIsPhysical(item) && item.storageId == this.id
       })

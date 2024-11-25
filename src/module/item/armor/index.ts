@@ -1,5 +1,6 @@
 import { HitLocationMythras } from '@item/hit-location'
 import { PhysicalItemData, PhysicalItemMythras } from '@item/physical'
+import { ActorMythras } from '@module/actor'
 
 interface ArmorData extends PhysicalItemData {
   location: string[]
@@ -12,7 +13,7 @@ interface ArmorMythras {
   readonly system: ArmorData
 }
 
-class ArmorMythras extends PhysicalItemMythras {
+class ArmorMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends PhysicalItemMythras<TParent> {
   isArmor: boolean = true
 
   get selectedHitLocationId() {

@@ -47,13 +47,7 @@
                         <input type="text" name="system.rankName2" value="{{system.rankName2}}" />
                         <h4>{{localize 'MYTHRAS.Current_Rank'}}</h4>
                         <select name="system.currentRank" data-dtype="String">
-                            {{#select system.currentRank}}
-                            <option value="0">{{system.rankName0}}</option>
-                            <option value="1">{{system.rankName1}}</option>
-                            <option value="2">{{system.rankName2}}</option>
-                            <option value="3">{{system.rankName3}}</option>
-                            <option value="4">{{system.rankName4}}</option>
-                            {{/select}}
+                            {{selectOptions system.rankLabels selected=system.currentRank localize=true }}
                         </select>
                     </div>
                 </div>

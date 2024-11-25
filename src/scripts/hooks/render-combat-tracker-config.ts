@@ -34,7 +34,7 @@ export const RenderCombatTrackerConfig = {
 
             $form.find('input[name="reduceAp"]').prop("checked", currentReduceAp) 
 
-            $form.on("submit", (event) => {
+            $form.on("submit", (event: { target: any; }) => {
                 const newReduceAp = $(event.target).find('input[name="reduceAp"]').prop("checked")
                 game.settings.set("mythras", "combat.reduceAp", newReduceAp)
             })

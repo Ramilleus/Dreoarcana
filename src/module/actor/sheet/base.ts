@@ -8,13 +8,15 @@ import { SpellMythras } from '@module/item/spell'
 import { StorageMythras } from '@module/item/storage'
 import { Roller } from '@module/roller'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
+import { duplicate } from 'types/foundry/common/utils/helpers'
+import { EquipmentTypes } from '@item/equipment'
 
 abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet<
   TActor,
   ItemMythras
 > {
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       dragDrop: [{ dragSelector: ['.item'], dropSelector: null }]
     })
   }
@@ -44,7 +46,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
-      magicSkillNames: this.actor.itemTypes.spell.map(spell => spell.magicSkillName).filter((v, i, a) => a.indexOf(v) === i),
+      magicSkillNames: this.actor.itemTypes.spell.map(spell => ({ value: spell.magicSkillName, label: spell.magicSkillName })).filter((v, i, a) => a.findIndex(o => o.value === v.value) === i),
       editable: this.isEditable,
       system: actorData.system,
       actor: actorData,
@@ -190,7 +192,20 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
           value: this.actor.characteristics.cha,
           label: 'MYTHRAS.CHARISMA'
         }
-      }
+      },    
+      fatigueLevelLabels: [
+        { value: 'fresh', label: 'MYTHRAS.Fresh' },
+        { value: 'winded', label: 'MYTHRAS.Winded' },
+        { value: 'tired', label: 'MYTHRAS.Tired' },
+        { value: 'wearied', label: 'MYTHRAS.Wearied' },
+        { value: 'exhausted', label: 'MYTHRAS.Exhausted' },
+        { value: 'debilitated', label: 'MYTHRAS.Debilitated' },
+        { value: 'incapacitated', label: 'MYTHRAS.Incapacitated' },
+        { value: 'semi-conscious', label: 'MYTHRAS.Semi-Conscious' },
+        { value: 'comatose', label: 'MYTHRAS.Comatose' },
+        { value: 'dead', label: 'MYTHRAS.Dead' }
+      ],
+      equipmentTypeLabels: EquipmentTypes
     }
     
     this.sortItems(data)
@@ -228,6 +243,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     this.applyWoundedHitLocationStyles()
     this.hideMinimizedStats()
     this.filterSpells()
+    this.filterEquipment()
     //this.applySkillFumbledNotifier()
   }
 
@@ -243,6 +259,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   }
 
   private applyWoundedHitLocationStyles() {
+    //@ts-ignore
     const hitLocations: HitLocationMythras[] = this.actor.items.filter(
       (item) => item.type == 'hitLocation'
     )
@@ -288,7 +305,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     // Listens for item-input updates. Element with [data-item] that contain inputs
     // are listened to. If an input changes, update the embedded document associated with
     // that data-item using the data-item-id attribute on that same element
-    html.find('[data-item] input, [data-item] select').on('change', async (event) => {
+    html.find('[data-item] input, [data-item] select').on('change', async (event: any) => {
       let target = event.target as HTMLInputElement
       let itemId = $(target.closest('[data-item]')).attr('data-item-id')
       let propertyName = $(target).attr('data-item-property')
@@ -351,21 +368,21 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     // })
 
     // Skill roll button listener
-    html.find('.rollableSkill').on('click', (event) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)))
+    html.find('.rollableSkill').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)))
 
     // Melee Weapon roll button listener
-    html.find('.rollableMeleeDamage').on('click', (event) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)))
+    html.find('.rollableMeleeDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)))
 
     // Ranged Weapon roll button listener
-    html.find('.rollableRangedDamage').on('click', (event) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)))
+    html.find('.rollableRangedDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)))
 
     // Hit Location roll button listener
-    html.find('.roll-hitlocations-button').on('click', (event) => {
+    html.find('.roll-hitlocations-button').on('click', (event: any) => {
       event.preventDefault()
       this.roller.rollHitLocation()
     })
 
-    html.find('.stat-settings').on('click', (event) => {
+    html.find('.stat-settings').on('click', (event: any) => {
       event.preventDefault()
       let statList = 'Coming soon :)'
       new Dialog({
@@ -374,7 +391,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
         buttons: {}
       }).render(true)
     })
-    html.find('.stat-increase').on('click', (event) => {
+    html.find('.stat-increase').on('click', (event: any) => {
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
@@ -385,7 +402,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
       })
     })
 
-    html.find('.stat-decrease').on('click', (event) => {
+    html.find('.stat-decrease').on('click', (event: any) => {
       event.preventDefault()
       let data: any = actor.system
       const statID = $(event.target.closest('[data-stat-name]')).attr('data-stat-name')
@@ -395,6 +412,11 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
         ['system.trackedStats.' + statID + '.value']: Number(trackedStats[statID].value) - 1
       })
     })
+
+    html.find('#equipmentSearch').on('input', async (event: any) => {
+      let target = event.target as HTMLInputElement;
+      this.searchEquipment($(target).val());
+    });
 
     // Drag events for macros.
     if (actor.isOwner) {
@@ -437,10 +459,10 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     return this.actor.createEmbeddedDocuments('Item', [itemData])
   }
 
-  private handleItemRoll<TItem extends ItemMythras>(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: TItem) => any) {
+  private handleItemRoll(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: Item) => any) {
     event.preventDefault()
     const itemId = $(event.currentTarget.closest('[data-item-id]')).attr('data-item-id')
-    const item: TItem = this.actor.items.get(itemId)
+    const item = this.actor.items.get(itemId)
     rollFunction(item)
   }
 
@@ -461,7 +483,37 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
           break
       }
     }
+  }
+
+  private async filterEquipment() {
+    const actorData = this.actor.system
+    let filterBy = actorData.equipmentFilterOption
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item')]
+    for (let item of items) {
+      switch (filterBy) {
+        case 'All':
+          item.classList.add('active')
+          break
+
+        case `${filterBy}`:
+          item.dataset.itemType !== `${filterBy}`
+            ? item.classList.remove('active')
+            : item.classList.add('active')
+          break
+      }
     }
+  }
+
+  private async searchEquipment(searchBy: string) {
+    this.filterEquipment();
+    
+    let items: any[] = [...document.querySelectorAll('.equipment-table .item.active')]
+    for (let item of items) {      
+      item.dataset.itemName.includes(searchBy)
+        ? item.classList.add('active')
+        : item.classList.remove('active');
+    }
+  }
 
     // applySkillFumbledNotifier() {
     //     event.preventDefault();

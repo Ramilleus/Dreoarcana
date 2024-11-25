@@ -16,14 +16,14 @@ export class Roller {
     await this.rollDamage('systems/mythras/templates/chat/damage/ranged-roll.hbs', weapon)
   }
 
-  private async rollDamage(rollTemplate: string, weapon: WeaponMythras) {
+  private async rollDamage(rollTemplate: string, weapon: WeaponMythras): Promise<ChatMessage> {
+    
     let roll = new Roll(weapon.damageRoll, this.actor.system as any)
-
     let labelHtml = await renderTemplate(rollTemplate, {
       weapon: weapon
     })
-
-    roll.toMessage({
+    console.log(weapon.system.damage)
+    return roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: labelHtml
     })
@@ -31,7 +31,7 @@ export class Roller {
 
   public async rollHitLocation() {
       let roll = new Roll('1d20', this.actor.system as any)
-      const normalRoll: number = Number((await roll.evaluate({ async: true })).result) || 0
+      const normalRoll: number = Number((await roll.evaluate()).result) || 0
       let label = game.i18n.localize('MYTHRAS.Rolling_Location')
 
       let lowerRoll = Math.ceil(Number(normalRoll) / 2);
@@ -81,7 +81,7 @@ export class Roller {
           lowerRoll: lowerRoll
       });
       return roll.toMessage({
-          user: game.user.id,
+          //user: game.user.id,
           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
           flavor: label,
           content: htmlContent
@@ -114,7 +114,8 @@ export class Roller {
 
     // Make the roll
     let roll = new Roll('1d100', this.actor.system as any)
-    const rolled = await roll.evaluate({ async: true })
+    // @ts-ignore
+    const rolled = await roll.evaluate()
 
     // Get results of the rolls at given grades, (e.g. Success, Failure, Critical, Fumble)
     let rollResults = this.getSkillRollResults(difficultyNames, difficultyGrades, rolled)
@@ -128,7 +129,6 @@ export class Roller {
 
     // Display the roll
     return roll.toMessage({
-      user: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: rollLabel,
       content: htmlContent
@@ -165,13 +165,13 @@ export class Roller {
         let currentHp = hitLocation.system.currentHp
         if (currentHp <= hitLocation.maxHp * -1) {
           modifiers.push({
-            name: 'M. Wound ' + hitLocation.data.name,
+            name: 'M. Wound ' + hitLocation.name,
             value: 'Herculean Difficulty'
           })
           continue
         } else if (currentHp <= 0) {
           modifiers.push({
-            name: 'S. Wound ' + hitLocation.data.name,
+            name: 'S. Wound ' + hitLocation.name,
             value: 'One Step Penalty'
           })
           continue

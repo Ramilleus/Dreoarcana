@@ -1,4 +1,5 @@
 import { ItemMythras } from '@item/base'
+import { ActorMythras } from '@module/actor'
 
 interface CultBrotherhoodData {
   rankName0: string
@@ -8,13 +9,14 @@ interface CultBrotherhoodData {
   rankName4: string
   currentRank: string
   currentRankName: string
+  rankLabels: string[]
 }
 
 interface CultBrotherhoodMythras {
   readonly system: CultBrotherhoodData
 }
 
-class CultBrotherhoodMythras extends ItemMythras {
+class CultBrotherhoodMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends ItemMythras<TParent> {
   isCultBrotherhood: boolean = true
   override prepareData(): void {
     super.prepareData()
@@ -39,6 +41,14 @@ class CultBrotherhoodMythras extends ItemMythras {
         data.currentRankName = data.rankName0
         break
     }
+
+    data.rankLabels = [
+      data.rankName0,
+      data.rankName1,
+      data.rankName2,
+      data.rankName3,
+      data.rankName4
+    ]
   }
 }
 

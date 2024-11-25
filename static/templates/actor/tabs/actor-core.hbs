@@ -54,38 +54,7 @@
         </h2>
         <div class="d-flex d-flex--space-between d-flex--center-items">
           <select class="basic-select" name="system.attributes.fatigue.value" data-dtype="String">
-            {{#select system.attributes.fatigue.value}}
-            <option value="fresh">
-              {{localize 'MYTHRAS.Fresh'}}
-            </option>
-            <option value="winded">
-              {{localize 'MYTHRAS.Winded'}}
-            </option>
-            <option value="tired">
-              {{localize 'MYTHRAS.Tired'}}
-            </option>
-            <option value="wearied">
-              {{localize 'MYTHRAS.Wearied'}}
-            </option>
-            <option value="exhausted">
-              {{localize 'MYTHRAS.Exhausted'}}
-            </option>
-            <option value="debilitated">
-              {{localize 'MYTHRAS.Debilitated'}}
-            </option>
-            <option value="incapacitated">
-              {{localize 'MYTHRAS.Incapacitated'}}
-            </option>
-            <option value="semi-conscious">
-              {{localize 'MYTHRAS.Semi-Conscious'}}
-            </option>
-            <option value="comatose">
-              {{localize 'MYTHRAS.Comatose'}}
-            </option>
-            <option value="dead">
-              {{localize 'MYTHRAS.Dead'}}
-            </option>
-            {{/select}}
+            {{selectOptions fatigueLevelLabels selected=system.attributes.fatigue.value valueAttr="value" labelAttr="label" localize=true}}
           </select>
           <p>
             {{fatigue.recoveryTime}}
@@ -127,6 +96,7 @@
           {{localize 'MYTHRAS.Movement'}}
         </h2>
         <div class="d-flex d-flex--space-between">
+          
           {{#each movement.stats}}
           <div data-stat="{{@key}}" class="derived-stat-with-label">
             {{> systems/mythras/templates/common-components/derived-stat.hbs stat=this statName=@key}}

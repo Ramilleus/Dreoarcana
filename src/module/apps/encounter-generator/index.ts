@@ -18,7 +18,7 @@ export class EncounterGenerator extends Application {
   }
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "encounter-generator",
       classes: ['mythras', 'sheet'],
       template: "systems/mythras/templates/apps/encounter-generator/encounter-generator.hbs",
@@ -65,14 +65,14 @@ export class EncounterGenerator extends Application {
       parties: this.partyImporter
     }
   }
-
+  //@ts-ignore
   override activateListeners($html: JQuery<HTMLElement>): void {
     super.activateListeners($html)
     this.enemyImporter.activateListeners()
     this.partyImporter.activateListeners()
     
     const  $importButtons = this.element.find('.import-button')
-    $importButtons.on('click', (event) => {
+    $importButtons.on('click', (event: { stopPropagation: () => void; target: any }) => {
       event.stopPropagation()
       let target = event.target
       let elem = $(target.closest('[data-template-id]'))
@@ -86,7 +86,7 @@ export class EncounterGenerator extends Application {
     })
 
     const $templateRows = this.element.find('[data-template-id]')
-    $templateRows.on('click', (event) => {
+    $templateRows.on('click', (event: { preventDefault: () => void; currentTarget: any }) => {
       event.preventDefault()
       let id = $(event.currentTarget).data().templateId
       let type = $(event.currentTarget).data().templateType
@@ -101,7 +101,7 @@ export class EncounterGenerator extends Application {
 
     const $createEnemyJson = this.element.find('#create-enemy-json')
     const $createEnemyJsonButton = this.element.find('#create-enemy-button')
-    $createEnemyJsonButton.on('click', (event) => {
+    $createEnemyJsonButton.on('click', (event: { preventDefault: () => void }) => {
       event.preventDefault()
       let json = $createEnemyJson.val() as string
       this.enemyImporter.importEnemyFromJson(JSON.parse(json))
@@ -109,7 +109,7 @@ export class EncounterGenerator extends Application {
 
     const $createPartyJson = this.element.find('#create-party-json')
     const $createPartyJsonButton = this.element.find('#create-party-button')
-    $createPartyJsonButton.on('click', (event) => {
+    $createPartyJsonButton.on('click', (event: { preventDefault: () => void }) => {
       event.preventDefault()
       let json = $createPartyJson.val() as string
       this.partyImporter.importPartyFromJson(JSON.parse(json))
@@ -130,7 +130,7 @@ export class EncounterGenerator extends Application {
     }
     
       // Handle button clicks
-    encounterGeneratorButton.on("click", (ev) => {
+    encounterGeneratorButton.on("click", (ev: { preventDefault: () => void }) => {
       ev.preventDefault();
       this._render(true)
     });

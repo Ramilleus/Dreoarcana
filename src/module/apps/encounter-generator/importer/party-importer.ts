@@ -36,9 +36,10 @@ export class EncounterGeneratorPartyImporter extends EncounterGeneratorImporter 
     return include
   }
 
+  //@ts-ignore
   private searchParties($searchInput: JQuery<HTMLElement>) {
     if (this.showAdvancedFilters) {
-      this.element.find('[data-filter-list]').each((_, element) => {
+      this.element.find('[data-filter-list]').each((_: any, element: { scrollTop: any }) => {
         const listName = $(element).data().filterList
         this.filterListLastScrollTops[listName] = element.scrollTop
       })
@@ -56,13 +57,13 @@ export class EncounterGeneratorPartyImporter extends EncounterGeneratorImporter 
     super.activateListeners()
     const $partyFilters = this.element.find(".template-list-filters");
     const $partySearchInput = $partyFilters.find('input[name=searchTerm]')
-    $partySearchInput.on('keypress', (event) => {
+    $partySearchInput.on('keypress', (event: { key: string }) => {
       if(event.key === 'Enter')
       {
         this.searchParties($partySearchInput)
       }
     });
-    $partyFilters.find('.search-button').on('click', (event) => {
+    $partyFilters.find('.search-button').on('click', (event: any) => {
       this.searchParties($partySearchInput)
     })
   }
@@ -76,8 +77,7 @@ export class EncounterGeneratorPartyImporter extends EncounterGeneratorImporter 
   public async importPartyFromJson(jsonObject: any) {
     let folder = await Folder.create({
       name: `${jsonObject['party_name']}`,
-      type: 'Actor',
-      parent: null
+      type: 'Actor'
     })
     jsonObject.enemies.forEach(async (enemy: any) => {
       await this.actorBuilder.createActor(enemy, folder.id)

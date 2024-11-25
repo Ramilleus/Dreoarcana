@@ -8,11 +8,11 @@ export class CyberModuleSheetMythras extends PhysicalItemSheetMythras<CyberModul
     return {
       ...sheetData,
       availableHitLocations: this.item.availableHitLocations,
-      cyberModuleAvailibilities: this.item.cyberModuleAvailibilities
+      cyberModuleAvailibilityLabels: this.item.cyberModuleAvailibilityLabels
     }
   }
 
   override get template(): string {
-    return `systems/mythras/templates/item/item-cyberModule-sheet.hbs`
+    return 'systems/mythras/templates/item/item-cyberModule-sheet.hbs'
   }
 }

@@ -5,7 +5,7 @@ export class CharacterSheetMythras extends CreatureSheetMythras<CharacterMythras
   /** @override */
   static get defaultOptions() {
     const options = super.defaultOptions;
-    mergeObject(options, {
+    foundry.utils.mergeObject(options, {
       classes: ['mythras', 'sheet', 'actor'],
       width: 800,
       height: 900,

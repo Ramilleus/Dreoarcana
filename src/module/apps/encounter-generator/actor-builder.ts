@@ -1,3 +1,5 @@
+import { ActorMythras } from "@module/actor"
+
 export class EncounterGeneratorActorBuilder {
   public async createActor(skollEnemy: any, folder: string) {
     /**************** Setup ******************/
@@ -101,14 +103,14 @@ export class EncounterGeneratorActorBuilder {
           actorItems.push({
             name: name,
             type: type,
-            data: weaponData
+            system: weaponData
           })
         })
         skillData.weapons = weaponNames.join(', ')
         actorItems.push({
           name: skillName,
           type: skillType,
-          data: skillData
+          system: skillData
         })
       })
     })
@@ -179,7 +181,7 @@ export class EncounterGeneratorActorBuilder {
         actorItems.push({
           name: skillName,
           type: skillType,
-          data: skillData
+          system: skillData
         })
       })
     })
@@ -218,7 +220,7 @@ export class EncounterGeneratorActorBuilder {
         actorItems.push({
           name: name,
           type: type,
-          data: data
+          system: data
         })
       })
     })
@@ -309,7 +311,7 @@ export class EncounterGeneratorActorBuilder {
 
     /*********** Create the Actor *************/
     promiseChain.then(() => {
-      Actor.create({
+      ActorMythras.create({
         name: skollEnemy.name,
         type: 'character',
         system: actorData,

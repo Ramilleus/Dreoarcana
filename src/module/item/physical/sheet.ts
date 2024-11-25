@@ -8,13 +8,28 @@ export class PhysicalItemSheetMythras<TItem extends PhysicalItemMythras> extends
 
     return {
       ...sheetData,
-      availableStorage: this.item.availableStorage
+      availableStorage: this.item.availableStorage,
+      weaponSizeLabels: [
+        { value: "S", label: "MYTHRAS.Small" },
+        { value: "M", label: "MYTHRAS.Medium" },
+        { value: "L", label: "MYTHRAS.Large" },
+        { value: "H", label: "MYTHRAS.Huge" },
+        { value: "E", label: "MYTHRAS.Enormous" },
+        { value: "BE", label: "MYTHRAS.Beyond_Enormous" }
+      ],
+      weaponReachLabels: [        
+        { value: "T", label: "MYTHRAS.Touch" },
+        { value: "S", label: "MYTHRAS.Short" },
+        { value: "M", label: "MYTHRAS.Medium" },
+        { value: "L", label: "MYTHRAS.Long" },
+        { value: "VL", label: "MYTHRAS.Very_Long" }
+      ]
     }
   }
 
   //["melee-weapon", "ranged-weapon", "equipment", "currency", "storage"]
 
-  override get template() {
+  override get template(): string {
     const path = 'systems/mythras/templates/item'
 
     const itemType = this.item.type
@@ -33,7 +48,7 @@ export class PhysicalItemSheetMythras<TItem extends PhysicalItemMythras> extends
     } else if (itemType === "storage") {
       // Loads the default skill sheet that applies to all other skills
       return `${path}/item-storage-sheet.hbs`
-    } else {
+    }else {
       throw new Error('ItemType uses PhysicalItemSheetMythras class but type is not known: ' + itemType)
     }
   }

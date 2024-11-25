@@ -3,6 +3,8 @@ import { ItemSheetBase } from "@item/ItemSheetBase";
 import { PhysicalItemSheetMythras } from "@item/physical/sheet";
 import { SpellSheetMythras } from "@item/spell/sheet";
 import { ArmorSheetMythras } from "@item/armor/sheet";
+import { ItemMythras } from "./base";
+import { EquipmentSheetMythras } from "./equipment/sheet";
 
 export class ItemSheetClassRegistry {
 
@@ -16,13 +18,14 @@ export class ItemSheetClassRegistry {
       ["standardSkill", "professionalSkill", "combatStyle", "magicSkill", "passion"], true)
     ItemSheetClassRegistry.doRegister(ItemSheetBase, ["hitLocation", "cultBrotherhood"], true)
     ItemSheetClassRegistry.doRegister(PhysicalItemSheetMythras,
-      ["melee-weapon", "ranged-weapon", "equipment", "currency", "storage"], true)
+      ["melee-weapon", "ranged-weapon", "currency", "storage"], true)
+    ItemSheetClassRegistry.doRegister(EquipmentSheetMythras, ["equipment"], true)
     ItemSheetClassRegistry.doRegister(ArmorSheetMythras, ["armor"], true)
     ItemSheetClassRegistry.doRegister(SpellSheetMythras, ["spell"], true)
     // Todo gun sheet for type "ranged-weapon"?
   }
 
-  private static doRegister(documentClass: ConstructorOf<ItemSheet>, types: string[], isDefault: boolean) {
+  private static doRegister(documentClass: ConstructorOf<ItemSheet<ItemMythras,DocumentSheetOptions>>, types: string[], isDefault: boolean) {
     Items.registerSheet('mythras', documentClass, {
       types: types,
       makeDefault: isDefault

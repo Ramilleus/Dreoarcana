@@ -1,6 +1,6 @@
 import { CreatureMythras } from '@actor'
 
-export class CharacterMythras extends CreatureMythras {
+export class CharacterMythras<TParent extends TokenDocument | null = TokenDocument | null> extends CreatureMythras<TParent> {
   async _preCreate(data: any, options: any, user: any){
     await super._preCreate(data,options,user)
 
@@ -15,7 +15,7 @@ export class CharacterMythras extends CreatureMythras {
   //   console.log('bigtest')
   //   data.prototypeToken.actorLink = true
   //   console.log(data)
-  //   // mergeObject(
+  //   // foundry.utils.mergeObject(
   //   //   data.token,
   //   //   {
   //   //     vision: true,

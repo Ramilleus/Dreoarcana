@@ -1,4 +1,5 @@
 import {CharacterSheetMythras} from "@actor/character/sheet";
+import { ActorMythras } from "./base";
 
 export class ActorSheetClassRegistry {
   /**
@@ -11,7 +12,7 @@ export class ActorSheetClassRegistry {
     // ToDo create vehicle, starship actors?
   }
 
-  private static doRegister(documentClass: ConstructorOf<ActorSheet>, types: string[], isDefault: boolean) {
+  private static doRegister(documentClass: ConstructorOf<ActorSheet<ActorMythras>>, types: string[], isDefault: boolean) {
     Actors.registerSheet('mythras', documentClass, {
       types: types,
       makeDefault: isDefault

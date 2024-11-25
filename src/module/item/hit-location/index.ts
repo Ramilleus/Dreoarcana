@@ -1,5 +1,6 @@
 import { ArmorMythras } from '@item/armor'
 import { ItemMythras } from '@item/base'
+import { ActorMythras } from '@module/actor'
 
 interface HitLocationData {
   baseHp: number
@@ -15,10 +16,11 @@ interface HitLocationMythras {
   readonly system: HitLocationData
 }
 
-class HitLocationMythras extends ItemMythras {
-  get attachedArmor(): Embedded<ArmorMythras>[] {
-    return this.actor.items.filter((value: ItemMythras) => {
-      return value.type === 'armor' && (value as ArmorMythras).selectedHitLocationId.includes(this.id)
+class HitLocationMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends ItemMythras<TParent> {
+  get attachedArmor(): ArmorMythras[] {
+    //@ts-ignore
+    return this.actor.items.filter((value: ItemMythras<TParent>) => {
+      return value.type === 'armor' && (value as ArmorMythras<TParent>).selectedHitLocationId.includes(this.id)
     })
   }
 
@@ -34,7 +36,7 @@ class HitLocationMythras extends ItemMythras {
     return this.system.rollRangeEnd
   }
 
-  get equippedArmor(): Embedded<ArmorMythras>[] {
+  get equippedArmor(): ArmorMythras[] {
     return this.attachedArmor.filter((armor) => armor.isEquipped)
   }
 
@@ -58,7 +60,7 @@ class HitLocationMythras extends ItemMythras {
   }
 
   get maxHp() {
-    const system = deepClone(this.system)
+    const system = foundry.utils.deepClone(this.system)
     const actorData = this.actor.system
 
     const sizValue = Number(this.actor.characteristics.siz)

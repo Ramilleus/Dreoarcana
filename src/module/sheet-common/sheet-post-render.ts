@@ -1,4 +1,5 @@
 export class SheetPostRender {
+  //@ts-ignore
   constructor(private sheetElement: JQuery<HTMLElement>) {}
 
   public postRender() {
@@ -7,7 +8,7 @@ export class SheetPostRender {
   }
 
   private applyStatStyles() {
-    this.sheetElement.find('.modifier').each((_, modifier: HTMLInputElement) => {
+    this.sheetElement.find('.modifier').each((_: any, modifier: HTMLInputElement) => {
       let statToModify = $(modifier).closest('[data-stat]').find('.modifiable')
       if (Number(modifier.value) > 0) {
         $(modifier).removeClass('decreased').addClass('increased')

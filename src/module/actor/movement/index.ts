@@ -65,6 +65,7 @@ export class ActorMythrasMovement {
   }
 
   public get run(): number {
+
     return (
       3 * (this.walk + Math.floor(this.athleticsSkillValue / 50)) -
       this.actor.armorPenalty +

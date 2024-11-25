@@ -84,7 +84,16 @@
     </div>
     <div class="basic-table">
       <h3>
-        <span>{{localize 'MYTHRAS.Equipment'}}</span><a class="basic-table__add-button item-create" title="Create item"
+        <span>{{localize 'MYTHRAS.Equipment'}}</span>
+        <select name="system.equipmentFilterOption" id="equipmentFilter">
+          <option value="All">All</option>
+          {{selectOptions equipmentTypes valueAttr="type" labelAttr="type" selected=system.equipmentFilterOption localize=true}}
+        </select>
+        <div class="equipmentSearchContainer">
+          <i class="fas fa-search"></i>
+          <input name="equipmentSearch" id="equipmentSearch" type="text" placeholder="Search..."/>
+        </div>
+        <a class="basic-table__add-button item-create" title="Create item"
           data-type="equipment">+</a>
       </h3>
       <table class="equipment-table">
@@ -95,11 +104,12 @@
           <th>{{localize 'MYTHRAS.AP/HP'}}</th>
           <th>{{localize 'MYTHRAS.Value'}}</th>
           <th>{{localize 'MYTHRAS.Storage'}}</th>
+          <th>{{localize 'MYTHRAS.Type'}}</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
           {{#each items.equipment as |item id|}}
-          <tr class="item" data-item-id="{{item.id}}">
+          <tr class="item" data-item-id="{{item.id}}" data-item-type="{{item.system.equipmentType}}" data-item-name="{{item.name}}">
             <td class="item-profile">
               <img class="item-img" src="{{item.img}}">
               <a class="item-name item-control item-edit">{{item.name}}</a>
@@ -118,6 +128,9 @@
             </td>
             <td>
               {{item.storageName}}
+            </td>
+            <td>
+              {{localize item.system.equipmentType}}
             </td>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>

@@ -95,12 +95,8 @@
                 {{localize 'MYTHRAS.Spells'}}
               </span>
               <select name="system.spellFilterOption" id="spellFilter">
-                {{#select system.spellFilterOption}}
                 <option value="All">All</option>
-                {{#each magicSkillNames as |name|}}
-                <option value="{{name}}">{{name}}</option>
-                {{/each}}
-                {{/select}}
+                {{selectOptions magicSkillNames valueAttr="value" selected=system.spellFilterOption localize=true}}
               </select>
               <a class="basic-table__add-button item-create" title="Create item" data-type="spell">
                 +

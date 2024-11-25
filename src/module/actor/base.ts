@@ -6,6 +6,7 @@ import { ActorMythrasEncumbrance } from './encumbrance'
 import { ActorMythrasFatigue } from './fatigue'
 import { ActorMythrasMovement } from './movement'
 import { ActorMythrasStatTracker } from './stat-tracker'
+import { TokenDocumentMythras } from '@module/scene/token-document/document'
 
 
 interface ActorData {
@@ -15,17 +16,19 @@ interface ActorData {
   height: number
   spellFilterOption: string
   items: ItemTypeMap
+  equipmentFilterOption: string
 }
 
 interface ActorMythras {
   readonly system: ActorData
 }
 
+
 /**
  * Mythras Actor object. Contains logic for preparing dynamic data on the sheet.
  * @extends {Actor}
  */
-class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
+class ActorMythras<TParent extends TokenDocumentMythras | null = TokenDocumentMythras | null> extends Actor<TParent> {
   public encumbrance!: ActorMythrasEncumbrance
   public fatigue!: ActorMythrasFatigue
   public movement!: ActorMythrasMovement
@@ -35,7 +38,7 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
     if (context.mythras?.ready) {
       super(data, context)
     } else {
-      mergeObject(context, { mythras: { ready: true } })
+      foundry.utils.mergeObject(context, { mythras: { ready: true } })
       const documentClasses = CONFIG.MYTHRAS.Actor.documentClasses
       let type: keyof typeof documentClasses = data.type
       const ActorConstructor = documentClasses[type]
@@ -44,12 +47,15 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
         : new ActorMythras(data, context)
     }
   }
-
+  override get itemTypes(){
+    return super.itemTypes as ItemTypeMap
+  }
   // Attribute getters
 
   get armorPenalty() {
+    //@ts-ignore
     let equippedArmor: ArmorMythras[] = this.items.filter(function (item: any) {
-      return item.type === 'armor' && item.isEquipped
+      return item.type === 'armor' && item.isEquipped && item.isArmor
     })
     let totalArmorEncumbrance = equippedArmor.reduce(
       (weight: number, armor: ArmorMythras) => weight + Number(armor.encumbrance),
@@ -141,12 +147,13 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
     }
   }
 
-  static override async create(data: any, context: any): Promise<any> {
-    return super.create(data, context)
-  }
+  // static override async create(data: any, context: any): Promise<any> {
+  //   return super.create(data, context)
+  // }
 
   prepareData() {
     super.prepareData()
+
     this.encumbrance = new ActorMythrasEncumbrance(this)
     this.fatigue = new ActorMythrasFatigue(this)
     this.movement = new ActorMythrasMovement(this)
@@ -206,7 +213,8 @@ class ActorMythras extends Actor<TokenDocument<ActorMythras>, ItemTypeMap> {
 
 type ItemType = keyof typeof MYTHRASCONFIG.Item.documentClasses
 type ItemTypeMap = {
-  [K in ItemType]: InstanceType<ConfigMythras["MYTHRAS"]["Item"]["documentClasses"][K]>;
+  [K in ItemType]: InstanceType<ConfigMythras["MYTHRAS"]["Item"]["documentClasses"][K]>[];
+
 };
 
 export { ActorData, ActorMythras }

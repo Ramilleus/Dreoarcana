@@ -1,6 +1,8 @@
 import { MythrasCombatTrackerConfig } from './combat-config.js'
+import { CombatMythras } from './combat-mythras.js'
 
-export class MythrasCombatTracker extends CombatTracker<any> {
+
+export class MythrasCombatTracker<TCombat extends CombatMythras | null> extends CombatTracker<TCombat> {
   get template() {
     return 'systems/mythras/templates/combat/combat-tracker.hbs'
   }

@@ -1,7 +1,7 @@
 import { ItemMythras } from '@item/base'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
-export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
+export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, DocumentSheetOptions> {
   sheetPostRender!: SheetPostRender
 
   constructor(item: TItem, options?: Partial<DocumentSheetOptions>) {
@@ -18,7 +18,7 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   }
 
   static override get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ['mythras', 'sheet', 'item'],
       width: 495,
       height: 550,
@@ -44,7 +44,6 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
     // Enrich HTML description
     itemData.descriptionHTML = await TextEditor.enrichHTML(item.system.description, {
       secrets: item.isOwner,
-      async: true,
       documents: true,
       rollData: itemData.rollData
     });
@@ -59,9 +58,9 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   }
 
   override setPosition(options = {}) {
-    const position = super.setPosition(options)
+    const position = super.setPosition(options) as ApplicationPosition
     const sheetBody = this.element.find('.sheet-body')
-    const bodyHeight = position.height - 192
+    const bodyHeight = Number(position.height) - 192
     sheetBody.css('height', bodyHeight)
     return position
   }
@@ -69,7 +68,7 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem> {
   override activateListeners($html: JQuery): void {
     super.activateListeners($html)
 
-    $html.find('input').on('click', function (event) {
+    $html.find('input').on('click', function (event: any) {
       this.select()
     })
 

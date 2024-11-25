@@ -1,7 +1,9 @@
 import { ItemMythras } from '@item/base'
+import { ActorMythras } from '@module/actor'
 import { CharacteristicOption } from '@module/actor/characteristic'
 
 interface SkillData {
+  totalVal: any
   primaryChar: string
   secondaryChar: string
   trainingVal: number
@@ -12,8 +14,13 @@ interface SkillMythras {
   readonly system: SkillData
 }
 
-class SkillMythras extends ItemMythras {
+class SkillMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends ItemMythras<TParent> {
   isSkill: boolean = true
+
+  override prepareData(): void {
+    super.prepareData()
+  }
+
 
   get encPenalty() {
     const data = this.system
@@ -31,6 +38,7 @@ class SkillMythras extends ItemMythras {
     //Is commented out because it breaks magic skills for some reason
     //TODO: figure out why it breaks magic skills
     //this.reRenderOpenSheet()
+
     return this.baseVal + Number(systemData.trainingVal) + Number(systemData.miscBonus)
   }
 

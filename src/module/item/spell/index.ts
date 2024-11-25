@@ -1,5 +1,6 @@
 import { ItemMythras } from '@item/base'
 import { MagicSkillMythras } from '../magic-skill'
+import { ActorMythras } from '@module/actor'
 
 interface SpellData {
   sourceID: string
@@ -11,7 +12,7 @@ interface SpellMythras {
   readonly system: SpellData
 }
 
-class SpellMythras extends ItemMythras {
+class SpellMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends ItemMythras<TParent> {
   get availableMagicSkills(): MagicSkillMythras[] {
     if (this.actorData) {
       return this.actor.itemTypes.magicSkill

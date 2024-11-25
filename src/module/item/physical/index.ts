@@ -2,6 +2,7 @@ import { ItemMythras } from '@item/base'
 import type { StorageMythras } from '@item/storage'
 import { itemIsStorageType } from '@item/type-guards'
 import { HitLocationMythras } from "@item/hit-location";
+import { ActorMythras } from '@module/actor';
 
 interface PhysicalItemData {
   encumbrance: number
@@ -14,11 +15,12 @@ interface PhysicalItemMythras {
   readonly system: PhysicalItemData
 }
 
-abstract class PhysicalItemMythras extends ItemMythras {
+abstract class PhysicalItemMythras<TParent extends ActorMythras | null = ActorMythras  | null> extends ItemMythras<TParent> {
   isPhysical: boolean = true
 
   get availableStorage() {
     if (this.actorData) {
+      //@ts-ignore
       let availableStorage: StorageMythras[] = this.actorData.items.filter(function (
         item: ItemMythras
       ) {
@@ -67,7 +69,7 @@ abstract class PhysicalItemMythras extends ItemMythras {
     if (this.actor && this.actor.items) {
       let storage = this.actor.items.find((item) => item.id === this.storageId)
       if (storage) {
-        return storage as Embedded<StorageMythras>
+        return storage as StorageMythras<TParent>
       }
     }
     return undefined
@@ -78,6 +80,7 @@ abstract class PhysicalItemMythras extends ItemMythras {
    */
   get availableHitLocations(): HitLocationMythras[] {
     if (this.actorData) {
+      //@ts-ignore
       let availableHitLocations: HitLocationMythras[] = this.actorData.items
         .filter((value: Item) => value.type === 'hitLocation')
       availableHitLocations.sort((a: HitLocationMythras, b: HitLocationMythras) => {
