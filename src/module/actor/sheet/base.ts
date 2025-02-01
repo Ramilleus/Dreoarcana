@@ -469,7 +469,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   private async filterSpells() {
     const actorData = this.actor.system
     let filterBy = actorData.spellFilterOption
-    let items: any[] = [...document.querySelectorAll('.spell-list-table .item')]
+    let items: any[] = [...document.querySelectorAll(`#CharacterSheetMythras-Actor-${this.actor.id} .spell-list-table .item`)]
     for (let item of items) {
       switch (filterBy) {
         case 'All':
@@ -488,7 +488,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   private async filterEquipment() {
     const actorData = this.actor.system
     let filterBy = actorData.equipmentFilterOption
-    let items: any[] = [...document.querySelectorAll('.equipment-table .item')]
+    let items: any[] = [...document.querySelectorAll(`#CharacterSheetMythras-Actor-${this.actor.id} .equipment-table .item`)]
     for (let item of items) {
       switch (filterBy) {
         case 'All':
@@ -507,9 +507,9 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   private async searchEquipment(searchBy: string) {
     this.filterEquipment();
     
-    let items: any[] = [...document.querySelectorAll('.equipment-table .item.active')]
+    let items: any[] = [...document.querySelectorAll(`#CharacterSheetMythras-Actor-${this.actor.id} .equipment-table .item.active`)]
     for (let item of items) {      
-      item.dataset.itemName.includes(searchBy)
+      item.dataset.itemName.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase())
         ? item.classList.add('active')
         : item.classList.remove('active');
     }
