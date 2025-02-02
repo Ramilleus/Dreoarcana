@@ -2,7 +2,7 @@
   <div class="encumbrance-bar-names">
     {{#each encumbrance.barSegments as |segment id|}}
     <div style="flex: {{ segment.width }};{{#if @first}}justify-content: space-between;{{/if}}" class="bar-label">
-      {{#if @first}}<p>{{localize 'MYTHRAS.Current_ENC'}}: {{ ../encumbrance.currentEncumbrance }}</p> {{/if}}
+      {{#if @first}}<p>{{localize 'MYTHRAS.Current_ENC'}}: {{roundNumber ../encumbrance.currentEncumbrance 2}}</p> {{/if}}
       <p>{{localize (concat 'MYTHRAS.' segment.levelName)}}</p>
     </div>
     {{/each}}

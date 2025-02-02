@@ -2,4 +2,33 @@ div.core {
   .derived-stat-with-label {
     min-width: 67px;
   }
+  .basic-table {
+    tbody {      
+      tr {
+        &:nth-child(odd) {
+          background-color: #eaeaea;
+        }
+        &:hover {
+          background-color: #840107;
+          color: #fff;
+          
+          input {
+            color: #fff;
+          }
+          select {
+            color: #fff;
+
+            option {
+              background-color: #840107;
+            }
+
+          }
+        }
+        select {
+          border: none;
+          border-radius: 0;
+        }
+      }
+    }
+  }
 }

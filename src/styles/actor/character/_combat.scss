@@ -14,6 +14,45 @@ div.combat {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+    }    
+    .item-img {
+      background-color: rgba(0, 0, 0, 0.4);
+      height: 20px;
+      width: 20px;
+    }
+    .item-profile {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 5px;
+    }
+    tbody {      
+      tr {
+        &:nth-child(odd) {
+          background-color: #eaeaea;
+        }
+        &:hover {
+          background-color: #840107;
+          color: #fff;
+          
+          input {
+            color: #fff;
+          }
+          select {
+            color: #fff;
+  
+            option {
+              background-color: #840107;
+            }
+  
+          }
+        }
+        select {
+          border: none;
+          border-radius: 0;
+        }
+      }
     }
     h2 {
       border: 0;

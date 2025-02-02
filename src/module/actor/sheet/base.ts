@@ -248,7 +248,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   }
 
   private applyEncumbranceStyles() {
-    const segments = $('.encumbrance-bar .percent-segment-filled')
+    const segments = $('[id^="CharacterSheetMythras-"][id$="-Actor-${this.actor.id}"] .encumbrance-bar .percent-segment-filled')
     if (this.actor.encumbrance.isOverMaxLoad) {
       segments.removeClass('burdened overloaded').addClass('maxload')
     } else if (this.actor.encumbrance.isOverloaded) {
@@ -266,7 +266,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
     for (let hitLocation of hitLocations) {
       let currentHp = hitLocation.system.currentHp
       let hitLocationElement: any = document.querySelector(
-        `.hitLocation-table [data-item-id="${hitLocation.id}"]`
+        `[id^="CharacterSheetMythras-"][id$="-Actor-${this.actor.id}"] .hitLocation-table [data-item-id="${hitLocation.id}"]`
       )
       if (currentHp <= hitLocation.maxHp * -1) {
         hitLocationElement.style.backgroundColor = '#c5000094'
@@ -469,7 +469,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   private async filterSpells() {
     const actorData = this.actor.system
     let filterBy = actorData.spellFilterOption
-    let items: any[] = [...document.querySelectorAll(`#CharacterSheetMythras-Actor-${this.actor.id} .spell-list-table .item`)]
+    let items: any[] = [...document.querySelectorAll(`[id^="CharacterSheetMythras-"][id$="-Actor-${this.actor.id}"] .spell-list-table .item`)]
     for (let item of items) {
       switch (filterBy) {
         case 'All':
@@ -488,7 +488,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   private async filterEquipment() {
     const actorData = this.actor.system
     let filterBy = actorData.equipmentFilterOption
-    let items: any[] = [...document.querySelectorAll(`#CharacterSheetMythras-Actor-${this.actor.id} .equipment-table .item`)]
+    let items: any[] = [...document.querySelectorAll(`[id^="CharacterSheetMythras-"][id$="-Actor-${this.actor.id}"] .equipment-table .item`)]
     for (let item of items) {
       switch (filterBy) {
         case 'All':
@@ -507,7 +507,7 @@ abstract class ActorSheetMythras<TActor extends ActorMythras> extends ActorSheet
   private async searchEquipment(searchBy: string) {
     this.filterEquipment();
     
-    let items: any[] = [...document.querySelectorAll(`#CharacterSheetMythras-Actor-${this.actor.id} .equipment-table .item.active`)]
+    let items: any[] = [...document.querySelectorAll(`[id^="CharacterSheetMythras-"][id$="-Actor-${this.actor.id}"] .equipment-table .item.active`)]
     for (let item of items) {      
       item.dataset.itemName.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase())
         ? item.classList.add('active')

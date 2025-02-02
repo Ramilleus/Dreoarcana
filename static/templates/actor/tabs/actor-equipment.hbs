@@ -58,7 +58,7 @@
             </thead>
             <tbody>
               {{#each items.currency as |item id|}}
-              <tr class="item" data-item-id="{{item.id}}">
+              <tr class="item" data-item data-item-id="{{item.id}}">
                 <td class="item-profile">
                   <img class="item-img" src="{{item.img}}">
                   <a class="item-name item-control item-edit">{{item.name}}</a>
@@ -70,7 +70,7 @@
                   {{item.system.encumbrance}}
                 </td>
                 <td>
-                  {{item.system.quantity}}
+                  <input data-item-property="quantity" class="item-quantity" type="number" name="system.quantity" value="{{item.system.quantity}}" step="1" min="0" />
                 </td>
                 <td>
                   <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -99,35 +99,34 @@
       <table class="equipment-table">
         <thead>
           <th>{{localize 'MYTHRAS.Name'}}</th>
-          <th>{{localize 'MYTHRAS.ENC'}}</th>
+          <th>{{localize 'MYTHRAS.ENC'}} ({{localize 'Total'}})</th>
           <th>{{localize 'MYTHRAS.Quantity'}}</th>
-          <th>{{localize 'MYTHRAS.AP/HP'}}</th>
-          <th>{{localize 'MYTHRAS.Value'}}</th>
+          <th>{{localize 'MYTHRAS.Value'}} ({{localize 'Total'}})</th>
           <th>{{localize 'MYTHRAS.Storage'}}</th>
           <th>{{localize 'MYTHRAS.Type'}}</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
           {{#each items.equipment as |item id|}}
-          <tr class="item" data-item-id="{{item.id}}" data-item-type="{{item.system.equipmentType}}" data-item-name="{{item.name}}">
+          <tr class="item" data-item data-item-id="{{item.id}}" data-item-type="{{item.system.equipmentType}}" data-item-name="{{item.name}}">
             <td class="item-profile">
               <img class="item-img" src="{{item.img}}">
               <a class="item-name item-control item-edit">{{item.name}}</a>
             </td>
             <td>
-              {{item.system.encumbrance}}
+              {{multiply item.system.encumbrance item.system.quantity 2}}
             </td>
             <td>
-              {{item.system.quantity}}
+              <input data-item-property="quantity" class="item-quantity" type="number" value="{{item.system.quantity}}" step="1" min="0" />
             </td>
             <td>
-              {{item.system.ap}} / {{item.system.hp}}
+              {{multiply item.system.value item.system.quantity 2}}
             </td>
             <td>
-              {{item.system.value}}
-            </td>
-            <td>
-              {{item.storageName}}
+              <select data-item-property="storage" data-dtype="String">
+                  <option value="Unknown">{{localize 'MYTHRAS.No_Storage'}}</option>
+                  {{selectOptions ../items.storage valueAttr="id" labelAttr="name" selected=item.system.storage }}
+              </select>
             </td>
             <td>
               {{localize item.system.equipmentType}}
@@ -155,7 +154,7 @@
           <th>{{localize 'MYTHRAS.Location'}}</th>
           <th>{{localize 'MYTHRAS.Equipped'}}</th>
           <th>{{localize 'MYTHRAS.Encumbrance'}}</th>
-          <th>{{localize 'MYTHRAS.AP/HP'}}</th>
+          <th>{{localize 'MYTHRAS.AP'}}</th>
           <th class="delete-column"><i class="fas fa-trash"></i></th>
         </thead>
         <tbody>
@@ -176,7 +175,7 @@
               {{item.system.encumbrance}}
             </td>
             <td>
-              {{item.system.ap}} / {{item.system.hp}}
+              {{item.system.ap}}
             </td>
             <td>
               <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
