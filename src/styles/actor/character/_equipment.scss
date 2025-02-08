@@ -1,5 +1,58 @@
 @use 'colors' as *;
 div.equipment {
+  .align-center {
+    text-align: center;
+  }
+  table {
+    tbody {
+      tr {
+        &:nth-child(odd) {
+          background-color: #eaeaea;
+        }
+        &:hover {
+          background-color: #840107;
+          color: #fff;
+          
+          input {
+            color: #fff;
+          }
+          select {
+            color: #fff;
+
+            option {
+              background-color: #840107;
+            }
+
+          }
+        }
+        input {
+          & {
+            text-align: center;
+            width: 40px;
+            height: 20px;
+            border: none;
+          }
+    
+          &[type="number"] {
+            -webkit-appearance: auto; /* For Chrome, Safari, and Edge */
+            appearance: auto;
+            width: 60px;
+            padding-left: 15px;
+          }
+    
+          &[type="number"]::-webkit-inner-spin-button,
+          &[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: auto; /* For WebKit browsers */
+            margin: 0;
+          }
+        }
+        select {
+          border: none;
+          border-radius: 0;
+        }
+      }
+    }
+  }
   .item-img {
     background-color: rgba(0, 0, 0, 0.4);
     height: 20px;

@@ -28,6 +28,20 @@ export function registerHandlebarsHelpers() {
       maximumFractionDigits: maxDecimalPlaces
     }).format(num)
   })
+
+  Handlebars.registerHelper('multiply', function(numA, numB, maxDecimalPlaces) {
+    // If only two arguments were passed, maxDecimalPlaces will be the options object.
+    if (typeof maxDecimalPlaces === 'object' && maxDecimalPlaces !== null) {
+      maxDecimalPlaces = 2;
+    }
+  
+    const product = numA * numB;
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: maxDecimalPlaces
+    }).format(product);
+  });
+  
   Handlebars.registerHelper('ifeq', function (a, b, options) {
     if (a == b) {
       return options.fn(this)
