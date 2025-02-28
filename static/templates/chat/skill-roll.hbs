@@ -1,5 +1,5 @@
 <div class="mythras">
-  <div class="tooltip">Roll Modifiers
+  <div class="tooltip">{{ localize 'MYTHRAS.Roll_Modifiers'}}
     <span class="tooltiptext">
       {{#each modifiers}}
       <strong>{{ this.name }}:</strong><br /> {{ this.value }}
@@ -7,7 +7,7 @@
       <br />
       {{/unless}}
       {{else}}
-      No Penalties
+      {{ localize 'MYTHRAS.No_Penalties'}}
       {{/each}}
     </span>
   </div>
