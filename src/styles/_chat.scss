@@ -1,3 +1,4 @@
+@use 'colors';
 .mythras {
   /* Tooltip container */
   .tooltip {
@@ -42,5 +43,18 @@
 
   .text-green {
     color: green;
+  }
+
+  .flavor-text {
+    flex: 0 0 100%;
+    font-size: var(--font-size-12);
+  }
+  
+  .content-link {
+    line-height: 200%;
+  }
+
+  .contested-roll-results {
+    background-color: powderblue;
   }
 }

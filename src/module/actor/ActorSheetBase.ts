@@ -395,20 +395,22 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     //   }
     // })
 
-    // Skill roll button listener
-    html.find('.rollableSkill').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)))
+    // Skill roll button listeners
+    html.find('.rollableSkill').on('contextmenu', (event: any) => this.handleItemRoll(event, this.roller.rollSkill.bind(this.roller)));
+    html.find('.rollableSkill').on('click', (event: any) => this.handleSkillRollClick(event));
+
 
     // Melee Weapon roll button listener
-    html.find('.rollableMeleeDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)))
+    html.find('.rollableMeleeDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollMeleeDamage.bind(this.roller)));
 
     // Ranged Weapon roll button listener
-    html.find('.rollableRangedDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)))
+    html.find('.rollableRangedDamage').on('click', (event: any) => this.handleItemRoll(event, this.roller.rollRangedDamage.bind(this.roller)));
 
     // Hit Location roll button listener
     html.find('.roll-hitlocations-button').on('click', (event: any) => {
-      event.preventDefault()
-      this.roller.rollHitLocation()
-    })
+      event.preventDefault();
+      this.roller.rollHitLocation();
+    });
 
     // Skill roll button listener
     html.find('.recoverCharacteristicPools').on('click', (event: any) => this.handleRecoverCharacteristicPools(event))
@@ -492,10 +494,250 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
 
   //@ts-ignore
   private handleItemRoll(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>, rollFunction: (item: Item<ActorMythras>) => any) {
-    event.preventDefault()
-    const itemId = $(event.currentTarget.closest('[data-item-id]')).attr('data-item-id')
-    const item = this.actor.items.get(itemId)
-    rollFunction(item)
+    event.preventDefault();
+    const itemId = $(event.currentTarget.closest('[data-item-id]')).attr('data-item-id');
+    const item = this.actor.items.get(itemId);
+    rollFunction(item);
+  }
+
+  private async handleSkillRollClick(event: JQuery.ClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) {
+    event.preventDefault();
+    // Identify which skill was clicked
+    const li = (event.currentTarget as HTMLElement).closest<HTMLElement>('[data-item-id]');
+    const skillId = li?.dataset.itemId;
+    let skill: SkillMythras;
+    if (!skillId) {
+      skill = this.actor.sortedSkills[0];
+      if (!skill) {
+        return;
+      }
+    } else {
+      skill = this.actor.items.get(skillId) as unknown as SkillMythras;
+    }
+    this.handleSkillRoll(skill);
+   
+  }  
+
+  public async handleSkillRoll(skill: SkillMythras, contestedRollOptions?: { contestedSkill?: SkillMythras, contestedActor?: ActorMythras, contestedSuccess?: string, contestedScore?: number, contestedRollDifficulty?: number, contestedRollAugmentation?: string }) {    
+    // Check if the roll is contested.
+    let isContestedRoll = false;
+    if (!!contestedRollOptions && !!contestedRollOptions.contestedSkill && !!contestedRollOptions.contestedActor && !!contestedRollOptions.contestedSuccess && !!contestedRollOptions.contestedScore && !!contestedRollOptions.contestedRollDifficulty) {
+      isContestedRoll = true;
+    }
+
+    const targetTokenActor = game.user.targets.first()?.actor as ActorMythras;
+    const isTokenTargeted = !!targetTokenActor && targetTokenActor.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED);
+    let targetName = ``;
+    let targetAugmentSkills;      
+    if (isTokenTargeted) {
+      targetName = targetTokenActor.name;
+      targetAugmentSkills = targetTokenActor.sortedSkills
+      .map(i => {
+        const s = i as unknown as SkillMythras;
+        return { id: s.id, label: `${s.name} (${s.totalVal}%)` };
+      });
+    }
+
+    // 1) Build a text summary of the current modifiers for the tooltip
+    const modifiersList = this.roller.getSkillRollModifiers(skill);
+    let modText = modifiersList
+      .map(m => {
+          return `<strong>${m.name}:</strong><br/> ${m.value}`;
+      })
+      .join('<br/>');
+    let isModTextVisible = true;
+    if (!modText) {
+      modText = game.i18n.localize('MYTHRAS.No_Penalties');
+      isModTextVisible = false;
+    }
+
+    // Prepare difficulty labels
+    const difficulties = [
+      game.i18n.localize('MYTHRAS.very_easy_dif'),
+      game.i18n.localize('MYTHRAS.easy_dif'),
+      game.i18n.localize('MYTHRAS.standard_dif'),
+      game.i18n.localize('MYTHRAS.hard_dif'),
+      game.i18n.localize('MYTHRAS.formidable_dif'),
+      game.i18n.localize('MYTHRAS.herculean_dif')
+    ].map((label, idx) => ({value: idx, label, selected: idx === 2}));
+
+    // Prepare augmentable skills
+    const augmentSkills = this.actor.sortedSkills
+      //.filter(i => i.id !== skill.id) // prevent a character from augmenting a skill with their same skill (currently broken since it doesn't account for the ability to change the selected skill)
+      .map(i => {
+        const s = i as unknown as SkillMythras;
+        return { id: s.id, label: `${s.name} (${s.totalVal}%)`, selected: s.id === skill.id };
+      });
+
+    const content = await renderTemplate('systems/mythras/templates/dialogs/skillRoll-dialog.hbs',
+      {
+        skillName: skill.name,
+        skillTotal: skill.totalVal,
+        modText,
+        difficulties,
+        augmentSkills,
+        isTokenTargeted,
+        targetName,
+        targetAugmentSkills,
+        isModTextVisible
+      }
+    );
+
+    // Show the dialog
+    new Dialog({
+      title: `${isContestedRoll ? `${game.i18n.localize('MYTHRAS.Contested')} ` : ``}${game.i18n.localize('MYTHRAS.Roll')}`,
+      content,
+
+      buttons: {
+        roll: {
+          icon: '<i class="fas fa-dice"></i>',
+          label: game.i18n.localize('MYTHRAS.Roll'),
+          callback: (dlgHtml: JQuery) => {
+            const form = dlgHtml.find('form')[0] as HTMLFormElement;
+            const data = new FormData(form);
+
+            const difficulty = Number(data.get('difficulty'));
+            const augmentOption = String(data.get('augmentOption'));
+
+            let capSkill: SkillMythras | undefined;
+            let augmentSkill: SkillMythras | undefined;
+            let targetAugmentSkill: SkillMythras | undefined;
+            let customAugment: number | undefined;
+            let customAugmentReason: string | undefined;
+
+            switch (augmentOption) {
+              case 'skillCap': {
+                const cid = String(data.get('capSkill') || '');
+                capSkill = cid
+                  ? this.actor.items.get(cid) as unknown as SkillMythras
+                  : undefined;
+                break;
+              }
+              case 'skillAugment': {
+                const aid = String(data.get('augmentSkill') || '');
+                augmentSkill = aid
+                  ? this.actor.items.get(aid) as unknown as SkillMythras
+                  : undefined;
+                break;
+              }
+              case 'customAugment': {
+                customAugment = Number(data.get('augmentCustomValue'));
+                customAugmentReason = String(data.get('augmentCustomReason'));
+                break;
+              }
+              case 'targetSkillAugment': {
+                const aid = String(data.get('targetAugmentSkill') || '');
+                targetAugmentSkill = aid
+                  ? targetTokenActor.items.get(aid) as unknown as SkillMythras
+                  : undefined;
+                break;
+              }
+            }
+
+            this.roller.rollSkillWithOptions
+            (
+              skill, 
+              { 
+                difficulty, 
+                capSkill, 
+                augmentSkill, 
+                customAugment, 
+                customAugmentReason, 
+                targetAugmentSkill, 
+                targetName,
+                isContestedRoll,
+                contestedActor: contestedRollOptions?.contestedActor,
+                contestedSkill: contestedRollOptions?.contestedSkill,
+                contestedSuccess: contestedRollOptions?.contestedSuccess,
+                contestedScore: contestedRollOptions?.contestedScore,
+                contestedRollDifficulty: contestedRollOptions?.contestedRollDifficulty,
+                contestedRollAugmentation: contestedRollOptions?.contestedRollAugmentation
+              }
+            );
+          }
+        }
+      },
+      default: 'roll',
+      render: (dlgHtml: JQuery) => {
+        // Find the form and containers
+        const form = dlgHtml.find('form');
+        const skillCap = form.find('#cap-skill-container');
+        const skillAugment = form.find('#augment-skill-container');
+        const customAugment = form.find('#augment-custom-container');
+        const targetSkillAugment = form.find('#target-augment-skill-container');
+        const augmentSkillSelect = form.find('#augment-skill-container select[name="augmentSkill"]');
+        const capSkillSelect = form.find('#cap-skill-container select[name="capSkill"]');
+
+        // Hide them all initially
+        skillCap.hide();
+        skillAugment.hide();
+        customAugment.hide();
+        targetSkillAugment.hide();
+
+        // In the "Augment With..." dropdown, show all options then hide the picked one
+        augmentSkillSelect.find('option').show();  
+        augmentSkillSelect.find(`option[value="${skill.id}"]`).hide().prop('selected', false);
+        if (augmentSkillSelect.val() === skill.id) {
+          const availableOptions = augmentSkillSelect.find('option').not('[style*="display: none"]');
+          if (availableOptions.length > 0) {
+            augmentSkillSelect.val(availableOptions.first().val()); 
+          } else {
+            augmentSkillSelect.val(''); 
+          }
+        }
+
+        // In the "Cap By..." dropdown, show all options then hide the picked one
+        capSkillSelect.find('option').show();  
+        capSkillSelect.find(`option[value="${skill.id}"]`).hide().prop('selected', false);
+        if (capSkillSelect.val() === skill.id) {
+          const availableOptions = capSkillSelect.find('option').not('[style*="display: none"]');
+          if (availableOptions.length > 0) {
+            capSkillSelect.val(availableOptions.first().val()); 
+          } else {
+            capSkillSelect.val(''); 
+          }
+        }
+
+        // On radio change, show/hide appropriately
+        form.on('change', 'input[name="augmentOption"]', ev => {
+          const val = (ev.currentTarget as HTMLInputElement).value;
+          skillCap.hide();
+          skillAugment.hide();
+          customAugment.hide();
+          targetSkillAugment.hide();
+
+          switch (val) {
+            case 'skillCap':
+              skillCap.show();
+              break;
+            case 'skillAugment':
+              skillAugment.show();
+              break;
+            case 'customAugment':
+              customAugment.show();
+              break;
+            case 'targetSkillAugment':
+              targetSkillAugment.show();
+              break;
+          }
+        });
+        form.on('change', 'select[name="rolledSkill"]', (event) => {
+          const select = event.currentTarget as HTMLSelectElement;
+          const skillId = select.value; // same as $(select).val()
+
+          // Lookup and reset your skill variable
+          skill = this.actor.items.get(skillId) as unknown as SkillMythras;
+
+          // In the "Augment With..." dropdown, show all options then hide the picked one
+          augmentSkillSelect.find('option').show();
+          augmentSkillSelect.find(`option[value="${skillId}"]`).hide().prop('selected', false);
+
+          // In the "Cap By..." dropdown, show all options then hide the picked one
+          capSkillSelect.find('option').show();  
+          capSkillSelect.find(`option[value="${skillId}"]`).hide().prop('selected', false);
+        });
+      }
+    }, {width: 600, height: 400, resizable: true}).render(true);
   }
 
   private async filterSpells() {

@@ -21,6 +21,7 @@ declare global {
       theme: ThemeManager
       encounterGenerator: EncounterGenerator
     }
+    canvas: Canvas;
   }
 
   interface ConfigMythras extends ConfiguredConfig {

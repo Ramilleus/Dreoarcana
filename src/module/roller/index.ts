@@ -124,7 +124,8 @@ export class Roller {
     let htmlContent = await renderTemplate('systems/mythras/templates/chat/skill-roll.hbs', {
       game: game,
       rollResults: rollResults,
-      modifiers: modifiers
+      modifiers: modifiers,
+      isRollWithOptions: false
     })
 
     // Display the roll
@@ -135,14 +136,212 @@ export class Roller {
     })
   }
 
-  private getSkillRollModifiers(skill: SkillMythras) {
+  /**
+   * Roll a single difficulty of a skill, optionally augmented by another skill.
+   * Also account for a contested roll.
+   */
+  public async rollSkillWithOptions(
+    skill: SkillMythras,
+    options: { difficulty: number; capSkill?: SkillMythras; augmentSkill?: SkillMythras; customAugment?: number; customAugmentReason?: string; targetAugmentSkill?: SkillMythras; targetName?: string; isContestedRoll: boolean; contestedActor?: ActorMythras; contestedSkill?: SkillMythras; contestedSuccess?: string; contestedRollDifficulty?: number; contestedScore?: number; contestedRollAugmentation?: string; }
+  ): Promise<ChatMessage> {
+    const difficultyMultipliers = [2, 1.5, 1, 2 / 3, 0.5, 0.1];
+    // Apply difficulty multiplier to skill value
+    let skillScore = Math.ceil(Number(skill.totalVal) * difficultyMultipliers[options.difficulty]);
+
+    // Apply skill augmentation/cap
+    let augmentValue = 0;
+    let augmentDesc = "";
+    if (!!options.capSkill && options.capSkill.totalVal < skill.totalVal) {
+      skillScore = Math.ceil(Number(options.capSkill.totalVal) * difficultyMultipliers[options.difficulty]);
+      augmentDesc = `${game.i18n.localize('MYTHRAS.Capped_By')}: ${options.capSkill.name} (${options.capSkill.totalVal}%) (Max: ${skillScore}%)`;
+    }
+    else if (!!options.augmentSkill) {
+      augmentValue = Math.ceil(Number(options.augmentSkill.totalVal) * 0.2 * difficultyMultipliers[options.difficulty]);
+      skillScore += augmentValue;
+      augmentDesc = `${game.i18n.localize('MYTHRAS.Augmented_By')}: ${options.augmentSkill.name} (${options.augmentSkill.totalVal}%) (+${augmentValue})`;
+    }
+    else if (!!options.customAugment) {
+      augmentValue = options.customAugment;
+      skillScore += augmentValue;
+      augmentDesc = `${game.i18n.localize('MYTHRAS.Augmented_By')}: ${!options.customAugmentReason ? game.i18n.localize('MYTHRAS.Custom_Augment') : options.customAugmentReason}  (+${augmentValue})`;
+    }
+    else if (!!options.targetAugmentSkill) {
+      augmentValue = Math.ceil(Number(options.targetAugmentSkill.totalVal) * 0.2 * difficultyMultipliers[options.difficulty]);
+      skillScore += augmentValue;
+      augmentDesc = `${game.i18n.localize('MYTHRAS.Augmented_By')} ${options.targetName ?? ``}: ${options.targetAugmentSkill.name} (${options.targetAugmentSkill.totalVal}%) (+${augmentValue})`;
+    }
+
+    // Roll the dice
+    const roll = await new Roll("1d100", this.actor.system as any).evaluate();
+    const score = Number(roll.result);
+
+    // Determine success/failure/fumble/critical
+    let description: string;
+    if (score > 95) {
+      description = (score === 100 || (score === 99 && skillScore <= 100))
+        ? "MYTHRAS.FUMBLE!" : "MYTHRAS.FAILURE!";
+    } else if (score <= 5) {
+      description = (score === 1 || score <= Math.ceil(skillScore * 0.1))
+        ? "MYTHRAS.CRITICAL!" : "MYTHRAS.SUCCESS!";
+    } else {
+      description = (score <= Math.ceil(skillScore * 0.1))
+        ? "MYTHRAS.CRITICAL!"
+        : (score <= skillScore)
+          ? "MYTHRAS.SUCCESS!"
+          : "MYTHRAS.FAILURE!";
+    }
+
+    let htmlContent = ``;
+    
+    // Handle CONTESTED ROLLS if applicable
+    if (options.isContestedRoll) {
+      let levelsOfSuccess = 0;
+      let opposedRollWinner = ``;
+      const selectedActor = `@UUID[${skill.actor.uuid}]`;
+      const contestedActor = `@UUID[${options.contestedActor.uuid}]`;
+      const successNames = [
+        "fumble",
+        "failure",
+        "success",
+        "critical"
+      ];
+      // Determine Roll Winner
+      const idxRollSuccess = successNames.findIndex(desc => description.toLocaleLowerCase().includes(desc));
+      const idxContestedRollSuccess = successNames.findIndex(desc => options.contestedSuccess.toLocaleLowerCase().includes(desc));
+
+      levelsOfSuccess = Math.abs(idxRollSuccess - idxContestedRollSuccess);
+
+      if (idxRollSuccess > idxContestedRollSuccess) {
+          opposedRollWinner = selectedActor;
+      }
+      else if (idxRollSuccess < idxContestedRollSuccess) {
+          opposedRollWinner = contestedActor;
+      }
+      else {
+        if (score > options.contestedScore) {
+          opposedRollWinner = selectedActor;
+        } else if (score < options.contestedScore) {
+          opposedRollWinner = contestedActor;
+        } else {
+          // same roll value = tie (no winner)
+          opposedRollWinner = `None`;
+        }
+      }
+      
+      // Render Handlebars template for contested skill roll
+      htmlContent = await renderTemplate(
+        "systems/mythras/templates/chat/contested-skill-roll.hbs",
+        {
+          game,
+          rollResults: [{
+            difficultyName: game.i18n.localize([
+              "MYTHRAS.very_easy_dif",
+              "MYTHRAS.easy_dif",
+              "MYTHRAS.standard_dif",
+              "MYTHRAS.hard_dif",
+              "MYTHRAS.formidable_dif",
+              "MYTHRAS.herculean_dif"
+            ][options.difficulty]),
+            difficultyGrade: skillScore,
+            difficulty: options.difficulty,
+            rollValue: score,
+            description,
+            descriptionClass: description === "MYTHRAS.CRITICAL!"
+              ? "text-goldenrod"
+              : description === "MYTHRAS.SUCCESS!"
+                ? "text-green"
+                : description === "MYTHRAS.FUMBLE!"
+                  ? "text-darkred"
+                  : "text-red"
+          }],
+          contestedRollResults: [{
+            difficultyName: game.i18n.localize([
+              "MYTHRAS.very_easy_dif",
+              "MYTHRAS.easy_dif",
+              "MYTHRAS.standard_dif",
+              "MYTHRAS.hard_dif",
+              "MYTHRAS.formidable_dif",
+              "MYTHRAS.herculean_dif"
+            ][options.contestedRollDifficulty]),
+            rollValue: options.contestedScore,
+            difficulty: options.contestedRollDifficulty,
+            description: options.contestedSuccess,
+            descriptionClass: options.contestedSuccess === "MYTHRAS.CRITICAL!"
+              ? "text-goldenrod"
+              : options.contestedSuccess === "MYTHRAS.SUCCESS!"
+                ? "text-green"
+                : options.contestedSuccess === "MYTHRAS.FUMBLE!"
+                  ? "text-darkred"
+                  : "text-red"
+          }],
+          isRollWithOptions: true,
+          modifiers: this.getSkillRollModifiers(skill),
+          augmentationDescription: augmentDesc,
+          actorId: skill.actor.id,
+          skillId: skill.id,
+          selectedActor,
+          contestedActor,
+          opposedRollWinner,
+          contestedRollAugmentation: options.contestedRollAugmentation,
+          contestedSkillName: options.contestedSkill.name,
+          contestedSkillValue: options.contestedSkill.totalVal,
+          levelsOfSuccess
+        }
+      );
+    }
+    else {
+      // Render Handlebars template for normal skill roll
+      htmlContent = await renderTemplate(
+        "systems/mythras/templates/chat/skill-roll.hbs",
+        {
+          game,
+          rollResults: [{
+            difficultyName: game.i18n.localize([
+              "MYTHRAS.very_easy_dif",
+              "MYTHRAS.easy_dif",
+              "MYTHRAS.standard_dif",
+              "MYTHRAS.hard_dif",
+              "MYTHRAS.formidable_dif",
+              "MYTHRAS.herculean_dif"
+            ][options.difficulty]),
+            difficultyGrade: skillScore,
+            difficulty: options.difficulty,
+            rollValue: score,
+            description,
+            descriptionClass: description === "MYTHRAS.CRITICAL!"
+              ? "text-goldenrod"
+              : description === "MYTHRAS.SUCCESS!"
+                ? "text-green"
+                : description === "MYTHRAS.FUMBLE!"
+                  ? "text-darkred"
+                  : "text-red"
+          }],
+          isRollWithOptions: true,
+          modifiers: this.getSkillRollModifiers(skill),
+          augmentationDescription: augmentDesc,
+          actorId: skill.actor.id,
+          skillId: skill.id
+        }
+      );
+    }
+
+    // Send to chat
+    return roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `${game.i18n.localize("MYTHRAS.Rolling")} ${skill.name} (${skill.totalVal}%)${!!augmentDesc ? `<br/>${augmentDesc}` : ``}`,
+      content: htmlContent
+    });
+  }
+
+
+  public getSkillRollModifiers(skill: SkillMythras) {
     let modifiers = []
 
     // Include Fatigue Penalty value if character is not fresh
     let fatigueLevelName = this.actor.fatigue.currentLevelName
     if (fatigueLevelName !== 'fresh') {
       modifiers.push({
-        name: 'Fatigue Mod',
+        name: `Fatigue (${fatigueLevelName})`,
         value: this.actor.fatigue.currentLevel.skillGrade
       })
     }
@@ -151,7 +350,7 @@ export class Roller {
     if (skill.encPenalty) {
       if (this.actor.encumbrance.skillPenalty) {
         modifiers.push({
-          name: 'ENC Mod',
+          name: 'Encumbered',
           value: this.actor.encumbrance.skillPenalty
         })
       }
