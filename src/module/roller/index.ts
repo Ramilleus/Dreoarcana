@@ -142,9 +142,15 @@ export class Roller {
    */
   public async rollSkillWithOptions(
     skill: SkillMythras,
-    options: { difficulty: number; capSkill?: SkillMythras; augmentSkill?: SkillMythras; customAugment?: number; customAugmentReason?: string; targetAugmentSkill?: SkillMythras; targetName?: string; isContestedRoll: boolean; contestedActor?: ActorMythras; contestedSkill?: SkillMythras; contestedSuccess?: string; contestedRollDifficulty?: number; contestedScore?: number; contestedRollAugmentation?: string; }
+    options: { difficulty: number; capSkill?: SkillMythras; augmentSkill?: SkillMythras; customAugment?: number; customAugmentReason?: string; targetAugmentSkill?: SkillMythras; targetName?: string; isContestedRoll: boolean; useLuckPoint: string; contestedActor?: ActorMythras; contestedSkill?: SkillMythras; contestedSuccess?: string; contestedRollDifficulty?: number; contestedScore?: number; contestedRollAugmentation?: string; }
   ): Promise<ChatMessage> {
     const difficultyMultipliers = [2, 1.5, 1, 2 / 3, 0.5, 0.1];
+    const actor = skill.actor;
+
+    if (options.useLuckPoint == "character") {
+      await actor.update({'system.trackedStats.luckPoints.value' : actor.statTracker.trackedStats.luckPoints.value - 1});
+    }
+
     // Apply difficulty multiplier to skill value
     let skillScore = Math.ceil(Number(skill.totalVal) * difficultyMultipliers[options.difficulty]);
 
@@ -325,10 +331,23 @@ export class Roller {
       );
     }
 
+    // Default Flavor Text: Rolling SkillName (Skill%)
+    let flavorText = `${game.i18n.localize("MYTHRAS.Rolling")} ${skill.name} (${skill.totalVal}%)`;
+
+    // Flavor is expanded with relevant details if a luck point was spent or the roll is augmented/capped.
+    if (options.useLuckPoint == "character") {
+      flavorText += `<br/>${game.i18n.localize("MYTHRAS.MSG_Used_A_Character_Luck_Point")} (${actor.statTracker.trackedStats.luckPoints.value} ${game.i18n.localize("MYTHRAS.Remaining")})`;
+    } else if (options.useLuckPoint == "group") {
+      flavorText += `<br/>${game.i18n.localize("MYTHRAS.MSG_Used_A_Group_Luck_Point")}`;
+    }
+    if (!!augmentDesc) {
+      flavorText += `<br/>${augmentDesc}`;
+    }
+
     // Send to chat
     return roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `${game.i18n.localize("MYTHRAS.Rolling")} ${skill.name} (${skill.totalVal}%)${!!augmentDesc ? `<br/>${augmentDesc}` : ``}`,
+      flavor: flavorText,
       content: htmlContent
     });
   }

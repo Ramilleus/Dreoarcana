@@ -35,6 +35,33 @@
       </select>
     </div>
 
+    <!-- Luckpoint radios -->
+    <div class="form-group">
+      <label>
+          {{localize "MYTHRAS.Use_Luck_Point"}}
+      </label>
+      <div>
+        <label>
+          <input type="radio" name="useLuckPoint" value="false" checked>
+          {{localize "MYTHRAS.No"}}
+        </label>
+        {{#if areLuckPointsAvailable}}
+        <label>
+          <input type="radio" name="useLuckPoint" value="character">
+          <span class="tooltip" data-tooltip="{{localize "MYTHRAS.MSG_Use_Character_Luck_Point"}}">
+            {{localize "MYTHRAS.Character"}}
+          </span>
+        </label>
+        {{/if}}
+        <label>
+          <input type="radio" name="useLuckPoint" value="group">
+          <span class="tooltip" data-tooltip="{{localize "MYTHRAS.MSG_Use_Group_Luck_Point"}}">
+            {{localize "MYTHRAS.Group"}}
+          </span>
+        </label>
+      </div>
+    </div>
+
     <!-- Augmentation radios -->
     <div class="form-group">
       <label>{{localize "MYTHRAS.Augmentation"}}</label>
@@ -49,7 +76,9 @@
         </label><br/>
         <label>
           <input type="radio" name="augmentOption" value="skillAugment">
+          <span class="tooltip" data-tooltip="MYTHRAS.MSG_TIP_Augment_By_Another_Character">
           {{localize "MYTHRAS.Augment_By"}}...
+          </span>
         </label><br/>
         <label>
           <input type="radio" name="augmentOption" value="customAugment">

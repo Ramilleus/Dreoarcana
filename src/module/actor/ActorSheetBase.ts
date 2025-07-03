@@ -579,7 +579,8 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
         isTokenTargeted,
         targetName,
         targetAugmentSkills,
-        isModTextVisible
+        isModTextVisible,
+        areLuckPointsAvailable: (Number(this.actor.statTracker.trackedStats.luckPoints.value) > 0) ? true : false
       }
     );
 
@@ -604,6 +605,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
             let targetAugmentSkill: SkillMythras | undefined;
             let customAugment: number | undefined;
             let customAugmentReason: string | undefined;
+            const useLuckPoint : string = String(data.get('useLuckPoint'));
 
             switch (augmentOption) {
               case 'skillCap': {
@@ -646,6 +648,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
                 targetAugmentSkill, 
                 targetName,
                 isContestedRoll,
+                useLuckPoint,
                 contestedActor: contestedRollOptions?.contestedActor,
                 contestedSkill: contestedRollOptions?.contestedSkill,
                 contestedSuccess: contestedRollOptions?.contestedSuccess,
