@@ -110,13 +110,16 @@
                 <th>
                   {{localize 'MYTHRAS.Magic_Skill'}}
                 </th>
+                <th>
+                  {{localize 'MYTHRAS.Memorized'}}
+                </th>
                 <th class="delete-column">
                   <i class="fas fa-trash"></i>
                 </th>
               </thead>
               <tbody>
                 {{#each items.spell as |item id|}}
-                <tr class="item active" data-item-id="{{item.id}}" data-item-source="{{item.magicSkillName}}">
+                <tr class="item active" data-item data-item-id="{{item.id}}" data-item-source="{{item.magicSkillName}}">
                   <td class="item-profile">
                     <img class="item-img" src="{{item.img}}">
                     <a class="item-name item-control item-edit">
@@ -124,6 +127,9 @@
                     </a>
                   </td>
                   <td>{{item.magicSkillName}}</td>
+                  <td>
+                    <input class="memorizedCheck" data-item-property="memorized" type="checkbox" {{checked item.system.memorized}} />
+                  </td>
                   <td>
                     <a class="item-control item-delete delete-column" title="Delete Item">
                       <i class="fas fa-trash"></i>
