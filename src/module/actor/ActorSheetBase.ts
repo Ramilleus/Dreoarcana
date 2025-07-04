@@ -740,7 +740,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           capSkillSelect.find(`option[value="${skillId}"]`).hide().prop('selected', false);
         });
       }
-    }, {width: 600, height: 400, resizable: true}).render(true);
+    }, {width: 600, height: 440, resizable: true}).render(true);
   }
 
   private async filterSpells() {

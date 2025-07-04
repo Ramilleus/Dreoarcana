@@ -87,6 +87,14 @@ section.window-content:has(.dialog-sheet) {
             font-size: 1.2em;
             color: colors.$sheet-warning;
         }
+
+        .shaded {
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            padding-left: 0.5em;
+        }
     }
 
 }
