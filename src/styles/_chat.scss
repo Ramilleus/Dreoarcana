@@ -55,6 +55,17 @@
   }
 
   .contested-roll-results {
-    background-color: powderblue;
+    background: rgb(225 209 144 / 25%);
+    border: 2px solid #6f6c66;
+    border-radius: 5px;
+    padding: 5px;
+    a.content-link {
+      display: inline-grid;
+      grid-template-columns: min-content auto;
+      column-gap: 0.1em;
+      /* Adjust this gap to be as small as you need */
+      align-items: center;
+      white-space: normal;
+    }
   }
 }
