@@ -326,10 +326,6 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     super.activateListeners(html)
     const actor: any = this.actor
 
-    html.find('input').on('click', function () {
-      this.select()
-    })
-
     // Listens for item-input updates. Element with [data-item] that contain inputs
     // are listened to. If an input changes, update the embedded document associated with
     // that data-item using the data-item-id attribute on that same element
