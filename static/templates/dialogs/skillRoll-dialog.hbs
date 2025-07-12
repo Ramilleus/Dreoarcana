@@ -1,0 +1,145 @@
+<form class="dialog-sheet flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <div class="header-flex">
+      <h1>
+        <select name="rolledSkill">
+        {{#each augmentSkills}}
+          <option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+        </select>
+      </h1>
+    </div>
+  </header>
+  
+  {{!-- Decorative Symbol Divider --}}
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+
+  <section>
+    <!-- Modifiers tooltip -->
+    {{#if isModTextVisible}}
+    <div>        
+      <span class="tooltip rollModifiers" data-tooltip="{{{modText}}}">
+        {{localize "MYTHRAS.Roll_Modifiers"}}
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+    </div>
+    {{/if}}
+
+    <!-- Difficulty dropdown -->
+    <div class="form-group shaded">
+      <label>{{localize "MYTHRAS.Difficulty"}}</label>
+      <select name="difficulty">
+        {{#each difficulties}}
+          <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <!-- Luckpoint radios -->
+    <div class="form-group">
+      <label>
+          {{localize "MYTHRAS.Use_Luck_Point"}}
+      </label>
+      <div>
+        <label>
+          <input type="radio" name="useLuckPoint" value="false" checked>
+          {{localize "MYTHRAS.No"}}
+        </label>
+        {{#if areLuckPointsAvailable}}
+        <label>
+          <input type="radio" name="useLuckPoint" value="character">
+          <span class="tooltip" data-tooltip="{{localize "MYTHRAS.MSG_Use_Character_Luck_Point"}}">
+            {{localize "MYTHRAS.Character"}}
+          </span>
+        </label>
+        {{/if}}
+        <label>
+          <input type="radio" name="useLuckPoint" value="group">
+          <span class="tooltip" data-tooltip="{{localize "MYTHRAS.MSG_Use_Group_Luck_Point"}}">
+            {{localize "MYTHRAS.Group"}}
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Augmentation radios -->
+    <div class="form-group shaded">
+      <label>{{localize "MYTHRAS.Augmentation"}}</label>
+      <div>
+        <label>
+          <input type="radio" name="augmentOption" value="none" checked>
+          {{localize "MYTHRAS.None"}}
+        </label><br/>
+        <label>
+          <input type="radio" name="augmentOption" value="skillCap">
+          {{localize "MYTHRAS.Cap_By"}}...
+        </label><br/>
+        <label>
+          <input type="radio" name="augmentOption" value="skillAugment">
+          <span class="tooltip" data-tooltip="MYTHRAS.MSG_TIP_Augment_By_Another_Character">
+          {{localize "MYTHRAS.Augment_By"}}...
+          </span>
+        </label><br/>
+        <label>
+          <input type="radio" name="augmentOption" value="customAugment">
+          {{localize "MYTHRAS.Custom_Augment"}}
+        </label>
+        {{#if isTokenTargeted}}
+        <br/>
+        <label>
+          <input type="radio" name="augmentOption" value="targetSkillAugment">
+          {{localize "MYTHRAS.Augment_By"}} {{ targetName }}...
+        </label>
+        {{/if}}
+      </div>
+    </div>
+
+    <!-- "Cap By..." dropdown -->
+    <div class="form-group" id="cap-skill-container" style="display:none;">
+      <label>{{localize "MYTHRAS.Cap_By"}}...</label>
+      <select name="capSkill">
+        {{#each augmentSkills}}
+          <option value="{{id}}">{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <!-- "Augment By..." dropdown -->
+    <div class="form-group" id="augment-skill-container" style="display:none;">
+      <label>{{localize "MYTHRAS.Augment_By"}}...</label>
+      <select name="augmentSkill">
+        {{#each augmentSkills}}
+          <option value="{{id}}">{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <!-- Custom numeric augment -->
+    <div class="form-group" id="augment-custom-container" style="display:none;">
+      <label>
+        <span class="tooltip"
+              data-tooltip="{{localize "MYTHRAS.MSG_Custom_Augment"}}">
+          {{localize "MYTHRAS.Custom_Augment"}}
+        </span>
+      </label>
+      <div>
+        <input type="text" name="augmentCustomReason" placeholder="Reason (Optional)..."/>
+        <input type="number" name="augmentCustomValue" placeholder="0" step="1"/>
+      </div>
+    </div>
+
+    <!-- "Augment By Target..." dropdown -->
+    <div class="form-group" id="target-augment-skill-container" style="display:none;">
+      <label>{{localize "MYTHRAS.Augment_By"}} {{ targetName }}...</label>
+      <select name="targetAugmentSkill">
+        {{#each targetAugmentSkills}}
+          <option value="{{id}}">{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+    
+    
+    {{!-- Decorative Symbol Divider --}}
+  </section>
+  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+</form>

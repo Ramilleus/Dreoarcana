@@ -6,6 +6,7 @@ interface SpellData {
   sourceID: string
   intensity: { mod: number }
   magnitude: { mod: number }
+  memorized: boolean
 }
 
 interface SpellMythras {

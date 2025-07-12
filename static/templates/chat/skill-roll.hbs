@@ -11,7 +11,7 @@
       {{/each}}
     </span>
   </div>
-  <table>
+  <table class="roll-result-table">
     <tr>
       <th>{{ localize 'MYTHRAS.Difficulty'}}</th>
       <th>{{ localize 'MYTHRAS.Roll'}}</th>
@@ -20,8 +20,14 @@
       <th>{{ localize 'MYTHRAS.Result'}}</th>
     </tr>
     {{#each rollResults}}
-    <tr>
-      <td><b>{{ localize this.difficultyName }}: </b></td>
+    <tr class="roll-result"
+      data-roll-difficulty-name="{{this.difficultyName}}"
+      data-roll-difficulty-grade="{{this.difficultyGrade}}"
+      data-roll-difficulty="{{this.difficulty}}"
+      data-roll-value="{{this.rollValue}}"
+      data-roll-result="{{this.description}}"
+    >
+      <td><b>{{ localize this.difficultyName }} </b></td>
       <td>[[{{ this.rollValue }}]]</td>
       <td> ≤ </td>
       <td>[[{{ this.difficultyGrade }}]]</td>
@@ -29,4 +35,19 @@
     </tr>
     {{/each}}
   </table>
+
+  {{!-- If the user has a token selected, show a contested‐roll button --}}
+  {{#if isRollWithOptions}}
+  <div class="chat-buttons">
+    <button 
+      type="button" 
+      class="btn btn-primary btn-contested-roll"
+      data-roll-actor-id="{{actorId}}"
+      data-roll-skill-id="{{skillId}}"
+      data-roll-augmentation="{{augmentationDescription}}"
+    >
+      {{localize "MYTHRAS.Contest_Roll"}}
+    </button>
+  </div>
+  {{/if}}
 </div>
