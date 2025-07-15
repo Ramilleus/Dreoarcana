@@ -1,0 +1,101 @@
+@use 'colors';
+
+section.window-content:has(.dialog-sheet) {
+    padding: 0;
+    .dialog-buttons {
+        margin: 8px;
+        flex: 0;
+    }
+    .dialog-sheet {
+        section {
+            margin: 8px;
+        }
+        h2 {
+            flex: 0;
+            margin-top: 15px;
+        }
+
+        .sheet-header {
+            flex: 0;
+        }
+
+        .sheet-body {
+            padding: 0px 10px;
+        }
+
+        input:focus {
+            outline: none;
+            outline-style: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+        input {
+            border: 0;
+        }
+        select {
+            border: 0;
+            border-radius: 0;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        select:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        select:focus {
+            outline: none;
+            outline-style: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .header-flex {
+            display: flex;
+            align-items: center;
+            background: url('../assets/sheet/header-background-pattern-overlay.png') repeat
+            colors.$sheet-header-color;
+            background-repeat: repeat;
+            box-shadow: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.5);
+            padding: 10px;
+
+            > h1:first-child {
+                text-align: left;
+            }
+            > h1 {
+                text-align: right;
+                color: white;
+                font-family: 'Amethysta';
+                margin: 0px;
+                font-size: 2.5em;
+                flex: 1;
+            }
+            h1 {
+                flex: 1;
+                height: 100%;
+                border-bottom: 0;
+            }
+            select {
+                height: 100%;
+                width: 100%;
+                color: white;
+                background: rgba(0,0,0,0.25);
+                option {
+                    background: colors.$sheet-darker-crimson;
+                }
+            }
+        }
+
+        .rollModifiers {
+            font-size: 1.2em;
+            color: colors.$sheet-warning;
+        }
+
+        .shaded {
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            padding-left: 0.5em;
+        }
+    }
+
+}

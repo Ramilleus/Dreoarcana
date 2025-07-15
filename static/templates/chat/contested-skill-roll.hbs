@@ -1,0 +1,65 @@
+<div class="mythras">
+    <div class="tooltip">{{ localize 'MYTHRAS.Roll_Modifiers'}}
+        <span class="tooltiptext">
+            {{#each modifiers}}
+            <strong>{{ this.name }}:</strong><br /> {{ this.value }}
+            {{#unless @last }}
+            <br />
+            {{/unless}}
+            {{else}}
+            {{ localize 'MYTHRAS.No_Penalties'}}
+            {{/each}}
+        </span>
+    </div>
+    <table class="roll-result-table">
+        <tr>
+            <th>{{ localize 'MYTHRAS.Difficulty'}}</th>
+            <th>{{ localize 'MYTHRAS.Result'}}</th>
+        </tr>
+        {{#each rollResults}}
+        <tr class="roll-result" data-roll-difficulty-name="{{this.difficultyName}}"
+            data-roll-difficulty-grade="{{this.difficultyGrade}}" data-roll-difficulty="{{this.difficulty}}"
+            data-roll-value="{{this.rollValue}}" data-roll-result="{{this.description}}"
+        >
+            <td><b>{{ localize this.difficultyName }} </b></td>
+            <td><span class="{{ this.descriptionClass }}"> <b>{{ localize this.description }}</b></span></td>
+        </tr>
+        {{/each}}
+    </table>
+    <div class="contested-roll-details">
+        <h3>{{localize 'MYTHRAS.Contested_Roll'}}</h3>
+        <p>{{contestedActor}}</p>
+        <div class="flavor-text">
+            Rolled {{contestedSkillName}} ({{contestedSkillValue}}%)<br />
+            {{contestedRollAugmentation}}
+        </div>
+        <table class="roll-result-table">
+            <tr>
+                <th>{{ localize 'MYTHRAS.Difficulty'}}</th>
+                <th>{{ localize 'MYTHRAS.Result'}}</th>
+            </tr>
+            {{#each contestedRollResults}}
+            <tr class="roll-result" data-roll-difficulty-name="{{this.difficultyName}}"
+                data-roll-difficulty-grade="{{this.difficultyGrade}}" data-roll-difficulty="{{this.difficulty}}"
+                data-roll-value="{{this.rollValue}}" data-roll-result="{{this.description}}"
+            >
+                <td><b>{{ localize this.difficultyName }} </b></td>
+                <td><span class="{{ this.descriptionClass }}"> <b>{{ localize this.description }}</b></span></td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+    <div class="contested-roll-results">
+        <h3>{{localize 'MYTHRAS.Overall_Result'}}</h3>
+        <table class="contested roll-result-table">
+            <tr>
+                <th>{{ localize 'MYTHRAS.Opposed_Roll_Winner' }}</th>
+                <td>{{opposedRollWinner}}</td>
+            </tr>
+            <tr>
+                <th>{{ localize 'MYTHRAS.Levels_of_Success' }}</th>
+                <td>{{levelsOfSuccess}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
