@@ -110,11 +110,18 @@
     }
 
     .stats-container {
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
       .hidden {
         display: none !important;
       }
       .number-input-container {
         height: 60px;
+        display: flex;
         .plus-minus-buttons {
           display: flex;
           flex-direction: column;
@@ -129,14 +136,7 @@
             color: #ddd;
           }
         }
-        display: flex;
       }
-
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
     .sideways-text {
       transform: rotate(180deg);

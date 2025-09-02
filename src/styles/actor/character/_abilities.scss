@@ -1,6 +1,7 @@
 @use 'colors' as *;
 div.abilities {
   height: calc(100% - 25px);
+  margin: 0;
   .ability-desc-container {
     height: 100%;
     width: 100%;
@@ -54,8 +55,6 @@ div.abilities {
     }
   }
 
-  margin: 0;
-
   .abilities-sections {
     display: flex;
     flex-direction: column;
@@ -96,11 +95,11 @@ div.abilities {
         flex-direction: column;
         .editor {
           flex: 1;
+          height: 100%;
+          width: 100%;
           div.tox.tox-tinymce {
             height: 100% !important;
           }
-          height: 100%;
-          width: 100%;
         }
       }
     }
