@@ -22,14 +22,14 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
 
   static override get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["mythras", "sheet", "item"],
+      classes: ['mythras', 'sheet', 'item'],
       width: 495,
       height: 550,
       tabs: [
         {
-          navSelector: ".sheet-tabs",
-          contentSelector: ".sheet-body",
-          initial: "attributes",
+          navSelector: '.sheet-tabs',
+          contentSelector: '.sheet-body',
+          initial: 'attributes'
         },
       ],
     })
@@ -48,7 +48,7 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
     itemData.descriptionHTML = await TextEditor.enrichHTML(item.system.description, {
       secrets: item.isOwner,
       documents: true,
-      rollData: itemData.rollData,
+      rollData: itemData.rollData
     })
 
     return {
@@ -56,16 +56,16 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
       system: this.item.system,
       item: this.item,
       isClassicTheme: game.mythras.theme.isClassic(),
-      options,
+      options
     }
   }
 
   override setPosition(options = {}) {
     const position = super.setPosition(options) as ApplicationPosition
-    const sheetBody = this.element.find(".sheet-body")
+    const sheetBody = this.element.find('.sheet-body')
     if (sheetBody.length > 0) {
       const bodyHeight = Number(position.height) - 192
-      sheetBody.css("height", `${bodyHeight}px`)
+      sheetBody.css('height', `${bodyHeight}px`)
     }
     return position
   }
@@ -74,7 +74,5 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
     super.activateListeners(html)
 
     if (!this.options.editable) return
-
-    // Add any DOM listeners here using html.find / on
   }
 }

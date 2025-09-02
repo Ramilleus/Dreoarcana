@@ -14,7 +14,7 @@ export class EncounterGenerator extends Application {
     console.log("Mythras | Initializing app: EncounterGenerator")
     this.enemyImporter = new EncounterGeneratorEnemyImporter(this)
     this.partyImporter = new EncounterGeneratorPartyImporter(this)
-    this.injectActorDirectory();
+    this.injectActorDirectory()
   }
 
   override get title() {
@@ -24,16 +24,16 @@ export class EncounterGenerator extends Application {
   static override get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "encounter-generator",
-      classes: ["mythras", "sheet"],
+      classes: ['mythras', 'sheet'],
       template: "systems/mythras/templates/apps/encounter-generator/encounter-generator.hbs",
       width: 800,
       height: 700,
       resizable: true,
       tabs: [
         {
-          navSelector: ".sheet-tabs",
-          contentSelector: ".sheet-body",
-          initial: "enemies",
+          navSelector: '.sheet-tabs',
+          contentSelector: '.sheet-body',
+          initial: 'enemies',
         },
       ],
     });
@@ -48,16 +48,17 @@ export class EncounterGenerator extends Application {
   override async getData(options?: Partial<ApplicationOptions>): Promise<object> {
     return {
       tabs: [
-        { name: "enemies", label: "Generate Enemies" },
-        { name: "parties", label: "Generate Parties" },
-        { name: "from-json", label: "Generate from JSON" },
-        { name: "credits", label: "Credits" },
+        { name: 'enemies', label: 'Generate Enemies' },
+        { name: 'parties', label: 'Generate Parties' },
+        { name: 'from-json', label: 'Generate from JSON' },
+        { name: 'credits', label: 'Credits' },
       ],
       enemies: this.enemyImporter,
-      parties: this.partyImporter,
+      parties: this.partyImporter
     };
   }
 
+  //@ts-ignore
   override activateListeners(html: JQuery<HTMLElement>): void {
     super.activateListeners(html)
     this.enemyImporter.activateListeners()

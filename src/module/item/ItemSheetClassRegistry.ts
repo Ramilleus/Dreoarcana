@@ -1,10 +1,10 @@
-import { SkillSheetMythras } from "@item/skill/sheet"
-import { ItemSheetBase } from "@item/ItemSheetBase"
-import { PhysicalItemSheetMythras } from "@item/physical/sheet"
-import { SpellSheetMythras } from "@item/spell/sheet"
-import { ArmorSheetMythras } from "@item/armor/sheet"
-import { ItemMythras } from "./base"
-import { EquipmentSheetMythras } from "./equipment/sheet"
+import { SkillSheetMythras } from '@item/skill/sheet'
+import { ItemSheetBase } from '@item/ItemSheetBase'
+import { PhysicalItemSheetMythras } from '@item/physical/sheet'
+import { SpellSheetMythras } from '@item/spell/sheet'
+import { ArmorSheetMythras } from '@item/armor/sheet'
+import { ItemMythras } from './base'
+import { EquipmentSheetMythras } from './equipment/sheet'
 
 export class ItemSheetClassRegistry {
 
