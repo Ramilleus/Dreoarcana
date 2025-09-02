@@ -51,9 +51,9 @@ class HitLocationMythras<TParent extends ActorMythras | null = ActorMythras  | n
 get totalAp() {
   let equippedArmorAp = this.equippedArmor
     .map((armor) => armor.ap)
-    .reduce((previousAp, currentAp) => Math.max(previousAp, currentAp), 0);
+    .reduce((previousAp, currentAp) => Math.max(previousAp, currentAp), 0)
   
-  return Math.max(this.naturalArmor, equippedArmorAp);
+  return Math.max(this.naturalArmor, equippedArmorAp)
 }
 
   get maxHp() {

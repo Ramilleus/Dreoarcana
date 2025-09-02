@@ -14,7 +14,7 @@ export class EncounterGeneratorEnemyDetail extends Application {
   }
 
   override get title() {
-    return this.enemyName;
+    return this.enemyName
   }
 
   static override get defaultOptions() {
@@ -69,9 +69,9 @@ export class EncounterGeneratorEnemyDetail extends Application {
     const refreshButton = html.find(".refresh-button")[0] as HTMLElement | undefined;
     if (refreshButton) {
       refreshButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        this.showLoader = true;
-        this.dataReady = false;
+        event.preventDefault()
+        this.showLoader = true
+        this.dataReady = false
         this.render(true); // TS-safe, v13 uses boolean for force
       });
     }
@@ -79,8 +79,8 @@ export class EncounterGeneratorEnemyDetail extends Application {
     const importButton = html.find(".import-button")[0] as HTMLElement | undefined;
     if (importButton) {
       importButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        this.importEnemy();
+        event.preventDefault()
+        this.importEnemy()
       });
     }
   }

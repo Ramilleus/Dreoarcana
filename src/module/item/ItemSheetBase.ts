@@ -2,22 +2,22 @@ import { ItemMythras } from '@item/base'
 import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 
 export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, DocumentSheetOptions> {
-  sheetPostRender!: SheetPostRender;
+  sheetPostRender!: SheetPostRender
 
   constructor(item: TItem, options?: Partial<DocumentSheetOptions>) {
-    super(item, options);
+    super(item, options)
   }
 
   // v13-compatible render override
   override render(force?: boolean, options?: RenderOptions): this {
-    super.render(force, options);
-    this.sheetPostRender = new SheetPostRender(this.element);
-    this.postRender();
-    return this;
+    super.render(force, options)
+    this.sheetPostRender = new SheetPostRender(this.element)
+    this.postRender()
+    return this
   }
 
   private postRender() {
-    this.sheetPostRender.postRender();
+    this.sheetPostRender.postRender()
   }
 
   static override get defaultOptions() {
@@ -32,24 +32,24 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
           initial: "attributes",
         },
       ],
-    });
+    })
   }
 
   override get template() {
-    const itemType = this.item.type;
-    return `systems/mythras/templates/item/item-${itemType}-sheet.hbs`;
+    const itemType = this.item.type
+    return `systems/mythras/templates/item/item-${itemType}-sheet.hbs`
   }
 
   override async getData(options?: Partial<DocumentSheetOptions>) {
-    const itemData = (await super.getData(options)) as any;
-    const item = itemData.item;
+    const itemData = (await super.getData(options)) as any
+    const item = itemData.item
 
     // Enrich HTML description
     itemData.descriptionHTML = await TextEditor.enrichHTML(item.system.description, {
       secrets: item.isOwner,
       documents: true,
       rollData: itemData.rollData,
-    });
+    })
 
     return {
       ...itemData,
@@ -57,23 +57,23 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
       item: this.item,
       isClassicTheme: game.mythras.theme.isClassic(),
       options,
-    };
+    }
   }
 
   override setPosition(options = {}) {
-    const position = super.setPosition(options) as ApplicationPosition;
-    const sheetBody = this.element.find(".sheet-body");
+    const position = super.setPosition(options) as ApplicationPosition
+    const sheetBody = this.element.find(".sheet-body")
     if (sheetBody.length > 0) {
-      const bodyHeight = Number(position.height) - 192;
-      sheetBody.css("height", `${bodyHeight}px`);
+      const bodyHeight = Number(position.height) - 192
+      sheetBody.css("height", `${bodyHeight}px`)
     }
-    return position;
+    return position
   }
 
   override activateListeners(html: JQuery<HTMLElement>): void {
-    super.activateListeners(html);
+    super.activateListeners(html)
 
-    if (!this.options.editable) return;
+    if (!this.options.editable) return
 
     // Add any DOM listeners here using html.find / on
   }
