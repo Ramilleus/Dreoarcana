@@ -33,10 +33,10 @@ export class EncounterGenerator extends Application {
         {
           navSelector: '.sheet-tabs',
           contentSelector: '.sheet-body',
-          initial: 'enemies',
-        },
-      ],
-    });
+          initial: 'enemies'
+        }
+      ]
+    })
   }
 
   override async _render(force?: boolean, options?: RenderOptions) {
@@ -51,7 +51,7 @@ export class EncounterGenerator extends Application {
         { name: 'enemies', label: 'Generate Enemies' },
         { name: 'parties', label: 'Generate Parties' },
         { name: 'from-json', label: 'Generate from JSON' },
-        { name: 'credits', label: 'Credits' },
+        { name: 'credits', label: 'Credits' }
       ],
       enemies: this.enemyImporter,
       parties: this.partyImporter
@@ -80,7 +80,6 @@ export class EncounterGenerator extends Application {
       })
     );
 
-    // Template rows click
     const templateRows = html[0].querySelectorAll<HTMLElement>("[data-template-id]")
     templateRows.forEach((row: HTMLElement) =>
       row.addEventListener("click", (event: MouseEvent) => {
@@ -96,7 +95,6 @@ export class EncounterGenerator extends Application {
       })
     )
 
-    // Create Enemy from JSON
     const createEnemyJson = html[0].querySelector<HTMLInputElement>("#create-enemy-json")
     const createEnemyButton = html[0].querySelector<HTMLButtonElement>("#create-enemy-button")
     if (createEnemyJson && createEnemyButton) {
@@ -106,7 +104,6 @@ export class EncounterGenerator extends Application {
       })
     }
 
-    // Create Party from JSON
     const createPartyJson = html[0].querySelector<HTMLInputElement>("#create-party-json")
     const createPartyButton = html[0].querySelector<HTMLButtonElement>("#create-party-button")
     if (createPartyJson && createPartyButton) {
@@ -130,7 +127,7 @@ export class EncounterGenerator extends Application {
       const footerElem = html?.querySelector("footer")
       if (footerElem) footerElem.append(container)
     }
-
+    
     const button = container.querySelector(".encounter-generator-btn")
     if (button) {
       button.addEventListener("click", (ev: MouseEvent) => {

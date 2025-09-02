@@ -8,7 +8,6 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
     super(item, options)
   }
 
-  // v13-compatible render override
   override render(force?: boolean, options?: RenderOptions): this {
     super.render(force, options)
     this.sheetPostRender = new SheetPostRender(this.element)
@@ -30,8 +29,8 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
           navSelector: '.sheet-tabs',
           contentSelector: '.sheet-body',
           initial: 'attributes'
-        },
-      ],
+        }
+      ]
     })
   }
 
