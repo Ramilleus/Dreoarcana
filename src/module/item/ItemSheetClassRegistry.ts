@@ -25,7 +25,11 @@ export class ItemSheetClassRegistry {
     // Todo gun sheet for type "ranged-weapon"?
   }
 
-  private static doRegister(documentClass: ConstructorOf<ItemSheet<ItemMythras,DocumentSheetOptions>>, types: string[], isDefault: boolean) {
+  private static doRegister(
+    documentClass: new (...args: any[]) => ItemSheet<any, any>,
+    types: string[],
+    isDefault: boolean
+  ) {
     Items.registerSheet('mythras', documentClass, {
       types: types,
       makeDefault: isDefault

@@ -63,17 +63,25 @@ export class EncounterGeneratorEnemyDetail extends Application {
     await this.actorBuilder.createActor(this.enemy, null)
   }
   
-  override activateListeners($html: JQuery<HTMLElement>): void {
-    super.activateListeners($html)
-    $html.find('.refresh-button').on('click', (event) => {
-      event.preventDefault()
-      this.showLoader = true
-      this.dataReady = false
-      this.render(true)
-    })
-    $html.find('.import-button').on('click', (event) => {
-      event.preventDefault()
-      this.importEnemy()
-    })
+  override activateListeners(html: JQuery<HTMLElement>): void {
+    super.activateListeners(html);
+
+    const refreshButton = html.find(".refresh-button")[0] as HTMLElement | undefined;
+    if (refreshButton) {
+      refreshButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        this.showLoader = true;
+        this.dataReady = false;
+        this.render(true); // TS-safe, v13 uses boolean for force
+      });
+    }
+
+    const importButton = html.find(".import-button")[0] as HTMLElement | undefined;
+    if (importButton) {
+      importButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        this.importEnemy();
+      });
+    }
   }
 }

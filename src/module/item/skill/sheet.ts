@@ -2,12 +2,12 @@ import { ItemSheetBase } from '@item/ItemSheetBase'
 import { SkillMythras } from '.'
 
 export class SkillSheetMythras extends ItemSheetBase<SkillMythras> {
-  override async getData(options?: Partial<DocumentSheetOptions>) {
+  override async getData(options?: Partial<DocumentSheetOptions>): Promise<ItemSheetData<any>> {
     const sheetData = await super.getData(options);
     return {
       ...sheetData,
-      encPenalty: this.item.encPenalty,
-      totalVal: this.item.totalVal,
+      encPenalty: (this.item as any).encPenalty,
+      totalVal: (this.item as any).totalVal,
       characteristicsLabels: [
         { value: "str", label: "MYTHRAS.Strength" },
         { value: "con", label: "MYTHRAS.Constitution" },
