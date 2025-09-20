@@ -128,7 +128,7 @@ declare global {
             name: string,
             options?: EditorCreateOptions,
             initialContent?: string,
-        ): Promise<TinyMCE.Editor | ProseMirror.EditorView>;
+        ): Promise<ProseMirror.EditorView>;
 
         /**
          * Handle saving the content of a specific editor by name
@@ -269,7 +269,7 @@ declare global {
             name: string,
             options?: EditorCreateOptions,
             initialContent?: string,
-        ): Promise<TinyMCE.Editor | ProseMirror.EditorView>;
+        ): Promise<ProseMirror.EditorView>;
 
         override render(force?: boolean, options?: RenderOptions): this;
 
