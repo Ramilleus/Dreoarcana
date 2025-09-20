@@ -318,6 +318,6 @@ declare global {
     }
 
     type EditorCreateOptions = Partial<TinyMCE.EditorOptions | ProseMirrorEditorOptions> & {
-        engine?: "tinymce" | "prosemirror";
+        engine?: "prosemirror";
     };
 }
