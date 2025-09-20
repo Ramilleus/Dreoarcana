@@ -54,8 +54,14 @@
     line-height: 200%;
   }
 
-  .roll-result-table {
+  .roll-result-table tbody {
+    overflow: auto;
     word-break: normal;
+    border-collapse: collapse;
+  }
+
+  .roll-result-table td, th{
+    padding: 2px;
   }
 
   .contested-roll-results {
