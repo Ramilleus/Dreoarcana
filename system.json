@@ -86,7 +86,7 @@
   ],
   "socket": true,
   "grid.distance": 1.5,
-  "graid.units": "m",
+  "grid.units": "m",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "url": "https://gitlab.com/tpaoloni/mythras",
