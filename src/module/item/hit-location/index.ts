@@ -53,7 +53,7 @@ get totalAp() {
     .map((armor) => armor.ap)
     .reduce((previousAp, currentAp) => Math.max(previousAp, currentAp), 0)
   
-  return Math.max(this.naturalArmor, equippedArmorAp)
+  return equippedArmorAp + this.naturalArmor
 }
 
   get maxHp() {
