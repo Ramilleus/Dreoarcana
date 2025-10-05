@@ -1,57 +1,55 @@
 export const RenderCombatTrackerConfig = {
+  listen: (): void => {
+    Hooks.on("renderCombatTrackerConfig", async (app, $html) => {
+      const html = $html[0] as HTMLElement
 
-    listen: (): void => {
-        Hooks.on("renderCombatTrackerConfig", async (app, $html) => {
-            
-            const html = $html[0]
-            const appWindow = htmlClosest(html, "#combat-config");
-            if (appWindow) appWindow.style.height = "";
-            
-            const $form = $html.find("form")
-            //const $formGroups = $form.find(".form-group")
-            //const $trackedResourceGroup = $formGroups[0]
+      // Reset app window height
+      const appWindow = html.closest("#combat-config") as HTMLElement | null
+      if (appWindow) appWindow.style.height = ""
 
-            // const $resourceSelect = $($trackedResourceGroup).find('select[name="resource"]')
+      // Get the form
+      const form = html.querySelector("form") as HTMLFormElement
+      if (!form) return
 
-            // if (!$resourceSelect.val()) {
-            //     $resourceSelect.val("trackedStats.actionPoints.value")
-            // }
-            
-            const template = await (async() => { 
-                const markup = await renderTemplate('systems/mythras/templates/combat/combat-config.hbs', {
-                    value:{
-                        reduceAp: game.settings.get("mythras", "combat.reduceAp")
-                    }
-                })
-                const tempElem = document.createElement("div")
-                tempElem.innerHTML = markup;
-                return tempElem.firstElementChild;
-            })();
-            $form.find('button[type="submit"]').before(template)
+      // Render template
+      const template = await (async () => {
+        const markup = await renderTemplate(
+          "systems/mythras/templates/combat/combat-config.hbs",
+          { value: { reduceAp: game.settings.get("mythras", "combat.reduceAp") } }
+        )
+        const tempElem = document.createElement("div")
+        tempElem.innerHTML = markup
+        return tempElem.firstElementChild as HTMLElement | null
+      })()
 
-            const currentReduceAp: any = game.settings.get("mythras", "combat.reduceAp")
+      // Insert template before submit button
+      const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]')
+      if (submitButton && template && submitButton.parentNode) {
+        submitButton.parentNode.insertBefore(template, submitButton)
+      }
 
+      // Checkbox state
+      const reduceApInput = form.querySelector<HTMLInputElement>('input[name="reduceAp"]')
+      if (reduceApInput) {
+        reduceApInput.checked = !!game.settings.get("mythras", "combat.reduceAp")
+      }
 
-            $form.find('input[name="reduceAp"]').prop("checked", currentReduceAp) 
+      // Listen for form submit
+      form.addEventListener("submit", (event) => {
+        event.preventDefault()
+        const newReduceAp = reduceApInput?.checked ?? false
+        game.settings.set("mythras", "combat.reduceAp", newReduceAp)
+      })
 
-            $form.on("submit", (event: { target: any; }) => {
-                const newReduceAp = $(event.target).find('input[name="reduceAp"]').prop("checked")
-                game.settings.set("mythras", "combat.reduceAp", newReduceAp)
-            })
-            
+      // Append template children after last form-group
+      const formGroups = Array.from(form.querySelectorAll<HTMLElement>(".form-group"))
+      const lastFormGroup = formGroups[formGroups.length - 1]
+      if (lastFormGroup && template) {
+        lastFormGroup.after(...Array.from(template.children))
+      }
 
-            const formGroups = htmlQueryAll(html, ".form-group");
-            const lastFormGroup = formGroups.at(-1);
-            lastFormGroup?.after(...(template?.children ?? []));
-            app.activateListeners($html)
-        })
-    }
-}
-function htmlClosest(child: any, selectors: string): HTMLElement | null {
-    if (!(child instanceof Element)) return null;
-    return child.closest<HTMLElement>(selectors);
-}
-function htmlQueryAll(parent: any, selectors: string): HTMLElement[] {
-    if (!(parent instanceof Element || parent instanceof Document)) return [];
-    return Array.from(parent.querySelectorAll<HTMLElement>(selectors));
+      // Activate any listeners on the app
+      app.activateListeners($html)
+    })
+  },
 }

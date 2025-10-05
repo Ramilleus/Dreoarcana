@@ -317,7 +317,7 @@ declare global {
         enricher: (match: RegExpMatchArray, options?: EnrichmentOptions) => Promise<HTMLElement | null>;
     }
 
-    type EditorCreateOptions = Partial<TinyMCE.EditorOptions | ProseMirrorEditorOptions> & {
-        engine?: "tinymce" | "prosemirror";
+    type EditorCreateOptions = Partial<ProseMirrorEditorOptions> & {
+        engine?: "prosemirror";
     };
 }

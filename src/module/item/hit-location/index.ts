@@ -48,16 +48,13 @@ class HitLocationMythras<TParent extends ActorMythras | null = ActorMythras  | n
     return this.system.naturalArmor
   }
 
-  get totalAp() {
-    let equippedArmorAp = this.equippedArmor
-      .map((armor) => armor.ap)
-      .reduce((previousAp, currentAp) => previousAp + currentAp, 0)
-    if (this.naturalArmor > equippedArmorAp) {
-      return this.naturalArmor
-    } else {
-      return equippedArmorAp
-    }
-  }
+get totalAp() {
+  let equippedArmorAp = this.equippedArmor
+    .map((armor) => armor.ap)
+    .reduce((previousAp, currentAp) => Math.max(previousAp, currentAp), 0)
+  
+  return equippedArmorAp + Number(this.naturalArmor)
+}
 
   get maxHp() {
     const system = foundry.utils.deepClone(this.system)

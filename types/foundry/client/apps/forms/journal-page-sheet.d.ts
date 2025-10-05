@@ -45,7 +45,7 @@ declare global {
             name: string,
             options?: EditorCreateOptions | undefined,
             initialContent?: string | undefined,
-        ): Promise<TinyMCE.Editor | ProseMirror.EditorView>;
+        ): Promise<ProseMirror.EditorView>;
 
         /**
          * Update the parent sheet if it is open when the server autosaves the contents of this editor.

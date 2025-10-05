@@ -59,6 +59,10 @@ div.combat {
     }
     > div {
       width: 100%;
+      margin-bottom: 20px;
+      border: solid rgba(0, 0, 0, 0.2) 1px;
+      padding: 5px;
+      
       .add-skills-button {
         float: right;
         margin-right: 8px;
@@ -70,13 +74,12 @@ div.combat {
         margin-right: 8px;
         font-size: 1.2em;
       }
-      margin-bottom: 20px;
-      border: solid rgba(0, 0, 0, 0.2) 1px;
-      padding: 5px;
+
       h3 {
         margin-bottom: 0px;
         color: $sheet-crimson;
       }
+
       table {
         margin: 0;
         background: none;
