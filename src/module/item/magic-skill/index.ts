@@ -39,63 +39,45 @@ class MagicSkillMythras<TParent extends ActorMythras | null = ActorMythras  | nu
     return this.system.magnitude.max
   }
 
-  override prepareData(): void {
-    super.prepareData()
+override prepareData(): void {
+  super.prepareData();
 
-    const system = this.system
-    const actorData = this.actor ? this.actor.system : {} as ActorData
-    const actorItemData = this.actor ? this.actor.items : {} as ActorData
-    
-    let cultRank = 0
-    let chaValue = 0
-    let powValue = 0
-    if (this.actor !== null && actorItemData !== undefined) {
-      //@ts-ignore
-      const cults: CultBrotherhoodMythras[] = this.actor.items.filter(
-        //@ts-ignore
-        (item: ItemMythras) => itemIsCultBrotherhood(item)
-      )
-      system.cults = cults
+  const system = this.system;
+  const actorData = this.actor?.system ?? { characteristics: {} } as ActorData;
+  const actorItemData = this.actor ? Array.from(this.actor.items.values()) : [] as ItemMythras[];
 
-      if (system.cultId !== undefined) {
-        const theCult = cults.find((item: CultBrotherhoodMythras) => item.id === system.cultId)
-        if (theCult !== undefined) {
-          cultRank = Number(theCult.system.currentRank)
-        }
+  let cultRank = 0;
+  let chaValue = Number(actorData.characteristics?.['cha']?.value ?? 0);
+  let powValue = Number(actorData.characteristics?.['pow']?.value ?? 0);
+
+  if (actorItemData.length > 0) {
+    const cults: CultBrotherhoodMythras[] = actorItemData.filter(
+      itemIsCultBrotherhood
+    ) as CultBrotherhoodMythras[];
+    system.cults = cults;
+
+    if (system.cultId) {
+      const theCult = cults.find(item => item.id === system.cultId);
+      if (theCult) {
+        cultRank = Number(theCult.system.currentRank ?? 0);
       }
-      chaValue = Number(actorData.characteristics['cha'].value)
-      powValue = Number(actorData.characteristics['pow'].value)
     }
-    switch (system.skillType) {
-      case 'TR':
-        this._setTRMagicValues(system, this.totalVal)
-        break
-      case 'BI':
-        this._setBIMagicValues(system, this.totalVal, cultRank, chaValue)
-        break
-      case 'ME':
-        this._setMEMagicValues(system, this.totalVal)
-        break
-      case 'MY':
-        this._setMYMagicValues(system, this.totalVal)
-        break
-      case 'IN':
-        this._setINMagicValues(system, this.totalVal)
-        break
-      case 'SH':
-        this._setSHMagicValues(system, this.totalVal)
-        break
-      case 'DE':
-        this._setDEMagicValues(system, this.totalVal, cultRank, powValue)
-        break
-      case 'EX':
-        this._setEXMagicValues(system, this.totalVal)
-        break
-      default:
-        this._setFMMagicValues(system, this.totalVal)
-        break
-    }
+  } else {
+    system.cults = [];
   }
+
+  switch (system.skillType) {
+    case 'TR': this._setTRMagicValues(system, this.totalVal); break;
+    case 'BI': this._setBIMagicValues(system, this.totalVal, cultRank, chaValue); break;
+    case 'ME': this._setMEMagicValues(system, this.totalVal); break;
+    case 'MY': this._setMYMagicValues(system, this.totalVal); break;
+    case 'IN': this._setINMagicValues(system, this.totalVal); break;
+    case 'SH': this._setSHMagicValues(system, this.totalVal); break;
+    case 'DE': this._setDEMagicValues(system, this.totalVal, cultRank, powValue); break;
+    case 'EX': this._setEXMagicValues(system, this.totalVal); break;
+    default: this._setFMMagicValues(system, this.totalVal); break;
+  }
+}
 
   /**
    * Set value for Folk Magic magic skill
