@@ -47,3 +47,6 @@ See `src/module/apps/theme-settings` for a starting point to add themes.
 
 Handlebars files are used as a template engine. helper scripts are registered here:
 `src/scripts/handlebars.ts`
+
+### Merge Requests
+Merge requests can be created from your fork. To submit changes, push your branch to your fork and create a merge request targeting the original kp-systems/mythras repository.
