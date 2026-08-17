@@ -6,10 +6,10 @@ All Contributions are welcome. Follow the steps below to set up a development en
 
 To create a local distribution of the system that Foundry can use, do the following:
 
-1. Clone the repo into a local folder `git clone https://gitlab.com/kp-systems/mythras.git`
+1. Clone the repo into a local folder `git clone https://gitlab.com/kp-systems/mythras.git`. Don't clone it into `[..]\Data\systems`.
 2. Install dependencies with `npm install`
 3. Configure a `foundryconfig.json` file in the project root folder. An example can be found in `foundryconfig.example.json`.
-   - `dataPath` is the location of your FoundryVTT user data. By default Foundry creates this folder at `C:\Users\<user>\AppData\Local\FoundryVTT`.
+   - `dataPath` is the location of your FoundryVTT user data. By default Foundry creates this folder at `C:\Users\<user>\AppData\Local\FoundryVTT`. The module will compile there, in `[..]\Data\systems\mythras` folder.
    - `foundryUri` is the uri that the foundry server runs at locally. Its unlikely that you'll need to change this.
 4. For a single build, run `npm run build`. Run `npm run build:dev` to make webpack continuously watch for changes that you make to the system.
 
@@ -47,3 +47,6 @@ See `src/module/apps/theme-settings` for a starting point to add themes.
 
 Handlebars files are used as a template engine. helper scripts are registered here:
 `src/scripts/handlebars.ts`
+
+### Merge Requests
+Merge requests can be created from your fork. To submit changes, push your branch to your fork and create a merge request targeting the original kp-systems/mythras repository.
