@@ -1,0 +1,20 @@
+{{!-- Gear sheets: catalyst quality. "To reduce the amount of effort
+      needed to access this power catalysts can be used." --}}
+<fieldset class="arcana-catalyst">
+  <legend>Catalyst</legend>
+  <label class="arcana-catalyst-toggle">
+    <input type="checkbox" name="system.catalyst.enabled" {{checked system.catalyst.enabled}} />
+    Conducts magic: usable as a catalyst
+  </label>
+  {{#if system.catalyst.enabled}}
+  <div class="arcana-catalyst-fields">
+    <label>Quality Γ
+      <input type="number" name="system.catalyst.quality" value="{{system.catalyst.quality}}" min="0.1" max="2" step="0.05" data-dtype="Number" />
+    </label>
+    <label>Worth
+      <input type="text" name="system.catalyst.worth" value="{{system.catalyst.worth}}" placeholder="e.g. Validated, minor" />
+    </label>
+  </div>
+  <p class="arcana-hint">Γ multiplies the Orie a spell needs and its casting time. 1.0 is bare hands; a wand is 0.9, a staff 0.8, an orb 0.65. Carried catalysts appear on the Caster node in the Arcanum.</p>
+  {{/if}}
+</fieldset>

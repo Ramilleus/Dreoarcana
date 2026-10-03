@@ -12,6 +12,8 @@ import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 import { ActorAttributes } from "@actor/attribute";
 import { ActorCharacteristic, ActorCharacteristics } from "@actor/characteristic";
 import { EquipmentTypes } from '@item/equipment'
+import { arcaneSheetContext, openArcanum } from '../../arcana/index.js'
+import { openLaboratory } from '../../alchemy/index.js'
 
 export abstract class ActorSheetBase<TActor extends ActorMythras>
   extends ActorSheet<TActor, ItemMythras> {
@@ -44,6 +46,10 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     let actorSystem: ActorData = this.actor.system;
     let actorAttributes: ActorAttributes = actorSystem.attributes;
     let actorChar: any = actorSystem.characteristics;
+    // Arcana: Heat sits with the other pools on the main tab, unless the table doesn't track it.
+    let heatShown = true
+    try { heatShown = (game.settings as any).get('dreoarcana', 'arcana.trackHeat') !== false } catch { heatShown = true }
+    const heatNow = Number((actorSystem as any).trackedStats?.heat?.value) || 0
 
     const data: any = {
       items: {...this.actor.itemTypes},
@@ -52,6 +58,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
       encumbrance: this.actor.encumbrance,
       movement: this.actor.movement,
       statTracker: this.actor.statTracker,
+      arcana: arcaneSheetContext(this.actor),
       magicSkillNames: this.actor.itemTypes.spell.map(spell => ({ value: spell.magicSkillName, label: spell.magicSkillName })).filter((v, i, a) => a.findIndex(o => o.value === v.value) === i),
       editable: this.isEditable,
       system: actorSystem,
@@ -147,6 +154,18 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
           modifierName: "system.attributes.magicPoints.mod",
           modifierValue: actorAttributes.magicPoints.mod
         },
+        ...(heatShown ? {
+          heat: {
+            isAttribute: true,
+            tracked: true,
+            label: 'MYTHRAS.HEAT',
+            derivedName: 'maxHeat',
+            currentValue: heatNow,
+            derivedValue: `${heatNow} / ${(this.actor as any).maxHeat}`,
+            modifierName: "system.attributes.heat.mod",
+            modifierValue: actorAttributes.heat?.mod ?? 0
+          }
+        } : {}),
         tenacity: {
           isAttribute: false,
           tracked: true,
@@ -236,6 +255,14 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     });
     
     this.sortItems(data)
+
+    // Alchemy: ingredients and potions are equipment in all but name, so
+    // they share the Equipment list (and its filters, ENC and storage).
+    const alchemical = [...(data.items.ingredient ?? []), ...(data.items.potion ?? [])]
+    if (alchemical.length) {
+      data.items.equipment = [...data.items.equipment, ...alchemical]
+        .sort((a: ItemMythras, b: ItemMythras) => a.name.localeCompare(b.name))
+    }
     return data
   }
 
@@ -354,6 +381,18 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
 
     // Add Actor Item
     html.find('.item-create').on('click', this.onItemCreate.bind(this))
+
+    // Arcana: everything about building and casting lives in the Arcanum
+    html.find('.arcanum-open').on('click', (ev: any) => {
+      ev.preventDefault()
+      openArcanum({ actor: this.actor })
+    })
+
+    // Alchemy: brewing, tasting, drinking and the rest live in the Laboratory
+    html.find('.laboratory-open').on('click', (ev: any) => {
+      ev.preventDefault()
+      openLaboratory({ actor: this.actor })
+    })
 
     // Update Actor Item
     html.find('.item-edit').on('click', (ev: any) => {

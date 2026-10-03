@@ -1,0 +1,41 @@
+{{!-- Character sheet, Abilities tab: the caster's arcane spells.
+      Clicking a spell opens the Arcanum on it; everything else about
+      building and casting happens there. --}}
+<div class="section arcana-section">
+  <div class="basic-table arcane-spells-table">
+    <h3 class="table-header-flex">
+      <span class="title">Arcane Spells</span>
+      <a class="arcanum-open" title="Open the Arcanum: build, cast and vent Heat"><i class="fas fa-hat-wizard"></i> Arcanum</a>
+    </h3>
+    <table>
+      <thead>
+        <th class="arcane-sigil-col"></th>
+        <th>{{localize 'MYTHRAS.Name'}}</th>
+        <th>Tier</th>
+        <th>Might</th>
+        <th title="Orie the spell needs at your skill">Œ</th>
+        <th>Heat</th>
+        <th>Cast</th>
+        <th class="delete-column"><i class="fas fa-trash"></i></th>
+      </thead>
+      <tbody>
+        {{#each arcana.spells as |s|}}
+        <tr class="item" data-item-id="{{s.id}}">
+          <td class="arcane-sigil mm-tier-{{s.tier}}"><a class="item-edit" title="Open {{s.name}} in the Arcanum">{{{s.sigil}}}</a></td>
+          <td><a class="item-name item-control item-edit">{{s.name}}</a></td>
+          <td>{{s.numeral}} {{s.tierName}}</td>
+          <td>{{s.might}}</td>
+          <td>{{s.orie}}</td>
+          <td>{{s.heat}}</td>
+          <td title="{{s.rounds}} Rounds">{{s.castTime}}</td>
+          <td>
+            <a class="item-control item-delete delete-column" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </td>
+        </tr>
+        {{else}}
+        <tr><td colspan="8" class="arcane-empty">No arcane spells yet. <a class="arcanum-open">Open the Arcanum</a> to build one.</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

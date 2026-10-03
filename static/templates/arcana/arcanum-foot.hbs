@@ -1,0 +1,12 @@
+{{!-- Arcanum: workshop actions --}}
+<footer class="mm-foot">
+  <button type="button" class="mm-icon-btn mm-sound-btn" data-action="preview" data-tooltip="Listen — {{soundLabel}}" aria-label="Listen"><i class="fas fa-volume-up"></i></button>
+  {{#if canExport}}<button type="button" class="mm-icon-btn" data-action="exportSound" data-tooltip="Save the saved spell's sound as a WAV file" aria-label="Export sound"><i class="fas fa-file-audio"></i></button>{{/if}}
+  {{#if showSave}}<button type="button" class="mm-icon-btn" data-action="reset" data-tooltip="Revert to the saved spell, or clear the bench" aria-label="Start again"><i class="fas fa-undo"></i></button>{{/if}}
+  <span class="mm-foot-state" data-dirty {{#unless dirty}}hidden{{/unless}}><i class="fas fa-circle"></i> Unsaved changes</span>
+  <span class="mm-grow"></span>
+  {{#if showSave}}<button type="button" data-action="save" {{#unless canSave}}disabled{{/unless}}><i class="fas fa-save"></i> {{saveLabel}}</button>{{/if}}
+  {{#if hasActor}}
+  <button type="button" class="mm-primary" data-action="cast" {{#unless canCast}}disabled{{/unless}} data-tooltip="{{#if canCast}}Roll it — saves first if needed{{else}}{{castReason}}{{/if}}"><i class="fas fa-bolt"></i> Cast</button>
+  {{/if}}
+</footer>

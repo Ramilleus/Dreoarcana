@@ -1,0 +1,140 @@
+{{!-- Laboratory: stock — ingredients and potions, read, used and (for the GM) written --}}
+<section class="al-stock">
+
+  <div class="al-stock-index">
+    <header class="mm-pane-head">
+      <select data-field="source" aria-label="Whose stock">
+        {{#each sources as |s|}}<option value="{{s.id}}" {{#if s.selected}}selected{{/if}}>{{s.label}}</option>{{/each}}
+      </select>
+      {{#if isGM}}
+      <button type="button" class="mm-mini" data-action="newIngredient" data-tooltip="Write a new ingredient into the catalogue"><i class="fas fa-plus"></i></button>
+      <button type="button" class="mm-mini" data-action="importPanel" data-tooltip="Import ingredients from CSV"><i class="fas fa-file-csv"></i></button>
+      {{/if}}
+    </header>
+    <input type="search" data-field="stockSearch" placeholder="Search…" aria-label="Search stock">
+    <div class="al-stock-list">
+      {{#if potions.length}}<h4>Potions</h4>
+      <ul>{{#each potions as |r|}}<li class="al-stock-row {{#if r.selected}}is-selected{{/if}}" data-action="selectItem" data-uuid="{{r.uuid}}" data-name="{{r.name}}" tabindex="0">
+        <img src="{{r.img}}" alt=""><span>{{r.name}}<small>{{r.meta}}</small></span>{{#if r.volatile}}<i class="fas fa-bomb al-volatile" title="Volatile"></i>{{/if}}</li>{{/each}}</ul>{{/if}}
+      {{#if mothers.length}}<h4>Mothers</h4>
+      <ul>{{#each mothers as |r|}}<li class="al-stock-row {{#if r.selected}}is-selected{{/if}}" data-action="selectItem" data-uuid="{{r.uuid}}" data-name="{{r.name}}" tabindex="0">
+        <img src="{{r.img}}" alt=""><span>{{r.name}}<small>{{r.meta}}</small></span></li>{{/each}}</ul>{{/if}}
+      {{#if ingredients.length}}<h4>Ingredients</h4>
+      <ul>{{#each ingredients as |r|}}<li class="al-stock-row {{#if r.selected}}is-selected{{/if}}" data-action="selectItem" data-uuid="{{r.uuid}}" data-name="{{r.name}}" tabindex="0">
+        <img src="{{r.img}}" alt=""><span>{{r.name}}<small>{{r.meta}}</small></span>{{#if r.volatile}}<i class="fas fa-bomb al-volatile" title="Volatile"></i>{{/if}}</li>{{/each}}</ul>{{/if}}
+      {{#if empty}}<p class="mm-empty">Nothing here yet.</p>{{/if}}
+    </div>
+  </div>
+
+  <div class="al-stock-detail">
+    {{#if importing}}
+    <div class="mm-panel al-import">
+      <h3>Import ingredients from CSV</h3>
+      <textarea data-field="csv" rows="12" placeholder="Name,Rarity,Grade (1-6),Class,Orie/dose (Grade^2),Primary Effect,Secondary Effect,Tertiary Effect,Quaternary Effect,Weight (kg),Value,Description"></textarea>
+      <p class="mm-hint">Paste rows from "Mythras Alchemy Ingredients.csv", header line included. They go to the world's ingredient catalogue; a name that is already there is updated in place.</p>
+      <div class="al-actions"><span class="mm-grow"></span><button type="button" data-action="importPanel">Cancel</button><button type="button" class="mm-primary" data-action="runImport"><i class="fas fa-file-import"></i> Import</button></div>
+    </div>
+    {{else if detail.edit}}
+    {{#with detail.edit as |d|}}
+    <div class="al-edit">
+      <header class="al-detail-head">
+        <img class="mm-portrait al-edit-img" src="{{d.img}}" alt="" data-action="editImage" data-tooltip="Change the image">
+        <input type="text" class="mm-title-input" data-afield="name" value="{{d.name}}" placeholder="Plant - Silverleaf">
+      </header>
+      {{#if d.target}}<p class="mm-hint">{{d.target}}</p>{{/if}}
+      <div class="mm-panel">
+        <div class="mm-row">
+          <label class="al-field">Grade (1–6)<input type="number" data-afield="grade" value="{{d.grade}}" min="1" max="6"></label>
+          <label class="al-field">Condition<select data-afield="condition">{{#each d.conditions as |c|}}<option value="{{c.value}}" {{#if c.selected}}selected{{/if}}>{{c.label}}</option>{{/each}}</select></label>
+        </div>
+        <div class="mm-row">
+          <label class="al-field">Class<select data-afield="class">{{#each d.classes as |c|}}<option value="{{c.value}}" {{#if c.selected}}selected{{/if}}>{{c.value}}</option>{{/each}}</select></label>
+          <label class="al-field">Rarity<select data-afield="rarity">{{#each d.rarities as |r|}}<option value="{{r.value}}" {{#if r.selected}}selected{{/if}}>{{r.value}}</option>{{/each}}</select></label>
+        </div>
+        <label class="mm-toggle"><input type="checkbox" data-afield="mother" {{#if d.mother}}checked{{/if}}> A Mother: the liquid a potion is brewed into (§3b)</label>
+      </div>
+      <fieldset class="mm-panel">
+        <legend>Effects, strongest first (§6a)</legend>
+        {{#each d.slots as |s|}}
+        <label class="al-field al-slot-field">{{s.name}}
+          <select data-afield="slot{{s.index}}"><option value="">— none —</option>{{#each s.options as |o|}}<option value="{{o.value}}" {{#if o.selected}}selected{{/if}}>{{o.label}}</option>{{/each}}</select>
+        </label>
+        {{/each}}
+        <p class="mm-hint">ξ marks effects that need a magical source; a Mundane ingredient can't carry them (§3a).</p>
+      </fieldset>
+      <div class="mm-panel">
+        <div class="mm-row">
+          <label class="al-field">Weight (kg)<input type="text" data-afield="weight" value="{{d.weight}}"></label>
+          <label class="al-field">Value (copper, or 3cp / 5gp)<input type="text" data-afield="value" value="{{d.value}}"></label>
+        </div>
+        <label class="al-field">Description<textarea data-afield="description" rows="3" placeholder="What it looks like, where it grows, what it smells of">{{d.description}}</textarea></label>
+      </div>
+      <div class="al-actions"><span class="mm-grow"></span><button type="button" data-action="cancelEdit">Cancel</button><button type="button" class="mm-primary" data-action="saveIngredient"><i class="fas fa-save"></i> Save</button></div>
+    </div>
+    {{/with}}
+    {{else if detail.ingredient}}
+    {{#with detail.ingredient as |d|}}
+    <header class="al-detail-head">
+      <img class="mm-portrait" src="{{d.img}}" alt="">
+      <div><h3>{{d.name}}</h3><div class="mm-tier-desc">{{#if d.trueName}}Really {{d.trueName}} · {{/if}}{{#if d.unidentified}}not yet identified · {{/if}}{{#if d.mother}}Mother · {{/if}}{{#if d.owned}}×{{d.quantity}} carried{{else if d.inPack}}catalogue entry{{else}}world item{{/if}}</div></div>
+    </header>
+    <div class="al-stat-grid">{{#each d.stats as |s|}}<div><label>{{s.label}}</label><strong>{{s.value}}</strong></div>{{/each}}</div>
+    <ol class="al-slots">
+      {{#each d.slots as |s|}}
+      <li class="{{#if s.hidden}}is-hidden{{/if}} {{#if s.dead}}is-dead{{/if}}">
+        <span class="al-slot-name">{{s.name}}</span>
+        <span class="al-slot-fx">{{s.label}}{{#if s.arcane}} <b title="Needs a magical source">ξ</b>{{/if}}</span>
+        <span class="al-slot-p">{{s.pLabel}}</span>
+        {{#if s.rule}}<span class="al-slot-rule">{{s.rule}}</span>{{/if}}
+      </li>
+      {{/each}}
+    </ol>
+    {{#each d.hazards as |h|}}<p class="mm-warn">{{h}}</p>{{/each}}
+    {{#if d.description}}<div class="al-desc">{{{d.description}}}</div>{{/if}}
+    <div class="al-actions">
+      {{#if d.canIdentify}}<button type="button" data-action="identify" data-tooltip="{{d.identifyNote}}"><i class="fas fa-search"></i> Identify</button>{{/if}}
+      {{#if d.canReveal}}<button type="button" data-action="revealIngredient"><i class="fas fa-eye"></i> Reveal</button>{{/if}}
+      {{#if d.canTaste}}<button type="button" data-action="taste" data-tooltip="Learn the Primary by swallowing a little (§4)"><i class="fas fa-spoon"></i> Taste</button>{{/if}}
+      {{#if d.canStudy}}<button type="button" data-action="study" data-tooltip="{{d.studyNote}}"><i class="fas fa-search"></i> Study</button>{{/if}}
+      {{#if d.canEat}}<button type="button" data-action="eat" data-tooltip="Primary only, at full Potency, the whole raw dose (§6a)"><i class="fas fa-utensils"></i> Eat raw</button>{{/if}}
+      {{#if d.canUse}}<button type="button" data-action="useInBrew"><i class="fas fa-mortar-pestle"></i> Use in a brew</button>{{/if}}
+      <span class="mm-grow"></span>
+      {{#if d.canEdit}}<button type="button" data-action="edit"><i class="fas fa-pen"></i> Edit</button>{{/if}}
+      {{#if d.canDelete}}<button type="button" class="mm-danger-btn" data-action="deleteItem" aria-label="Delete"><i class="fas fa-trash"></i></button>{{/if}}
+    </div>
+    {{/with}}
+    {{else if detail.potion}}
+    {{#with detail.potion as |d|}}
+    <header class="al-detail-head">
+      <img class="mm-portrait" src="{{d.img}}" alt="">
+      <div><h3>{{d.name}}</h3><div class="mm-tier-desc">{{#if d.known}}{{#unless d.identified}}Unidentified to the players · {{/unless}}{{/if}}brewed by {{d.brewedBy}}</div></div>
+    </header>
+    <div class="al-stat-grid">{{#each d.stats as |s|}}<div><label>{{s.label}}</label><strong>{{s.value}}</strong></div>{{/each}}</div>
+    {{#if d.known}}
+    <ul class="al-effects">{{#each d.effects as |x|}}<li><strong>{{x.effect}}</strong> <em>{{x.slot}}</em> — {{x.rule}}</li>{{else}}<li><em>Inert.</em></li>{{/each}}</ul>
+    {{#if d.blast}}<p class="mm-warn">Volatile: {{d.blast.damage}} in {{d.blast.radius}} m{{#if d.blast.ignoresArmour}}, ignoring armour{{/if}}. {{d.blast.note}}</p>{{/if}}
+    {{#if d.absorption}}<p class="mm-hint">Skin contact: {{d.absorption}}</p>{{/if}}
+    <p class="mm-hint">From {{d.ingredients}}.</p>
+    {{else}}
+    <p class="mm-hint">Its quality and effects aren't apparent by looking. The GM can reveal them.</p>
+    {{/if}}
+    <div class="al-actions">
+      {{#if d.owned}}
+      <button type="button" class="mm-primary" data-action="drink"><i class="fas fa-wine-glass"></i> Drink</button>
+      <button type="button" data-action="throw" data-tooltip="As an improvised grenade (§7)"><i class="fas fa-bomb"></i> Throw</button>
+      <button type="button" data-action="break"><i class="fas fa-heart-crack"></i> Break</button>
+      {{/if}}
+      <span class="mm-grow"></span>
+      {{#if d.canReveal}}<button type="button" data-action="reveal"><i class="fas fa-eye"></i> Reveal</button>{{/if}}
+      {{#if d.canDelete}}<button type="button" class="mm-danger-btn" data-action="deleteItem" aria-label="Delete"><i class="fas fa-trash"></i></button>{{/if}}
+    </div>
+    {{/with}}
+    {{else}}
+    <div class="mm-empty">
+      <p>Choose an ingredient or a potion.</p>
+      <p class="mm-hint">Ingredients can be tasted, studied or eaten raw; potions drunk, thrown or broken.{{#if isGM}} As GM you can also edit, write and import ingredients.{{/if}}</p>
+    </div>
+    {{/if}}
+  </div>
+
+</section>

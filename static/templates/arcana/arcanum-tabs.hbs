@@ -1,0 +1,8 @@
+{{!-- Arcanum: tab strip --}}
+<nav class="mm-tabs" aria-label="Arcanum sections">
+  {{#each tabs as |t|}}
+  <button type="button" class="mm-tab {{#if t.active}}is-active{{/if}}" data-action="showTab" data-tab="{{t.id}}" aria-pressed="{{#if t.active}}true{{else}}false{{/if}}">
+    <i class="{{t.icon}}"></i> {{t.label}}
+  </button>
+  {{/each}}
+</nav>

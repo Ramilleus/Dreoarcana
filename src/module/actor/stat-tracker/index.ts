@@ -29,6 +29,7 @@ export class ActorMythrasStatTracker {
     let exportData: TrackedStatExport[] = []
     for (const key of Object.keys(this.trackedStats)) {
       let stat: TrackedStat = this.trackedStats[key]
+      if (!this.arcanaShows(key)) continue
       if (stat.display) {
         let exportStat: TrackedStatExport = {
           id: key,
@@ -47,6 +48,14 @@ export class ActorMythrasStatTracker {
     }
 
     return exportData
+  }
+
+  /** Arcana: no Heat in the header if the table doesn't track it. */
+  private arcanaShows(key: string): boolean {
+    if (key === 'heat') {
+      try { return (game.settings as any).get('dreoarcana', 'arcana.trackHeat') !== false } catch { return true }
+    }
+    return true
   }
 
   private relabelFromTheme(statName: string): string {

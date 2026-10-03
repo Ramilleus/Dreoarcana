@@ -31,6 +31,12 @@ export class ItemMythras<TParent extends ActorMythras | null = ActorMythras | nu
         return 'icons/svg/hanging-sign.svg'
       case 'magicSkill':
         return 'icons/svg/daze.svg'
+      case 'arcaneSpell':
+        return 'systems/dreoarcana/assets/arcana/spell.svg'
+      case 'arcaneEffect':
+        return 'systems/dreoarcana/assets/arcana/effect.svg'
+      case 'potion':
+        return 'systems/dreoarcana/assets/alchemy/potion.svg'
       default:
         return 'icons/svg/book.svg'
     }

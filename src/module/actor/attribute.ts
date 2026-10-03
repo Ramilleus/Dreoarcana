@@ -7,6 +7,7 @@ export interface ActorAttributes {
     initiativeBonus: ActorAttribute
     luckPoints: ActorAttribute
     magicPoints: ActorAttribute
+    heat: ActorAttribute
     tenacity: ActorAttribute
     movement: ActorMovementAttribute
     walk: ActorAttribute

@@ -1,0 +1,13 @@
+{{!-- Arcanum: the rules, rendered from the same tables the bench uses --}}
+<section class="mm-rules">
+  <nav class="mm-rules-index">
+    {{#each pages as |p|}}
+    <button type="button" class="mm-rules-link {{#if p.active}}is-active{{/if}}" data-action="rulesPage" data-index="{{p.index}}">{{p.name}}</button>
+    {{/each}}
+    {{#if isGM}}<button type="button" class="mm-link-btn" data-action="publishRules" data-tooltip="Create or refresh a journal with these pages, for players to browse">Publish as a journal</button>{{/if}}
+  </nav>
+  <article class="mm-rules-page">
+    <h2>{{page.name}}</h2>
+    {{{page.html}}}
+  </article>
+</section>

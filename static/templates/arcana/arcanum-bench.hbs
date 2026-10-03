@@ -1,0 +1,191 @@
+{{!-- Arcanum: the bench — the spell as a flow chart.
+      Nodes are HTML cards in columns; the links between them are drawn
+      into the SVG after render, from the cards' positions. The status
+      bar and notices are repainted live. --}}
+<section class="mm-bench mm-builder mm-tier-{{tier.tier}}">
+
+  <header class="mm-builder-head">
+    <input type="text" name="name" value="{{build.name}}" placeholder="Name the working" class="mm-title-input" aria-label="Spell name" {{lock}}>
+    <div class="mm-status" data-status>{{{status}}}</div>
+  </header>
+
+  <div class="mm-flow" data-flow>
+    <div class="mm-flow-zoom">
+      <button type="button" data-action="zoomOut" data-tooltip="Zoom out (mouse wheel)">&minus;</button>
+      <button type="button" data-action="zoomReset" data-tooltip="Actual size" data-zoom-label>100%</button>
+      <button type="button" data-action="zoomIn" data-tooltip="Zoom in (mouse wheel)">+</button>
+      <button type="button" data-action="zoomFit" data-tooltip="Fit the chart (double-click the background)"><i class="fas fa-expand"></i></button>
+    </div>
+    <div class="mm-flow-stage" data-stage>
+      <svg class="mm-flow-links" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      {{!-- ===== SOURCE: the caster — how it is cast, chosen at the table ===== --}}
+      <div class="mm-flow-col">
+        <div class="mm-fnode mm-fnode-caster" data-node="caster">
+          <div class="mm-fnode-head"><span><i class="fas fa-user"></i> Caster</span></div>
+          <div class="mm-fnode-body">
+            <label>Power (N)
+              <input type="number" name="power" value="{{build.power}}" min="1" max="1000" step="1" data-tooltip="Base ξ invested before node multipliers — the caster's will" {{lock}}>
+            </label>
+            <label>Skill
+              {{#if hasSkills}}
+              <select name="skillId">
+                {{#each skills as |s|}}<option value="{{s.id}}" {{#if s.selected}}selected{{/if}}>{{s.name}} {{s.value}}%</option>{{/each}}
+                <option value="" {{#if manualSkill}}selected{{/if}}>Enter %…</option>
+              </select>
+              {{else}}<input type="hidden" name="skillId" value="">{{/if}}
+            </label>
+            <label class="mm-skill-pct" {{#unless manualSkill}}hidden{{/unless}}>Skill %
+              <input type="number" name="skillPct" value="{{skillPct}}" min="1" max="200">
+            </label>
+            <label>Focus (F)
+              <select name="focus">{{#each focus as |f|}}<option value="{{f.value}}" {{#if f.selected}}selected{{/if}} title="{{f.label}}">{{f.short}} · {{f.value}}</option>{{/each}}</select>
+            </label>
+            <label>Catalyst (Γ)
+              <select name="catalyst">{{#each catalysts as |c|}}<option value="{{c.value}}" {{#if c.selected}}selected{{/if}} title="{{c.label}}">{{c.short}}</option>{{/each}}</select>
+            </label>
+            {{#if hasActor}}
+            <label>From Stored Orie <span class="mm-label-note">has {{orieHave}}</span>
+              <input type="number" name="stored" value="{{stored}}" min="0" max="{{orieHave}}" step="1" placeholder="All it needs" data-tooltip="Orie drawn from Stored Orie is not converted now, so it makes no Heat. Leave blank to draw as much as the spell needs; 0 converts it all and saves your Stored Orie.">
+            </label>
+            {{else}}<input type="hidden" name="stored" value="">{{/if}}
+            <label>Circumstances
+              <select name="steps" data-tooltip="Mythras moves the difficulty grade for circumstances: one grade harder for each casting requirement denied, easier for preparation">{{#each circumstances as |c|}}<option value="{{c.steps}}" {{#if c.selected}}selected{{/if}}>{{c.label}}</option>{{/each}}</select>
+            </label>
+          </div>
+          <div class="mm-fnode-heat" data-tooltip="Heat this cast would add"><i class="fas fa-fire"></i> <span data-heat-value>{{heatLabel}}</span></div>
+        </div>
+      </div>
+
+      {{!-- ===== WILL: intent, then conversion ===== --}}
+      <div class="mm-flow-col mm-flow-group">
+        <span class="mm-fgroup-label">Will</span>
+        <div class="mm-fnode mm-fnode-main" data-node="intent">
+          <div class="mm-fnode-head"><span>Intent</span></div>
+          <div class="mm-fnode-body">
+            <select name="intent" {{lock}}>
+              {{#each intents as |i|}}<option value="{{i.key}}" {{#if i.selected}}selected{{/if}} title="{{i.desc}}">{{i.key}}</option>{{/each}}
+            </select>
+            <div class="mm-fnode-meta">ξ ×{{intent.xi}} · C{{intent.complexity}}</div>
+            <div class="mm-fnode-desc">{{intent.desc}}</div>
+          </div>
+        </div>
+        <div class="mm-fnode mm-fnode-main" data-node="conversion">
+          <div class="mm-fnode-head"><span>Conversion</span></div>
+          <div class="mm-fnode-body">
+            <select name="conversion" {{lock}}>
+              {{#each conversions as |c|}}<option value="{{c.key}}" {{#if c.selected}}selected{{/if}} title="{{c.desc}}">{{c.key}}</option>{{/each}}
+            </select>
+            <div class="mm-fnode-meta">Œ ×{{conversion.orie}} · C ×{{conversion.complexityFactor}}</div>
+            <div class="mm-fnode-desc">{{conversion.desc}}</div>
+          </div>
+        </div>
+      </div>
+
+      {{!-- ===== SHAPE: form, range, size ===== --}}
+      <div class="mm-flow-col mm-flow-group">
+        <span class="mm-fgroup-label">Shape</span>
+        <div class="mm-fnode mm-fnode-main" data-node="form">
+          <div class="mm-fnode-head"><span>Form</span><span class="mm-fnode-tag">Tier {{form.tierNumeral}}</span></div>
+          <div class="mm-fnode-body">
+            <select name="form" {{lock}}>
+              {{#each formsByTier as |g|}}<optgroup label="{{g.label}}">{{#each g.forms as |f|}}<option value="{{f.key}}" {{#if f.selected}}selected{{/if}} title="{{f.desc}} {{f.notes}}">{{f.key}}</option>{{/each}}</optgroup>{{/each}}
+            </select>
+            <div class="mm-fnode-meta">ξ ×{{form.xi}} · C{{form.complexity}}</div>
+          </div>
+        </div>
+        <div class="mm-fnode" data-node="range">
+          <div class="mm-fnode-head"><span>Range</span><span class="mm-fnode-tag">ξ ×{{range.xi}}</span></div>
+          <div class="mm-fnode-body">
+            <select name="range" {{lock}}>{{#each ranges as |r|}}<option value="{{r.key}}" {{#if r.selected}}selected{{/if}}>{{r.label}} · {{r.distance}}</option>{{/each}}</select>
+          </div>
+        </div>
+        <div class="mm-fnode" data-node="size">
+          <div class="mm-fnode-head"><span>Size</span><span class="mm-fnode-tag">ξ ×{{size.xi}}</span></div>
+          <div class="mm-fnode-body">
+            <select name="size" {{lock}}>{{#each sizes as |s|}}<option value="{{s.key}}" {{#if s.selected}}selected{{/if}}>{{s.label}} · {{s.area}}</option>{{/each}}</select>
+          </div>
+        </div>
+      </div>
+
+      {{!-- ===== FLOW CONTROL ===== --}}
+      <div class="mm-flow-col">
+        {{#each utilities as |u|}}
+        <div class="mm-fnode mm-fnode-utility" data-node="utility" data-index="{{u.index}}">
+          <div class="mm-fnode-head"><span>Flow</span>{{#unless ../locked}}<button type="button" class="mm-fnode-x" data-action="removeUtility" data-tooltip="Remove this node" aria-label="Remove">&times;</button>{{/unless}}</div>
+          <div class="mm-fnode-body">
+            <select data-field="node" title="{{u.desc}}" {{../lock}}>{{#each u.options as |o|}}<option value="{{o.key}}" {{#if o.selected}}selected{{/if}}>{{o.key}}</option>{{/each}}</select>
+            {{#if u.per}}<label class="mm-inline">× <input type="number" data-field="count" value="{{u.count}}" min="1" max="20" step="1" {{../lock}}> {{u.per}}</label>{{else}}<input type="hidden" data-field="count" value="1">{{/if}}
+            {{#if u.levels}}<select data-field="level" {{../lock}}>{{#each u.levels as |l|}}<option value="{{l.level}}" {{#if l.selected}}selected{{/if}}>Level {{l.level}} · ×{{l.mult}}</option>{{/each}}</select>{{else}}<input type="hidden" data-field="level" value="1">{{/if}}
+            <div class="mm-fnode-meta">ξ ×{{u.xiLabel}} · +{{u.dcLabel}} C</div>
+          </div>
+        </div>
+        {{/each}}
+        {{#unless locked}}
+        <div class="mm-fnode mm-fnode-add" data-node="addUtility">
+          <select data-field="addUtility" aria-label="Add a flow node">
+            <option value="">+ Flow node</option>
+            {{#each utilityOptions as |o|}}<option value="{{o.key}}" title="{{o.desc}}">{{o.key}}</option>{{/each}}
+          </select>
+        </div>
+        {{/unless}}
+      </div>
+
+      {{!-- ===== EFFECTS ===== --}}
+      <div class="mm-flow-col">
+        {{#each effectNodes as |x|}}
+        <div class="mm-fnode mm-fnode-effect {{#if x.damage}}is-damage{{/if}}" data-node="effect" data-index="{{x.index}}">
+          <div class="mm-fnode-head"><span class="mm-fnode-glyph">{{{x.glyph}}}</span><span class="mm-grow">{{x.category}}{{#if x.custom}} ✎{{/if}}</span>{{#unless ../locked}}<button type="button" class="mm-fnode-x" data-action="removeEffect" data-tooltip="Remove this effect" aria-label="Remove">&times;</button>{{/unless}}</div>
+          <div class="mm-fnode-body">
+            <select data-field="effect" {{../lock}}>
+              {{#each x.options as |g|}}<optgroup label="{{g.group}}">{{#each g.items as |o|}}<option value="{{o.value}}" {{#if o.selected}}selected{{/if}} title="{{o.tip}}">{{o.label}}</option>{{/each}}</optgroup>{{/each}}
+            </select>
+            <div class="mm-fnode-text" data-effect-text="{{x.index}}">{{x.text}}</div>
+            <div class="mm-fnode-meta">C{{x.complexity}}{{#if x.damage}} · damage{{/if}}{{#if x.compound}} · compound{{/if}}</div>
+          </div>
+        </div>
+        {{/each}}
+        {{#unless locked}}
+        <div class="mm-fnode mm-fnode-add" data-node="addEffect">
+          <select data-field="addEffect" aria-label="Add an effect">
+            <option value="">+ Effect</option>
+            {{#each addEffectOptions as |g|}}<optgroup label="{{g.group}}">{{#each g.items as |o|}}<option value="{{o.value}}" title="{{o.tip}}">{{o.label}}</option>{{/each}}</optgroup>{{/each}}
+          </select>
+          {{#if isGM}}<button type="button" class="mm-link-btn" data-action="newEffectHere" data-tooltip="Define a new Effect node and add it here">New effect node…</button>{{/if}}
+        </div>
+        {{/unless}}
+      </div>
+
+      {{!-- ===== SINK: the manifestation ===== --}}
+      <div class="mm-flow-col">
+        <div class="mm-fnode mm-fnode-sink" data-node="sink">
+          <div class="mm-sigil mm-sigil-sink" data-sigil data-tooltip="The spell's sigil — drawn from its nodes">{{{sigil}}}</div>
+          <div class="mm-tier-name" data-tier-name>{{tier.name}}</div>
+          <div class="mm-sink-grid">
+            <div><label>Might</label><strong data-out="xi">{{xi}}</strong></div>
+            <div><label>Œ</label><strong data-out="orie">{{orieFinal}}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mm-notices" data-notices>{{{notices}}}</div>
+
+  <details class="mm-bench-more">
+    <summary>Notes and working</summary>
+    <div class="mm-bench-more-body">
+      <label class="mm-notes">Notes
+        <textarea name="notes" rows="3" placeholder="What the spell looks like, who taught it, when it is used" {{lock}}>{{build.notes}}</textarea>
+      </label>
+      <div class="mm-working">
+        <p class="mm-hint">{{breakdown}}</p>
+        <table class="mm-node-table">
+          <thead><tr><th>Node</th><th class="num">ξ</th><th class="num">ΔC</th></tr></thead>
+          <tbody>{{#each lines as |l|}}<tr><td>{{l.label}}</td><td class="num">{{l.mult}}</td><td class="num">{{l.dc}}</td></tr>{{/each}}</tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+</section>

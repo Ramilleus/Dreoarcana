@@ -27,7 +27,7 @@ export class EncounterGeneratorActorBuilder {
     // Load standard skills from compendium
     promiseChain.then(
       (await game.packs
-        .get('mythras.standardSkill')
+        .get('dreoarcana.standardSkill')
         .getDocuments()
         .then((result: any) => {
           result.forEach((skill: any, index: any) => {
@@ -39,7 +39,7 @@ export class EncounterGeneratorActorBuilder {
     // Load professional skills from compendium
     promiseChain.then(
       (await game.packs
-        .get('mythras.professionalSkill')
+        .get('dreoarcana.professionalSkill')
         .getDocuments()
         .then((result: any) => {
           result.forEach((skill: any, index: any) => {

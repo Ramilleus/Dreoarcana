@@ -1,0 +1,105 @@
+{{!-- Arcanum: Effect node catalogue and editor --}}
+<section class="mm-effects">
+
+  <div class="mm-effects-index">
+    <header class="mm-pane-head">
+      <h3>Custom effect nodes</h3>
+      <button type="button" class="mm-mini" data-action="refreshEffects" data-tooltip="Re-scan world items and compendiums" aria-label="Refresh"><i class="fas fa-sync"></i></button>
+      {{#if isGM}}<button type="button" class="mm-mini" data-action="addEffect" data-tooltip="Define a new Effect node"><i class="fas fa-plus"></i> New</button>{{/if}}
+    </header>
+    {{#if count}}
+    {{#each sources as |g|}}
+    <h4 class="mm-effect-source"><i class="fas {{#if g.world}}fa-globe{{else}}fa-book{{/if}}"></i> {{g.source}}</h4>
+    <ul class="mm-effect-rows">
+      {{#each g.effects as |x|}}
+      <li class="mm-effect-row {{#if x.selected}}is-selected{{/if}} {{#if x.invalid}}is-invalid{{/if}}" data-action="selectEffect" data-uuid="{{x.uuid}}" tabindex="0">
+        <span class="mm-fnode-glyph">{{{x.glyph}}}</span>
+        <span class="mm-effect-name">{{x.label}}<small>{{#if x.invalid}}needs fixing{{else}}{{x.category}}{{#if x.damage}} · damage{{/if}}{{#if x.uses}} · {{x.uses}} spell{{#if (ne x.uses 1)}}s{{/if}}{{/if}}{{/if}}</small></span>
+      </li>
+      {{/each}}
+    </ul>
+    {{/each}}
+    {{else}}
+    <p class="mm-empty">No custom effects yet.{{#if isGM}} Add one to extend the catalogue: a healing touch, a ward against a named thing, a Conjuration row of your own.{{/if}}</p>
+    {{/if}}
+    <p class="mm-hint">The catalogue ships {{builtinCount}} Effect nodes. Custom ones are Effect Node items: keep them in the Items directory, or in any Item compendium to share them.</p>
+    {{#if isGM}}<button type="button" class="mm-link-btn" data-action="openPack">{{#if hasPack}}Open{{else}}Create{{/if}} the {{packLabel}} compendium</button>{{/if}}
+  </div>
+
+  <div class="mm-effects-editor">
+    {{#if effect}}
+    <header class="mm-effect-head">
+      <img class="mm-portrait" src="{{effect.img}}" alt="" {{#if effect.editable}}data-action="effectImage" data-tooltip="Change the icon"{{/if}}>
+      <div class="mm-grow">
+        <input type="text" class="mm-title-input" data-efield="name" value="{{effect.name}}" placeholder="Effect name" {{effect.lock}}>
+        <div class="mm-tier-desc">
+          <span class="mm-glyph-inline" title="This effect's mark on a spell's sigil">{{{effect.glyph}}}</span>
+          {{#if effect.inPack}}In compendium <strong>{{effect.packLabel}}</strong>{{else}}World item{{#if effect.uses.length}} · used by {{effect.uses.length}} spell{{#if (ne effect.uses.length 1)}}s{{/if}}{{/if}}{{/if}}
+        </div>
+      </div>
+    </header>
+
+    <div class="mm-panel">
+      <div class="mm-row">
+        <div class="input-group mm-grow">
+          <label>Category</label>
+          <input type="text" data-efield="system.category" value="{{effect.category}}" list="mm-effect-categories" {{effect.lock}}>
+          <datalist id="mm-effect-categories">{{#each effect.categories as |c|}}<option value="{{c}}">{{/each}}</datalist>
+        </div>
+        <div class="input-group mm-narrow">
+          <label>Complexity</label>
+          <input type="number" data-efield="system.complexity" value="{{effect.complexity}}" min="0" max="10" step="1" {{effect.lock}}>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Description — the catalogue line</label>
+        <input type="text" data-efield="system.desc" value="{{effect.desc}}" placeholder="What it does, in a sentence" {{effect.lock}}>
+      </div>
+    </div>
+
+    <fieldset class="mm-panel">
+      <legend>Catalogued for which Intents?</legend>
+      <div class="mm-check-grid">
+        {{#each effect.intents as |i|}}
+        <label class="mm-check" title="{{i.desc}}">
+          <input type="checkbox" data-efield="intent" value="{{i.key}}" {{#if i.checked}}checked{{/if}} {{../effect.lock}}>
+          <span>{{i.key}}</span>
+        </label>
+        {{/each}}
+      </div>
+      <label class="mm-toggle">
+        <input type="checkbox" data-efield="system.damage" {{#if effect.damage}}checked{{/if}} {{effect.lock}}>
+        <span>Damage-capable — rolls dice and can carry an Offensive (Attack) intent on its own</span>
+      </label>
+      <p class="mm-hint">Other intents only warn on the bench. The Attack Spell rule is the one hard constraint.</p>
+    </fieldset>
+
+    <div class="mm-panel">
+      <div class="input-group">
+        <label>Magnitude — what it does at a given Might</label>
+        <input type="text" data-efield="system.magnitude" value="{{effect.magnitude}}" placeholder="e.g. Heals {M/2} HP to one location" {{effect.lock}}>
+      </div>
+      <p class="mm-hint">Placeholders: <code>{M}</code> Might · <code>{M*2}</code> <code>{M/5}</code> <code>{M+3}</code> one arithmetic step, rounded, minimum 1 · <code>{dice}</code> the damage formula (damage-capable only).</p>
+      <div class="mm-effect-preview">
+        {{#each effect.previews as |p|}}<div><label>At Might {{p.M}}</label><span>{{p.text}}</span></div>{{/each}}
+      </div>
+      {{#if effect.errors.length}}<div class="mm-error">{{#each effect.errors}}{{this}}<br>{{/each}}</div>{{/if}}
+    </div>
+
+    <footer class="mm-effect-foot">
+      <span class="mm-hint">Key <code>{{effect.key}}</code> — spells reference this, not the name, so renaming is safe.</span>
+      <span class="mm-grow"></span>
+      {{#if isGM}}{{#unless effect.inPack}}
+      <button type="button" data-action="effectToPack" data-tooltip="Copy into the {{packLabel}} compendium"><i class="fas fa-book-medical"></i> To compendium</button>
+      <button type="button" class="mm-danger-btn" data-action="deleteEffect"><i class="fas fa-trash"></i> Delete</button>
+      {{/unless}}{{/if}}
+    </footer>
+    {{else}}
+    <div class="mm-empty">
+      <p>Choose an effect node to read{{#if isGM}} or edit{{/if}} it.</p>
+      <p class="mm-hint">Effect nodes are what a spell does: an element, a barrier, a link, a construct. Each one you define here appears in every spell's “+ Effect” list.</p>
+    </div>
+    {{/if}}
+  </div>
+
+</section>

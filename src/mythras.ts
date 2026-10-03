@@ -1,10 +1,14 @@
 //@ts-nocheck
 import { HooksMythras } from '@scripts/hooks'
+import { registerArcana } from './arcana/index.js'
+import { registerAlchemy } from './alchemy/index.js'
 
 import { TemplatePreloader } from '@util/template-preloader'
 import './styles/main.scss'
 
 HooksMythras.listen()
+registerArcana()
+registerAlchemy()
 
 if (BUILD_MODE === 'development' && module.hot) {
   module.hot.accept()

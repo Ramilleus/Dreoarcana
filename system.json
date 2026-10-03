@@ -50,6 +50,13 @@
       "path": "packs/humanoidHitLocations.db",
       "type": "Item",
       "system": "dreoarcana"
+    },
+    {
+      "name": "alchemyIngredients",
+      "label": "Alchemy Ingredients",
+      "path": "packs/alchemyingredients.db",
+      "type": "Item",
+      "system": "dreoarcana"
     }
   ],
   "languages": [

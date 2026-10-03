@@ -1,0 +1,79 @@
+{{!-- Laboratory: foraging — where things grow, and a day spent looking --}}
+<section class="al-forage">
+
+  <div class="al-ground-index">
+    <header class="mm-pane-head">
+      <h3>Foraging grounds</h3>
+      {{#if isGM}}<button type="button" class="mm-mini" data-action="newGround" data-tooltip="Describe a new foraging ground"><i class="fas fa-plus"></i></button>{{/if}}
+    </header>
+    <ul class="al-ground-list">
+      {{#each grounds as |g|}}
+      <li class="al-stock-row {{#if g.selected}}is-selected{{/if}}" data-action="selectGround" data-ground="{{g.id}}" tabindex="0">
+        <i class="fas {{#if g.count}}fa-map-marker-alt{{else}}fa-globe{{/if}}"></i>
+        <span>{{g.name}}<small>{{#if g.count}}{{g.count}} thing{{#unless (eq g.count 1)}}s{{/unless}} grow here{{else}}the whole catalogue{{/if}}</small></span>
+      </li>
+      {{/each}}
+    </ul>
+    {{#if isGM}}<p class="mm-hint">Grounds are yours to describe: name a place, set how hard it is to work, and tick what grows there.</p>{{/if}}
+  </div>
+
+  <div class="al-ground-detail">
+    {{#if edit}}
+    <div class="al-ground-edit">
+      <input type="text" class="mm-title-input" data-gfield="name" value="{{edit.name}}" placeholder="Starspire Fog Forest">
+      <div class="mm-row">
+        <label class="al-field">Difficulty of the Survival roll
+          <select data-gfield="grade">{{#each edit.grades as |g|}}<option value="{{g.value}}" {{#if g.selected}}selected{{/if}}>{{g.label}}</option>{{/each}}</select>
+        </label>
+      </div>
+      <label class="al-field">Description<textarea data-gfield="description" rows="2" placeholder="What the place is like to search">{{edit.description}}</textarea></label>
+      <label class="al-field">What grows here
+        <input type="search" data-field="groundSearch" placeholder="Search the catalogue…">
+      </label>
+      <ul class="al-ground-picks">
+        {{#each edit.picks as |p|}}
+        <li class="al-ground-pick" data-name="{{p.name}}"><label><input type="checkbox" value="{{p.name}}" {{#if p.checked}}checked{{/if}}> {{p.name}} <small>{{p.rarity}}</small></label></li>
+        {{/each}}
+      </ul>
+      <div class="al-actions"><span class="mm-grow"></span><button type="button" data-action="cancelGround">Cancel</button><button type="button" class="mm-primary" data-action="saveGround"><i class="fas fa-save"></i> Save</button></div>
+    </div>
+    {{else}}
+    <header class="al-detail-head">
+      <div class="mm-grow">
+        <h3>{{ground.name}}</h3>
+        <div class="mm-tier-desc">Survival at {{ground.gradeLabel}} · {{count}} thing{{#unless (eq count 1)}}s{{/unless}} to find</div>
+      </div>
+      {{#if isGM}}{{#unless ground.anywhere}}
+      <button type="button" class="mm-mini" data-action="editGround"><i class="fas fa-pen"></i> Edit</button>
+      <button type="button" class="mm-mini mm-danger-btn" data-action="deleteGround" aria-label="Delete ground"><i class="fas fa-trash"></i></button>
+      {{/unless}}{{/if}}
+    </header>
+    {{#if ground.description}}<p>{{ground.description}}</p>{{/if}}
+
+    <div class="mm-panel al-forage-panel">
+      {{#if actor}}
+      <div class="al-skills">
+        <div><span>{{survival.name}}</span><b>{{survival.value}}%</b></div>
+        <div><span>{{lore.name}} (to identify)</span><b>{{lore.value}}%</b></div>
+      </div>
+      <div class="al-forage-row">
+        <label class="al-field al-narrow" data-tooltip="Local conditions, weather, a guide who knows the place">Modifier %<input type="number" data-field="forageMod" value="{{mod}}" step="5"></label>
+        <span class="mm-chip">Target {{target}}</span>
+        <span class="mm-grow"></span>
+        <button type="button" class="mm-primary" data-action="forage" {{#unless canForage}}disabled{{/unless}}><i class="fas fa-leaf"></i> Forage for a day</button>
+      </div>
+      <p class="mm-hint">One Survival roll a day (Mythras p.49). A success finds 1d3 things, a special or critical 1d3+1, and a critical harvests them all Enhanced (§3). Anything {{actor.name}} doesn't already know is identified on the spot with Lore at its Rarity (§3); a failure leaves it unidentified, for the Stock tab.</p>
+      {{else}}
+      <p class="mm-hint">Choose an alchemist in the rail to forage.</p>
+      {{/if}}
+    </div>
+
+    <h4 class="al-odds-head">What turns up, and how often</h4>
+    <table class="mm-node-table al-odds">
+      <thead><tr><th>Ingredient</th><th>Rarity</th><th>Class</th><th class="num">Chance per find</th></tr></thead>
+      <tbody>{{#each odds as |o|}}<tr><td>{{o.name}}</td><td>{{o.rarity}}</td><td>{{o.cls}}</td><td class="num">{{o.pct}}%</td></tr>{{/each}}</tbody>
+    </table>
+    {{/if}}
+  </div>
+
+</section>

@@ -291,5 +291,14 @@
   "SETTINGS.gameThemeHint": "Configure the setting for your game. This influences sheet layout and design.",
   "SETTINGS.gameThemeMythras": "Mythras classic",
   "SETTINGS.gameThemeName": "Game Theme",
-  "SETTINGS.gameThemeSpace": "M-Space"
+  "SETTINGS.gameThemeSpace": "M-Space",
+  "MYTHRAS.HEAT": "HEAT",
+  "TYPES.Item.arcaneSpell": "Arcane Spell",
+  "TYPES.Item.arcaneEffect": "Effect Node",
+  "MYTHRAS.New_arcaneSpell": "New Arcane Spell",
+  "MYTHRAS.New_arcaneEffect": "New Effect Node",
+  "TYPES.Item.ingredient": "Ingredient",
+  "TYPES.Item.potion": "Potion",
+  "MYTHRAS.New_ingredient": "New Ingredient",
+  "MYTHRAS.New_potion": "New Potion"
 }

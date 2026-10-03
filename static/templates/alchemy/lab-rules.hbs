@@ -1,0 +1,12 @@
+{{!-- Laboratory: the alchemy rules --}}
+<section class="mm-rules">
+  <nav class="mm-rules-index">
+    {{#each pages as |p|}}
+    <button type="button" class="mm-rules-link {{#if p.active}}is-active{{/if}}" data-action="rulesPage" data-index="{{p.index}}">{{p.name}}</button>
+    {{/each}}
+  </nav>
+  <article class="mm-rules-page">
+    <h2>{{page.name}}</h2>
+    {{{page.html}}}
+  </article>
+</section>

@@ -1,0 +1,174 @@
+/* ===================================================================
+ * Dreoarcana Alchemy — the Laboratory
+ *
+ * Built on Arcana's surface (styles/arcana): the same theme variables,
+ * tabs, caster rail, gauges, chips, panels and rules pages. This file
+ * adds only the Laboratory's layout and its own pieces.
+ * =================================================================== */
+
+/* ---- Layout ------------------------------------------------------- */
+.mm-lab .window-content.mm-surface {
+  padding: 0; overflow: hidden; min-height: 0; min-width: 760px;
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas: "tabs tabs" "rail main";
+}
+.mm-lab [data-application-part="tabs"] { grid-area: tabs; }
+.mm-lab [data-application-part="rail"] { grid-area: rail; min-height: 0; }
+.mm-lab :is([data-application-part="brew"], [data-application-part="stock"], [data-application-part="forage"]) { grid-area: main; min-height: 0; min-width: 0; }
+.mm-lab [data-application-part="rules"] { grid-row: 2; grid-column: 1 / -1; min-height: 0; }
+.mm-lab[data-tab]:not([data-tab="brew"]) [data-application-part="brew"] { display: none; }
+.mm-lab:not([data-tab="stock"]) [data-application-part="stock"] { display: none; }
+.mm-lab:not([data-tab="forage"]) [data-application-part="forage"] { display: none; }
+.mm-lab:not([data-tab="rules"]) [data-application-part="rules"] { display: none; }
+.mm-lab[data-tab="rules"] [data-application-part="rail"] { display: none; }
+
+.al-rail { padding: 0; }
+.al-rail-scroll { height: 100%; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; }
+.al-skills { display: flex; flex-direction: column; gap: 3px; font-size: 0.85em; }
+.al-skills > div { display: flex; justify-content: space-between; gap: 6px; }
+.al-skills span { color: var(--ink-soft); }
+.al-skills b { font-family: var(--mm-mono); }
+.al-volatiles { padding: 8px 10px; border: 1px solid var(--mm-danger); border-radius: var(--mm-r-sm); background: color-mix(in srgb, var(--mm-danger) 7%, transparent); font-size: 0.86em; }
+.al-volatiles h4 { margin: 0 0 4px !important; color: var(--mm-danger) !important; font-size: 0.95em !important; }
+.al-volatiles ul { margin: 0 0 4px; padding-left: 1.1em; }
+.al-volatiles small { color: var(--ink-soft); }
+
+/* ---- Shared bits -------------------------------------------------- */
+.al-fx-row { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+.al-fx {
+  display: inline-block; padding: 0 6px; border-radius: 999px; font-size: 0.74em; line-height: 1.6;
+  background: var(--mm-fill); border: 1px solid var(--mm-line); white-space: nowrap;
+}
+.al-fx.is-arcane { border-color: var(--mm-accent); color: var(--mm-accent); }
+.al-fx.is-unknown { opacity: 0.55; font-style: italic; }
+.al-field { display: flex; flex-direction: column; gap: 2px; margin: 0; font-size: 0.82em; font-weight: 600; color: var(--ink-soft); }
+.mm .mm-surface .al-field :is(input, select, textarea) { width: 100%; font-weight: 400; color: var(--ink); }
+.mm .mm-surface .al-field :is(input, select) { height: 30px; }
+.al-narrow { width: 7.5em; }
+.al-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; }
+.mm .mm-surface .al-actions button, .mm .mm-surface .al-brew-foot button, .mm .mm-surface .al-brew .mm-foot button {
+  flex: 0 0 auto; width: auto; height: 32px; margin: 0; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+
+/* ---- Brew --------------------------------------------------------- */
+.al-brew { height: 100%; min-height: 0; display: flex; flex-direction: column; gap: 8px; padding: 10px 12px 0; }
+.al-mixture { flex: 0 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 14px; padding: 10px 12px; background: var(--mm-node-bg); border: 1px solid var(--edge); border-radius: var(--mm-r-md); box-shadow: var(--mm-node-shadow); }
+.al-mother, .al-chosen { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.al-chosen-head { display: flex; align-items: baseline; gap: 8px; font-size: 0.9em; }
+.al-chosen-head small { color: var(--ink-soft); }
+.al-chosen-head .mm-link-btn { margin-left: auto !important; }
+.al-chosen-list { display: flex; flex-wrap: wrap; gap: 4px; min-height: 26px; align-items: center; }
+.al-chip-x { display: inline-flex; align-items: center; gap: 2px; padding: 1px 3px 1px 9px; border-radius: 999px; background: var(--mm-fill); border: 1px solid var(--mm-accent); font-size: 0.86em; }
+.mm .mm-surface .al-chip-x button { width: 18px; height: 18px; margin: 0; padding: 0; line-height: 16px; border: none; background: transparent; border-radius: 50%; font-weight: 700; }
+.mm .mm-surface .al-chip-x button:hover { background: var(--mm-danger); color: #fff; }
+.al-readout { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 4px; padding-top: 6px; border-top: 1px dashed var(--mm-line); }
+.al-readout .mm-status { justify-content: flex-start; }
+.al-overlap { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 0.88em; }
+
+.al-shelf { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
+.al-filters { display: flex; align-items: center; gap: 8px; }
+.mm .mm-surface .al-filters input[type="search"] { flex: 1 1 auto; height: 30px; }
+.mm .mm-surface .al-filters select { width: auto; height: 30px; }
+.al-count { font-size: 0.8em; color: var(--ink-soft); font-family: var(--mm-mono); }
+.al-picklist { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.al-pick[hidden] { display: none; }
+.al-pick label { display: grid; grid-template-columns: auto 26px minmax(10em, 1fr) minmax(0, 2fr); align-items: center; gap: 8px; padding: 4px 6px; border: 1px solid transparent; border-radius: var(--mm-r-sm); cursor: pointer; font-weight: 400; }
+.al-pick label:hover { background: var(--mm-fill); border-color: var(--mm-line); }
+.al-pick:has(input:checked) label { background: var(--mm-node-bg); border-color: var(--mm-accent); box-shadow: inset 3px 0 0 var(--mm-accent); }
+.al-pick img { width: 26px; height: 26px; border: none; object-fit: cover; }
+.al-pick-name { display: flex; flex-direction: column; font-weight: 600; line-height: 1.2; min-width: 0; }
+.al-pick-name small { font-weight: 400; font-size: 0.78em; color: var(--ink-soft); }
+.al-brew-foot { margin: 0 -12px; padding: 8px 12px 10px; align-items: flex-end; }
+
+.al-batch-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.al-batch-head h3 { font-size: 1.2em; font-variant: small-caps; letter-spacing: 0.04em; }
+.al-batch-head .mm-status { justify-content: flex-start; }
+.al-decant-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.al-decant label { display: grid; grid-template-columns: auto minmax(9em, 1fr) 6em minmax(0, 2fr); align-items: center; gap: 10px; padding: 7px 10px; border: 1px solid var(--mm-line); border-radius: var(--mm-r-sm); cursor: pointer; font-weight: 400; background: var(--mm-fill); }
+.al-decant.is-selected label, .al-decant label:has(input:checked) { border-color: var(--mm-accent); background: var(--mm-node-bg); box-shadow: inset 3px 0 0 var(--mm-accent); }
+.al-decant.is-disabled label { opacity: 0.55; cursor: not-allowed; }
+.al-decant-name { font-weight: 700; }
+.al-decant-name small { font-weight: 400; color: var(--ink-soft); margin-left: 4px; }
+.al-decant-doses { font-family: var(--mm-mono); }
+.al-decant-note { font-size: 0.88em; color: var(--ink-soft); }
+
+/* ---- Stock -------------------------------------------------------- */
+.al-stock { height: 100%; min-height: 0; display: grid; grid-template-columns: 280px minmax(0, 1fr); }
+.al-stock-index { min-height: 0; display: flex; flex-direction: column; gap: 6px; padding: 10px; background: var(--mm-rail-bg); border-right: 1px solid var(--edge); }
+.mm .mm-surface .al-stock-index .mm-pane-head select { flex: 1 1 auto; height: 28px; }
+.mm .mm-surface .al-stock-index input[type="search"] { height: 28px; }
+.al-stock-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.al-stock-list h4 { margin: 8px 2px 3px !important; font-size: 0.8em !important; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft) !important; }
+.al-stock-list ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.al-stock-row { display: flex; align-items: center; gap: 8px; padding: 4px 6px; border: 1px solid transparent; border-radius: var(--mm-r-sm); cursor: pointer; }
+.al-stock-row[hidden] { display: none; }
+.al-stock-row:hover { background: var(--mm-fill); border-color: var(--mm-line); }
+.al-stock-row.is-selected { background: var(--mm-node-bg); border-color: var(--mm-accent); box-shadow: inset 3px 0 0 var(--mm-accent); }
+.al-stock-row img { width: 26px; height: 26px; border: none; object-fit: cover; flex: 0 0 auto; }
+.al-stock-row > span { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; font-weight: 600; line-height: 1.2; }
+.al-stock-row small { font-weight: 400; font-size: 0.78em; color: var(--ink-soft); }
+.al-volatile { color: var(--mm-danger); font-size: 0.85em; }
+
+.al-stock-detail { min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; }
+.al-detail-head { display: flex; align-items: center; gap: 12px; }
+.al-detail-head h3 { font-size: 1.35em; }
+.al-detail-head .mm-title-input { flex: 1 1 auto; }
+.al-stat-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px 6px; }
+.al-stat-grid > div { display: flex; flex-direction: column; padding: 4px 7px; background: var(--mm-fill); border: 1px solid var(--mm-line); border-radius: var(--mm-r-xs); }
+.al-stat-grid label { font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); }
+.al-stat-grid strong { font-family: var(--mm-serif); font-size: 1.05em; }
+.al-slots { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
+.al-slots li { display: grid; grid-template-columns: 6.5em minmax(0, 1fr) 3em; gap: 2px 10px; padding: 5px 8px; border-left: 3px solid var(--mm-accent); background: var(--mm-fill); border-radius: 0 var(--mm-r-xs) var(--mm-r-xs) 0; }
+.al-slots li.is-hidden { border-left-color: var(--mm-line); font-style: italic; opacity: 0.75; }
+.al-slots li.is-dead { opacity: 0.55; }
+.al-slot-name { font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); align-self: center; }
+.al-slot-fx { font-weight: 700; }
+.al-slot-p { font-family: var(--mm-mono); text-align: right; }
+.al-slot-rule { grid-column: 2 / -1; font-size: 0.86em; color: var(--ink-soft); }
+.al-effects { margin: 0; padding-left: 1.2em; }
+.al-effects li { margin: 3px 0; }
+.al-desc { font-size: 0.92em; line-height: 1.45; }
+.al-edit { display: flex; flex-direction: column; gap: 10px; }
+.al-slot-field { flex-direction: row; align-items: center; gap: 10px; }
+.al-slot-field > select { flex: 1 1 auto; }
+.mm .mm-surface .al-import textarea { width: 100%; font-family: var(--mm-mono); font-size: 0.85em; }
+
+/* ---- Chat and the character sheet -------------------------------- */
+.al-chat.is-bad { border-left-color: var(--mm-danger); }
+.laboratory-launch { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.basic-table h3 .laboratory-open { cursor: pointer; }
+.basic-table h3 .laboratory-open { margin-left: 6px; font-size: 0.85em; }
+.basic-table h3 .laboratory-open:hover { text-shadow: 0 0 6px currentColor; }
+
+/* ---- Rail: saturation and lasting effects ------------------------ */
+.al-gauge-sat .mm-gauge-track > div { background: linear-gradient(90deg, #3f8fb0, var(--mm-accent)); }
+.al-gauge-sat.is-hot .mm-gauge-track > div { background: linear-gradient(90deg, var(--mm-accent), #b8652a); }
+.al-gauge-sat.is-over .mm-gauge-track > div { background: var(--mm-danger); box-shadow: 0 0 6px var(--mm-danger); }
+.al-saturation .mm-hint { display: block; margin-top: 2px; font-size: 0.75em; }
+.al-lasting { padding: 8px 10px; border: 1px solid var(--mm-line); border-radius: var(--mm-r-sm); background: var(--mm-fill); font-size: 0.86em; }
+.al-lasting h4 { margin: 0 0 4px !important; font-size: 0.95em !important; color: var(--ink-soft) !important; }
+.al-lasting ul { margin: 0 0 4px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.al-lasting li { display: flex; align-items: center; gap: 6px; }
+.al-lasting li > span { flex: 1 1 auto; min-width: 0; }
+.al-lasting li b { color: var(--mm-accent); }
+.al-lasting li small { font-family: var(--mm-mono); color: var(--ink-soft); }
+.al-lasting li.is-expired { opacity: 0.5; }
+.al-lasting li:hover .mm-row-x { opacity: 0.6; }
+
+/* ---- Forage ------------------------------------------------------ */
+.al-forage { height: 100%; min-height: 0; display: grid; grid-template-columns: 260px minmax(0, 1fr); }
+.al-ground-index { min-height: 0; display: flex; flex-direction: column; gap: 6px; padding: 10px; background: var(--mm-rail-bg); border-right: 1px solid var(--edge); }
+.al-ground-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.al-ground-list .al-stock-row > i { width: 20px; text-align: center; color: var(--mm-accent); }
+.al-ground-detail { min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; }
+.al-forage-panel { gap: 8px; }
+.al-forage-row { display: flex; align-items: flex-end; gap: 10px; }
+.mm .mm-surface .al-forage-row button { flex: 0 0 auto; width: auto; height: 32px; margin: 0; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px; }
+.al-odds-head { margin: 4px 0 0 !important; font-size: 0.85em !important; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft) !important; }
+.al-ground-edit { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.al-ground-picks { margin: 0; padding: 6px; list-style: none; max-height: 340px; overflow-y: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px 12px; border: 1px solid var(--mm-line); border-radius: var(--mm-r-sm); background: var(--mm-fill); }
+.al-ground-pick[hidden] { display: none; }
+.al-ground-pick label { display: flex; align-items: center; gap: 6px; font-size: 0.88em; font-weight: 400; cursor: pointer; }
+.al-ground-pick small { color: var(--ink-soft); margin-left: auto; }

@@ -83,6 +83,13 @@
             "value": 0,
             "display": true,
             "derivedFrom": "maxActionPoints"
+          },
+          "heat": {
+            "name": "MYTHRAS.HEAT",
+            "attribute": "heat",
+            "value": 0,
+            "display": true,
+            "derivedFrom": "maxHeat"
           }
         },
         "attributes": {
@@ -115,6 +122,9 @@
             "mod": 0,
             "value": 11,
             "minimize": 0
+          },
+          "heat": {
+            "mod": 0
           },
           "tenacity": {
             "mod": 0,
@@ -166,6 +176,10 @@
         "currentMagicPoints": 11,
         "currentActionPoints": 2,
         "experienceRolls": 0,
+        "saturation": {
+          "value": 0,
+          "time": 0
+        },
         "spellFilterOption": "All",        
         "equipmentFilterOption": "All"
       },
@@ -206,7 +220,11 @@
       "currency",
       "spell",
       "storage",
-      "cultBrotherhood"
+      "cultBrotherhood",
+      "arcaneSpell",
+      "arcaneEffect",
+      "ingredient",
+      "potion"
     ],
     "templates": {
       "base": {
@@ -237,7 +255,12 @@
         "hp": 0,
         "currentHp": 0,
         "storage": "Unknown",
-        "storageList": []
+        "storageList": [],
+        "catalyst": {
+          "enabled": false,
+          "quality": 1,
+          "worth": ""
+        }
       }
     },
     "cyberModule": {
@@ -380,6 +403,60 @@
       "rankName4": "Leader",
       "currentRank": 0,
       "currentRankName": "Common"
+    },
+    "arcaneSpell": {
+      "templates": ["base"],
+      "build": {},
+      "snapshot": {},
+      "soundFile": ""
+    },
+    "arcaneEffect": {
+      "templates": ["base"],
+      "key": "",
+      "category": "Custom",
+      "intents": ["Utility"],
+      "complexity": 1,
+      "damage": false,
+      "desc": "",
+      "magnitude": "Manifests at Might {M}"
+    },
+    "ingredient": {
+      "templates": ["item"],
+      "equipmentType": "MYTHRAS.Materials",
+      "grade": null,
+      "condition": 0,
+      "class": "Mundane",
+      "rarity": "Common",
+      "mother": false,
+      "slots": [null, null, null, null],
+      "discovered": [],
+      "identified": true,
+      "trueName": ""
+    },
+    "potion": {
+      "templates": ["item"],
+      "equipmentType": "MYTHRAS.Consumables",
+      "identified": false,
+      "quality": "",
+      "potency": 0,
+      "supercritical": false,
+      "orie": 0,
+      "ingredientOrie": 0,
+      "channelledXi": 0,
+      "rawOriePerDose": 0,
+      "mechanical": false,
+      "potionClass": "Mundane",
+      "mother": "",
+      "motherUnits": 0,
+      "boiledOff": 0,
+      "duration": 0,
+      "multiplier": 1,
+      "manifest": [],
+      "size": "",
+      "ingredients": [],
+      "trueName": "",
+      "trueDescription": "",
+      "brewedBy": ""
     }
   }
 }

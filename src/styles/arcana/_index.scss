@@ -1,0 +1,609 @@
+/* ===================================================================
+ * Dreoarcana Arcana — styles
+ *
+ *   1. Tokens
+ *   2. Inside the rest of Dreoarcana: the character sheet's Arcane
+ *      Spells table, the catalyst fields on gear, the Items directory
+ *      button and the chat cards. These follow the system's look.
+ *   3. The Arcanum's surface: its own theme (chosen per player) and a
+ *      reset so Foundry's light/dark interface theme can't leak in
+ *   4. The Arcanum's layout: tabs, the caster rail, the footer
+ *   5. The bench — the spell flow chart
+ *   6. The Effect Nodes tab
+ *   7. The Rules tab
+ *   8. Sigils
+ *   9. Motion
+ *  10. Themes
+ * =================================================================== */
+
+/* ===================================================================
+   1. TOKENS
+   =================================================================== */
+:root {
+  --mm-accent: #4a3c8c;            /* ξ — Melfyrium violet-blue */
+  --mm-danger: #a33224;
+  --mm-warn:   #9a6a12;
+  --mm-tier-1: #b8652a;            /* Ember     */
+  --mm-tier-2: #b8901c;            /* Lumen     */
+  --mm-tier-3: #2f6f9f;            /* Tempest   */
+  --mm-tier-4: #6f3fa0;            /* Aetherion */
+  --mm-tier-5: #a3241f;            /* Cataclysm */
+  --mm-on-tier: #ffffff;           /* text on a tier-coloured fill */
+  --mm-r-xs: 3px; --mm-r-sm: 6px; --mm-r-md: 10px;
+  --mm-serif: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --mm-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+.mm-tier-1 { --mm-tier: var(--mm-tier-1); }
+.mm-tier-2 { --mm-tier: var(--mm-tier-2); }
+.mm-tier-3 { --mm-tier: var(--mm-tier-3); }
+.mm-tier-4 { --mm-tier: var(--mm-tier-4); }
+.mm-tier-5 { --mm-tier: var(--mm-tier-5); }
+
+.mm-hint { margin: 0; font-size: 0.82em; font-style: italic; opacity: 0.72; }
+.mm-error, .mm-warn { margin: 0; padding: 4px 8px; font-size: 0.86em; border-left: 3px solid; border-radius: 0 var(--mm-r-xs) var(--mm-r-xs) 0; }
+.mm-error { color: var(--mm-danger); border-color: var(--mm-danger); background: color-mix(in srgb, var(--mm-danger) 9%, transparent); }
+.mm-warn  { color: var(--mm-warn);   border-color: var(--mm-warn);   background: color-mix(in srgb, var(--mm-warn) 9%, transparent); }
+.mm-bad { color: var(--mm-danger) !important; }
+.mm-grow { flex: 1 1 auto; }
+
+/* ===================================================================
+   2. INSIDE THE REST OF DREOARCANA
+   =================================================================== */
+
+/* Character sheet: Arcane Spells */
+.arcane-spells-table .table-header-flex { display: flex; align-items: center; gap: 8px; }
+.arcane-spells-table .table-header-flex .title { flex: 1 1 auto; }
+.arcane-spells-table .arcanum-open { font-size: 0.8em; white-space: nowrap; cursor: pointer; }
+.arcane-spells-table .arcanum-open:hover { text-shadow: 0 0 6px currentColor; }
+.arcane-spells-table .arcane-sigil-col { width: 34px; }
+.arcane-spells-table .arcane-sigil { width: 34px; padding: 1px 2px; }
+.arcane-spells-table .arcane-sigil a { display: flex; color: var(--mm-tier, var(--mm-accent)); }
+.arcane-spells-table .arcane-sigil svg { width: 28px; height: 28px; }
+.arcane-spells-table .arcane-sigil a:hover svg { filter: drop-shadow(0 0 4px currentColor); }
+.arcane-spells-table .arcane-empty { font-style: italic; opacity: 0.75; text-align: center; }
+.arcane-spells-table .arcane-empty a { text-decoration: underline; cursor: pointer; }
+
+/* Gear sheets: catalyst */
+.arcana-catalyst {
+  margin: 8px 0; padding: 6px 10px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.25); border-radius: var(--mm-r-sm);
+}
+.arcana-catalyst legend { padding: 0 4px; font-weight: 700; }
+.arcana-catalyst-toggle { display: flex; align-items: center; gap: 6px; }
+.arcana-catalyst-fields { display: flex; gap: 10px; margin-top: 6px; }
+.arcana-catalyst-fields label { display: flex; flex-direction: column; flex: 1 1 0; font-size: 0.85em; font-weight: 600; }
+.arcana-catalyst .arcana-hint { margin: 6px 0 0; font-size: 0.8em; font-style: italic; opacity: 0.75; }
+
+/* Items directory: the one way in */
+.arcanum-launch { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+
+/* Chat cards — inherit the chat log's colours */
+.mm-chat {
+  --mm-fill: rgba(127, 127, 127, 0.08); --mm-inset: rgba(127, 127, 127, 0.14); --mm-line: rgba(127, 127, 127, 0.4);
+  border-left: 3px solid var(--mm-tier, var(--mm-accent)); padding-left: 8px;
+}
+.mm-chat h3 { margin: 0; font-size: 1.05em; border: none; }
+.mm-chat-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.mm-chat-sigil { flex: 0 0 auto; width: 48px; height: 48px; border: none; display: block; }
+.mm-chat-sub { font-size: 0.8em; opacity: 0.75; font-style: italic; }
+.mm-chat-result { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; font-size: 0.9em; }
+.mm-chat-note { margin: 4px 0; font-size: 0.84em; font-style: italic; opacity: 0.85; }
+.mm-chat-effects { margin: 6px 0; padding-left: 1.1em; font-size: 0.9em; }
+.mm-chat-effects li { margin: 2px 0; }
+.mm-chat-costs { margin: 6px 0 0; padding-top: 5px; border-top: 1px solid var(--mm-line); font-size: 0.84em; }
+.mm-chat-costs small { opacity: 0.72; }
+.mm-chat-overheat { border-left-color: var(--mm-danger); }
+.mm-outcome { display: inline-block; padding: 1px 6px; border-radius: var(--mm-r-xs); font-weight: 700; color: #fff; }
+.mm-outcome-critical { background: #2f7d3a; }
+.mm-outcome-success  { background: #3f7d4a; }
+.mm-outcome-failure  { background: #7a6a5a; }
+.mm-outcome-fumble   { background: var(--mm-danger); }
+
+/* ===================================================================
+   3. THE ARCANUM'S SURFACE — theme variables and a control reset
+   =================================================================== */
+.mm-surface {
+  /* Parchment — the default theme. Themes (section 10) override these. */
+  --ink: #2b2118; --ink-soft: #6b5840; --edge: #b39a6c;
+  --mm-fill: rgba(255, 255, 255, 0.34); --mm-inset: rgba(43, 33, 24, 0.07); --mm-line: rgba(91, 74, 53, 0.3);
+  --mm-field: rgba(255, 255, 255, 0.55);
+  --mm-btn: rgba(255, 255, 255, 0.5); --mm-btn-hover: rgba(255, 255, 255, 0.85);
+  --mm-surface: radial-gradient(ellipse at 20% 0%, rgba(255,255,255,.45), transparent 60%), linear-gradient(160deg, #f4ead6, #e8d9ba 55%, #dfcda8);
+  --mm-rail-bg: rgba(43, 33, 24, 0.045);
+  --mm-flow-bg: radial-gradient(circle at 1px 1px, rgba(43,33,24,0.12) 1px, transparent 1.5px) 0 0 / 20px 20px, rgba(255,255,255,0.2);
+  --mm-node-bg: #fbf5e7;
+  --mm-node-head-bg: rgba(43,33,24,0.05);
+  --mm-node-shadow: 0 1px 2px rgba(43,33,24,0.12), 0 3px 10px rgba(43,33,24,0.1);
+  --mm-sink-bg: #fffaf0;
+  --mm-label-halo: #f1e6cf;
+  --mm-link-base: rgba(43,33,24,0.12);
+  --mm-glow-opacity: 0.22;
+  --mm-mote: #fffaf0;
+  --mm-sigil-bg: #fbf5e7;
+
+  /* Foundry v13 draws its controls from these; point them at the theme. */
+  --color-text-primary: var(--ink); --color-text-secondary: var(--ink-soft); --color-text-emphatic: var(--ink);
+  --button-background-color: var(--mm-btn); --button-text-color: var(--ink); --button-border-color: var(--edge);
+  --button-hover-background-color: var(--mm-btn-hover); --button-hover-text-color: var(--ink); --button-hover-border-color: var(--edge);
+  --input-background-color: var(--mm-field); --input-text-color: var(--ink); --input-border-color: var(--mm-line);
+  --input-placeholder-color: var(--ink-soft);
+  --checkbox-background-color: var(--mm-field); --checkbox-checked-color: var(--mm-tier, var(--mm-accent));
+  --checkbox-checkmark-color: #fff; --checkbox-disabled-color: var(--mm-line); --checkbox-size: 16px;
+  --table-background-color: transparent; --table-header-bg-color: transparent; --table-header-text-color: var(--ink-soft);
+  --table-header-border-color: var(--edge); --table-row-color-odd: transparent; --table-row-color-even: transparent;
+  --table-row-color-highlight: var(--mm-inset);
+
+  background: var(--mm-surface); color: var(--ink);
+  font-family: var(--mm-serif); font-size: 14px;
+}
+
+/* The same, by element, for anything that ignores the variables. */
+.mm .mm-surface :is(h1, h2, h3, h4, h5, legend, label, th, td, summary, p, li, span, strong, small, em) { color: inherit; text-shadow: none; }
+.mm .mm-surface :is(h1, h2, h3, h4) { margin: 0; border: none; font-family: var(--mm-serif); }
+.mm .mm-surface :is(input[type="text"], input[type="number"], input[type="search"], select, textarea) {
+  background: var(--mm-field); color: var(--ink); border: 1px solid var(--mm-line); border-radius: var(--mm-r-sm);
+  font-family: inherit; box-shadow: none;
+}
+.mm .mm-surface :is(input, select, textarea):focus {
+  outline: none; border-color: var(--mm-tier, var(--mm-accent)); box-shadow: 0 0 0 2px color-mix(in srgb, var(--mm-tier, var(--mm-accent)) 30%, transparent);
+}
+.mm .mm-surface :is(input, select, textarea):disabled { opacity: 0.6; }
+.mm .mm-surface select option, .mm .mm-surface select optgroup { background: Canvas; color: CanvasText; }
+.mm .mm-surface button {
+  background: var(--mm-btn); color: var(--ink); border: 1px solid var(--edge); border-radius: var(--mm-r-sm);
+  font-family: inherit; box-shadow: none; text-shadow: none; cursor: pointer;
+}
+.mm .mm-surface button:hover:not(:disabled) { background: var(--mm-btn-hover); }
+.mm .mm-surface button:disabled { opacity: 0.45; cursor: not-allowed; }
+.mm .mm-surface button.mm-primary {
+  background: var(--mm-tier, var(--mm-accent)); border-color: var(--mm-tier, var(--mm-accent)); color: var(--mm-on-tier); font-weight: 700;
+}
+.mm .mm-surface button.mm-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--mm-tier, var(--mm-accent)) 82%, #fff); }
+.mm .mm-surface button.mm-danger-btn:hover:not(:disabled) { background: var(--mm-danger); border-color: var(--mm-danger); color: #fff; }
+.mm .mm-surface button.mm-link-btn {
+  align-self: flex-start; width: auto; height: auto; margin: 0; padding: 0;
+  background: none; border: none; color: var(--mm-tier, var(--mm-accent)); font-size: 0.9em; text-decoration: underline; text-underline-offset: 2px;
+}
+.mm .mm-surface button.mm-link-btn:hover:not(:disabled) { background: none; text-decoration-thickness: 2px; }
+.mm .mm-surface button.mm-mini {
+  flex: 0 0 auto; width: auto; min-width: 24px; height: 22px; margin: 0; padding: 0 7px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.78em; line-height: 1;
+}
+.mm .mm-surface table { background: transparent; border: none; color: inherit; margin: 0; }
+.mm .mm-surface :is(thead, thead tr, tbody tr) { background: transparent; border: none; }
+.mm .mm-surface code {
+  padding: 0 4px; background: var(--mm-inset); color: var(--ink); border: 1px solid var(--mm-line); border-radius: var(--mm-r-xs);
+  font-family: var(--mm-mono); font-size: 0.88em;
+}
+.mm .mm-surface :is(.hint, .mm-hint) { color: var(--ink-soft); opacity: 1; }
+.mm .mm-surface input[type="checkbox"] {
+  /* Foundry sets these on the element itself, so they must be set here too. */
+  --checkbox-background-color: var(--mm-field); --checkbox-checked-color: var(--mm-tier, var(--mm-accent));
+  --checkbox-checkmark-color: #fff; --checkbox-disabled-color: var(--mm-line);
+  border: 1px solid var(--edge); border-radius: var(--mm-r-xs);
+}
+
+/* Shared pieces */
+.mm-panel {
+  display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 8px 10px;
+  background: var(--mm-fill); border: 1px solid var(--mm-line); border-radius: var(--mm-r-sm);
+}
+.mm-panel > legend { padding: 0 4px; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.8; }
+.mm-panel .input-group { display: flex; flex-direction: column; gap: 2px; margin: 0; }
+.mm-panel .input-group > label { font-size: 0.8em; font-weight: 600; opacity: 0.85; }
+.mm-panel :is(input[type="text"], input[type="number"], select) { width: 100%; height: 30px; }
+.mm-row { display: flex; gap: 8px; align-items: flex-end; }
+.mm-row > * { flex: 1; min-width: 0; }
+.mm-row > .mm-narrow { flex: 0 0 7em; }
+.mm-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88em; cursor: pointer; }
+.mm-toggle input, .mm-check input { accent-color: var(--mm-tier, var(--mm-accent)); margin: 0; }
+.mm-title-input { height: 36px !important; font-size: 1.25em !important; font-weight: 700; padding: 0 10px !important; }
+.mm-tier-name { font-family: var(--mm-serif); font-weight: 700; font-variant: small-caps; letter-spacing: 0.08em; font-size: 1.1em; color: var(--mm-tier, inherit) !important; }
+.mm-tier-desc { font-size: 0.82em; font-style: italic; color: var(--ink-soft); }
+.mm-empty { margin: 24px auto; max-width: 420px; text-align: center; color: var(--ink-soft); font-style: italic; }
+.mm-pane-head { display: flex; align-items: center; gap: 6px; }
+.mm-pane-head h3 { flex: 1 1 auto; font-size: 1.05em; font-variant: small-caps; letter-spacing: 0.06em; }
+.mm-node-table { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+.mm .mm-node-table :is(th, td) { padding: 3px 6px; border: none; border-bottom: 1px solid var(--mm-line); text-align: left; vertical-align: top; }
+.mm .mm-node-table th { font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); border-bottom-color: var(--edge); }
+.mm .mm-node-table .num { text-align: right; font-family: var(--mm-mono); white-space: nowrap; }
+
+/* ===================================================================
+   4. THE ARCANUM'S LAYOUT
+   =================================================================== */
+.mm-arcanum .window-content.mm-surface {
+  padding: 0; overflow: hidden; min-height: 0; min-width: 760px;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: "tabs tabs" "rail bench" "rail foot";
+}
+.mm-arcanum [data-application-part="tabs"] { grid-area: tabs; }
+.mm-arcanum [data-application-part="rail"] { grid-area: rail; }
+.mm-arcanum [data-application-part="bench"] { grid-area: bench; }
+.mm-arcanum [data-application-part="foot"] { grid-area: foot; }
+.mm-arcanum :is([data-application-part="effects"], [data-application-part="rules"]) { grid-row: 2 / 4; grid-column: 1 / -1; }
+.mm-arcanum:is([data-tab="effects"], [data-tab="rules"]) :is([data-application-part="rail"], [data-application-part="bench"], [data-application-part="foot"]) { display: none; }
+.mm-arcanum:not([data-tab="effects"]) [data-application-part="effects"] { display: none; }
+.mm-arcanum:not([data-tab="rules"]) [data-application-part="rules"] { display: none; }
+
+/* Tabs */
+.mm-tabs { display: flex; align-items: flex-end; gap: 2px; padding: 6px 12px 0; border-bottom: 1px solid var(--edge); }
+.mm .mm-surface .mm-tab {
+  flex: 0 0 auto; width: auto; height: 32px; margin: 0 0 -1px; padding: 0 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  background: transparent; border: 1px solid transparent; border-bottom: none; border-radius: var(--mm-r-sm) var(--mm-r-sm) 0 0;
+  color: var(--ink-soft); font-size: 0.95em; font-variant: small-caps; letter-spacing: 0.05em;
+}
+.mm .mm-surface .mm-tab:hover:not(.is-active) { background: var(--mm-fill); color: var(--ink); }
+.mm .mm-surface .mm-tab.is-active {
+  background: var(--mm-node-bg); border-color: var(--edge); color: var(--ink); font-weight: 700;
+  box-shadow: inset 0 2px 0 var(--mm-tier, var(--mm-accent));
+}
+
+/* The caster rail */
+.mm-rail {
+  height: 100%; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px;
+  background: var(--mm-rail-bg); border-right: 1px solid var(--edge);
+}
+.mm-caster-card {
+  flex: 0 0 auto; display: flex; flex-direction: column; gap: 9px; padding: 10px;
+  background: var(--mm-node-bg); border: 1px solid var(--edge); border-radius: var(--mm-r-md); box-shadow: var(--mm-node-shadow);
+}
+.mm .mm-surface .mm-caster-select { width: 100%; height: 28px; font-size: 0.9em; }
+.mm-caster-id { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.mm-caster-id img {
+  flex: 0 0 auto; width: 42px; height: 42px; object-fit: cover; cursor: pointer;
+  border: 1px solid var(--edge); border-radius: 50%;
+}
+.mm-caster-id > div { display: flex; flex-direction: column; min-width: 0; }
+.mm-caster-id strong { font-size: 1.05em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-caster-id small { font-size: 0.78em; color: var(--ink-soft); }
+.mm-gauges { display: flex; flex-direction: column; gap: 8px; }
+.mm-gauge-top { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 0.8em; }
+.mm-gauge-top > span { font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.mm-gauge-top > b { margin-left: auto; font-family: var(--mm-mono); font-weight: 600; }
+.mm-gauge-top > b em { font-style: normal; color: var(--mm-danger); }
+.mm-gauge-track { height: 7px; border-radius: 4px; background: var(--mm-inset); overflow: hidden; }
+.mm-gauge-track > div { height: 100%; border-radius: 4px; transition: width 220ms ease; }
+.mm-gauge-heat .mm-gauge-track > div { background: linear-gradient(90deg, #c9a227, #b8652a); }
+.mm-gauge-heat.is-hot .mm-gauge-track > div { background: linear-gradient(90deg, #b8652a, var(--mm-danger)); }
+.mm-gauge-heat.is-over .mm-gauge-track > div { background: var(--mm-danger); box-shadow: 0 0 6px var(--mm-danger); }
+.mm-gauge-orie .mm-gauge-track > div { background: linear-gradient(90deg, var(--mm-accent), #3f8fb0); }
+
+.mm-spellbook { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
+.mm-spellbook-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 0 2px; }
+.mm-spellbook-head h3 { font-size: 1em; font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-soft) !important; }
+.mm .mm-surface .mm-new-spell.is-current { border-color: var(--mm-tier, var(--mm-accent)); color: var(--mm-tier, var(--mm-accent)); }
+.mm-spellbook-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin: 0; padding: 0 2px 0 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
+.mm-spell-row {
+  display: flex; align-items: center; gap: 8px; padding: 5px 6px; cursor: pointer;
+  border: 1px solid transparent; border-radius: var(--mm-r-sm);
+}
+.mm-spell-row:hover { background: var(--mm-fill); border-color: var(--mm-line); }
+.mm-spell-row.is-selected { background: var(--mm-node-bg); border-color: var(--mm-tier); box-shadow: inset 3px 0 0 var(--mm-tier); }
+.mm-spell-sigil { flex: 0 0 auto; width: 30px; height: 30px; }
+.mm-spell-sigil svg { width: 30px; height: 30px; }
+.mm-spell-name { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; font-weight: 600; line-height: 1.2; }
+.mm-spell-name, .mm-spell-name small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-spell-name small { font-weight: 400; font-size: 0.78em; color: var(--ink-soft); }
+.mm .mm-surface .mm-row-x {
+  flex: 0 0 auto; width: 20px; height: 20px; margin: 0; padding: 0; line-height: 18px;
+  border-radius: 50%; border-color: transparent; background: transparent; opacity: 0; font-size: 15px; font-weight: 700;
+}
+.mm-spell-row:hover .mm-row-x, .mm-spell-row:focus-within .mm-row-x { opacity: 0.6; }
+.mm .mm-surface .mm-row-x:hover:not(:disabled) { opacity: 1; background: var(--mm-danger); color: #fff; }
+.mm-rail .mm-empty { margin: 12px 4px; font-size: 0.88em; }
+
+/* Workshop footer */
+.mm-foot { display: flex; align-items: center; gap: 6px; padding: 8px 12px 10px; border-top: 1px solid var(--edge); }
+.mm .mm-surface .mm-foot button { flex: 0 0 auto; width: auto; height: 34px; margin: 0; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 0.95em; }
+.mm .mm-surface .mm-foot .mm-icon-btn { width: 34px; padding: 0; justify-content: center; }
+.mm .mm-surface .mm-foot .mm-primary { min-width: 120px; justify-content: center; }
+.mm-foot-state { margin-left: 6px; font-size: 0.82em; font-style: italic; color: var(--ink-soft); }
+.mm-foot-state[hidden] { display: none; }
+.mm-foot-state i { font-size: 0.6em; vertical-align: middle; color: var(--mm-tier, var(--mm-accent)); }
+
+/* ===================================================================
+   5. THE BENCH
+   =================================================================== */
+.mm-bench { height: 100%; min-height: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 10px 12px 4px; }
+.mm-builder-head { flex: 0 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.mm-builder-head .mm-title-input { flex: 1 1 240px; max-width: 400px; }
+
+/* Status chips: what the spell is and what it costs */
+.mm-status { flex: 999 1 auto; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
+.mm-chip {
+  display: inline-flex; align-items: baseline; gap: 5px; padding: 3px 9px; border-radius: 999px;
+  background: var(--mm-fill); border: 1px solid var(--mm-line); font-size: 0.86em; white-space: nowrap; cursor: default;
+}
+.mm-chip small { color: var(--ink-soft); font-size: 0.86em; }
+.mm-chip.is-tier { border-color: var(--mm-tier); color: var(--mm-tier); font-weight: 700; font-variant: small-caps; letter-spacing: 0.05em; }
+.mm-chip-tier { font-family: var(--mm-serif); }
+.mm-chip.is-bad { border-color: var(--mm-danger); color: var(--mm-danger); background: color-mix(in srgb, var(--mm-danger) 9%, transparent); }
+.mm-chip.is-bad small { color: inherit; }
+
+/* The chart viewport and the stage it pans and zooms */
+.mm-flow {
+  position: relative; flex: 1 1 auto; min-height: 260px; overflow: hidden;
+  background: var(--mm-flow-bg); border: 1px solid var(--edge); border-radius: var(--mm-r-sm);
+  cursor: grab; touch-action: none; user-select: none;
+}
+.mm-flow.is-panning { cursor: grabbing; }
+.mm-flow.is-panning .mm-flow-stage { pointer-events: none; }
+.mm-flow-stage {
+  position: absolute; left: 0; top: 0; width: max-content;
+  display: flex; align-items: center; gap: 40px; padding: 28px 28px 60px;
+  transform-origin: 0 0; will-change: transform;
+}
+.mm-flow-stage .mm-fnode { user-select: text; cursor: auto; }
+.mm-flow-links { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; z-index: 0; }
+.mm-flow-col { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.mm-flow-group { gap: 26px; padding: 22px 10px 12px; border: 1px dashed var(--mm-line); border-radius: var(--mm-r-md); }
+.mm-fgroup-label {
+  position: absolute; top: -9px; left: 10px; padding: 0 6px;
+  background: var(--mm-label-halo); border-radius: var(--mm-r-xs);
+  font-size: 0.72em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft);
+}
+
+/* Zoom controls */
+.mm-flow-zoom {
+  position: absolute; top: 8px; right: 8px; z-index: 4; display: flex; gap: 2px; padding: 3px;
+  background: var(--mm-node-bg); border: 1px solid var(--edge); border-radius: var(--mm-r-sm); box-shadow: var(--mm-node-shadow);
+}
+.mm .mm-surface .mm-flow-zoom button { width: auto; min-width: 28px; height: 26px; margin: 0; padding: 0 7px; font-size: 0.85em; font-family: var(--mm-mono); border: none; }
+.mm-flow-zoom [data-zoom-label] { min-width: 48px; }
+
+/* A faint aura in the tier's colour behind the chart */
+.mm-flow::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 85% 50%, color-mix(in srgb, var(--mm-tier, var(--mm-accent)) 16%, transparent), transparent 55%);
+  animation: mm-breathe 6s ease-in-out infinite;
+}
+
+/* Node cards */
+.mm-fnode {
+  width: 180px; background: var(--mm-node-bg); color: var(--ink);
+  border: 1px solid var(--edge); border-radius: var(--mm-r-md); box-shadow: var(--mm-node-shadow);
+  font-size: 13px; transition: box-shadow 160ms ease, border-color 160ms ease;
+}
+.mm-fnode:hover { box-shadow: var(--mm-node-shadow), 0 0 0 1px var(--mm-tier, var(--mm-accent)); }
+.mm-fnode-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 26px;
+  padding: 3px 6px 3px 10px; border-bottom: 1px solid var(--mm-line); border-radius: var(--mm-r-md) var(--mm-r-md) 0 0;
+  background: var(--mm-node-head-bg);
+  font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.mm-fnode-tag { font-family: var(--mm-mono); font-weight: 400; letter-spacing: 0; text-transform: none; opacity: 0.85; }
+.mm-fnode-body { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px 10px; }
+.mm-fnode-body label { display: flex; flex-direction: column; gap: 2px; margin: 0; font-size: 0.86em; font-weight: 600; }
+.mm-fnode-body label[hidden] { display: none; }
+.mm-label-note { font-weight: 400; color: var(--ink-soft); }
+.mm .mm-surface .mm-fnode :is(select, input[type="number"]) { width: 100%; height: 28px; padding: 2px 6px; font-size: 13px; }
+.mm-fnode-meta { font-family: var(--mm-mono); font-size: 0.8em; color: var(--ink-soft); }
+.mm-fnode-desc { font-size: 0.84em; font-style: italic; line-height: 1.3; color: var(--ink-soft); }
+.mm-fnode-text { font-size: 0.9em; line-height: 1.3; }
+.mm .mm-surface .mm-fnode .mm-inline { flex-direction: row; align-items: center; gap: 5px; font-weight: 400; white-space: nowrap; }
+.mm .mm-surface .mm-fnode .mm-inline input { width: 4em; }
+.mm .mm-surface .mm-fnode .mm-fnode-x {
+  flex: 0 0 auto; width: 20px; height: 20px; min-width: 0; margin: 0; padding: 0; line-height: 18px;
+  border-radius: 50%; border: 1px solid transparent; background: transparent; color: inherit; opacity: 0.6;
+  font-size: 16px; font-weight: 700; text-transform: none; letter-spacing: 0;
+}
+.mm .mm-surface .mm-fnode .mm-fnode-x:hover { opacity: 1; background: var(--mm-danger); border-color: var(--mm-danger); color: #fff; }
+.mm-fnode-glyph { display: inline-flex; color: var(--mm-tier, var(--mm-accent)); }
+.mm-fnode-glyph svg { width: 15px; height: 15px; display: block; }
+
+.mm-fnode-main { border-color: var(--mm-tier, var(--mm-accent)); }
+.mm-fnode-main .mm-fnode-head { background: var(--mm-tier, var(--mm-accent)); color: var(--mm-on-tier); border-bottom-color: transparent; }
+.mm-fnode-caster { width: 196px; border-color: var(--mm-accent); }
+.mm-fnode-caster .mm-fnode-head { background: var(--mm-accent); color: var(--mm-on-tier); border-bottom-color: transparent; }
+.mm-fnode-heat {
+  padding: 5px 10px; border-top: 1px dashed color-mix(in srgb, var(--mm-danger) 50%, transparent);
+  border-radius: 0 0 var(--mm-r-md) var(--mm-r-md);
+  font-size: 0.86em; font-weight: 700; color: var(--mm-danger);
+}
+.mm-fnode-caster.is-over { border-color: var(--mm-danger); animation: mm-overheat 1.2s ease-in-out infinite; }
+.mm-fnode-caster.is-over .mm-fnode-heat { color: #fff; background: var(--mm-danger); }
+.mm-fnode-utility { border-style: dashed; }
+.mm-fnode-effect { width: 200px; }
+.mm-fnode-effect.is-damage { border-left: 3px solid var(--mm-tier-5); }
+.mm-fnode-add {
+  display: flex; flex-direction: column; gap: 6px; padding: 8px 10px;
+  border-style: dashed; background: transparent; box-shadow: none;
+}
+.mm-fnode-add:hover { box-shadow: none; border-color: var(--mm-tier, var(--mm-accent)); }
+.mm .mm-surface .mm-fnode-add select { color: var(--ink-soft); }
+.mm-fnode-sink {
+  width: 172px; padding: 10px 10px 12px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  border-width: 2px; border-color: var(--mm-tier, var(--mm-accent)); background: var(--mm-sink-bg);
+  animation: mm-sink-pulse 3.4s ease-in-out infinite;
+}
+.mm-sink-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.mm-sink-grid > div { display: flex; flex-direction: column; align-items: center; padding: 3px; background: var(--mm-node-head-bg); border-radius: var(--mm-r-xs); }
+.mm-sink-grid label { font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.mm-sink-grid strong { font-family: var(--mm-serif); font-size: 1.15em; }
+
+/* Links */
+.mm-link-base { fill: none; stroke: var(--mm-link-base); stroke-linecap: round; }
+.mm-link-glow { fill: none; stroke: var(--mm-tier, var(--mm-accent)); stroke-linecap: round; opacity: var(--mm-glow-opacity); }
+.mm-link-glow.is-heat { stroke: var(--mm-danger); }
+.mm-link {
+  fill: none; stroke: var(--mm-tier, var(--mm-accent)); stroke-linecap: round;
+  stroke-dasharray: 7 11; animation: mm-flow-dash 1s linear infinite;
+}
+.mm-link.is-heat { stroke: var(--mm-danger); stroke-dasharray: 4 9; }
+.mm-link.is-heat.is-over { animation-name: mm-flow-dash, mm-flicker; }
+.mm-link.is-damage { stroke-dasharray: 10 8; }
+.mm-link.is-ghost { stroke: var(--mm-line); stroke-dasharray: 3 7; animation: none; }
+.mm-link-base.is-ghost { stroke: transparent; }
+.mm-link-base.is-heat { stroke: color-mix(in srgb, var(--mm-danger) 14%, transparent); }
+.mm-mote { fill: var(--mm-mote); stroke: var(--mm-tier, var(--mm-accent)); stroke-width: 1.5; }
+.mm-mote.is-heat { fill: #ffd9c9; stroke: var(--mm-danger); }
+.mm-link-label {
+  font-family: var(--mm-mono); font-size: 11px; font-weight: 700; fill: var(--ink); text-anchor: middle;
+  paint-order: stroke; stroke: var(--mm-label-halo); stroke-width: 4px; stroke-linejoin: round;
+}
+.mm-link-label.is-side { text-anchor: start; font-size: 10px; fill: var(--ink-soft); }
+.mm-link-label.is-heat { fill: var(--mm-danger); }
+
+/* Notices under the chart — only there when there is something to say */
+.mm-notices { flex: 0 0 auto; display: flex; flex-direction: column; gap: 4px; max-height: 84px; overflow-y: auto; }
+.mm-notices:empty { display: none; }
+
+/* Notes and working */
+.mm-bench-more { flex: 0 0 auto; }
+.mm-bench-more summary { cursor: pointer; font-size: 0.84em; color: var(--ink-soft); }
+.mm-bench-more-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 12px; max-height: 180px; overflow-y: auto; padding: 6px 0 2px; }
+.mm-notes { display: flex; flex-direction: column; gap: 3px; margin: 0; font-size: 0.84em; font-weight: 600; }
+.mm .mm-surface .mm-notes textarea { width: 100%; min-height: 70px; padding: 6px 8px; resize: vertical; line-height: 1.4; font-weight: 400; }
+.mm-working { display: flex; flex-direction: column; gap: 4px; }
+
+/* Sound buttons pulse while playing */
+.mm .mm-surface .mm-sound-btn.is-playing { animation: mm-breathe 0.6s ease-in-out infinite; color: var(--mm-tier, var(--mm-accent)); }
+
+/* ===================================================================
+   6. THE EFFECT NODES TAB
+   =================================================================== */
+.mm-effects { height: 100%; min-height: 0; display: grid; grid-template-columns: 290px minmax(0, 1fr); }
+.mm-effects-index {
+  min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 12px;
+  background: var(--mm-rail-bg); border-right: 1px solid var(--edge);
+}
+.mm-effect-source { display: flex; align-items: center; gap: 6px; margin-top: 4px !important; font-size: 0.9em !important; font-variant: small-caps; letter-spacing: 0.06em; color: var(--ink-soft) !important; }
+.mm-effect-rows { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.mm-effect-row { display: flex; align-items: center; gap: 8px; padding: 5px 7px; cursor: pointer; border: 1px solid transparent; border-radius: var(--mm-r-sm); }
+.mm-effect-row:hover { background: var(--mm-fill); border-color: var(--mm-line); }
+.mm-effect-row.is-selected { background: var(--mm-node-bg); border-color: var(--mm-accent); box-shadow: inset 3px 0 0 var(--mm-accent); }
+.mm-effect-row.is-invalid .mm-effect-name small { color: var(--mm-danger); }
+.mm-effect-name { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; font-weight: 600; line-height: 1.2; }
+.mm-effect-name small { font-weight: 400; font-size: 0.78em; color: var(--ink-soft); }
+.mm-effects-index .mm-empty { margin: 8px 0; text-align: left; font-size: 0.9em; }
+.mm-effects-editor { min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; }
+.mm-effect-head { display: flex; align-items: center; gap: 12px; }
+.mm-effect-head > .mm-grow { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.mm-portrait {
+  flex: 0 0 auto; width: 64px; height: 64px; object-fit: cover; cursor: pointer;
+  border: 1px solid var(--edge); border-radius: var(--mm-r-md); background: var(--mm-node-bg);
+}
+.mm-glyph-inline { display: inline-flex; vertical-align: middle; margin-right: 4px; color: var(--mm-accent); }
+.mm-glyph-inline svg { width: 20px; height: 20px; }
+.mm-check-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 10px; }
+.mm-check { display: flex; align-items: center; gap: 6px; font-size: 0.92em; cursor: pointer; }
+.mm-effect-preview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px; background: var(--mm-inset); border-radius: var(--mm-r-sm); font-size: 0.9em; }
+.mm-effect-preview > div { display: flex; flex-direction: column; }
+.mm-effect-preview label { font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); }
+.mm-effect-foot { display: flex; align-items: center; gap: 6px; padding-top: 8px; border-top: 1px solid var(--edge); }
+.mm .mm-surface .mm-effect-foot button { flex: 0 0 auto; width: auto; height: 30px; margin: 0; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.mm-effects-editor > .mm-empty { margin: 60px auto; }
+
+/* ===================================================================
+   7. THE RULES TAB
+   =================================================================== */
+.mm-rules { height: 100%; min-height: 0; display: grid; grid-template-columns: 250px minmax(0, 1fr); }
+.mm-rules-index {
+  min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding: 12px 10px;
+  background: var(--mm-rail-bg); border-right: 1px solid var(--edge);
+}
+.mm .mm-surface .mm-rules-link {
+  width: 100%; height: auto; margin: 0; padding: 6px 9px; text-align: left; line-height: 1.25;
+  background: transparent; border: 1px solid transparent; font-size: 0.92em;
+}
+.mm .mm-surface .mm-rules-link:hover:not(.is-active) { background: var(--mm-fill); border-color: var(--mm-line); }
+.mm .mm-surface .mm-rules-link.is-active { background: var(--mm-node-bg); border-color: var(--edge); box-shadow: inset 3px 0 0 var(--mm-accent); font-weight: 700; }
+.mm-rules-index .mm-link-btn { margin: 10px 9px 0 !important; }
+.mm-rules-page { min-height: 0; overflow-y: auto; padding: 16px 22px 28px; line-height: 1.5; }
+.mm .mm-surface .mm-rules-page h2 { margin-bottom: 10px; font-size: 1.45em; font-variant: small-caps; letter-spacing: 0.04em; border-bottom: 1px solid var(--edge); }
+.mm .mm-surface .mm-rules-page h3 { margin: 16px 0 6px; font-size: 1.12em; }
+.mm-rules-page table { width: 100%; margin: 6px 0 12px !important; border-collapse: collapse; font-size: 0.92em; }
+.mm .mm-surface .mm-rules-page :is(th, td) { padding: 4px 8px; border: none; border-bottom: 1px solid var(--mm-line); text-align: left; vertical-align: top; }
+.mm .mm-surface .mm-rules-page th { font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); border-bottom-color: var(--edge); }
+.mm-rules-page :is(ul, ol) { padding-left: 1.4em; }
+
+/* ===================================================================
+   8. SIGILS
+   =================================================================== */
+.mm-sigil { display: flex; justify-content: center; align-items: center; color: var(--mm-tier, var(--mm-accent)); }
+.mm-sigil-svg { display: block; overflow: visible; }
+.mm-sigil-svg .mm-sigil-pad { fill: var(--mm-sigil-bg, transparent); stroke: none; }
+.mm-sigil-sink { width: 120px; height: 120px; }
+.mm-sigil-sink .mm-sigil-svg { width: 120px; height: 120px; filter: drop-shadow(0 0 3px color-mix(in srgb, currentColor 35%, transparent)); }
+
+/* ===================================================================
+   9. MOTION
+   =================================================================== */
+@keyframes mm-flow-dash { from { stroke-dashoffset: 36; } to { stroke-dashoffset: 0; } }
+@keyframes mm-breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes mm-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes mm-sink-pulse {
+  0%, 100% { box-shadow: 0 0 6px 0 color-mix(in srgb, var(--mm-tier, var(--mm-accent)) 30%, transparent); }
+  50%      { box-shadow: 0 0 18px 3px color-mix(in srgb, var(--mm-tier, var(--mm-accent)) 50%, transparent); }
+}
+@keyframes mm-overheat {
+  0%, 100% { box-shadow: 0 0 6px 0 color-mix(in srgb, var(--mm-danger) 35%, transparent); }
+  50%      { box-shadow: 0 0 18px 4px color-mix(in srgb, var(--mm-danger) 60%, transparent); }
+}
+body.mm-no-motion :is(.mm-link, .mm-flow::before, .mm-fnode-sink, .mm-fnode-caster.is-over, .mm-sound-btn) { animation: none !important; }
+body.mm-no-motion .mm-mote { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.mm-link, .mm-flow::before, .mm-fnode-sink, .mm-fnode-caster.is-over, .mm-sound-btn) { animation: none !important; }
+  .mm-mote { display: none; }
+}
+
+/* ===================================================================
+   10. THEMES — chosen per player, keyed on <body>. Each block only
+   sets variables; every rule above reads them.
+   =================================================================== */
+
+/* Melfyric Night: "an infinite sea of color, storms of raw Melfyric power" */
+body[data-mm-theme="melfyric"] .mm-surface {
+  --ink: #ece7fa; --ink-soft: #b3a9d6; --edge: #5f52a8;
+  --mm-fill: rgba(255,255,255,0.05); --mm-inset: rgba(0,0,0,0.28); --mm-line: rgba(190,178,235,0.28);
+  --mm-field: rgba(10,8,30,0.55); --mm-btn: rgba(255,255,255,0.07); --mm-btn-hover: rgba(255,255,255,0.14);
+  --mm-accent: #a58bff; --mm-rail-bg: rgba(0,0,0,0.22);
+  --mm-surface: radial-gradient(ellipse at 15% -10%, rgba(140,100,230,0.4), transparent 55%), radial-gradient(ellipse at 90% 110%, rgba(60,140,200,0.26), transparent 55%), linear-gradient(165deg, #151130, #1a1640 50%, #0d0b20);
+  --mm-flow-bg: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.2) 1px, transparent 1.6px) 0 0 / 26px 26px, radial-gradient(ellipse at 65% 35%, rgba(110,70,210,0.3), transparent 55%), rgba(8,6,22,0.55);
+  --mm-node-bg: #221c48; --mm-node-head-bg: rgba(255,255,255,0.06);
+  --mm-node-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  --mm-sink-bg: #2b2459; --mm-label-halo: #14102c; --mm-link-base: rgba(255,255,255,0.08);
+  --mm-glow-opacity: 0.55; --mm-mote: #ffffff; --mm-sigil-bg: #221c48;
+  --mm-tier-1: #ff9f57; --mm-tier-2: #ffd966; --mm-tier-3: #62b8ff; --mm-tier-4: #c692ff; --mm-tier-5: #ff6472;
+  --mm-danger: #ff6f5e; --mm-warn: #f2c25a; --mm-on-tier: #120d26;
+}
+
+/* Prismatic Flux: oxidised brass and shattered light */
+body[data-mm-theme="flux"] .mm-surface {
+  --ink: #f1e9d6; --ink-soft: #c4b48e; --edge: #a5833a;
+  --mm-fill: rgba(255,235,190,0.05); --mm-inset: rgba(0,0,0,0.28); --mm-line: rgba(220,190,120,0.28);
+  --mm-field: rgba(0,0,0,0.3); --mm-btn: rgba(255,235,190,0.07); --mm-btn-hover: rgba(255,235,190,0.15);
+  --mm-accent: #e2b24d; --mm-rail-bg: rgba(0,0,0,0.2);
+  --mm-surface: conic-gradient(from 210deg at 85% 15%, rgba(255,120,120,0.13), rgba(255,220,120,0.13), rgba(120,255,200,0.13), rgba(120,170,255,0.13), rgba(220,120,255,0.13), rgba(255,120,120,0.13)), linear-gradient(165deg, #1a2422, #14201f 50%, #0e1716);
+  --mm-flow-bg: repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 14px), radial-gradient(ellipse at 20% 80%, rgba(80,180,160,0.18), transparent 55%), rgba(6,12,11,0.5);
+  --mm-node-bg: #1f2e2b; --mm-node-head-bg: rgba(226,178,77,0.1);
+  --mm-node-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  --mm-sink-bg: #2a3c36; --mm-label-halo: #0e1716; --mm-link-base: rgba(255,230,180,0.08);
+  --mm-glow-opacity: 0.5; --mm-mote: #fff4d6; --mm-sigil-bg: #1f2e2b;
+  --mm-tier-1: #ff9a4a; --mm-tier-2: #f5d35a; --mm-tier-3: #4fd1c5; --mm-tier-4: #b98cff; --mm-tier-5: #ff5c7a;
+  --mm-danger: #ff7a5c; --mm-warn: #f2c25a; --mm-on-tier: #0e1716;
+}
+
+/* Ink & Bone: a grimoire page. One ink, no colour but the fire. */
+body[data-mm-theme="ink"] .mm-surface {
+  --ink: #161412; --ink-soft: #5a544d; --edge: #6b645c;
+  --mm-fill: rgba(0,0,0,0.03); --mm-inset: rgba(0,0,0,0.05); --mm-line: rgba(0,0,0,0.22);
+  --mm-field: #fffdf8; --mm-btn: #fffdf8; --mm-btn-hover: #ffffff;
+  --mm-accent: #2b2724; --mm-rail-bg: rgba(0,0,0,0.035);
+  --mm-surface: linear-gradient(165deg, #f5f1e8, #ebe5d8);
+  --mm-flow-bg: repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 26px), rgba(255,255,255,0.35);
+  --mm-node-bg: #fbf8f1; --mm-node-head-bg: rgba(0,0,0,0.04);
+  --mm-node-shadow: 0 1px 0 rgba(0,0,0,0.22);
+  --mm-sink-bg: #fffdf7; --mm-label-halo: #f3eee3; --mm-link-base: rgba(0,0,0,0.08);
+  --mm-glow-opacity: 0.1; --mm-mote: #ffffff; --mm-sigil-bg: #fbf8f1;
+  --mm-tier-1: #6e6862; --mm-tier-2: #55504a; --mm-tier-3: #3d3935; --mm-tier-4: #262320; --mm-tier-5: #000000;
+  --mm-danger: #8f2a1f; --mm-warn: #7a5a1a;
+}
+
+/* Chat cards use the brighter tier palettes on the dark themes. */
+body[data-mm-theme="melfyric"] .mm-chat, body[data-mm-theme="flux"] .mm-chat {
+  --mm-tier-1: #ff9f57; --mm-tier-2: #ffd966; --mm-tier-3: #62b8ff; --mm-tier-4: #c692ff; --mm-tier-5: #ff6472;
+}

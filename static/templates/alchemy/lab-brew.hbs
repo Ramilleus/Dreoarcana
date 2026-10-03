@@ -1,0 +1,108 @@
+{{!-- Laboratory: the bench — mixing, rolling and decanting on one page --}}
+<section class="al-brew">
+{{#if decanting}}
+
+  <header class="al-batch-head">
+    <h3>The batch is brewed</h3>
+    <div class="mm-status">
+      <span class="mm-chip is-tier">{{batch.quality}}</span>
+      <span class="mm-chip">rolled {{batch.roll}} vs {{batch.target}}% · {{batch.result}}</span>
+      {{#if batch.showQ}}<span class="mm-chip">up to {{batch.portions}} portions · {{batch.rounds}} rd</span>{{/if}}
+      {{#if batch.mechanical}}<span class="mm-chip">{{batch.orie}} Orie</span>{{/if}}
+    </div>
+  </header>
+  <p class="mm-hint">Choose the vessel. Its capacity sets how many doses you get and so how strong each is (§9); the Mother is measured out now, and the rest of the last measure boils off (§3b).</p>
+
+  {{#if overflow}}
+  <p class="mm-error">No vessel can hold this batch safely. Decanting will discharge it (§9).</p>
+  {{/if}}
+  <ol class="al-decant-list">
+    {{#each containers as |c|}}
+    <li class="al-decant {{#if c.disabled}}is-disabled{{/if}} {{#if c.selected}}is-selected{{/if}}">
+      <label>
+        <input type="radio" name="container" data-field="container" value="{{c.name}}" {{#if c.selected}}checked{{/if}} {{#if c.disabled}}disabled{{/if}}>
+        <span class="al-decant-name">{{c.name}} <small>{{c.mL}} mL · {{c.cost}}</small></span>
+        <span class="al-decant-doses">{{c.doses}} dose{{#unless (eq c.doses 1)}}s{{/unless}}</span>
+        <span class="al-decant-note {{#if c.disabled}}mm-bad{{/if}}">{{c.note}}</span>
+      </label>
+    </li>
+    {{/each}}
+  </ol>
+  <footer class="mm-foot">
+    <span class="mm-grow"></span>
+    <button type="button" class="mm-primary" data-action="decant"><i class="fas fa-wine-bottle"></i> Decant</button>
+  </footer>
+
+{{else}}
+
+  <div class="al-mixture">
+    <div class="al-mother">
+      <label class="al-field">Mother — the liquid you brew into (§3b)
+        <select data-field="mother">
+          <option value="">— choose a base —</option>
+          {{#each mothers as |m|}}<option value="{{m.id}}" {{#if m.selected}}selected{{/if}}>{{m.name}} — {{m.meta}}</option>{{/each}}
+        </select>
+      </label>
+      {{#if readout}}
+      <div class="al-fx-row">{{#each readout.motherFx as |c|}}<span class="al-fx {{#if c.arcane}}is-arcane{{/if}} {{#unless c.known}}is-unknown{{/unless}}">{{c.label}}</span>{{/each}}</div>
+      <p class="mm-hint">{{readout.motherNote}}</p>
+      {{/if}}
+    </div>
+
+    <div class="al-chosen">
+      <div class="al-chosen-head"><strong>Reagents</strong> <small>{{count}} / {{max}} · two at least (§4)</small>
+        {{#if chosen.length}}<button type="button" class="mm-link-btn" data-action="clearMixture">Clear</button>{{/if}}</div>
+      <div class="al-chosen-list">
+        {{#each chosen as |c|}}<span class="al-chip-x">{{c.name}}<button type="button" data-action="toggleReagent" data-id="{{c.id}}" aria-label="Remove {{c.name}}">&times;</button></span>{{else}}<span class="mm-hint">Tick two or three from the shelf below.</span>{{/each}}
+      </div>
+    </div>
+
+    {{#if readout}}
+    <div class="al-readout">
+      <div class="mm-status">{{#each readout.chips as |c|}}<span class="mm-chip {{c.cls}}" data-tooltip="{{c.tip}}">{{c.label}}</span>{{/each}}</div>
+      {{#if readout.overlaps}}
+      <p class="al-overlap"><strong>Overlap:</strong> {{#if readout.overlaps.length}}{{#each readout.overlaps as |o|}}<span class="al-fx">{{o}}</span>{{/each}}{{else}}<em>none — this brew would be inert</em>{{/if}} <small class="mm-hint">(GM only)</small></p>
+      {{/if}}
+      {{#if readout.playerNote}}<p class="mm-hint">{{readout.playerNote}}</p>{{/if}}
+      {{#if readout.overflow}}<p class="mm-warn">{{readout.overflow}}</p>{{/if}}
+    </div>
+    {{/if}}
+  </div>
+
+  <div class="al-shelf">
+    <div class="al-filters">
+      <input type="search" data-field="search" value="{{filter.search}}" placeholder="Search name or known effect…" autocomplete="off" aria-label="Search">
+      <select data-field="cls" aria-label="Class">
+        <option value="">All classes</option>
+        <option value="Mechanical" {{#if (eq filter.cls "Mechanical")}}selected{{/if}}>Mechanical</option>
+        <option value="Mystical" {{#if (eq filter.cls "Mystical")}}selected{{/if}}>Mystical</option>
+        <option value="Mundane" {{#if (eq filter.cls "Mundane")}}selected{{/if}}>Mundane</option>
+      </select>
+      <label class="mm-toggle" data-tooltip="Only what shares a known effect with your selection"><input type="checkbox" data-field="pairs" {{#if filter.pairs}}checked{{/if}}> Pairs only</label>
+      <span class="al-count" data-count></span>
+    </div>
+    <ol class="al-picklist">
+      {{#each shelf as |s|}}
+      <li class="al-pick" data-search="{{s.search}}" data-cls="{{s.cls}}" data-pairs="{{#if s.pairs}}1{{else}}0{{/if}}">
+        <label>
+          <input type="checkbox" data-field="reagent" value="{{s.id}}" {{#if s.checked}}checked{{/if}}>
+          <img src="{{s.img}}" alt="">
+          <span class="al-pick-name">{{s.name}}<small>{{s.meta}}</small></span>
+          <span class="al-fx-row">{{#each s.chips as |c|}}<span class="al-fx {{#if c.arcane}}is-arcane{{/if}} {{#unless c.known}}is-unknown{{/unless}}" title="{{c.slot}}">{{c.label}}</span>{{/each}}</span>
+        </label>
+      </li>
+      {{/each}}
+    </ol>
+    {{#if noShelf}}<p class="mm-empty">Nothing on the shelf from {{shelfSource}}.</p>{{/if}}
+  </div>
+
+  <footer class="mm-foot al-brew-foot">
+    <label class="al-field al-narrow">{{skill.name}} %<input type="number" data-field="skill" value="{{skill.value}}" min="0" step="1"></label>
+    <label class="al-field al-narrow" data-tooltip="Lab or tool bonus (§4.5)">Tools %<input type="number" data-field="mod" value="{{mod}}" step="5"></label>
+    <label class="al-field al-narrow" data-tooltip="Xi channelled through the Crystalline Core: drawn from Stored Orie without Heat; past that, converted with Heat (§3)">Channel Xi<input type="number" data-field="xi" value="{{xi}}" min="0" step="1"></label>
+    <span class="mm-grow"></span>
+    {{#if brewAllowed}}<button type="button" class="mm-primary" data-action="brew" {{#unless canBrew}}disabled{{/unless}}><i class="fas fa-mortar-pestle"></i> Brew</button>{{/if}}
+  </footer>
+
+{{/if}}
+</section>

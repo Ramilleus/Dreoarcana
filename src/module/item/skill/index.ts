@@ -1,6 +1,7 @@
 import { ItemMythras } from '@item/base'
 import { ActorMythras } from '@module/actor'
 import { CharacteristicOption } from '@module/actor/characteristic'
+import { potionSkillBonus } from '../../../alchemy/effects.js'
 
 interface SkillData {
   totalVal: any
@@ -39,7 +40,8 @@ class SkillMythras<TParent extends ActorMythras | null = ActorMythras  | null> e
     //TODO: figure out why it breaks magic skills
     //this.reRenderOpenSheet()
 
-    return this.baseVal + Number(systemData.trainingVal) + Number(systemData.miscBonus)
+    // Alchemy: unconditional potion bonuses (Fortify Self, Frenzy, Increase Intelligence)
+    return this.baseVal + Number(systemData.trainingVal) + Number(systemData.miscBonus) + potionSkillBonus(this)
   }
 
   get baseVal() {

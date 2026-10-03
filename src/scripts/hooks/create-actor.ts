@@ -7,7 +7,7 @@ export const CreateActor = {
       if (actor.items.size == 0 && userID === game.user.id) {
         // Hit Locations 
         game.packs
-          .get('mythras.humanoidHitLocations')
+          .get('dreoarcana.humanoidHitLocations')
           .getDocuments()
           .then((result: any) => {
             let hitLocArray: any[] = []
@@ -23,7 +23,7 @@ export const CreateActor = {
           })        
         // Standard Skills
         game.packs
-          .get('mythras.standardSkill')
+          .get('dreoarcana.standardSkill')
           .getDocuments()
           .then((result: any) => {
             let skillArray: any[] = []

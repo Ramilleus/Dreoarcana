@@ -12,6 +12,8 @@ import { SkillMythras } from '@item/skill'
 import { SpellMythras } from '@item/spell'
 import { StorageMythras } from '@item/storage'
 import { CyberModuleMythras } from '@module/item/cyber-module'
+import { ArcaneSpellMythras, ArcaneEffectMythras } from '@item/arcane'
+import { IngredientMythras, PotionMythras } from '@item/alchemy'
 
 export const MYTHRASCONFIG = {
   Actor: {
@@ -36,7 +38,11 @@ export const MYTHRASCONFIG = {
       spell: SpellMythras,
       storage: StorageMythras,
       cyberModule: CyberModuleMythras,
-      cultBrotherhood: CultBrotherhoodMythras
+      cultBrotherhood: CultBrotherhoodMythras,
+      arcaneSpell: ArcaneSpellMythras,
+      arcaneEffect: ArcaneEffectMythras,
+      ingredient: IngredientMythras,
+      potion: PotionMythras
     }
   }
 }

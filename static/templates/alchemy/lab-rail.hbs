@@ -1,0 +1,80 @@
+{{!-- Laboratory: the alchemist --}}
+<aside class="mm-rail al-rail">
+  <div class="al-rail-scroll">
+    <section class="mm-caster-card">
+      {{#if showChoices}}
+      <select data-field="actor" class="mm-caster-select" aria-label="Alchemist">
+        <option value="" {{#unless actor}}selected{{/unless}}>No alchemist — the catalogue</option>
+        {{#each actorChoices as |c|}}<option value="{{c.uuid}}" {{#if c.selected}}selected{{/if}}>{{c.name}}</option>{{/each}}
+      </select>
+      {{/if}}
+
+      {{#if actor}}
+      <div class="mm-caster-id">
+        <img src="{{actor.img}}" alt="" data-action="openSheet" data-tooltip="Open {{actor.name}}'s sheet">
+        <div><strong>{{actor.name}}</strong><small>Alchemist</small></div>
+      </div>
+      {{else}}
+      <p class="mm-hint">With no alchemist, the bench draws on the whole catalogue and nothing is spent. Useful for planning.</p>
+      {{/if}}
+
+      <div class="al-skills">
+        <div><span>{{craft.name}}</span><b>{{craft.value}}%</b></div>
+        <div><span>{{lore.name}}</span><b>{{lore.value}}%</b></div>
+      </div>
+
+      {{#if actor}}
+      <div class="mm-gauges">
+        {{#if heat}}
+        <div class="mm-gauge mm-gauge-heat {{heat.cls}}">
+          <div class="mm-gauge-top"><span>Heat</span><b>{{heat.value}} / {{heat.max}}</b>
+            {{#if isOwner}}<button type="button" class="mm-mini" data-action="vent" data-tooltip="Vent: rest one Melee Round (−{{heat.rate}})" aria-label="Vent Heat"><i class="fas fa-wind"></i></button>{{/if}}
+          </div>
+          <div class="mm-gauge-track"><div style="width:{{heat.pct}}%"></div></div>
+        </div>
+        {{/if}}
+        <div class="mm-gauge mm-gauge-orie" data-tooltip="Xi channelled into a brew is drawn from here without Heat">
+          <div class="mm-gauge-top"><span>Stored Orie</span><b>{{orie.value}} / {{orie.max}}</b></div>
+          <div class="mm-gauge-track"><div style="width:{{orie.pct}}%"></div></div>
+        </div>
+      </div>
+      {{/if}}
+    </section>
+
+    {{#if saturation}}
+    <section class="al-saturation">
+      <div class="mm-gauge al-gauge-sat {{saturation.cls}}" data-tooltip="Raw Orie the body is still carrying. Doses add up against SIZ (§8); it clears {{saturation.rate}}.">
+        <div class="mm-gauge-top"><span>Saturation</span><b>{{saturation.load}} / {{saturation.siz}}</b>
+          {{#if isOwner}}<button type="button" class="mm-mini" data-action="restSaturation" data-tooltip="Rested: clear it" aria-label="Clear saturation"><i class="fas fa-bed"></i></button>{{/if}}
+        </div>
+        <div class="mm-gauge-track"><div style="width:{{saturation.pct}}%"></div></div>
+        <small class="mm-hint">{{saturation.rate}}</small>
+      </div>
+    </section>
+    {{/if}}
+
+    {{#if effects.length}}
+    <section class="al-lasting">
+      <h4><i class="fas fa-hourglass-half"></i> In effect</h4>
+      <ul>
+        {{#each effects as |x|}}
+        <li class="{{#if x.expired}}is-expired{{/if}}" data-tooltip="{{x.tip}}">
+          <span>{{x.name}}{{#if x.applied}} <b title="Applied to the sheet">✓</b>{{/if}}</span>
+          <small>{{x.remaining}}</small>
+          {{#if ../isOwner}}<button type="button" class="mm-row-x" data-action="endEffect" data-id="{{x.id}}" aria-label="End {{x.name}}">&times;</button>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+      <p class="mm-hint">✓ is applied to the sheet for you; the rest are applied at the table.</p>
+    </section>
+    {{/if}}
+
+    {{#if volatiles.length}}
+    <section class="al-volatiles">
+      <h4><i class="fas fa-bomb"></i> Carrying volatile brews</h4>
+      <ul>{{#each volatiles as |v|}}<li>{{v.name}} <small>×{{v.qty}} · {{v.damage}} in {{v.radius}} m</small></li>{{/each}}</ul>
+      <p class="mm-hint">A hit to where they are carried may set them off (§7).</p>
+    </section>
+    {{/if}}
+  </div>
+</aside>

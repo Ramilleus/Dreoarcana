@@ -1,0 +1,60 @@
+{{!-- Arcanum: the caster and their spellbook --}}
+<aside class="mm-rail">
+
+  <section class="mm-caster-card">
+    {{#if showChoices}}
+    <select data-field="actor" class="mm-caster-select" aria-label="Caster">
+      <option value="" {{#unless actor}}selected{{/unless}}>No caster — world spells</option>
+      {{#each actorChoices as |c|}}<option value="{{c.uuid}}" {{#if c.selected}}selected{{/if}}>{{c.name}}</option>{{/each}}
+    </select>
+    {{/if}}
+
+    {{#if actor}}
+    <div class="mm-caster-id">
+      <img src="{{actor.img}}" alt="" data-action="openSheet" data-tooltip="Open {{actor.name}}'s sheet">
+      <div>
+        <strong>{{actor.name}}</strong>
+        {{#if actor.skill}}<small>Casts with {{actor.skill}}</small>{{/if}}
+      </div>
+    </div>
+
+    <div class="mm-gauges">
+      {{#if heat}}
+      <div class="mm-gauge mm-gauge-heat {{heat.cls}}">
+        <div class="mm-gauge-top">
+          <span>Heat</span>
+          <b>{{heat.value}} / {{heat.max}}{{#if heat.over}} <em>+{{heat.over}}</em>{{/if}}</b>
+          {{#if isOwner}}<button type="button" class="mm-mini" data-action="vent" data-tooltip="Vent: rest one Melee Round (−{{heat.rate}}). Shift-click to rest until cool{{#if isGM}} (GM: cool at once){{/if}}." aria-label="Vent Heat"><i class="fas fa-wind"></i></button>{{/if}}
+        </div>
+        <div class="mm-gauge-track"><div style="width:{{heat.pct}}%"></div></div>
+      </div>
+      {{/if}}
+      <div class="mm-gauge mm-gauge-orie" data-tooltip="The caster's reservoir. Orie drawn from it makes no Heat.">
+        <div class="mm-gauge-top"><span>Stored Orie</span><b>{{orie.value}} / {{orie.max}}</b></div>
+        <div class="mm-gauge-track"><div style="width:{{orie.pct}}%"></div></div>
+      </div>
+    </div>
+    {{else}}
+    <p class="mm-hint">With no caster, the spellbook is the Items directory: build spells for the world, then drag them onto characters.</p>
+    {{/if}}
+  </section>
+
+  <section class="mm-spellbook">
+    <header class="mm-spellbook-head">
+      <h3>{{#if actor}}Spellbook{{else}}World spells{{/if}}</h3>
+      {{#if canEdit}}<button type="button" class="mm-mini mm-new-spell {{#if newIsCurrent}}is-current{{/if}}" data-action="newSpell" data-tooltip="Start a new spell"><i class="fas fa-plus"></i> New</button>{{/if}}
+    </header>
+    <ol class="mm-spellbook-list">
+      {{#each spells as |s|}}
+      <li class="mm-spell-row mm-tier-{{s.tier}} {{#if s.selected}}is-selected{{/if}}" data-action="selectSpell" data-item-id="{{s.id}}" tabindex="0">
+        <span class="mm-sigil mm-spell-sigil">{{{s.sigil}}}</span>
+        <span class="mm-spell-name">{{s.name}}<small>{{s.numeral}} {{s.tierName}} · Might {{s.might}}</small></span>
+        {{#if ../canEdit}}<button type="button" class="mm-row-x" data-action="deleteSpell" data-tooltip="Delete {{s.name}}" aria-label="Delete {{s.name}}">&times;</button>{{/if}}
+      </li>
+      {{else}}
+      <li class="mm-empty">No spells yet. Build one on the bench and save it.</li>
+      {{/each}}
+    </ol>
+  </section>
+
+</aside>

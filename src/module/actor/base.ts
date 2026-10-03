@@ -8,6 +8,7 @@ import { ActorMythrasMovement } from './movement'
 import { ActorMythrasStatTracker } from './stat-tracker'
 import { TokenDocumentMythras } from '@module/scene/token-document/document'
 import { type SkillMythras } from '@item/skill'; // Type-only import to avoid circular reference.
+import { heatCapacity } from '../../arcana/heat.js'
 
 
 
@@ -103,6 +104,11 @@ class ActorMythras<TParent extends TokenDocumentMythras | null = TokenDocumentMy
 
   get maxMagicPoints() {
     return this.characteristics.pow + this.attributeMiscMods.magicPoints
+  }
+
+  /** Arcana: Heat a body holds before it burns (CON × setting, plus the sheet's modifier). */
+  get maxHeat() {
+    return heatCapacity(this)
   }
 
   get maxTenacity() {

@@ -85,6 +85,7 @@
     <div class="basic-table">
       <h3>
         <span>{{localize 'MYTHRAS.Equipment'}}</span>
+        <a class="laboratory-open" title="Open the Laboratory: brew, taste, drink"><i class="fas fa-mortar-pestle"></i></a>
         <select name="system.equipmentFilterOption" id="equipmentFilter">
           <option value="All">All</option>
           {{selectOptions equipmentTypes valueAttr="type" labelAttr="type" selected=system.equipmentFilterOption localize=true}}

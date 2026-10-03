@@ -139,7 +139,7 @@ async function createActor(skollEnemy, folder) {
   // Load standard skills from compendium
   promiseChain.then(
     await game.packs
-      .get('mythras.standardSkill')
+      .get('dreoarcana.standardSkill')
       .getDocuments()
       .then((result) => {
         result.forEach((skill, index) => {
@@ -151,7 +151,7 @@ async function createActor(skollEnemy, folder) {
   // Load professional skills from compendium
   promiseChain.then(
     await game.packs
-      .get('mythras.professionalSkill')
+      .get('dreoarcana.professionalSkill')
       .getDocuments()
       .then((result) => {
         result.forEach((skill, index) => {
