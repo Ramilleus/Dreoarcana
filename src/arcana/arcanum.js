@@ -351,7 +351,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     if (a) {
       const st = heatState(a);
       if (st.tracking) heat = {
-        value: fmt(st.heat), max: st.capacity, pct: st.pct, rate: num(SETTINGS.ventPerRound, 2),
+        value: fmt(st.heat), max: st.capacity, pct: st.pct, rate: st.rate,
         cls: st.over > 0 ? "is-over" : st.pct >= 75 ? "is-hot" : "", over: st.over ? fmt(st.over) : ""
       };
       const o = currentOrie(a), om = maxOrie(a);
@@ -1008,7 +1008,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     if (event.shiftKey) {
       if (game.user.isGM) return clearHeat(this.actor);
       const st = heatState(this.actor);
-      const rounds = Math.ceil(st.heat / Math.max(1, num(SETTINGS.ventPerRound, 2)));
+      const rounds = Math.ceil(st.heat / st.rate);
       return rounds > 0 ? ventHeat(this.actor, rounds) : null;
     }
     return ventHeat(this.actor, 1);

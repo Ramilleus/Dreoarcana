@@ -557,3 +557,78 @@ export function pickByRarity(entries, rand) {
 
 /** "Plant - Silverleaf" → "Plant": what an unidentified find looks like. */
 export const categoryOf = (name) => (String(name ?? "").split(/\s+[-–]\s+/)[0] || "Ingredient").trim();
+
+/* ===================================================================
+ * The gaps: rules the canon names but leaves without numbers
+ * =================================================================== */
+
+/* --- §3 Raising Condition ------------------------------------------
+ * "A Craft (Alchemy) task in its own right — Standard difficulty, hours
+ * of work and proper equipment; a Fumble ruins the sample." Enhanced
+ * (+1) is the top of the ladder. */
+export const REFINE_STEP = 3;
+export const MAX_CONDITION = 1;
+
+/** What a refining roll does to one unit at a Condition. */
+export function refineOutcome(result, condition) {
+  const c = Number(condition) || 0;
+  if (c >= MAX_CONDITION) return { verdict: "max", condition: c };
+  if (result === "fumble") return { verdict: "ruined", condition: c };
+  if (result === "failure") return { verdict: "nothing", condition: c };
+  return { verdict: "raised", condition: c + 1 };
+}
+
+/* --- §7 Padded cases -----------------------------------------------
+ * "Purpose-built cases … reduce blast damage by one step." The damage
+ * of the tier below; below Potency 4 there is no blast to take. The
+ * case protects a carried potion; one that is thrown has left it. */
+export function paddedDamage(tier) {
+  const below = VOLATILITY[tier - 1];
+  return below ? below.damage : null;
+}
+
+/* --- §9 Supercritical decay ----------------------------------------
+ * "It discharges or degrades to Potency 6 within a few hours;
+ * overnight is never safe. Purpose-built containment can extend this."
+ * HOUSE RULE for the numbers: after SUPERCRITICAL_HOURS (doubled in a
+ * padded case) roll 1d6 — 1-3 it settles to Potency 6, 4-6 it
+ * discharges as a Potency 7 blast. */
+export const SUPERCRITICAL_HOURS = 3;
+export const supercriticalLife = (padded = false) => SUPERCRITICAL_HOURS * 3600 * (padded ? 2 : 1);
+export const supercriticalFate = (d6) => (Number(d6) <= 3 ? "settles" : "discharges");
+
+/* --- §9 Vessels ------------------------------------------------------
+ * "Cost is for the vessel and consumables." A carried "Vessel - <Size>"
+ * is used up at decant; without one, the vessel is bought at that cost. */
+export const vesselName = (size) => `Vessel - ${size}`;
+export const VESSEL_COPPER = { Tiny: 100, Small: 200, Standard: 500, Medium: 1000, Large: 1500, Huge: 2000, Gargantuan: 10000 };
+export const VESSEL_WEIGHT = { Tiny: 0.05, Small: 0.1, Standard: 0.25, Medium: 0.4, Large: 0.6, Huge: 0.8, Gargantuan: 3 };
+
+/* --- §3 Spoilage -----------------------------------------------------
+ * Condition falls with "age, heat, sunlight … poor storage", and rises
+ * with "proper preservation". HOUSE RULE for the clock: a perishable
+ * ingredient loses one step of Condition per shelf life (default two
+ * weeks of game time) until it is Degraded, unless it is preserved.
+ * Minerals, metals, bone, horn, shell, hair and the Mothers keep. */
+export const SHELF_LIFE_DAYS = 14;
+export const MIN_CONDITION = -1;
+export const PERISHABLE = new Set([
+  "Animal", "Berry", "Blood", "Ear", "Egg", "Eye", "Flesh", "Flower", "Foot", "Fruit", "Fungus",
+  "Gllob", "Heart", "Herb", "Hog", "Insect", "Mushroom", "Plant", "Reed", "Root"
+]);
+export const isPerishable = (name) => PERISHABLE.has(categoryOf(name));
+
+/**
+ * How far an ingredient has spoiled by `now` (seconds of world time).
+ * Returns the new Condition and the clock carried forward, or null if
+ * nothing has changed.
+ */
+export function spoilage({ condition, harvestedAt, now, shelfDays = SHELF_LIFE_DAYS }) {
+  const life = Math.max(1, Number(shelfDays) || SHELF_LIFE_DAYS) * 86400;
+  const c = Number(condition) || 0;
+  if (!Number.isFinite(Number(harvestedAt)) || harvestedAt === null || c <= MIN_CONDITION) return null;
+  const steps = Math.floor((now - harvestedAt) / life);
+  if (steps < 1) return null;
+  const next = Math.max(MIN_CONDITION, c - steps);
+  return { condition: next, lost: c - next, harvestedAt: harvestedAt + steps * life };
+}

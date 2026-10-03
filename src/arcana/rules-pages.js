@@ -153,7 +153,7 @@ function pageHeat() {
     <ul>
       <li><strong>Capacity</strong> = CON × ${setting(SETTINGS.heatCapacityPerCon) ?? 3}.</li>
       <li>Past capacity, every <strong>${setting(SETTINGS.heatPerWound) ?? 5}</strong> points of Heat burn one hit point off a random hit location, ignoring armour. The burn is inside.</li>
-      <li><strong>Venting</strong>: ${setting(SETTINGS.ventPerRound) ?? 2} Heat per Melee Round of doing nothing else. The Vent control in the Arcanum applies it; the GM can cool a caster completely. Heat is shown in the character sheet's header and under Attributes on the main tab, where its capacity takes a modifier.</li>
+      <li><strong>Venting</strong>: ${setting(SETTINGS.ventPerRound) ?? 2} Heat per Melee Round of doing nothing else. Each wearable radiator the caster carries adds its metal's conductance ÷ 100 (silver and copper 4, gold 3, aluminium 2; a house rule built from the Materials table). The Vent control in the Arcanum applies it; the GM can cool a caster completely. Heat is shown in the character sheet's header and under Attributes on the main tab, where its capacity takes a modifier.</li>
     </ul>
     <h3>Stored Orie (the reservoir)</h3>
     <ul>

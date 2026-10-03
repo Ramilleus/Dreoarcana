@@ -740,3 +740,19 @@ export function describeBuild(build) {
   const u = b.utilities.length ? ` · ${b.utilities.map(x => utilityNodeValues(x).label).join(", ")}` : "";
   return `${b.intent} ${b.form} of ${fx}, ${RANGES[b.range].label}/${SIZES[b.size].label}, ${b.conversion}${u} · N=${b.power}`;
 }
+
+/* ---------------------------------------------------------------------
+ * Wearable radiators — HOUSE RULE
+ *
+ * The world records only that wearable radiators "dissipate conversion
+ * heat, not planar heat" (The Melfyrium Cycle), and the Materials table
+ * records each metal's thermal conductivity. Built from those two facts:
+ * a carried radiator adds ⌊conductance ÷ 100⌋ Heat to what its wearer
+ * vents each Melee Round. Silver sheds 4, copper 4, gold 3, iron none.
+ * ------------------------------------------------------------------- */
+export const RADIATOR_MATERIALS = {
+  Alumium: 237, Argentum: 429, Aurum: 317, Chrom: 94, Cobold: 100, Cuprium: 400, Ferrium: 80,
+  Irid: 150, Ledin: 35, Magnes: 156, Mangan: 105, Nicklor: 91, Osmi: 87, Pallad: 72, Platina: 72,
+  Rhod: 150, Ruth: 150, Tinn: 66, Titane: 22, Zinkor: 116
+};
+export const radiatorVent = (material) => Math.floor((RADIATOR_MATERIALS[material] ?? 0) / 100);

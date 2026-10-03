@@ -23,6 +23,8 @@ import { applyLastingEffects, expirePotionEffects, isPotionEffect, potionSkillBo
 import { currentLoad, addLoad, clearLoad } from "./saturation.js";
 import { forageDay, identifyIngredient, grounds, saveGround } from "./forage.js";
 import { ROUND_SECONDS } from "./rules.js";
+import { refineIngredient, setPreserved, setPadded, ageAlchemy, onPreCreateStock } from "./workshop.js";
+import { recipes, recordRecipe, deleteRecipe, matchRecipe } from "./recipes.js";
 
 export { openLaboratory } from "./laboratory.js";
 
@@ -49,13 +51,16 @@ export function registerAlchemy() {
       drinkPotion, eatIngredient, saturationCheck, throwPotion, breakPotion, blastProfile,
       tasteIngredient, studyIngredient, upsertIngredients, recordsFromCSV, catalogue,
       applyLastingEffects, expirePotionEffects, potionSkillBonus, currentLoad, addLoad, clearLoad,
-      forageDay, identifyIngredient, grounds, saveGround
+      forageDay, identifyIngredient, grounds, saveGround,
+      refineIngredient, setPreserved, setPadded, ageAlchemy, recipes, recordRecipe, deleteRecipe, matchRecipe
     };
     expirePotionEffects().catch(() => {});
+    ageAlchemy().catch(() => {});
   });
 
   Hooks.on(ALCHEMY_SETTINGS_HOOK, () => lab()?.render());
   Hooks.on("preCreateItem", onPreCreateAlchemy);
+  Hooks.on("preCreateItem", onPreCreateStock);
 
   // The Laboratory follows its alchemist's stock and pools.
   const follow = (doc) => {
@@ -78,6 +83,7 @@ export function registerAlchemy() {
   Hooks.on("deleteActiveEffect", followEffect);
   Hooks.on("updateWorldTime", () => {
     expirePotionEffects().catch(err => console.warn("Dreoarcana | Alchemy: effect expiry", err));
+    ageAlchemy();
     const app = lab();
     if (app?.actor) app.render({ parts: ["rail"] });
   });

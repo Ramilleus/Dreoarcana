@@ -21,7 +21,7 @@
     <li class="al-decant {{#if c.disabled}}is-disabled{{/if}} {{#if c.selected}}is-selected{{/if}}">
       <label>
         <input type="radio" name="container" data-field="container" value="{{c.name}}" {{#if c.selected}}checked{{/if}} {{#if c.disabled}}disabled{{/if}}>
-        <span class="al-decant-name">{{c.name}} <small>{{c.mL}} mL · {{c.cost}}</small></span>
+        <span class="al-decant-name">{{c.name}} <small>{{c.mL}} mL · {{c.vesselNote}}</small></span>
         <span class="al-decant-doses">{{c.doses}} dose{{#unless (eq c.doses 1)}}s{{/unless}}</span>
         <span class="al-decant-note {{#if c.disabled}}mm-bad{{/if}}">{{c.note}}</span>
       </label>
@@ -68,6 +68,26 @@
     </div>
     {{/if}}
   </div>
+
+  {{#if hasBook}}
+  <details class="al-recipes" {{#if book.length}}open{{/if}}>
+    <summary><i class="fas fa-book-open"></i> Recipe book <small>{{book.length}} page{{#unless (eq book.length 1)}}s{{/unless}}</small></summary>
+    {{#if book.length}}
+    <ul class="al-recipe-list">
+      {{#each book as |r|}}
+      <li class="al-recipe" data-recipe="{{r.id}}">
+        {{#if ../bookOwner}}<input type="text" class="al-recipe-name" data-field="recipeName" data-id="{{r.id}}" value="{{r.inputName}}" placeholder="{{r.name}}" aria-label="Recipe name">{{else}}<strong>{{r.name}}</strong>{{/if}}
+        <span class="al-recipe-mix">{{r.mixture}}<small>{{r.result}}{{r.countNote}}{{#unless r.ready}} · missing {{#each r.missing as |m|}}{{m}}{{#unless @last}}, {{/unless}}{{/each}}{{/unless}}</small></span>
+        {{#if ../bookOwner}}
+        <button type="button" class="mm-mini" data-action="useRecipe" {{#unless r.ready}}disabled{{/unless}} data-tooltip="Lay this mixture out on the bench"><i class="fas fa-mortar-pestle"></i> Use</button>
+        <button type="button" class="mm-row-x" data-action="deleteRecipe" aria-label="Remove recipe">&times;</button>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}<p class="mm-hint">Every batch decanted is written here, to brew again.</p>{{/if}}
+  </details>
+  {{/if}}
 
   <div class="al-shelf">
     <div class="al-filters">

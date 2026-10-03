@@ -180,6 +180,7 @@
           "value": 0,
           "time": 0
         },
+        "recipes": [],
         "spellFilterOption": "All",        
         "equipmentFilterOption": "All"
       },
@@ -260,6 +261,10 @@
           "enabled": false,
           "quality": 1,
           "worth": ""
+        },
+        "radiator": {
+          "enabled": false,
+          "material": ""
         }
       }
     },
@@ -431,7 +436,9 @@
       "slots": [null, null, null, null],
       "discovered": [],
       "identified": true,
-      "trueName": ""
+      "trueName": "",
+      "harvestedAt": null,
+      "preserved": false
     },
     "potion": {
       "templates": ["item"],
@@ -456,7 +463,9 @@
       "ingredients": [],
       "trueName": "",
       "trueDescription": "",
-      "brewedBy": ""
+      "brewedBy": "",
+      "brewedAt": null,
+      "padded": false
     }
   }
 }

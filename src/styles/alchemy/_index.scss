@@ -172,3 +172,12 @@
 .al-ground-pick[hidden] { display: none; }
 .al-ground-pick label { display: flex; align-items: center; gap: 6px; font-size: 0.88em; font-weight: 400; cursor: pointer; }
 .al-ground-pick small { color: var(--ink-soft); margin-left: auto; }
+
+/* Recipe book */
+.al-recipes { flex: 0 0 auto; padding: 6px 12px; background: var(--mm-node-bg); border: 1px solid var(--edge); border-radius: var(--mm-r-md); }
+.al-recipes summary { cursor: pointer; font-weight: 600; }
+.al-recipes summary small { font-weight: 400; opacity: 0.7; margin-left: 6px; }
+.al-recipe-list { margin: 6px 0 0; padding: 0; list-style: none; max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 3px; }
+.al-recipe { display: grid; grid-template-columns: minmax(8em, 14em) minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
+.al-recipe-mix small { display: block; opacity: 0.75; }
+.al-keeping i { margin-right: 4px; }

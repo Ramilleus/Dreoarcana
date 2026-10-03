@@ -18,7 +18,8 @@ import { record, POTION_TYPE, POTION_IMG, isIngredient } from "./core.js";
 import { QUALITY, SIZES, VOLATILITY, ABSORPTION, DIFFICULTY, MAX_POTENCY, SUPERCRITICAL, SLOT_NAMES,
          effectivePotency, oriePool, potencyPerDose, minimumDoses, describeEffect, overlapWithSlots,
          bestSlot, slotPotency, motherDoses, motherDosesPerUnit, motherUnitsSpent, resolveClass,
-         gradedTarget, qualityFromRoll, alchemyResult } from "./rules.js";
+         gradedTarget, qualityFromRoll, alchemyResult, vesselName } from "./rules.js";
+import { recordRecipe } from "./recipes.js";
 import { asetting, ASETTINGS } from "./settings.js";
 import { discoverFromBrew } from "./discovery.js";
 import { currentOrie, setOrie, fmt } from "../arcana/core.js";
@@ -122,8 +123,17 @@ export async function commitBrew({ actor = null, mother, reagents, xi = 0, skill
   return { ...plan, actor, quality, result, roll: roll.total, done: false };
 }
 
+/** Vessels of a size the actor carries (§9): items named "Vessel - <Size>". */
+export function carriedVessels(actor, size) {
+  if (!actor) return [];
+  const want = vesselName(size).toLowerCase();
+  return actor.items.filter(i => i.name.trim().toLowerCase() === want && (Number(i.system?.quantity) || 0) > 0);
+}
+const vesselCount = (actor, size) => carriedVessels(actor, size).reduce((n, i) => n + (Number(i.system.quantity) || 0), 0);
+
 /** The containers this batch could be decanted into (§9). */
 export function decantOptions(batch) {
+  const required = asetting(ASETTINGS.vessels) === "required";
   const q = QUALITY[batch.quality];
   const capacity = motherDoses(batch.mother, { unbounded: !batch.actor });
   const gradePotency = Math.max(1, ...batch.chosen.map(i => effectivePotency(i.grade, i.condition) ?? 1));
@@ -134,7 +144,10 @@ export function decantOptions(batch) {
     if (c.charges > capacity && capacity < q.portions) issue = `only ${capacity} dose${capacity > 1 ? "s" : ""} of ${batch.mother.name}`;
     if (batch.mechanical && doses < batch.minDoses) issue = `overflows: needs ${batch.minDoses}+ doses`;
     else if (potency < 1) issue = "too dilute to do anything";
-    return { name, ...c, doses, potency, issue, volatile: batch.mechanical && potency >= 4, supercritical: potency >= SUPERCRITICAL };
+    const vessels = batch.actor ? vesselCount(batch.actor, name) : null;
+    if (!issue && required && batch.actor && !vessels) issue = `no ${name} vessel carried`;
+    return { name, ...c, doses, potency, issue, vessels,
+      vesselNote: vessels === null ? c.cost : vessels ? `${vessels} carried` : `new vessel ${c.cost}`, volatile: batch.mechanical && potency >= 4, supercritical: potency >= SUPERCRITICAL };
   });
 }
 
@@ -155,6 +168,17 @@ export async function decant(batch, containerName) {
   const { doses, potency } = pick;
   const supercritical = potency >= SUPERCRITICAL;
   const effPotency = Math.min(potency, MAX_POTENCY);
+
+  // §9 The vessel: one the alchemist carries, or a new one at its price.
+  let vesselLine = "";
+  if (batch.actor) {
+    const [held] = carriedVessels(batch.actor, pick.name);
+    if (held) {
+      const n = Number(held.system.quantity) || 1;
+      if (n > 1) await held.update({ "system.quantity": n - 1 }); else await held.delete();
+      vesselLine = `A carried ${pick.name} vessel is used.`;
+    } else vesselLine = `A new ${pick.name} vessel: ${pick.cost}.`;
+  }
 
   // §3b The liquid is measured now; the rest of the last measure boils off.
   const motherUnits = motherUnitsSpent(batch.mother, doses);
@@ -208,18 +232,27 @@ export async function decant(batch, containerName) {
       mother: batch.mother.name, motherUnits, boiledOff,
       duration: q.rounds, multiplier: q.mult, manifest, size: pick.name,
       ingredients: [batch.mother.name, ...reagentNames], trueName, trueDescription: description,
-      brewedBy: batch.actor?.name ?? game.user.name
+      brewedBy: batch.actor?.name ?? game.user.name,
+      brewedAt: Number(game.time?.worldTime) || 0
     }
   };
   const [potion] = batch.actor ? await batch.actor.createEmbeddedDocuments("Item", [data]) : await Item.createDocuments([data]);
 
+  if (batch.actor && potion) {
+    await recordRecipe(batch.actor, {
+      mother: batch.mother.name, reagents: reagentNames, xi: batch.channelled, size: pick.name,
+      quality: batch.quality, potency, doses, trueName, identified: !concealed, potionUuid: potion.uuid
+    }).catch(err => console.warn("Dreoarcana | Alchemy: recipe book", err));
+  }
+
   const learned = await discoverFromBrew(batch.chosen, manifest);
   const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
   const speaker = batch.actor ? ChatMessage.getSpeaker({ actor: batch.actor }) : undefined;
-  const full = `<div class="mm-chat al-chat"><h3>${e(trueName)}</h3>${description}${concealed ? "<p class=\"mm-hint\">Made unidentified; reveal it in the Laboratory.</p>" : ""}</div>`;
+  const vesselHint = vesselLine ? `<p class="mm-hint">${e(vesselLine)}</p>` : "";
+  const full = `<div class="mm-chat al-chat"><h3>${e(trueName)}</h3>${description}${vesselHint}${concealed ? "<p class=\"mm-hint\">Made unidentified; reveal it in the Laboratory.</p>" : ""}</div>`;
   if (game.user.isGM || !concealed) await ChatMessage.create({ speaker, content: full, whisper: concealed ? gmIds : [] });
   else {
-    await ChatMessage.create({ speaker, content: `<div class="mm-chat al-chat"><h3>${e(batch.actor?.name ?? game.user.name)} decants a potion</h3><p>${doses} dose${doses > 1 ? "s" : ""} of something, from ${[batch.mother.name, ...reagentNames].map(e).join(" + ")}.</p></div>` });
+    await ChatMessage.create({ speaker, content: `<div class="mm-chat al-chat"><h3>${e(batch.actor?.name ?? game.user.name)} decants a potion</h3><p>${doses} dose${doses > 1 ? "s" : ""} of something, from ${[batch.mother.name, ...reagentNames].map(e).join(" + ")}.</p>${vesselHint}</div>` });
     await ChatMessage.create({ speaker, whisper: gmIds, content: full });
   }
   if (learned.length) {
@@ -235,6 +268,12 @@ export async function revealPotion(item) {
   if (item?.type !== POTION_TYPE) return null;
   if (item.system.identified) { ui.notifications.info(`${item.name} is already identified.`); return item; }
   await item.update({ name: item.system.trueName || item.name, "system.description": item.system.trueDescription || item.system.description, "system.identified": true });
+  // The brewer's recipe book can now say what that batch was.
+  const actor = item.parent;
+  const book = actor?.system?.recipes;
+  if (Array.isArray(book) && book.some(r => r.last?.potionUuid === item.uuid)) {
+    await actor.update({ "system.recipes": book.map(r => r.last?.potionUuid === item.uuid ? { ...r, last: { ...r.last, identified: true } } : r) });
+  }
   ui.notifications.info(`Identified: ${item.name}`);
   return item;
 }

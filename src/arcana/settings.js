@@ -21,6 +21,7 @@ export const SETTINGS = {
   heatCapacityPerCon: "arcana.heatCapacityPerCon",
   heatPerWound:       "arcana.heatPerWound",
   ventPerRound:       "arcana.ventPerRound",
+  radiators:          "arcana.radiators",
   theme:              "arcana.theme",
   animations:         "arcana.animations",
   sigilImages:        "arcana.sigilImages",
@@ -162,6 +163,12 @@ export function registerSettings() {
     hint: "How fast Heat dissipates while the caster does nothing else.",
     scope: "world", config: true, type: Number, default: 2,
     range: { min: 1, max: 20, step: 1 }
+  });
+
+  S(SETTINGS.radiators, {
+    name: "Arcana: wearable radiators shed Heat",
+    hint: "House rule. Gear marked as a radiator adds its metal's conductance ÷ 100 to the Heat its wearer vents each Melee Round (Materials table: silver 4, copper 4, gold 3, aluminium 2).",
+    scope: "world", config: true, type: Boolean, default: true
   });
 
   /* ---- Bookkeeping ---------------------------------------------- */

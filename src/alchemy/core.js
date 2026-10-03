@@ -69,6 +69,20 @@ export function endurance(actor) {
 
 export const skillValue = skillVal;
 
+/** Craft (Alchemy), or its Mythras base of DEX+INT (p.53) for one who never trained it. */
+export function craftValue(actor) {
+  const item = craftSkill(actor);
+  if (item) return { value: skillValue(item), name: item.name };
+  const c = actor?.characteristics ?? {};
+  return { value: (Number(c.dex) || 0) + (Number(c.int) || 0), name: "Craft (Alchemy), base" };
+}
+/** Lore (Alchemy), or its base of INT×2 (p.53). */
+export function loreValue(actor) {
+  const item = loreSkill(actor);
+  if (item) return { value: skillValue(item), name: item.name };
+  return { value: (Number(actor?.characteristics?.int) || 0) * 2, name: "Lore (Alchemy), base" };
+}
+
 /* -------------------------------------------------------------------
  * Coins: "3cp" / "10pp" / "12" → integer copper
  * ----------------------------------------------------------------- */

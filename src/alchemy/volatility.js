@@ -9,12 +9,16 @@
  * =================================================================== */
 
 import { record, isPotion, isIngredient } from "./core.js";
-import { VOLATILITY, SUPERCRITICAL, effectivePotency } from "./rules.js";
+import { VOLATILITY, SUPERCRITICAL, effectivePotency, paddedDamage } from "./rules.js";
 import { confirmDialog } from "../arcana/ui.js";
 import { e } from "../arcana/html.js";
 
-/** What happens if this item goes off, or null if it can't. */
-export function blastProfile(item) {
+/**
+ * What happens if this item goes off, or null if it can't.
+ * A padded case takes one step off the damage of a carried potion (§7);
+ * one that is thrown has left its case.
+ */
+export function blastProfile(item, { thrown = false } = {}) {
   let potency = 0, mechanical = false, effects = [];
   if (isPotion(item)) {
     potency = Number(item.system.potency) || 0;
@@ -31,7 +35,11 @@ export function blastProfile(item) {
   let tier = Math.min(potency, SUPERCRITICAL);
   if (hasExplode) tier = Math.min(tier + 1, SUPERCRITICAL);
   const profile = VOLATILITY[tier];
-  return profile ? { ...profile, tier, potency, hasExplode } : null;
+  if (!profile) return null;
+  const padded = isPotion(item) && Boolean(item.system.padded) && !thrown;
+  if (!padded) return { ...profile, tier, potency, hasExplode, padded: false };
+  const damage = paddedDamage(tier);
+  return damage ? { ...profile, damage, tier, potency, hasExplode, padded: true, unpadded: profile.damage } : null;
 }
 
 async function spendOne(item) {
@@ -40,7 +48,7 @@ async function spendOne(item) {
   else await item.delete();
 }
 
-async function detonate(item, { actor, cause, blast }) {
+export async function detonate(item, { actor, cause, blast }) {
   const roll = await new Roll(blast.damage).evaluate();
   const origin = actor?.getActiveTokens?.()[0] ?? canvas?.tokens?.controlled?.[0] ?? null;
   let caught = [];
@@ -59,6 +67,7 @@ async function detonate(item, { actor, cause, blast }) {
       <p><strong>${roll.total}</strong> damage (${blast.damage}) within <strong>${blast.radius} m</strong>${blast.ignoresArmour ? ", <strong>ignoring armour</strong>" : ""}.</p>
       <p><em>${e(blast.note)}</em></p>
       ${blast.hasExplode ? "<p><em>Carries the Explode property: one step above its Potency (§7).</em></p>" : ""}
+      ${blast.padded ? `<p><em>Its padded case took the worst of it: ${blast.unpadded} became ${blast.damage} (§7).</em></p>` : ""}
       ${caught.length ? `<p><strong>In radius:</strong> ${caught.map(t => e(t.name)).join(", ")}</p>` : origin ? "<p><em>Nothing else within the blast.</em></p>" : ""}
       <p class="mm-hint">Each target takes it to a random hit location (Mythras p.109).</p></div>`
   });
@@ -67,7 +76,7 @@ async function detonate(item, { actor, cause, blast }) {
 
 /** Throw it as an improvised grenade (§7). */
 export async function throwPotion(item, actor = item?.actor) {
-  const blast = blastProfile(item);
+  const blast = blastProfile(item, { thrown: true });
   if (!blast) { ui.notifications.warn(`${item.name} isn't volatile: only Mechanical brews at Potency 4+ detonate (§7).`); return null; }
   if (item.pack || !item.parent) { ui.notifications.warn(`${item.name} isn't being carried.`); return null; }
   const go = await confirmDialog({
@@ -84,7 +93,8 @@ export async function throwPotion(item, actor = item?.actor) {
 export async function breakPotion(item, actor = item?.actor) {
   if (item.pack || !item.parent) { ui.notifications.warn(`${item.name} isn't being carried.`); return null; }
   const blast = blastProfile(item);
-  const go = await confirmDialog({ title: `Break ${item.name}?`, content: blast ? `<p>It is volatile: <strong>${blast.damage}</strong> in ${blast.radius} m.</p>` : "<p>It will spill and be wasted.</p>", yesLabel: "Break it", noLabel: "Keep it" });
+  const contained = !blast && isPotion(item) && item.system.padded && blastProfile(item, { thrown: true });
+  const go = await confirmDialog({ title: `Break ${item.name}?`, content: blast ? `<p>It is volatile: <strong>${blast.damage}</strong> in ${blast.radius} m${blast.padded ? ", softened by its padded case" : ""}.</p>` : contained ? "<p>It is volatile, but its padded case will smother the burst. It will be wasted.</p>" : "<p>It will spill and be wasted.</p>", yesLabel: "Break it", noLabel: "Keep it" });
   if (!go) return null;
   await spendOne(item);
   if (!blast) {

@@ -17,6 +17,9 @@ export const ASETTINGS = {
   playerBrewing: "alchemy.playerBrewing",
   unidentified: "alchemy.unidentified",
   saturationClear: "alchemy.saturationClear",
+  shelfLife: "alchemy.shelfLife",
+  supercriticalDecay: "alchemy.supercriticalDecay",
+  vessels: "alchemy.vessels",
   grounds: "alchemy.grounds",
   migrated: "alchemy.migrated"
 };
@@ -80,6 +83,22 @@ export function registerAlchemySettings() {
     hint: "Doses taken close together add up against the same SIZ capacity (§8). The body clears its Healing Rate in raw Orie per this much game time. House rule: the canon says only \"a short period\".",
     type: String, default: "hour",
     choices: { hour: "Healing Rate per hour", day: "Healing Rate per day", rest: "Only when the GM says the character has rested" }
+  });
+  S(ASETTINGS.shelfLife, {
+    name: "Alchemy: shelf life of perishable ingredients, in days (§3)",
+    hint: "House rule. Herbs, flowers, fruit, fungi, flesh, blood and organs carried by a character lose one step of Condition per this many days of game time, down to Degraded, unless preserved. Minerals, metals, bone, horn, shell, hair and Mothers keep. 0 turns spoilage off.",
+    type: Number, default: 14, range: { min: 0, max: 90, step: 1 }
+  });
+  S(ASETTINGS.supercriticalDecay, {
+    name: "Alchemy: Supercritical potions decay (§9)",
+    hint: "A Potency 7 dose \"discharges or degrades to Potency 6 within a few hours\". House rule for the numbers: after 3 hours of game time (6 in a padded case) roll 1d6; 1-3 it settles to Potency 6, 4-6 it discharges as a Potency 7 blast.",
+    type: Boolean, default: true
+  });
+  S(ASETTINGS.vessels, {
+    name: "Alchemy: vessels for decanting (§9)",
+    hint: "A carried \"Vessel - <Size>\" item (in the Alchemy Ingredients compendium) is used up when a batch is decanted into that size. Without one, the chat card states the cost of a new vessel, or decanting into that size is refused.",
+    type: String, default: "carried",
+    choices: { carried: "Use a carried vessel if there is one; otherwise state the cost", required: "A carried vessel is required" }
   });
   game.settings.register(SYSTEM_ID, ASETTINGS.grounds, {
     scope: "world", config: false, type: Array, default: [],

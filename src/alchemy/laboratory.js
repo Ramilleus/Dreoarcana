@@ -14,7 +14,7 @@
  * =================================================================== */
 
 import { TEMPLATES, record, isIngredient, isPotion, isMother, craftSkill, loreSkill, skillValue,
-         catalogue, upsertIngredients, worldPack, ingredientItemData, recordsFromCSV, classContradictions, toCopper } from "./core.js";
+         catalogue, upsertIngredients, worldPack, craftValue, loreValue, ingredientItemData, recordsFromCSV, classContradictions, toCopper } from "./core.js";
 import { QUALITY, VOLATILITY, ABSORPTION, DIFFICULTY, MAX_POTENCY, MAX_ORIE_PER_DOSE, SLOT_NAMES, CONDITIONS, CLASSES,
          RARITIES, EFFECT_NAMES, ARCANE_EFFECTS, RARITY_DIFFICULTY, effectivePotency, slotPotency, describeEffect,
          motherDoses, resolveClass, gradedTarget } from "./rules.js";
@@ -29,7 +29,9 @@ import { heatState, ventHeat } from "../arcana/heat.js";
 import { loadState, clearLoad } from "./saturation.js";
 import { lastingEffects } from "./effects.js";
 import { ANYWHERE, grounds, groundById, anywhereGround, groundStock, saveGround, deleteGround, forageDay, survivalValue, identifyValue, identifyIngredient, revealIngredient } from "./forage.js";
-import { RARITY_WEIGHT } from "./rules.js";
+import { RARITY_WEIGHT, MAX_CONDITION, MIN_CONDITION, REFINE_STEP } from "./rules.js";
+import { refineIngredient, setPreserved, setPadded, perishable, supercriticalDeadline, untilText } from "./workshop.js";
+import { recipes, recipeView, matchRecipe, deleteRecipe, renameRecipe } from "./recipes.js";
 import { setting as arcanaSetting, SETTINGS as ARCANA, num } from "../arcana/settings.js";
 import { confirmDialog } from "../arcana/ui.js";
 import { e } from "../arcana/html.js";
@@ -47,19 +49,6 @@ const TABS = [
 
 const canBrew = () => game.user?.isGM || asetting(ASETTINGS.playerBrewing) !== false;
 
-/** Craft (Alchemy), or its Mythras base of DEX+INT (p.53) for one who never trained it. */
-function craftValue(actor) {
-  const item = craftSkill(actor);
-  if (item) return { value: skillValue(item), name: item.name };
-  const c = actor?.characteristics ?? {};
-  return { value: (Number(c.dex) || 0) + (Number(c.int) || 0), name: "Craft (Alchemy), base" };
-}
-/** Lore (Alchemy), or its base of INT×2 (p.53). */
-function loreValue(actor) {
-  const item = loreSkill(actor);
-  if (item) return { value: skillValue(item), name: item.name };
-  return { value: (Number(actor?.characteristics?.int) || 0) * 2, name: "Lore (Alchemy), base" };
-}
 
 const chips = (doc) => describeKnown(doc).filter(s => s.effect)
   .map(s => ({ label: s.known ? s.effect : "?", known: s.known, arcane: s.known && s.arcane, slot: s.name }));
@@ -93,6 +82,11 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       throw: Laboratory.#onThrow,
       break: Laboratory.#onBreak,
       reveal: Laboratory.#onReveal,
+      refine: Laboratory.#onRefine,
+      preserve: Laboratory.#onPreserve,
+      pad: Laboratory.#onPad,
+      useRecipe: Laboratory.#onUseRecipe,
+      deleteRecipe: Laboratory.#onDeleteRecipe,
       deleteItem: Laboratory.#onDeleteItem,
       edit: Laboratory.#onEdit,
       cancelEdit: Laboratory.#onCancelEdit,
@@ -230,7 +224,7 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
     let heat = null, orie = null, volatiles = [];
     if (a) {
       const st = heatState(a);
-      if (st.tracking) heat = { value: fmt(st.heat), max: st.capacity, pct: st.pct, rate: num(ARCANA.ventPerRound, 2),
+      if (st.tracking) heat = { value: fmt(st.heat), max: st.capacity, pct: st.pct, rate: st.rate,
         cls: st.over > 0 ? "is-over" : st.pct >= 75 ? "is-hot" : "" };
       const o = currentOrie(a), om = maxOrie(a);
       orie = { value: o, max: om, pct: om ? Math.min(100, Math.round(o / om * 100)) : 0 };
@@ -314,8 +308,10 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       };
     }
 
+    const book = this.actor ? recipes(this.actor).map(p => recipeView(p, { isGM, actor: this.actor })) : [];
     return {
       decanting: false, shelf, mothers, readout, max,
+      book, hasBook: Boolean(this.actor), bookOwner: Boolean(this.actor?.isOwner),
       chosen: reagents.map(r => ({ id: r.id, name: r.name })),
       count: reagents.length,
       filter: this.filter,
@@ -405,7 +401,30 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       studyNote: `Lore (Alchemy) at ${DIFFICULTY[RARITY_DIFFICULTY[rec.rarity] ?? 3].label}`,
       canEat: owned, canUse: !isMother(doc) && (!this.actor || doc.parent === this.actor),
       canEdit: isGM, canDelete: isGM || owned,
-      inPack: Boolean(doc.pack)
+      inPack: Boolean(doc.pack),
+      ...this._mmKeeping(doc, rec, owned)
+    };
+  }
+
+  /** Condition over time: refining (§3), spoilage and preservation (§3). */
+  _mmKeeping(doc, rec, owned) {
+    const shelf = Number(asetting(ASETTINGS.shelfLife)) || 0;
+    const canSpoil = perishable(doc) && shelf > 0;
+    let keeping = null;
+    if (perishable(doc)) {
+      const at = Number(doc.system.harvestedAt);
+      if (doc.system.preserved) keeping = "Preserved: it keeps.";
+      else if (!shelf) keeping = null;
+      else if (rec.condition <= MIN_CONDITION) keeping = "Perishable, and already as degraded as it gets.";
+      else if (owned && doc.system.harvestedAt !== null && Number.isFinite(at)) keeping = `Perishable: loses a step of Condition ${untilText(at + shelf * 86400 - (Number(game.time.worldTime) || 0))} unless preserved.`;
+      else keeping = `Perishable: loses a step of Condition every ${shelf} days unless preserved.`;
+    }
+    const craft = craftValue(doc.actor ?? this.actor);
+    return {
+      keeping, preserved: Boolean(doc.system.preserved),
+      canPreserve: owned && canSpoil,
+      canRefine: owned && rec.condition < MAX_CONDITION,
+      refineNote: `Raise one to the next Condition: ${craft.name} at ${DIFFICULTY[REFINE_STEP].label}, hours of work; a fumble ruins it (§3)`
     };
   }
 
@@ -415,7 +434,10 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
     const known = s.identified || isGM;
     const potency = Math.min(Number(s.potency) || 0, MAX_POTENCY);
     const blast = known ? blastProfile(doc) : null;
+    const thrown = known ? blastProfile(doc, { thrown: true }) : null;
     const owned = Boolean(doc.parent) && !doc.pack && doc.isOwner;
+    const deadline = known ? supercriticalDeadline(doc) : null;
+    const decay = asetting(ASETTINGS.supercriticalDecay) !== false;
     return {
       uuid: doc.uuid, name: doc.name, img: doc.img, known, identified: s.identified,
       stats: known ? [
@@ -432,7 +454,12 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       }) : [],
       blast, absorption: known && s.mechanical && potency ? ABSORPTION[Math.min(s.potency, 7)] : null,
       ingredients: (s.ingredients ?? []).join(" + "), brewedBy: s.brewedBy,
-      owned, canReveal: isGM && !s.identified, canDelete: isGM || owned
+      owned, canReveal: isGM && !s.identified, canDelete: isGM || owned,
+      padded: Boolean(s.padded), canPad: owned,
+      paddedNote: s.padded && thrown ? (blast ? `In its padded case a break does ${blast.damage}, not ${thrown.damage}; thrown, it leaves the case.` : `In its padded case a break is smothered; thrown, it bursts for ${thrown.damage} in ${thrown.radius} m.`) : null,
+      fuse: s.supercritical && known ? (decay && deadline !== null
+        ? `Supercritical: ${untilText(deadline - (Number(game.time.worldTime) || 0))} it settles to Potency 6 or discharges (1d6, §9)${s.padded ? "; the padded case doubled its time" : ""}.`
+        : "Supercritical: it cannot be stored more than a few hours (§9).") : null
     };
   }
 
@@ -561,6 +588,7 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
     if (field === "mod") { this.mod = Number(t.value) || 0; return this.render({ parts: ["brew"] }); }
     if (field === "xi") { this.xi = Math.max(0, Math.floor(Number(t.value) || 0)); return this.render({ parts: ["brew"] }); }
     if (field === "container") { this.container = t.value; return; }
+    if (field === "recipeName") { await renameRecipe(this.actor, t.dataset.id, t.value); return this.render({ parts: ["brew"] }); }
     if (field === "forageMod") { this.forageMod = Number(t.value) || 0; return this.render({ parts: ["forage"] }); }
     if (field === "source") { this.source = t.value; this.selectedUuid = null; this.editing = null; return this.render({ parts: ["stock"] }); }
   }
@@ -693,6 +721,48 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
   static async #onThrow(event) { event.preventDefault(); const d = await this._mmSelected(); if (d) await throwPotion(d, d.actor); }
   static async #onBreak(event) { event.preventDefault(); const d = await this._mmSelected(); if (d) await breakPotion(d, d.actor); }
   static async #onReveal(event) { event.preventDefault(); const d = await this._mmSelected(); if (d) { await revealPotion(d); this.render({ parts: ["stock"] }); } }
+
+  static async #onRefine(event) {
+    event.preventDefault();
+    const d = await this._mmSelected(); if (!d) return;
+    const go = await confirmDialog({ title: `Refine ${d.name}?`, content: `<p>Hours of work with proper equipment to raise one ${e(d.name)} a step of Condition: ${e(craftValue(d.actor ?? this.actor).name)} at Standard. A fumble ruins it (§3).</p>`, yesLabel: "Refine", noLabel: "Not now" });
+    if (!go) return;
+    await refineIngredient(d, d.actor ?? this.actor);
+    this.selectedUuid = d.parent?.items.get(d.id) ? d.uuid : null;
+    this.render({ parts: ["stock", "brew"] });
+  }
+  static async #onPreserve(event) {
+    event.preventDefault();
+    const d = await this._mmSelected(); if (!d) return;
+    await setPreserved(d, !d.system.preserved);
+    this.render({ parts: ["stock"] });
+  }
+  static async #onPad(event) {
+    event.preventDefault();
+    const d = await this._mmSelected(); if (!d) return;
+    await setPadded(d, !d.system.padded);
+    this.render({ parts: ["stock", "rail"] });
+  }
+  static async #onUseRecipe(event, target) {
+    event.preventDefault();
+    if (!this.actor) return;
+    const page = (this.actor.system.recipes ?? []).find(r => r.id === target.closest("[data-recipe]")?.dataset.recipe);
+    if (!page) return;
+    const m = matchRecipe(this.actor, page);
+    if (m.missing.length) return ui.notifications.warn(`${this.actor.name} is missing ${m.missing.join(", ")}.`);
+    this.motherId = m.motherId;
+    this.reagentIds = new Set(m.reagentIds);
+    this.xi = Number(page.xi) || 0;
+    this.render({ parts: ["brew"] });
+  }
+  static async #onDeleteRecipe(event, target) {
+    event.preventDefault();
+    const id = target.closest("[data-recipe]")?.dataset.recipe;
+    const go = await confirmDialog({ title: "Tear out the page?", content: "<p>Remove this recipe from the book?</p>", yesLabel: "Remove", noLabel: "Keep" });
+    if (!go) return;
+    await deleteRecipe(this.actor, id);
+    this.render({ parts: ["brew"] });
+  }
 
   static async #onDeleteItem(event) {
     event.preventDefault();

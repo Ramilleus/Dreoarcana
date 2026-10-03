@@ -90,6 +90,7 @@
       {{/each}}
     </ol>
     {{#each d.hazards as |h|}}<p class="mm-warn">{{h}}</p>{{/each}}
+    {{#if d.keeping}}<p class="mm-hint al-keeping"><i class="fas {{#if d.preserved}}fa-jar{{else}}fa-hourglass-half{{/if}}"></i> {{d.keeping}}</p>{{/if}}
     {{#if d.description}}<div class="al-desc">{{{d.description}}}</div>{{/if}}
     <div class="al-actions">
       {{#if d.canIdentify}}<button type="button" data-action="identify" data-tooltip="{{d.identifyNote}}"><i class="fas fa-search"></i> Identify</button>{{/if}}
@@ -98,6 +99,8 @@
       {{#if d.canStudy}}<button type="button" data-action="study" data-tooltip="{{d.studyNote}}"><i class="fas fa-search"></i> Study</button>{{/if}}
       {{#if d.canEat}}<button type="button" data-action="eat" data-tooltip="Primary only, at full Potency, the whole raw dose (§6a)"><i class="fas fa-utensils"></i> Eat raw</button>{{/if}}
       {{#if d.canUse}}<button type="button" data-action="useInBrew"><i class="fas fa-mortar-pestle"></i> Use in a brew</button>{{/if}}
+      {{#if d.canRefine}}<button type="button" data-action="refine" data-tooltip="{{d.refineNote}}"><i class="fas fa-fire-burner"></i> Refine</button>{{/if}}
+      {{#if d.canPreserve}}<button type="button" data-action="preserve" data-tooltip="{{#if d.preserved}}Take it out of preservation: it starts to age again{{else}}Salted, dried or sealed: it stops losing Condition (§3){{/if}}"><i class="fas fa-jar"></i> {{#if d.preserved}}Unpreserve{{else}}Preserve{{/if}}</button>{{/if}}
       <span class="mm-grow"></span>
       {{#if d.canEdit}}<button type="button" data-action="edit"><i class="fas fa-pen"></i> Edit</button>{{/if}}
       {{#if d.canDelete}}<button type="button" class="mm-danger-btn" data-action="deleteItem" aria-label="Delete"><i class="fas fa-trash"></i></button>{{/if}}
@@ -113,6 +116,8 @@
     {{#if d.known}}
     <ul class="al-effects">{{#each d.effects as |x|}}<li><strong>{{x.effect}}</strong> <em>{{x.slot}}</em> — {{x.rule}}</li>{{else}}<li><em>Inert.</em></li>{{/each}}</ul>
     {{#if d.blast}}<p class="mm-warn">Volatile: {{d.blast.damage}} in {{d.blast.radius}} m{{#if d.blast.ignoresArmour}}, ignoring armour{{/if}}. {{d.blast.note}}</p>{{/if}}
+    {{#if d.paddedNote}}<p class="mm-hint"><i class="fas fa-box"></i> {{d.paddedNote}}</p>{{/if}}
+    {{#if d.fuse}}<p class="mm-warn"><i class="fas fa-hourglass-half"></i> {{d.fuse}}</p>{{/if}}
     {{#if d.absorption}}<p class="mm-hint">Skin contact: {{d.absorption}}</p>{{/if}}
     <p class="mm-hint">From {{d.ingredients}}.</p>
     {{else}}
@@ -123,6 +128,7 @@
       <button type="button" class="mm-primary" data-action="drink"><i class="fas fa-wine-glass"></i> Drink</button>
       <button type="button" data-action="throw" data-tooltip="As an improvised grenade (§7)"><i class="fas fa-bomb"></i> Throw</button>
       <button type="button" data-action="break"><i class="fas fa-heart-crack"></i> Break</button>
+      <button type="button" data-action="pad" data-tooltip="{{#if d.padded}}Take it out of its padded case{{else}}Carry it in a padded case: a break does one step less damage (§7){{/if}}"><i class="fas fa-box"></i> {{#if d.padded}}Unpad{{else}}Pad{{/if}}</button>
       {{/if}}
       <span class="mm-grow"></span>
       {{#if d.canReveal}}<button type="button" data-action="reveal"><i class="fas fa-eye"></i> Reveal</button>{{/if}}

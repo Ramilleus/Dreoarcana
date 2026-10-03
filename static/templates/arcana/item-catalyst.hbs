@@ -18,3 +18,18 @@
   <p class="arcana-hint">Γ multiplies the Orie a spell needs and its casting time. 1.0 is bare hands; a wand is 0.9, a staff 0.8, an orb 0.65. Carried catalysts appear on the Caster node in the Arcanum.</p>
   {{/if}}
 </fieldset>
+<fieldset class="arcana-catalyst arcana-radiator">
+  <legend>Radiator</legend>
+  <label class="arcana-catalyst-toggle">
+    <input type="checkbox" name="system.radiator.enabled" {{checked system.radiator.enabled}} />
+    A wearable radiator: sheds conversion Heat
+  </label>
+  {{#if system.radiator.enabled}}
+  <div class="arcana-catalyst-fields">
+    <label>Metal
+      <select name="system.radiator.material">{{arcanaRadiatorOptions system.radiator.material}}</select>
+    </label>
+  </div>
+  <p class="arcana-hint">Carried, it adds the metal's conductance ÷ 100 to the Heat vented each Melee Round of rest (house rule; the conductances are the Materials table's).</p>
+  {{/if}}
+</fieldset>

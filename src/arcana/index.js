@@ -54,6 +54,13 @@ export function registerArcana() {
     DSC.registerSheet(Item, SYSTEM_ID, ArcaneEffectSheet, { types: [EFFECT_TYPE], makeDefault: true, label: "Arcanum" });
     CONFIG.Item.typeLabels = { ...(CONFIG.Item.typeLabels ?? {}), [SPELL_TYPE]: "TYPES.Item.arcaneSpell", [EFFECT_TYPE]: "TYPES.Item.arcaneEffect" };
 
+    // Gear sheets: the metals a radiator can be made of, with what each sheds.
+    Handlebars.registerHelper("arcanaRadiatorOptions", (selected) => new Handlebars.SafeString(
+      ['<option value="">— metal —</option>', ...Object.keys(rules.RADIATOR_MATERIALS).sort().map(m => {
+        const v = rules.radiatorVent(m);
+        return `<option value="${m}" ${m === selected ? "selected" : ""}>${m} (${rules.RADIATOR_MATERIALS[m]} W/m·K${v ? `, −${v} Heat/round` : ", too poor to help"})</option>`;
+      })].join("")));
+
     const load = foundry.applications.handlebars?.loadTemplates ?? globalThis.loadTemplates;
     load([...ARCANUM_TEMPLATES, ...PARTIALS]).catch(err => LOG("template preload failed:", err.message));
     LOG("registered");

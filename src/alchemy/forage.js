@@ -173,12 +173,15 @@ export async function forageDay(actor, groundId, { mod = 0 } = {}) {
 /** Put the day's finds in the forager's pack, stacking like with like. */
 async function stowFinds(actor, finds, condition) {
   const creates = [], updates = new Map();
+  const now = Number(game.time?.worldTime) || 0;
+  // Only stack with a harvest from the same day, so each keeps its own shelf-life clock (§3).
+  const fresh = (i) => !i.system.preserved && Math.abs((Number(i.system.harvestedAt) || 0) - now) < 86400;
   for (const f of finds) {
     const src = f.doc.toObject();
     delete src._id;
     const trueName = f.doc.name;
     const name = f.identified ? trueName : `Unidentified ${categoryOf(trueName)}`;
-    const existing = actor.items.find(i => isIngredient(i) && i.name === name && (i.system.trueName || i.name) === trueName && Number(i.system.condition) === condition);
+    const existing = actor.items.find(i => isIngredient(i) && i.name === name && (i.system.trueName || i.name) === trueName && Number(i.system.condition) === condition && fresh(i));
     const pending = creates.find(c => c.name === name && c.system.trueName === trueName);
     if (existing) { updates.set(existing.id, (updates.get(existing.id) ?? Number(existing.system.quantity)) + 1); continue; }
     if (pending) { pending.system.quantity += 1; continue; }
@@ -188,6 +191,8 @@ async function stowFinds(actor, finds, condition) {
     src.system.identified = f.identified;
     src.system.trueName = trueName;
     src.system.discovered = f.primary ? [0] : [];
+    src.system.harvestedAt = now;
+    src.system.preserved = false;
     if (!f.identified) src.system.description = "";
     creates.push(src);
   }

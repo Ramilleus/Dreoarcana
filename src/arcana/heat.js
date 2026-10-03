@@ -20,12 +20,26 @@
 
 import { statValue, setStat, characteristic, randomHitLocation, fmt } from "./core.js";
 import { setting, num, SETTINGS } from "./settings.js";
-import { round1 } from "./rules.js";
+import { round1, radiatorVent } from "./rules.js";
 import { e } from "./html.js";
 
 /** Heat capacity for an actor — also the actor's maxHeat getter. CON × setting + the sheet's modifier. */
 export const heatCapacity = (actor) => Math.max(1, Math.round(characteristic(actor, "con") * num(SETTINGS.heatCapacityPerCon, 3))
   + (Number(actor?.system?.attributes?.heat?.mod) || 0));
+
+/** Radiators the actor carries (house rule; see rules.js), with what each sheds a round. */
+export function carriedRadiators(actor) {
+  if (!actor || setting(SETTINGS.radiators) === false) return [];
+  return actor.items.filter(i => i.system?.radiator?.enabled)
+    .map(i => ({ id: i.id, name: i.name, material: i.system.radiator.material || "", vent: radiatorVent(i.system.radiator.material) }))
+    .filter(r => r.vent > 0);
+}
+
+/** Heat shed per Melee Round of rest: the setting, plus any radiators. */
+export function ventRate(actor) {
+  const base = Math.max(1, num(SETTINGS.ventPerRound, 2));
+  return base + carriedRadiators(actor).reduce((s, r) => s + r.vent, 0);
+}
 
 /** Everything the Arcanum and the caster need to know about an actor. */
 export function heatState(actor) {
@@ -34,6 +48,7 @@ export function heatState(actor) {
   return {
     heat, capacity, over: Math.max(0, heat - capacity),
     pct: Math.min(100, Math.round(heat / capacity * 100)),
+    rate: ventRate(actor), radiators: carriedRadiators(actor),
     tracking: setting(SETTINGS.trackHeat) !== false
   };
 }
@@ -92,7 +107,7 @@ export async function announceOverheat(actor, result) {
 /** Vent Heat for a number of Melee Rounds of doing nothing else. */
 export async function ventHeat(actor, rounds = 1) {
   const st = heatState(actor);
-  const rate = Math.max(1, num(SETTINGS.ventPerRound, 2));
+  const rate = st.rate;
   const n = Math.max(1, Math.floor(Number(rounds) || 1));
   const after = round1(Math.max(0, st.heat - rate * n));
   if (after === st.heat) { ui.notifications.info(`${actor.name} carries no Heat.`); return after; }
@@ -100,7 +115,7 @@ export async function ventHeat(actor, rounds = 1) {
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     content: `<p><strong>${e(actor.name)}</strong> vents Heat for ${n} Round${n === 1 ? "" : "s"}:
-              ${fmt(st.heat)} → <strong>${fmt(after)}</strong> (capacity ${st.capacity}).</p>`
+              ${fmt(st.heat)} → <strong>${fmt(after)}</strong> (capacity ${st.capacity})${st.radiators.length ? `, helped by ${st.radiators.map(r => e(r.name)).join(", ")}` : ""}.</p>`
   });
   return after;
 }
