@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set version and URLs in system.json
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          VERSION="${TAG#v}"
+          jq --arg version "$VERSION" \
+             --arg manifest "https://github.com/$REPO/releases/latest/download/system.json" \
+             --arg download "https://github.com/$REPO/releases/download/$TAG/dreoarcana.zip" \
+             '.version = $version | .manifest = $manifest | .download = $download' \
+             system.json > system.tmp.json
+          mv system.tmp.json system.json
+          cat system.json
+
+      - name: Build zip
+        run: |
+          zip -r dreoarcana.zip system.json module lang styles README.md \
+            $(ls -d templates packs assets LICENSE 2>/dev/null)
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" system.json dreoarcana.zip --clobber
