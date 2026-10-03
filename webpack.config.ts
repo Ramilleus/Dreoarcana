@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as process from 'process'
 import { Configuration as WebpackConfiguration, DefinePlugin } from 'webpack'
 import CopyPlugin from 'copy-webpack-plugin'
-import { Request } from 'webpack-dev-server'
+import 'webpack-dev-server'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import SimpleProgressWebpackPlugin from 'simple-progress-webpack-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
@@ -137,13 +137,15 @@ const config: WebpackConfiguration = {
     devMiddleware: {
       writeToDisk: true
     },
-    proxy: {
-      context: (pathname: string, _request: Request) => {
-        return !pathname.match('^/ws')
-      },
-      target: foundryUri,
-      ws: true
-    }
+    proxy: [
+      {
+        context: (pathname: string) => {
+          return !pathname.match('^/ws')
+        },
+        target: foundryUri,
+        ws: true
+      }
+    ]
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin({ typescript: { memoryLimit: 4096 } }),
