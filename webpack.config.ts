@@ -17,7 +17,7 @@ const isProductionBuild = buildMode === 'production'
 const allTemplates = () => {
   return glob
     .sync('**/*.hbs', { cwd: path.join(__dirname, 'static/templates') })
-    .map((file: string) => `"systems/mythras/templates/${file}"`)
+    .map((file: string) => `"systems/dreoarcana/templates/${file}"`)
     .join(', ')
 }
 
@@ -26,7 +26,7 @@ const [outDir, foundryUri] = (() => {
   const config = fs.readJSONSync(configPath, { throws: false })
   const outDir =
     config instanceof Object
-      ? path.join(config.dataPath, 'Data', 'systems', config.systemName ?? 'mythras')
+      ? path.join(config.dataPath, 'Data', 'systems', config.systemName ?? 'dreoarcana')
       : path.join(__dirname, 'dist/')
   const foundryUri = (config instanceof Object ? config.foundryUri : '') ?? 'http://localhost:30000'
   return [outDir, foundryUri]
@@ -184,7 +184,7 @@ const config: WebpackConfiguration = {
     clean: true,
     path: outDir,
     filename: '[name].bundle.js',
-    publicPath: '/systems/mythras'
+    publicPath: '/systems/dreoarcana'
   },
   externals: {
     https: require.resolve('https')

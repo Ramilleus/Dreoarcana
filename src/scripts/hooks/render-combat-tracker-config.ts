@@ -14,8 +14,8 @@ export const RenderCombatTrackerConfig = {
       // Render template
       const template = await (async () => {
         const markup = await renderTemplate(
-          "systems/mythras/templates/combat/combat-config.hbs",
-          { value: { reduceAp: game.settings.get("mythras", "combat.reduceAp") } }
+          "systems/dreoarcana/templates/combat/combat-config.hbs",
+          { value: { reduceAp: game.settings.get("dreoarcana", "combat.reduceAp") } }
         )
         const tempElem = document.createElement("div")
         tempElem.innerHTML = markup
@@ -31,14 +31,14 @@ export const RenderCombatTrackerConfig = {
       // Checkbox state
       const reduceApInput = form.querySelector<HTMLInputElement>('input[name="reduceAp"]')
       if (reduceApInput) {
-        reduceApInput.checked = !!game.settings.get("mythras", "combat.reduceAp")
+        reduceApInput.checked = !!game.settings.get("dreoarcana", "combat.reduceAp")
       }
 
       // Listen for form submit
       form.addEventListener("submit", (event) => {
         event.preventDefault()
         const newReduceAp = reduceApInput?.checked ?? false
-        game.settings.set("mythras", "combat.reduceAp", newReduceAp)
+        game.settings.set("dreoarcana", "combat.reduceAp", newReduceAp)
       })
 
       // Append template children after last form-group

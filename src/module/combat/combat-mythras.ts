@@ -8,7 +8,7 @@ export class CombatMythras extends Combat {
   }
   async startCombat() {
     await this.setupTurns()
-    await this.setFlag('mythras', 'cycle', 1)
+    await this.setFlag('dreoarcana', 'cycle', 1)
     return super.startCombat()
   }
 
@@ -19,12 +19,12 @@ export class CombatMythras extends Combat {
   async nextTurn() {
     let turn = this.turn
     let skip = this.settings.skipDefeated
-    let reduceAp = game.settings.get("mythras", "combat.reduceAp")
-    let newMTurn: number = this.getFlag('mythras', 'cycle') as number
+    let reduceAp = game.settings.get("dreoarcana", "combat.reduceAp")
+    let newMTurn: number = this.getFlag('dreoarcana', 'cycle') as number
     let l = this.turns.length
     if (turn == l - 1) {
       newMTurn++
-      this.setFlag('mythras', 'cycle', newMTurn)
+      this.setFlag('dreoarcana', 'cycle', newMTurn)
     }
     for (let i = 0; i < l; i++) {
       // Determine the next turn number
@@ -66,7 +66,7 @@ export class CombatMythras extends Combat {
    */
   async nextRound() {
     let turn = 0
-    this.setFlag('mythras', 'cycle', 1)
+    this.setFlag('dreoarcana', 'cycle', 1)
     // reset action Points
     for (let [i, t] of this.turns.entries()) {
       t.actor.update({

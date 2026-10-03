@@ -6,7 +6,7 @@ All Contributions are welcome. Follow the steps below to set up a development en
 
 To create a local distribution of the system that Foundry can use, do the following:
 
-1. Clone the repo into a local folder `git clone https://gitlab.com/kp-systems/mythras.git`. Don't clone it into `[..]\Data\systems`.
+1. Clone the repo into a local folder `git clone https://github.com/Ramilleus/Dreoarcana.git`. Don't clone it into `[..]\Data\systems`.
 2. Install dependencies with `npm install`
 3. Configure a `foundryconfig.json` file in the project root folder. An example can be found in `foundryconfig.example.json`.
    - `dataPath` is the location of your FoundryVTT user data. By default Foundry creates this folder at `C:\Users\<user>\AppData\Local\FoundryVTT`. The module will compile there, in `[..]\Data\systems\mythras` folder.
@@ -15,7 +15,7 @@ To create a local distribution of the system that Foundry can use, do the follow
 
 ## Architecture
 
-starting point of the module is in `src/myhtras.ts` and most registrations of actors
+starting point of the module is in `src/mythras.ts` and most registrations of actors
 and settings are in `src/scripts/hooks/init.ts`.
 For new actor types, sheets and settings look there.
 
@@ -49,4 +49,4 @@ Handlebars files are used as a template engine. helper scripts are registered he
 `src/scripts/handlebars.ts`
 
 ### Merge Requests
-Merge requests can be created from your fork. To submit changes, push your branch to your fork and create a merge request targeting the original kp-systems/mythras repository.
+Pull requests can be opened from your fork against https://github.com/Ramilleus/Dreoarcana.

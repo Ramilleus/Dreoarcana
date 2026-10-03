@@ -1,7 +1,7 @@
 {
-  "name": "mythras",
+  "name": "dreoarcana",
   "version": "1.0.0",
-  "description": "Mythras system JS and CSS Utilities",
+  "description": "Dreo Arcana system build tooling",
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack",
@@ -10,7 +10,7 @@
   "browserslist": [
     "last 3 versions"
   ],
-  "author": "John Doe",
+  "author": "Ramilleus",
   "license": "MIT",
   "private": true,
   "devDependencies": {

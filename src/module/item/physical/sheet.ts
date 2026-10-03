@@ -30,7 +30,7 @@ export class PhysicalItemSheetMythras<TItem extends PhysicalItemMythras> extends
   //["melee-weapon", "ranged-weapon", "equipment", "currency", "storage"]
 
   override get template(): string {
-    const path = 'systems/mythras/templates/item'
+    const path = 'systems/dreoarcana/templates/item'
 
     const itemType = this.item.type
     if (itemType === "melee-weapon") {

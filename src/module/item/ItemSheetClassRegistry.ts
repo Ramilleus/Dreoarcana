@@ -30,7 +30,7 @@ export class ItemSheetClassRegistry {
     types: string[],
     isDefault: boolean
   ) {
-    Items.registerSheet('mythras', documentClass, {
+    Items.registerSheet('dreoarcana', documentClass, {
       types: types,
       makeDefault: isDefault
     })

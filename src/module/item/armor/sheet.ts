@@ -13,6 +13,6 @@ export class ArmorSheetMythras extends PhysicalItemSheetMythras<ArmorMythras> {
   }
 
   override get template(): string {
-    return `systems/mythras/templates/item/item-armor-sheet.hbs`
+    return `systems/dreoarcana/templates/item/item-armor-sheet.hbs`
   }
 }

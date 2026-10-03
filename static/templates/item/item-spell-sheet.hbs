@@ -10,7 +10,7 @@
     </div>
   </header>
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+  {{> systems/dreoarcana/templates/global/mythras-symbols.hbs}}
 
   {{! Sheet Tab Navigation }}
   <nav class="sheet-tabs tabs" data-group="primary">
@@ -88,7 +88,7 @@
             <p class="derived-stat__label">
               {{localize this.label}}
             </p>
-            {{> systems/mythras/templates/common-components/derived-stat.hbs stat=this statName=@key}}
+            {{> systems/dreoarcana/templates/common-components/derived-stat.hbs stat=this statName=@key}}
           </div>
           {{/each}}
 
@@ -135,5 +135,5 @@
     </div>
   </section>
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+  {{> systems/dreoarcana/templates/global/mythras-symbols.hbs}}
 </form>

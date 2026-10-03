@@ -13,7 +13,7 @@ export class ActorSheetClassRegistry {
   }
 
   private static doRegister(documentClass: ConstructorOf<ActorSheet<ActorMythras>>, types: string[], isDefault: boolean) {
-    Actors.registerSheet('mythras', documentClass, {
+    Actors.registerSheet('dreoarcana', documentClass, {
       types: types,
       makeDefault: isDefault
     });

@@ -8,7 +8,7 @@ export class MythrasCombatTrackerConfig extends CombatTrackerConfig {
     super()
   }
   get template() {
-    return 'systems/mythras/templates/combat/combat-config.hbs'
+    return 'systems/dreoarcana/templates/combat/combat-config.hbs'
   }
   async _updateObject(event, formData) {
     return game.settings.set('core', CombatMythras.CONFIG_SETTING, {

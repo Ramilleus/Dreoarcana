@@ -41,7 +41,7 @@ export const Init = {
       registerTemplates()
 
       // Set up custom Mythras combat setting
-      game.settings.register("mythras", "combat.reduceAp", {
+      game.settings.register("dreoarcana", "combat.reduceAp", {
         name: "Automatically Reduce AP?",
         hint: "Automatically reduce Action Points when a combatant's turn is passed?",
         scope: "world",
@@ -50,7 +50,7 @@ export const Init = {
         type: Boolean,
       });
 
-      game.settings.register("mythras", "debugging", {
+      game.settings.register("dreoarcana", "debugging", {
         name: "Debugging Mode",
         hint: "Enables additional debug logging.",
         scope: "world",
@@ -63,7 +63,7 @@ export const Init = {
     })
 
     Hooks.on('updateCombatant', function (combatant) {
-      if (game.settings.get("mythras", "debugging")) {
+      if (game.settings.get("dreoarcana", "debugging")) {
         console.log(combatant)
       }
     })

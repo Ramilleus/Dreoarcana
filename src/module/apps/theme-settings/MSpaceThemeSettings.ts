@@ -7,14 +7,14 @@ export class MSpaceThemeSettings extends ThemeSettings {
   }
 
   registerThemeSpecificSheetClasses(): void {
-    Items.registerSheet('mythras', CyberModuleSheetMythras, {
+    Items.registerSheet('dreoarcana', CyberModuleSheetMythras, {
       types: ["cyberModule"],
       makeDefault: false
     });
   }
 
   unregisterThemeSpecificSheetClasses() {
-    Items.unregisterSheet('mythras', CyberModuleSheetMythras, {types:["cyberModule"]})
+    Items.unregisterSheet('dreoarcana', CyberModuleSheetMythras, {types:["cyberModule"]})
   }
 
   relabel(contextName: string, labelKey: string): string {
@@ -25,6 +25,6 @@ export class MSpaceThemeSettings extends ThemeSettings {
   }
 
   getCharacterActorTemplate(): string {
-    return 'systems/mythras/templates/actor/actor-sheet-space.hbs';
+    return 'systems/dreoarcana/templates/actor/actor-sheet-space.hbs';
   }
 }

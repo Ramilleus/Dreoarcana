@@ -565,7 +565,7 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
         return { id: s.id, label: `${s.name} (${s.totalVal}%)`, selected: s.id === skill.id };
       });
 
-    const content = await renderTemplate('systems/mythras/templates/dialogs/skillRoll-dialog.hbs',
+    const content = await renderTemplate('systems/dreoarcana/templates/dialogs/skillRoll-dialog.hbs',
       {
         skillName: skill.name,
         skillTotal: skill.totalVal,

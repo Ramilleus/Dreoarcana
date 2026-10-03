@@ -36,7 +36,7 @@ export class ItemSheetBase<TItem extends ItemMythras> extends ItemSheet<TItem, D
 
   override get template() {
     const itemType = this.item.type
-    return `systems/mythras/templates/item/item-${itemType}-sheet.hbs`
+    return `systems/dreoarcana/templates/item/item-${itemType}-sheet.hbs`
   }
 
   override async getData(options?: Partial<DocumentSheetOptions>) {

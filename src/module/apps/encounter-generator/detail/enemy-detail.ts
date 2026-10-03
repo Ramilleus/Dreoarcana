@@ -21,7 +21,7 @@ export class EncounterGeneratorEnemyDetail extends Application {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "encounter-generator-enemy-detail",
       classes: ['mythras', 'sheet'],
-      template: "systems/mythras/templates/apps/encounter-generator/detail/enemy-detail.hbs",
+      template: "systems/dreoarcana/templates/apps/encounter-generator/detail/enemy-detail.hbs",
       width: 550,
       height: 600,
       resizable: true

@@ -21,6 +21,6 @@ export class ThemeSettings implements Theme {
   }
 
   getCharacterActorTemplate(): string {
-    return 'systems/mythras/templates/actor/actor-sheet-mythras.hbs';
+    return 'systems/dreoarcana/templates/actor/actor-sheet-mythras.hbs';
   }
 }

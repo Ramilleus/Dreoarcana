@@ -29,6 +29,6 @@ export class SpellSheetMythras extends ItemSheetBase<SpellMythras> {
   }
 
   override get template(): string {
-    return `systems/mythras/templates/item/item-spell-sheet.hbs`
+    return `systems/dreoarcana/templates/item/item-spell-sheet.hbs`
   }
 }

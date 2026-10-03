@@ -9,11 +9,11 @@ export class Roller {
   constructor(private actor: ActorMythras) {}
 
   public async rollMeleeDamage(weapon: MeleeWeaponMythras) {
-    await this.rollDamage('systems/mythras/templates/chat/damage/melee-roll.hbs', weapon)
+    await this.rollDamage('systems/dreoarcana/templates/chat/damage/melee-roll.hbs', weapon)
   }
 
   public async rollRangedDamage(weapon: RangedWeaponMythras) {
-    await this.rollDamage('systems/mythras/templates/chat/damage/ranged-roll.hbs', weapon)
+    await this.rollDamage('systems/dreoarcana/templates/chat/damage/ranged-roll.hbs', weapon)
   }
 
   private async rollDamage(rollTemplate: string, weapon: WeaponMythras): Promise<ChatMessage> {
@@ -71,7 +71,7 @@ export class Roller {
           flavor: label
       });
 
-      let htmlContent = await renderTemplate("systems/mythras/templates/chat/location-roll.hbs", {
+      let htmlContent = await renderTemplate("systems/dreoarcana/templates/chat/location-roll.hbs", {
           game: game,
           upperHit: upperHit,
           upperRoll: upperRoll,
@@ -121,7 +121,7 @@ export class Roller {
     let rollResults = this.getSkillRollResults(difficultyNames, difficultyGrades, rolled)
 
     // Render the skill roll chat message content
-    let htmlContent = await renderTemplate('systems/mythras/templates/chat/skill-roll.hbs', {
+    let htmlContent = await renderTemplate('systems/dreoarcana/templates/chat/skill-roll.hbs', {
       game: game,
       rollResults: rollResults,
       modifiers: modifiers,
@@ -236,7 +236,7 @@ export class Roller {
       
       // Render Handlebars template for contested skill roll
       htmlContent = await renderTemplate(
-        "systems/mythras/templates/chat/contested-skill-roll.hbs",
+        "systems/dreoarcana/templates/chat/contested-skill-roll.hbs",
         {
           game,
           rollResults: [{
@@ -298,7 +298,7 @@ export class Roller {
     else {
       // Render Handlebars template for normal skill roll
       htmlContent = await renderTemplate(
-        "systems/mythras/templates/chat/skill-roll.hbs",
+        "systems/dreoarcana/templates/chat/skill-roll.hbs",
         {
           game,
           rollResults: [{

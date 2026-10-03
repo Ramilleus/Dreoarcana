@@ -32,7 +32,7 @@ export class SkillSheetMythras extends ItemSheetBase<SkillMythras> {
   }
 
   override get template() {
-    const path = 'systems/mythras/templates/item'
+    const path = 'systems/dreoarcana/templates/item'
 
     const itemType = this.item.type
     if (itemType === "magicSkill") {

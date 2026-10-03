@@ -4,7 +4,7 @@ import { CombatMythras } from './combat-mythras.js'
 
 export class MythrasCombatTracker<TCombat extends CombatMythras | null> extends CombatTracker<TCombat> {
   get template() {
-    return 'systems/mythras/templates/combat/combat-tracker.hbs'
+    return 'systems/dreoarcana/templates/combat/combat-tracker.hbs'
   }
 
   activateListeners(html: any) {

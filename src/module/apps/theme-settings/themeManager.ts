@@ -27,7 +27,7 @@ export class ThemeManager {
   }
 
   getTheme(): Theme {
-    switch (game.settings.get("mythras", "gameTheme")) {
+    switch (game.settings.get("dreoarcana", "gameTheme")) {
       case 'mythras_space':
         return this.M_SPACE
       default:
@@ -37,11 +37,11 @@ export class ThemeManager {
 
   getThemeName(): string {
     // @ts-ignore
-    return game.settings.get("mythras", "gameTheme");
+    return game.settings.get("dreoarcana", "gameTheme");
   }
 
   onReady() {
-    game.settings.register("mythras", "gameTheme", {
+    game.settings.register("dreoarcana", "gameTheme", {
       name: "SETTINGS.gameThemeName",
       hint: "SETTINGS.gameThemeHint",
       scope: "world",

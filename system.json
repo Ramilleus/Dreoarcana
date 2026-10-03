@@ -1,13 +1,16 @@
 {
-  "id": "mythras",
-  "title": "Mythras",
-  "description": "The Mythras system for FoundryVTT!",
-  "version": "2.x.x",
+  "id": "dreoarcana",
+  "title": "Dreo Arcana",
+  "description": "The Dreo Arcana game system for Foundry Virtual Tabletop, based on the Mythras system.",
+  "version": "0.1.0",
   "compatibility": {
     "minimum": 11,
     "verified": 13
   },
   "authors": [
+    {
+      "name": "Ramilleus"
+    },
     {
       "name": "Jonathan Karkour",
       "email": "greshbolt@gmail.com",
@@ -19,8 +22,12 @@
       "discord": "goog#9039"
     }
   ],
-  "esmodules": ["main.bundle.js"],
-  "styles": ["./styles/main.css"],
+  "esmodules": [
+    "main.bundle.js"
+  ],
+  "styles": [
+    "./styles/main.css"
+  ],
   "scripts": [],
   "packs": [
     {
@@ -28,23 +35,21 @@
       "label": "Standard Skills",
       "path": "packs/standardskill.db",
       "type": "Item",
-      "system": "mythras"
+      "system": "dreoarcana"
     },
     {
       "name": "professionalSkill",
       "label": "Professional Skills",
       "path": "packs/professionalskill.db",
       "type": "Item",
-      "system": "mythras"
-
+      "system": "dreoarcana"
     },
     {
       "name": "humanoidHitLocations",
       "label": "Humanoid Hit Locations",
       "path": "packs/humanoidHitLocations.db",
       "type": "Item",
-      "system": "mythras"
-
+      "system": "dreoarcana"
     }
   ],
   "languages": [
@@ -89,9 +94,9 @@
   "grid.units": "m",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
-  "url": "https://gitlab.com/tpaoloni/mythras",
-  "bugs": "https://gitlab.com/hooking/mythras/-/issues",
-  "manifest": "http://gitlab.com/tpaoloni/mythras/-/jobs/artifacts/2.x.x/system.json",
-  "download": "https://gitlab.com/tpaoloni/mythras/-/jobs/artifacts/2.x.x/mythras.zip",
-  "license": "LICENSE.txt"
+  "url": "https://github.com/Ramilleus/Dreoarcana",
+  "bugs": "https://github.com/Ramilleus/Dreoarcana/issues",
+  "manifest": "https://github.com/Ramilleus/Dreoarcana/releases/latest/download/system.json",
+  "download": "https://github.com/Ramilleus/Dreoarcana/releases/download/v0.1.0/dreoarcana.zip",
+  "license": "LICENSE"
 }

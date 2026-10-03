@@ -16,27 +16,27 @@
         <span class="stat-settings">&#9881;</span>
       </div>
       <div class="header-stats">
-        {{#each statTracker.exportedStats}} {{> systems/mythras/templates/actor/components/tracked-stat.hbs
+        {{#each statTracker.exportedStats}} {{> systems/dreoarcana/templates/actor/components/tracked-stat.hbs
         stat=this}} {{/each}}
       </div>
     </div>
   </header>
 
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+  {{> systems/dreoarcana/templates/global/mythras-symbols.hbs}}
 
   {{!-- Sheet Tab Navigation --}}
-  {{> systems/mythras/templates/common-components/tab-navigator.hbs tabs=tabs}}
+  {{> systems/dreoarcana/templates/common-components/tab-navigator.hbs tabs=tabs}}
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
-    {{> systems/mythras/templates/actor/tabs/actor-core.hbs}}
-    {{> systems/mythras/templates/actor/tabs/actor-combat.hbs}}
-    {{> systems/mythras/templates/actor/tabs/actor-abilities.hbs}}
-    {{> systems/mythras/templates/actor/tabs/actor-equipment.hbs}}
-    {{> systems/mythras/templates/actor/tabs/actor-notes.hbs}}
+    {{> systems/dreoarcana/templates/actor/tabs/actor-core.hbs}}
+    {{> systems/dreoarcana/templates/actor/tabs/actor-combat.hbs}}
+    {{> systems/dreoarcana/templates/actor/tabs/actor-abilities.hbs}}
+    {{> systems/dreoarcana/templates/actor/tabs/actor-equipment.hbs}}
+    {{> systems/dreoarcana/templates/actor/tabs/actor-notes.hbs}}
   </section>
 
   {{!-- Decorative Symbol Divider --}}
-  {{> systems/mythras/templates/global/mythras-symbols.hbs}}
+  {{> systems/dreoarcana/templates/global/mythras-symbols.hbs}}
 </form>
