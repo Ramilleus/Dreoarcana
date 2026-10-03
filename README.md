@@ -1,4 +1,4 @@
-# Dreo Arcana
+# Dreoarcana
 
 A game system for [Foundry Virtual Tabletop](https://foundryvtt.com/), built on the Foundry VTT Mythras system.
 
