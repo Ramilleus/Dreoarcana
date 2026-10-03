@@ -1,0 +1,33 @@
+{
+  "id": "dreoarcana",
+  "title": "Dreo Arcana",
+  "description": "The Dreo Arcana game system for Foundry Virtual Tabletop.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "authors": [
+    { "name": "Ramilleus" }
+  ],
+  "esmodules": ["module/dreoarcana.mjs"],
+  "styles": ["styles/dreoarcana.css"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {}
+    },
+    "Item": {
+      "item": {}
+    }
+  },
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
+  "primaryTokenAttribute": "health",
+  "socket": false
+}
