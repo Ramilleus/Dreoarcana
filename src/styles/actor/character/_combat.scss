@@ -112,6 +112,11 @@ div.combat {
     }
     .top-combat-tables {
       margin-bottom: 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border: 0;
+      padding: 0;
       input,
       textarea {
         border-radius: 0;
@@ -162,11 +167,6 @@ div.combat {
         justify-content: center;
       }
 
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border: 0;
-      padding: 0;
       > div {
         .roll-hitlocations-button {
           float: right;

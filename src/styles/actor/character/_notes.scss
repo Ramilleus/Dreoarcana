@@ -1,5 +1,6 @@
 div.notes {
   margin: 0;
+  height: calc(100% - 25px);
   > h2 {
     margin-top: 5px;
     margin-bottom: 13px;
@@ -8,7 +9,6 @@ div.notes {
     font-size: 21px;
     border: 0;
   }
-  height: calc(100% - 25px);
   > div {
     height: 100%;
     padding: 5px;

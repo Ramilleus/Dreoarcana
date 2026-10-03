@@ -1,5 +1,7 @@
 @use 'colors';
 .item-sheet {
+  min-width: 400px;
+
   .profile-img {
     flex: 0 0 64px;
   }
@@ -17,7 +19,6 @@
     padding: 0px 10px;
   }
 
-  min-width: 400px;
   input:focus {
     outline: none;
     outline-style: none;
@@ -88,10 +89,10 @@
     height: 100%;
     margin-bottom: 0px;
     .editor {
+      height: 100%;
       div.prosemirror-editor {
         height: 100% !important;
       }
-      height: 100%;
     }
   }
 
