@@ -2,7 +2,7 @@
   "id": "dreoarcana",
   "title": "Dreoarcana",
   "description": "The Dreoarcana game system for Foundry Virtual Tabletop, based on the Mythras system.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "compatibility": {
     "minimum": 11,
     "verified": 13
