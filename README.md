@@ -21,7 +21,7 @@ npm run build
 
 ## Releasing
 
-Publish a GitHub release with a tag like `v0.2.0`. The release workflow builds the system and attaches `system.json` and `dreoarcana.zip` to the release.
+Push a tag like `v0.2.0` (`git tag v0.2.0` then `git push origin v0.2.0`). The release workflow builds the system and publishes a GitHub release with `system.json` and `dreoarcana.zip` attached.
 
 ## Credits
 

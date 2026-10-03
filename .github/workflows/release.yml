@@ -1,8 +1,9 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -20,7 +21,7 @@ jobs:
 
       - name: Set version and URLs in system.json
         env:
-          TAG: ${{ github.event.release.tag_name }}
+          TAG: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
         run: |
           VERSION="${TAG#v}"
@@ -42,8 +43,14 @@ jobs:
           mv dist dreoarcana
           zip -r dreoarcana.zip dreoarcana
 
-      - name: Upload release assets
+      - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.event.release.tag_name }}
-        run: gh release upload "$TAG" dreoarcana/system.json dreoarcana.zip --clobber
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" dreoarcana/system.json dreoarcana.zip --clobber
+          else
+            gh release create "$TAG" dreoarcana/system.json dreoarcana.zip \
+              --title "Dreoarcana $TAG" --generate-notes
+          fi
