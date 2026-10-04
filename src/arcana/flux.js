@@ -66,19 +66,23 @@ export const fluxSign = () => FLUX_SIGNS[Math.floor(Math.random() * FLUX_SIGNS.l
 /**
  * Open a Flux zone where an actor stands. Returns the template, or null
  * when there is nowhere to put it (no token on a scene).
+ *   radiusM      the zone's radius; default the spell's Size radius + 3 m per intensity
+ *   stepSeconds  how fast this zone weakens; default the setting (an hour)
  */
-export async function createFlux(actor, intensity, { sizeTier = 1, source = "" } = {}) {
+export async function createFlux(actor, intensity, opts = {}) {
+  return createFluxAtToken(tokenOf(actor), intensity, opts);
+}
+
+export async function createFluxAtToken(tok, intensity, { sizeTier = 1, radiusM = null, stepSeconds = null, source = "" } = {}) {
   const i = Math.min(FLUX_MAX, Math.max(0, Math.round(Number(intensity) || 0)));
-  if (!i || !fluxOn()) return null;
-  const tok = tokenOf(actor);
-  if (!tok) return null;
+  if (!i || !fluxOn() || !tok) return null;
   const scene = tok.parent;
   const c = centreOf(tok);
   const data = {
     t: "circle", x: c.x, y: c.y,
-    distance: Math.round(fluxRadius(i, sizeTier) * unitsPerMetre(scene) * 10) / 10,
+    distance: Math.round((radiusM ?? fluxRadius(i, sizeTier)) * unitsPerMetre(scene) * 10) / 10,
     fillColor: COLOURS[i], borderColor: COLOURS[i],
-    flags: { [SYSTEM_ID]: { [FLAG]: { intensity: i, since: now(), source } } }
+    flags: { [SYSTEM_ID]: { [FLAG]: { intensity: i, since: now(), source, ...(stepSeconds ? { stepSeconds } : {}) } } }
   };
   try {
     const [tpl] = await scene.createEmbeddedDocuments("MeasuredTemplate", [data]);
@@ -101,12 +105,13 @@ export async function ageFlux() {
       const updates = [], gone = [];
       for (const tpl of fluxZones(scene)) {
         const s = fluxState(tpl);
-        const lost = Math.floor((t - (Number(s.since) || 0)) / step);
+        const zoneStep = Number(s.stepSeconds) > 0 ? Number(s.stepSeconds) : step;
+        const lost = Math.floor((t - (Number(s.since) || 0)) / zoneStep);
         if (lost < 1) continue;
         const left = (Number(s.intensity) || 0) - lost;
         if (left <= 0) gone.push(tpl.id);
         else updates.push({ _id: tpl.id, fillColor: COLOURS[left], borderColor: COLOURS[left],
-          [`flags.${SYSTEM_ID}.${FLAG}`]: { ...s, intensity: left, since: (Number(s.since) || 0) + lost * step } });
+          [`flags.${SYSTEM_ID}.${FLAG}`]: { ...s, intensity: left, since: (Number(s.since) || 0) + lost * zoneStep } });
       }
       if (updates.length) await scene.updateEmbeddedDocuments("MeasuredTemplate", updates);
       if (gone.length) await scene.deleteEmbeddedDocuments("MeasuredTemplate", gone);

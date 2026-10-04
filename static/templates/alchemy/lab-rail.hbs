@@ -41,6 +41,8 @@
       {{/if}}
     </section>
 
+    {{#if flux}}<p class="mm-warn al-flux-note"><i class="fas fa-burst"></i> Standing in Flux {{flux}}. A Mechanical brew made here rolls to be amplified or to misfire, and Supercritical doses run out faster.</p>{{/if}}
+
     {{#if saturation}}
     <section class="al-saturation">
       <div class="mm-gauge al-gauge-sat {{saturation.cls}}" data-tooltip="Raw Orie the body is still carrying. Doses add up against SIZ (§8); it clears {{saturation.rate}}.">

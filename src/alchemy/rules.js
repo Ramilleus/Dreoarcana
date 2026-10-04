@@ -638,3 +638,39 @@ export function spoilage({ condition, harvestedAt, now, shelfDays = SHELF_LIFE_D
   const next = Math.max(MIN_CONDITION, c - steps);
   return { condition: next, lost: c - next, harvestedAt: harvestedAt + steps * life };
 }
+
+
+/* ===================================================================
+ * Flux (Mechanical Casting, via §3 and §7)
+ *
+ * A Mechanical potion is "restrained planar energy", and channelling
+ * is "the same Orie→ξ conversion" as a spell, so Flux reaches alchemy
+ * the same ways it reaches casting:
+ *   - Detonations leave it, as §7 says: Potency 5 "a lingering Flux
+ *     disturbance for minutes" (Flux 1, fading in ten minutes), Potency
+ *     6 "a brief, genuine Flux zone" (Flux 2), a Supercritical discharge
+ *     Flux 3. The zone covers the blast radius.
+ *   - Channelling is conversion: Xi channelled into a brew leaves Flux by
+ *     the spell tiers (26+ Xi is Tier III); a ruined batch with Xi in it
+ *     is undirected conversion, +1.
+ *   - Brewing a Mechanical batch inside Flux: a d10, as for a spell. The
+ *     lowest faces amplify the batch's Orie pool ×1.5; the highest
+ *     misfire it, one band of Quality lower. Mundane and Mystical brews
+ *     carry no planar charge and are untouched (§7).
+ *   - A Supercritical dose carried in Flux runs out faster: its hours
+ *     divided by 1 + intensity ÷ 2.
+ * HOUSE RULES: the numbers, as for spells.
+ * =================================================================== */
+export const BLAST_FLUX = {
+  5: { intensity: 1, stepSeconds: 600 },
+  6: { intensity: 2 },
+  7: { intensity: 3 }
+};
+export const BREW_FLUX_AMPLIFY = 1.5;
+
+/** The Quality one band below, on the ladder in use. */
+export function qualityBelow(quality, sevenBand = false) {
+  const ladder = Object.entries(QUALITY).filter(([, q]) => sevenBand || !q.variant).map(([k]) => k);
+  const i = ladder.indexOf(quality);
+  return i > 0 ? ladder[i - 1] : ladder[0];
+}

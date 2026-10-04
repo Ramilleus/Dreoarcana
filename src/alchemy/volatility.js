@@ -9,7 +9,8 @@
  * =================================================================== */
 
 import { record, isPotion, isIngredient } from "./core.js";
-import { VOLATILITY, SUPERCRITICAL, effectivePotency, paddedDamage } from "./rules.js";
+import { VOLATILITY, SUPERCRITICAL, effectivePotency, paddedDamage, BLAST_FLUX } from "./rules.js";
+import { createFluxAtToken, tokenOf, fluxSign } from "../arcana/flux.js";
 import { confirmDialog } from "../arcana/ui.js";
 import { e } from "../arcana/html.js";
 
@@ -51,9 +52,11 @@ async function spendOne(item) {
   else await item.delete();
 }
 
-export async function detonate(item, { actor, cause, blast }) {
+export async function detonate(item, { actor, cause, blast, at = null }) {
   const roll = await new Roll(blast.damage).evaluate();
-  const origin = actor?.getActiveTokens?.()[0] ?? canvas?.tokens?.controlled?.[0] ?? null;
+  // A thrown vial bursts on the one token targeted; anything else where it was carried.
+  const atToken = at ?? null;
+  const origin = atToken?.object ?? actor?.getActiveTokens?.()[0] ?? canvas?.tokens?.controlled?.[0] ?? null;
   let caught = [];
   if (origin && canvas?.tokens?.placeables) {
     caught = canvas.tokens.placeables.filter(t => {
@@ -61,6 +64,14 @@ export async function detonate(item, { actor, cause, blast }) {
       const d = Math.hypot(t.center.x - origin.center.x, t.center.y - origin.center.y) / canvas.dimensions.size * canvas.dimensions.distance;
       return d <= blast.radius;
     });
+  }
+  // §7: Potency 5+ leaves Flux where it burst.
+  const fx = BLAST_FLUX[Math.min(blast.tier, SUPERCRITICAL)];
+  let fluxLine = "";
+  if (fx) {
+    const tok = atToken ?? tokenOf(actor);
+    const zone = await createFluxAtToken(tok, fx.intensity, { radiusM: blast.radius, stepSeconds: fx.stepSeconds ?? null, source: item.name });
+    fluxLine = `<p class="mm-error"><strong>Flux ${fx.intensity}.</strong> ${e(fluxSign())} ${zone ? (fx.stepSeconds ? "A disturbance that lingers for minutes." : "A zone of it where the blast went off.") : "With no token on a scene, the GM places it."}</p>`;
   }
   await ChatMessage.create({
     speaker: actor ? ChatMessage.getSpeaker({ actor }) : undefined,
@@ -72,7 +83,8 @@ export async function detonate(item, { actor, cause, blast }) {
       ${blast.hasExplode ? "<p><em>Carries the Explode property: one step above its Potency (§7).</em></p>" : ""}
       ${blast.padded && blast.unpadded !== blast.damage ? `<p><em>Its padded case took the worst of it: ${blast.unpadded} became ${blast.damage} (§7).</em></p>` : ""}
       ${caught.length ? `<p><strong>In radius:</strong> ${caught.map(t => e(t.name)).join(", ")}</p>` : origin ? "<p><em>Nothing else within the blast.</em></p>" : ""}
-      <p class="mm-hint">Each target takes it to a random hit location (Mythras p.109).</p></div>`
+      <p class="mm-hint">Each target takes it to a random hit location (Mythras p.109).</p>
+      ${fluxLine}</div>`
   });
   return roll.total;
 }
@@ -89,7 +101,8 @@ export async function throwPotion(item, actor = item?.actor) {
   });
   if (!go) return null;
   await spendOne(item);
-  return detonate(item, { actor, cause: "thrown", blast });
+  const targets = [...(game.user?.targets ?? [])];
+  return detonate(item, { actor, cause: "thrown", blast, at: targets.length === 1 ? (targets[0].document ?? null) : null });
 }
 
 /** Broken by a blow, a fall or a fire (§7). */

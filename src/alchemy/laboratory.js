@@ -32,6 +32,7 @@ import { ANYWHERE, grounds, groundById, anywhereGround, groundStock, saveGround,
 import { RARITY_WEIGHT, MAX_CONDITION, MIN_CONDITION, REFINE_STEP } from "./rules.js";
 import { refineIngredient, setPreserved, setPadded, perishable, supercriticalDeadline, untilText } from "./workshop.js";
 import { recipes, recipeView, matchRecipe, deleteRecipe, renameRecipe } from "./recipes.js";
+import { fluxAt } from "../arcana/flux.js";
 import { setting as arcanaSetting, SETTINGS as ARCANA, num } from "../arcana/settings.js";
 import { confirmDialog } from "../arcana/ui.js";
 import { e } from "../arcana/html.js";
@@ -237,7 +238,8 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       showChoices: game.user.isGM || choices.length > 1 || (!a && choices.length > 0),
       craft, lore, heat, orie, volatiles, isOwner: !a || a.isOwner,
       saturation: a ? (() => { const st = loadState(a); return { ...st, cls: st.over > 0 ? "is-over" : st.pct >= 75 ? "is-hot" : "" }; })() : null,
-      effects: a ? lastingEffects(a) : [], isGM: game.user.isGM
+      effects: a ? lastingEffects(a) : [], isGM: game.user.isGM,
+      flux: a ? fluxAt(a) : 0
     };
   }
 
@@ -296,6 +298,7 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
         { label: plan.potionClass, tip: "§3a — the Mother decides where it has a class; otherwise the reagents" , cls: plan.mechanical ? "is-tier" : "" },
         { label: `${plan.difficulty.label} ${plan.target}%`, tip: `${skill.name} ${skill.value}% ${plan.difficulty.mod >= 0 ? "+" : ""}${plan.difficulty.mod}% for Potency ${plan.step}${this.mod ? `, tools ${this.mod > 0 ? "+" : ""}${this.mod}%` : ""}` },
         ...(plan.mechanical ? [{ label: `${plan.orie} Orie`, tip: `${plan.ingredientOrie} from the ingredients${plan.channelled ? ` + ${plan.channelled} channelled` : ""}` }] : []),
+        ...(plan.mechanical && this.actor && fluxAt(this.actor) ? [{ label: `Flux ${fluxAt(this.actor)}`, tip: `Brewing in Flux ${fluxAt(this.actor)}: a d10 — the lowest ${fluxAt(this.actor)} amplify the Orie pool ×1.5, the highest ${fluxAt(this.actor)} drop the Quality a band`, cls: "is-bad" }] : []),
         ...(plan.channelled ? [{ label: plan.converted ? `+${fmt(plan.heat)} Heat` : "no Heat", tip: `${plan.drawn} Xi from Stored Orie${plan.converted ? `, ${plan.converted} converted on the spot` : ""}`, cls: plan.converted ? "is-bad" : "" }] : [])
       ];
       readout = {

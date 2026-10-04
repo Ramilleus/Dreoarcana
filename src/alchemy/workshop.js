@@ -15,6 +15,8 @@ import { asetting, ASETTINGS } from "./settings.js";
 import { DIFFICULTY, CONDITIONS, REFINE_STEP, MAX_CONDITION, MAX_POTENCY, SUPERCRITICAL, VOLATILITY,
          gradedTarget, alchemyResult, refineOutcome, isPerishable, spoilage, supercriticalLife, supercriticalFate } from "./rules.js";
 import { blastProfile, detonate } from "./volatility.js";
+import { fluxAt } from "../arcana/flux.js";
+import { fluxDecayFactor } from "../arcana/rules.js";
 import { e } from "../arcana/html.js";
 
 const conditionLabel = (c) => CONDITIONS[String(c)]?.split(" (")[0] ?? String(c);
@@ -161,7 +163,13 @@ export async function ageAlchemy() {
         }
         if (decay && isPotion(item) && item.system.supercritical) {
           if (item.system.brewedAt === null || item.system.brewedAt === undefined) updates.push({ _id: item.id, "system.brewedAt": t });
-          else if (t >= supercriticalDeadline(item)) due.push(item);
+          else {
+            // In Flux the dose runs out faster: its hours ÷ (1 + intensity ÷ 2).
+            const deadline = supercriticalDeadline(item);
+            const start = Number(item.system.brewedAt) || 0;
+            const factor = fluxDecayFactor(fluxAt(actor));
+            if (t >= start + (deadline - start) / factor) due.push(item);
+          }
         }
       }
       if (updates.length) await actor.updateEmbeddedDocuments("Item", updates);

@@ -20,6 +20,9 @@ import { QUALITY, SIZES, VOLATILITY, ABSORPTION, DIFFICULTY, MAX_POTENCY, SUPERC
          bestSlot, slotPotency, motherDoses, motherDosesPerUnit, motherUnitsSpent, resolveClass,
          gradedTarget, qualityFromRoll, alchemyResult, vesselName } from "./rules.js";
 import { recordRecipe } from "./recipes.js";
+import { BREW_FLUX_AMPLIFY, BLAST_FLUX, qualityBelow } from "./rules.js";
+import { fluxAt, fluxOn, createFlux, fluxSign } from "../arcana/flux.js";
+import { fluxRoll, fluxFromCast, tierFor } from "../arcana/rules.js";
 import { asetting, ASETTINGS } from "./settings.js";
 import { discoverFromBrew } from "./discovery.js";
 import { currentOrie, setOrie, fmt } from "../arcana/core.js";
@@ -103,18 +106,49 @@ export async function commitBrew({ actor = null, mother, reagents, xi = 0, skill
   }
 
   const roll = await new Roll("1d100").evaluate();
-  const quality = qualityFromRoll(roll.total, plan.target, asetting(ASETTINGS.sevenBand) === true);
+  const sevenBand = asetting(ASETTINGS.sevenBand) === true;
+  let quality = qualityFromRoll(roll.total, plan.target, sevenBand);
   const result = alchemyResult(roll.total, plan.target);
+  const extraRolls = [];
+
+  // Brewing a Mechanical batch inside Flux: amplified, or misfired.
+  const fluxHere = actor && plan.mechanical ? fluxAt(actor) : 0;
+  let fluxNote = "";
+  if (fluxHere > 0 && quality !== "Trash") {
+    const fr = await new Roll("1d10").evaluate();
+    extraRolls.push(fr);
+    const res = fluxRoll(fr.total, fluxHere);
+    if (res === "amplified") {
+      plan.orie = Math.round(plan.orie * BREW_FLUX_AMPLIFY);
+      plan.minDoses = minimumDoses(plan.orie);
+      fluxNote = `<p class="mm-chat-note"><strong>Flux ${fluxHere} amplifies the batch</strong> (d10: ${fr.total}): its Orie pool rises to ${plan.orie}.</p>`;
+    } else if (res === "misfire") {
+      const was = quality;
+      quality = qualityBelow(quality, sevenBand);
+      fluxNote = `<p class="mm-error"><strong>Flux ${fluxHere}: the charge goes astray</strong> (d10: ${fr.total}). The batch comes out a band worse${game.user.isGM || asetting(ASETTINGS.unidentified) === false ? ` (${e(was)} → ${e(quality)})` : ""}.</p>`;
+    } else fluxNote = `<p class="mm-hint">Brewed in Flux ${fluxHere} (d10: ${fr.total}): the batch holds.</p>`;
+  }
+
+  // Channelling is conversion: enough of it leaves Flux, as a spell does.
+  let fluxLeft = "";
+  if (actor && plan.channelled > 0 && fluxOn()) {
+    const made = fluxFromCast(tierFor(plan.channelled).tier, quality === "Trash" ? "fumble" : "");
+    if (made) {
+      const zone = await createFlux(actor, made, { source: "channelling into a brew" });
+      fluxLeft = `<p class="mm-error"><strong>Flux ${made}.</strong> ${e(fluxSign())} ${zone ? "The conversion leaves a zone of it over the bench." : "The GM places it."}</p>`;
+    }
+  }
 
   await ChatMessage.create({
     speaker: actor ? ChatMessage.getSpeaker({ actor }) : undefined,
-    rolls: [roll],
+    rolls: [roll, ...extraRolls],
     content: `<div class="mm-chat al-chat">
       <h3>${e(actor?.name ?? game.user.name)} brews</h3>
       <p>${e(skillName)} ${skill}% · ${e(plan.difficulty.label)} (${plan.difficulty.mod >= 0 ? "+" : ""}${plan.difficulty.mod}%)${mod ? ` · tools ${mod > 0 ? "+" : ""}${mod}%` : ""} → <b>${plan.target}%</b>, rolled <b>${roll.total}</b>: <strong>${e(result)}</strong></p>
       ${game.user.isGM || asetting(ASETTINGS.unidentified) === false ? `<p>Quality: <strong>${e(quality)}</strong></p>` : ""}
       ${spent.length ? `<p class="mm-hint">Committed: ${spent.map(e).join(", ")}.</p>` : ""}
-      ${notes.length ? `<p class="mm-hint">${notes.map(e).join(" · ")}</p>` : ""}</div>`
+      ${notes.length ? `<p class="mm-hint">${notes.map(e).join(" · ")}</p>` : ""}
+      ${fluxNote}${fluxLeft}</div>`
   });
 
   if (quality === "Trash") {
@@ -156,8 +190,11 @@ export function decantOptions(batch) {
 /** Overflow (§9): no container can hold it, so it goes off as Potency 6. */
 export async function overflow(batch) {
   const v = VOLATILITY[MAX_POTENCY];
+  // §7: a Potency 6 discharge leaves a brief, genuine Flux zone.
+  const fx = BLAST_FLUX[MAX_POTENCY];
+  const zone = batch.actor ? await createFlux(batch.actor, fx.intensity, { radiusM: v.radius, source: "an overflowing batch" }) : null;
   await ChatMessage.create({ speaker: batch.actor ? ChatMessage.getSpeaker({ actor: batch.actor }) : undefined,
-    content: `<div class="mm-chat al-chat is-bad"><h3>Overflow</h3><p>${batch.orie} Orie can't be divided safely at ${e(batch.quality)} quality (it needs ${batch.minDoses}+ doses). The batch discharges as a Potency ${MAX_POTENCY} detonation (§7): <strong>${v.damage}</strong> in ${v.radius} m.</p></div>` });
+    content: `<div class="mm-chat al-chat is-bad"><h3>Overflow</h3><p>${batch.orie} Orie can't be divided safely at ${e(batch.quality)} quality (it needs ${batch.minDoses}+ doses). The batch discharges as a Potency ${MAX_POTENCY} detonation (§7): <strong>${v.damage}</strong> in ${v.radius} m.</p><p class="mm-error"><strong>Flux ${fx.intensity}.</strong> ${e(fluxSign())}${zone ? "" : " The GM places it."}</p></div>` });
 }
 
 /** Decant into a container and make the potion. */

@@ -510,3 +510,17 @@ The canon names these rules but gives no numbers, or none the table can run. Eac
 - **Supercritical decay (§9).** "Within a few hours" is read as **3 hours** of game time, **6** in a padded case. Then roll 1d6: on 1–3 the dose settles to Potency 6; on 4–6 it discharges as a Potency 7 blast.
 - **Vessels (§9).** A carried vessel of the chosen size is used up at decant. The setting can require one.
 - **Wearable radiators.** The world says only that they "dissipate conversion heat". A radiator adds its metal's conductance ÷ 100 to the Heat vented each Melee Round, using the Materials table: silver 4, copper 4, gold 3, aluminium 2, magnesium, iridium, rhodium, ruthenium, zinc, manganese and cobalt 1; iron, nickel, chromium, tin, lead and titanium nothing. Mark any gear as a radiator on its sheet.
+
+## 14. Flux
+
+Mechanical Casting: "Converting large amounts of Xi produces a cascade of dimensional entropy — this is Flux. Melfyrium converting itself into undirected energy is also Flux." A Mechanical potion is restrained planar energy (§7), and channelling is the same conversion as a spell (§3), so Flux reaches alchemy the same ways. It uses the same Flux zones as spells: circles on the map that weaken a step each hour of game time, and the same setting turns them off.
+
+- **Detonations leave it**, as §7 says. A Potency 5 blast leaves **Flux 1**, a disturbance that fades within ten minutes; Potency 6 leaves **Flux 2**; a Supercritical discharge **Flux 3**. The zone covers the blast radius. A thrown potion bursts on the one token targeted.
+- **Channelling leaves it.** Xi channelled into a brew leaves Flux by the spell tiers: 26 Xi or more (Tier III) leaves Flux 1, 51+ Flux 2, 101+ Flux 3. A ruined batch with Xi in it is undirected conversion, and adds 1. An overflow (§9) is a Potency 6 discharge, and leaves Flux 2.
+- **Brewing a Mechanical batch inside Flux** rolls a d10, as a spell does. The lowest faces, as many as the intensity, **amplify** the batch: its Orie pool ×1.5 (more Potency, and more risk of overflow). The highest **misfire** it: Quality one band lower. Mundane and Mystical brews carry no planar charge and are untouched.
+- **A Supercritical dose carried in Flux** runs out faster: its hours divided by 1 + intensity ÷ 2.
+
+The Laboratory's rail says when the alchemist stands in Flux, and the bench shows it among the readout.
+
+*House rules: the numbers, as for spells. The canon says what Flux does, not by how much.*
+
