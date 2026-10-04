@@ -185,6 +185,7 @@ async function resolveSupercritical(item, actor) {
   const fate = supercriticalFate(roll.total);
   const speaker = ChatMessage.getSpeaker({ actor });
   if (fate === "settles") {
+    const was = item.name;
     const fix = (s) => String(s ?? "").replace(/\(P7\)/g, "(P6)");
     const note = `<p><em>Settled from Supercritical to Potency ${MAX_POTENCY}.</em></p>`;
     await item.update({
@@ -193,7 +194,7 @@ async function resolveSupercritical(item, actor) {
       "system.trueDescription": `${item.system.trueDescription ?? ""}${note}`,
       ...(item.system.identified ? { "system.description": `${item.system.description ?? ""}${note}` } : {})
     });
-    await ChatMessage.create({ speaker, rolls: [roll], content: `<div class="mm-chat al-chat"><p><strong>${e(item.name)}</strong>, carried by ${e(actor.name)}, has held for its few hours (1d6: ${roll.total}). It settles to <strong>Potency ${MAX_POTENCY}</strong> (§9).</p></div>` });
+    await ChatMessage.create({ speaker, rolls: [roll], content: `<div class="mm-chat al-chat"><p><strong>${e(was)}</strong>, carried by ${e(actor.name)}, has held for its few hours (1d6: ${roll.total}). It settles to <strong>Potency ${MAX_POTENCY}</strong> (§9).</p></div>` });
     return "settled";
   }
   const blast = blastProfile(item) ?? { ...VOLATILITY[SUPERCRITICAL], tier: SUPERCRITICAL, potency: SUPERCRITICAL };

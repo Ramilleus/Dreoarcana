@@ -67,7 +67,7 @@ export async function detonate(item, { actor, cause, blast }) {
       <p><strong>${roll.total}</strong> damage (${blast.damage}) within <strong>${blast.radius} m</strong>${blast.ignoresArmour ? ", <strong>ignoring armour</strong>" : ""}.</p>
       <p><em>${e(blast.note)}</em></p>
       ${blast.hasExplode ? "<p><em>Carries the Explode property: one step above its Potency (§7).</em></p>" : ""}
-      ${blast.padded ? `<p><em>Its padded case took the worst of it: ${blast.unpadded} became ${blast.damage} (§7).</em></p>` : ""}
+      ${blast.padded && blast.unpadded !== blast.damage ? `<p><em>Its padded case took the worst of it: ${blast.unpadded} became ${blast.damage} (§7).</em></p>` : ""}
       ${caught.length ? `<p><strong>In radius:</strong> ${caught.map(t => e(t.name)).join(", ")}</p>` : origin ? "<p><em>Nothing else within the blast.</em></p>" : ""}
       <p class="mm-hint">Each target takes it to a random hit location (Mythras p.109).</p></div>`
   });

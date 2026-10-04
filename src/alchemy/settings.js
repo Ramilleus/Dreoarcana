@@ -96,7 +96,7 @@ export function registerAlchemySettings() {
   });
   S(ASETTINGS.vessels, {
     name: "Alchemy: vessels for decanting (§9)",
-    hint: "A carried \"Vessel - <Size>\" item (in the Alchemy Ingredients compendium) is used up when a batch is decanted into that size. Without one, the chat card states the cost of a new vessel, or decanting into that size is refused.",
+    hint: "A carried \"Vessel - <Size>\" item (in the Alchemy Ingredients and Vessels compendium) is used up when a batch is decanted into that size. Without one, the chat card states the cost of a new vessel, or decanting into that size is refused.",
     type: String, default: "carried",
     choices: { carried: "Use a carried vessel if there is one; otherwise state the cost", required: "A carried vessel is required" }
   });

@@ -456,7 +456,7 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       ingredients: (s.ingredients ?? []).join(" + "), brewedBy: s.brewedBy,
       owned, canReveal: isGM && !s.identified, canDelete: isGM || owned,
       padded: Boolean(s.padded), canPad: owned,
-      paddedNote: s.padded && thrown ? (blast ? `In its padded case a break does ${blast.damage}, not ${thrown.damage}; thrown, it leaves the case.` : `In its padded case a break is smothered; thrown, it bursts for ${thrown.damage} in ${thrown.radius} m.`) : null,
+      paddedNote: s.padded && thrown ? (blast ? (blast.damage === thrown.damage ? `Padded, but a case can't soften a burst this strong (${blast.damage}).` : `In its padded case a break does ${blast.damage}, not ${thrown.damage}; thrown, it leaves the case.`) : `In its padded case a break is smothered; thrown, it bursts for ${thrown.damage} in ${thrown.radius} m.`) : null,
       fuse: s.supercritical && known ? (decay && deadline !== null
         ? `Supercritical: ${untilText(deadline - (Number(game.time.worldTime) || 0))} it settles to Potency 6 or discharges (1d6, §9)${s.padded ? "; the padded case doubled its time" : ""}.`
         : "Supercritical: it cannot be stored more than a few hours (§9).") : null

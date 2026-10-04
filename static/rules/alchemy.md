@@ -473,6 +473,9 @@ Alchemy is part of the Dreoarcana system. Everything happens in one window, the 
 - **Saturation** stacks doses and rolls them against Endurance automatically (§8).
 - **Durations** become timed effects on the drinker; the unconditional bonuses apply to the sheet (§5).
 - **Forage tab** sends a character out for a day (§12).
+- **Refine** (Stock tab) raises one unit a step of Condition (§3). **Preserve** stops a perishable stack spoiling, and **Pad** puts a potion in a padded case (§7). See §13.
+- **Vessels** are items in the compendium, *Vessel - Tiny* to *Vessel - Gargantuan*, priced as §9 gives. Decanting uses one up; without one, the card states the price of a new vessel.
+- **The recipe book**: every batch decanted is written into the brewer's book in the Brew tab, to be laid out on the bench again.
 - **Hit points are not applied automatically**: Mythras HP is per location, so the card states the figure and leaves the choice to the player. Stored Orie from Restore Melfyrium is applied.
 
 Every optional rule is a system setting under **Configure Settings → Dreoarcana**, prefixed "Alchemy:".
@@ -496,3 +499,14 @@ Every optional rule is a system setting under **Configure Settings → Dreoarcan
 **What turns up.** Each find is drawn from the ground's list by **Rarity**, each step half as likely as the one before: Common 64, Uncommon 32, Unusual 16, Rare 8, Very Rare 4, Legendary 2, Mythic 1. The Laboratory shows the chance of each.
 
 **Knowing what it is.** Anything the forager doesn't already carry by name is identified in the field with **Lore (Alchemy)** or **Lore (Natural World)**, whichever is higher, at its Rarity difficulty (§3). A critical also shows its Primary property (a critical Lore gives real insight, p.47). A failure leaves it *Unidentified* — a plant, a mushroom, an eye — to be worked out later in the Stock tab with the same roll, or revealed by the GM. It can still be brewed with; it just won't say what it is.
+
+## 13. The gaps, filled
+
+The canon names these rules but gives no numbers, or none the table can run. Each is a system setting, and each number below is a **house rule**.
+
+- **Raising Condition (§3).** Craft (Alchemy) at Standard, hours of work. A success lifts one unit a step, up to Enhanced; a failure does nothing; a fumble ruins it. The unit comes off its stack.
+- **Spoilage (§3).** Condition falls with "age, heat, sunlight … poor storage". Perishables — herbs, flowers, fruit, berries, fungi, roots, reeds, flesh, blood, eyes, ears, hearts, eggs, insects — lose one step of Condition every **14 days** of game time, down to Degraded. Minerals, metals, gems, coins, bone, teeth, horn, scale, shell, feather, hair, wood, resin and the Mothers keep. A **preserved** stack (salted, dried, sealed) does not spoil; the GM decides what preserving it takes.
+- **Padded cases (§7).** A carried potion in a padded case does the damage of the tier below if it breaks; below Potency 4 the burst is smothered. A thrown potion has left its case.
+- **Supercritical decay (§9).** "Within a few hours" is read as **3 hours** of game time, **6** in a padded case. Then roll 1d6: on 1–3 the dose settles to Potency 6; on 4–6 it discharges as a Potency 7 blast.
+- **Vessels (§9).** A carried vessel of the chosen size is used up at decant. The setting can require one.
+- **Wearable radiators.** The world says only that they "dissipate conversion heat". A radiator adds its metal's conductance ÷ 100 to the Heat vented each Melee Round, using the Materials table: silver 4, copper 4, gold 3, aluminium 2, magnesium, iridium, rhodium, ruthenium, zinc, manganese and cobalt 1; iron, nickel, chromium, tin, lead and titanium nothing. Mark any gear as a radiator on its sheet.
