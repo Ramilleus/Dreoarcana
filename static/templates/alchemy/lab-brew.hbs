@@ -104,7 +104,7 @@
     </div>
     <ol class="al-picklist">
       {{#each shelf as |s|}}
-      <li class="al-pick" data-search="{{s.search}}" data-cls="{{s.cls}}" data-pairs="{{#if s.pairs}}1{{else}}0{{/if}}">
+      <li class="al-pick" draggable="true" data-drag-uuid="{{s.uuid}}" data-search="{{s.search}}" data-cls="{{s.cls}}" data-pairs="{{#if s.pairs}}1{{else}}0{{/if}}">
         <label>
           <input type="checkbox" data-field="reagent" value="{{s.id}}" {{#if s.checked}}checked{{/if}}>
           <img src="{{s.img}}" alt="">

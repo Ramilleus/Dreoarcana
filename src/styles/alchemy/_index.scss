@@ -181,3 +181,8 @@
 .al-recipe { display: grid; grid-template-columns: minmax(8em, 14em) minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
 .al-recipe-mix small { display: block; opacity: 0.75; }
 .al-keeping i { margin-right: 4px; }
+
+/* Drag and drop */
+.mm-lab.al-drop-hover .window-content { outline: 2px dashed var(--mm-accent); outline-offset: -4px; }
+[data-drag-uuid] { cursor: grab; }
+.al-owner-unknown { opacity: 0.6; font-size: 0.85em; margin-left: 2px; }

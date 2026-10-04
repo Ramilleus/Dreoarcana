@@ -277,7 +277,7 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       const known = describeKnown(r.doc).filter(s => s.known && s.effect).map(s => s.effect);
       const p = effectivePotency(r.grade, r.condition);
       return {
-        id: r.id, name: r.name, img: r.img, cls: r.class,
+        id: r.id, uuid: r.uuid, name: r.name, img: r.img, cls: r.class,
         checked: this.reagentIds.has(r.id),
         chips: chips(r.doc),
         meta: r.doc.system.identified === false && !isGM ? `unidentified${this.actor ? ` · ×${r.quantity}` : ""}` : `${r.class} · G${r.grade ?? "?"}${p && r.class === "Mechanical" ? ` · ${p * p}Œ` : ""}${this.actor ? ` · ×${r.quantity}` : ""}`,
@@ -368,8 +368,12 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
     const p = effectivePotency(rec.grade, rec.condition);
     const isGM = game.user.isGM;
     const slots = describeKnown(doc);
-    const undiscovered = !isGM && slots.some(s => s.effect && !s.known);
     const owned = Boolean(doc.parent) && !doc.pack && doc.isOwner;
+    // What the carrying character has learned — the GM sees everything, but
+    // studies, tastes and identifies on an NPC's behalf from the NPC's notes.
+    const holder = owned ? doc.parent : null;
+    const charKnown = holder ? knownSlots(doc, { asGM: false }) : [0, 1, 2, 3];
+    const undiscovered = Boolean(holder) && slots.some(s => s.effect && !charKnown.includes(s.index));
     const vol = rec.class === "Mechanical" && p ? VOLATILITY[p] : null;
     const abs = rec.class === "Mechanical" && p ? ABSORPTION[p] : null;
     const diff = p ? DIFFICULTY[p] : null;
@@ -386,7 +390,7 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
     return {
       uuid: doc.uuid, name: doc.name, img: doc.img, description: doc.system.description,
       unidentified: unknown, trueName: unknown ? doc.system.trueName : null,
-      canIdentify: unknown && owned && !isGM, canReveal: unknown && isGM,
+      canIdentify: unknown && owned, canReveal: unknown && isGM,
       identifyNote: `${identifyValue(doc.actor ?? this.actor).name} at its Rarity (§3)`,
       stats: [
         { label: "Grade", value: rec.grade ?? "—" },
@@ -397,10 +401,12 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
         { label: rec.class === "Mechanical" ? "Orie" : "Brew grade", value: rec.class === "Mechanical" && p ? `${p * p}` : diff ? diff.label : "—" }
       ],
       mother: isMother(doc),
-      slots: slots.map(s => ({ ...s, hidden: Boolean(s.effect) && !s.known, dead: Boolean(s.effect) && s.known && s.potency < 1, pLabel: s.effect ? (s.potency >= 1 ? `P${s.potency}` : "—") : "" })),
+      slots: slots.map(s => ({ ...s, hidden: Boolean(s.effect) && !s.known, dead: Boolean(s.effect) && s.known && s.potency < 1, pLabel: s.effect ? (s.potency >= 1 ? `P${s.potency}` : "—") : "",
+        ownerUnknown: isGM && holder && asetting(ASETTINGS.discovery) !== false && Boolean(s.effect) && !charKnown.includes(s.index) })),
+      knowerName: isGM && holder ? holder.name : null,
       hazards: [vol ? `Volatile at this Potency: ${vol.damage} in ${vol.radius} m (§7).` : null, abs ? `Skin contact: ${abs}` : null].filter(Boolean),
       owned, quantity: rec.quantity,
-      canStudy: owned && undiscovered, canTaste: owned && Boolean(rec.slots[0]) && !knownSlots(doc).includes(0),
+      canStudy: owned && undiscovered, canTaste: owned && Boolean(rec.slots[0]) && !charKnown.includes(0),
       studyNote: `Lore (Alchemy) at ${DIFFICULTY[RARITY_DIFFICULTY[rec.rarity] ?? 3].label}`,
       canEat: owned, canUse: !isMother(doc) && (!this.actor || doc.parent === this.actor),
       canEdit: isGM, canDelete: isGM || owned,
@@ -536,6 +542,16 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
     if (root.dataset.alBound === "1") return;
     root.dataset.alBound = "1";
     root.addEventListener("change", (ev) => this._mmOnChange(ev));
+    // Drag and drop: rows drag out as Items; Items dropped in go to the bench.
+    root.addEventListener("dragstart", (ev) => {
+      const row = ev.target.closest?.("[data-drag-uuid]");
+      if (!row || !row.dataset.dragUuid) return;
+      ev.dataTransfer.setData("text/plain", JSON.stringify({ type: "Item", uuid: row.dataset.dragUuid }));
+      ev.dataTransfer.effectAllowed = "copy";
+    });
+    root.addEventListener("dragover", (ev) => { ev.preventDefault(); root.classList.add("al-drop-hover"); });
+    root.addEventListener("dragleave", (ev) => { if (!root.contains(ev.relatedTarget)) root.classList.remove("al-drop-hover"); });
+    root.addEventListener("drop", (ev) => { root.classList.remove("al-drop-hover"); this._mmOnDrop(ev); });
     root.addEventListener("input", (ev) => {
       if (ev.target?.matches?.('[data-field="search"]')) { this.filter.search = ev.target.value; this._mmApplyFilter(); }
       if (ev.target?.matches?.('[data-field="stockSearch"]')) this._mmApplyStockFilter(ev.target.value);
@@ -544,6 +560,53 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
         for (const row of this.element.querySelectorAll(".al-ground-pick")) row.hidden = Boolean(t) && !row.dataset.name.toLowerCase().includes(t);
       }
     });
+  }
+
+  /**
+   * An Item dropped on the Laboratory: from the sidebar, a compendium, a
+   * sheet, or the Laboratory's own lists. Anything that isn't already the
+   * alchemist's is copied onto them, as a drop on a sheet would. On the
+   * Brew tab it then joins the mixture; elsewhere it is selected in Stock.
+   */
+  async _mmOnDrop(ev) {
+    ev.preventDefault();
+    const TE = foundry.applications?.ux?.TextEditor?.implementation ?? globalThis.TextEditor;
+    let data;
+    try { data = TE.getDragEventData(ev); } catch { return; }
+    if (data?.type !== "Item" || !data.uuid) return;
+    const doc = await fromUuid(data.uuid).catch(() => null);
+    if (!doc || !(isIngredient(doc) || isPotion(doc))) return ui.notifications.warn("Only ingredients and potions belong in the Laboratory.");
+    if (this.batch && !this.batch.done) return ui.notifications.warn("Decant the batch on the bench first.");
+
+    let item = doc;
+    if (this.actor && doc.parent !== this.actor) {
+      if (!this.actor.isOwner) return;
+      const src = doc.toObject();
+      delete src._id;
+      [item] = await this.actor.createEmbeddedDocuments("Item", [src]);
+      if (!item) return;
+      ui.notifications.info(`${item.name} added to ${this.actor.name}.`);
+    }
+
+    if (this.tab === "brew" && isIngredient(item) && (!this.actor || item.parent === this.actor)) {
+      const pool = await this._mmPool();
+      const rec = pool.find(r => r.id === item.id) ?? pool.find(r => r.name === item.name);
+      if (!rec) return this.render({ parts: ["rail", "brew", "stock"] });
+      if (isMother(item)) this.motherId = rec.id;
+      else {
+        const max = Number(asetting(ASETTINGS.maxIngredients)) || 3;
+        if (!this.reagentIds.has(rec.id) && this.reagentIds.size >= max) ui.notifications.warn(`At most ${max} reagents (§4).`);
+        else this.reagentIds.add(rec.id);
+      }
+      return this.render({ parts: ["rail", "brew", "stock"] });
+    }
+
+    this.selectedUuid = item.uuid;
+    this.editing = null;
+    this.source = item.pack ? "catalogue" : item.parent ? "actor" : "world";
+    this.tab = "stock";
+    this.element.dataset.tab = "stock";
+    return this.render({ parts: ["tabs", "rail", "brew", "stock"] });
   }
 
   /** Search, class and pairs filters, applied in place so ticks and focus survive. */
