@@ -100,12 +100,34 @@ function pageEffects() {
       Object.entries(DISCIPLINES).map(([k, d]) => [`<strong>${k}</strong>`, e(d.core), e(d.behaviour), e(d.risk)]))}`;
 }
 
+/* What each node does when the spell is cast. HOUSE RULES: the catalogue
+   gives one line per node; these are the table procedures built on it. */
+const AT_THE_TABLE = {
+  "Split":     "One branch per split, plus the first: target a token for each. Each branch carries Might ÷ branches and is rolled on its own.",
+  "Combiner":  "The Effect nodes stop sharing the Might: each carries all of it.",
+  "Delay":     "Nothing happens at the cast. The effects release 3 s × count later, on the game clock.",
+  "Gate":      "Primed, not released: it waits in the rail until the caster triggers it, fading (e^−kt) while it waits.",
+  "Sync":      "The damage effects land as one roll, at one hit location: armour counts once.",
+  "Amplifier": "More ξ, and so more Might (Might = ξ).",
+  "Anchor":    "A lasting spell holds a place, not a person. Damage taken inside it can be marked in the damage dialog.",
+  "Orbit":     "A lasting spell circles its target and strikes it again every Melee Round it lasts.",
+  "Link":      "A lasting Shield or Barrier becomes one pool shared by count + 1 allies (the tokens targeted).",
+  "Field":     "Everyone within the spell's Size radius, around the one target or the caster.",
+  "Mirror":    "A second chain of the same effects at half Might, rolled separately.",
+  "Collapse":  "When it ends, anything still pending goes off at once, and a standing structure bursts for Force damage from the ξ it still holds.",
+  "Echo":      "The effects repeat one Melee Round later at half Might.",
+  "Adaptive":  "More ξ, by its level: set the level to the place (×1.2 calm, ×1.8 resonant)."
+};
+
 function pageUtility() {
-  return `<p>Flow control. Each adds complexity (ΔC) and multiplies ξ (Mξ). Where ΔC is "per" something, it scales with the count; the ξ multiplier applies once per node.</p>
-    ${table(["Node", "Function", "ΔC", "Mξ"],
+  return `<p>Flow control. Each adds complexity (ΔC) and multiplies ξ (Mξ), and with it Might, since Might = ξ. Where ΔC is "per" something, it scales with the count; the ξ multiplier applies once per node.</p>
+    ${table(["Node", "Function", "ΔC", "Mξ", "At the table"],
       Object.entries(UTILITY_NODES).map(([k, u]) => [`<strong>${k}</strong>`, e(u.desc),
         u.per ? `+${u.dc} per ${u.per}` : `+${u.dc}`,
-        u.levels ? `×${u.levels[0]}–×${u.levels[u.levels.length - 1]}` : `×${u.xi}`]))}`;
+        u.levels ? `×${u.levels[0]}–×${u.levels[u.levels.length - 1]}` : `×${u.xi}`,
+        e(AT_THE_TABLE[k] ?? "")]))}
+    <p>Damage on a spell's card has an <strong>Apply</strong> button: it goes through the target's Shields and Barriers, then armour, then a hit location.</p>
+    <p class="mm-hint">House rules: the Node Catalogue gives each node a one-line function and its costs; "At the table" is how they are played here.</p>`;
 }
 
 function pageDamage() {

@@ -25,7 +25,7 @@ import { INTENTS, CONVERSIONS, FORMS, RANGES, SIZES, EFFECTS, DAMAGE_TYPES, UTIL
          FOCUS_PRESETS, CATALYST_PRESETS, TIERS, blankBuild, normalizeBuild, evaluateSpell,
          utilityNodeValues, castTimeLabel, clamp, customEffectRecords, formatMagnitude, damageFormula,
          validateEffectDefinition, effectCategories, CIRCUMSTANCES, gradedTarget, PERSISTENCE } from "./rules.js";
-import { sustainContext, letGo, releaseSpell, takeDamageDialog, heatPerRound } from "./sustain.js";
+import { sustainContext, letGo, releaseSpell, takeDamageDialog, heatPerRound, triggerGate } from "./sustain.js";
 import { setting, num, SETTINGS } from "./settings.js";
 import { heatState, ventHeat, clearHeat } from "./heat.js";
 import { saveSpell, buildOf, spellbook } from "./spells.js";
@@ -108,6 +108,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       vent: Arcanum.#onVent,
       endActive: Arcanum.#onEndActive,
       releaseActive: Arcanum.#onReleaseActive,
+      triggerActive: Arcanum.#onTriggerActive,
       takeDamage: Arcanum.#onTakeDamage,
       openSheet: Arcanum.#onOpenSheet,
       removeUtility: Arcanum.#onRemoveUtility,
@@ -1022,6 +1023,13 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     event.preventDefault();
     const ef = await fromUuid(target.closest("[data-effect-uuid]")?.dataset.effectUuid).catch(() => null);
     if (ef) await releaseSpell(ef);
+    this.render({ parts: ["rail"] });
+  }
+
+  static async #onTriggerActive(event, target) {
+    event.preventDefault();
+    const ef = await fromUuid(target.closest("[data-effect-uuid]")?.dataset.effectUuid).catch(() => null);
+    if (ef) await triggerGate(ef);
     this.render({ parts: ["rail"] });
   }
 

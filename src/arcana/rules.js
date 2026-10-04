@@ -690,21 +690,13 @@ export function evaluateSpell(build, caster = {}) {
   const tier = tierFor(xi);
 
   // --- Effects at this Might ---
-  // HOUSE RULING: several effects share the ξ evenly for magnitude;
+  // HOUSE RULING: several effects share the ξ evenly for magnitude, and
+  // Split branches share it again (a Combiner stops the first sharing);
   // cost and Heat are paid on the whole.
-  const mightEach = effects.length ? might / effects.length : might;
+  const flow = flowOf(b);
   const xiPerDamage = Math.max(0.1, Number(c.xiPerDamage) || 2);
-  const effectLines = effects.map(e => {
-    const dmg = e.def.damage ? damageFormula(mightEach / xiPerDamage) : null;
-    let text;
-    try { text = e.def.magnitude(mightEach, { damageFormula: dmg, element: e.element }); }
-    catch { text = e.effect; }
-    return {
-      effect: e.effect, label: e.label, element: e.element ?? null, category: e.def.category,
-      damage: Boolean(e.def.damage), formula: dmg, compound: e.compound,
-      might: round1(mightEach), text
-    };
-  });
+  const effectLines = effectsAtMight(effects, might, { combined: flow.combined, branches: flow.branches, xiPerDamage });
+  const share = mightShare(effects.length, flow);
 
   const validity = validateBuild(b);
 
@@ -719,7 +711,7 @@ export function evaluateSpell(build, caster = {}) {
     might: round1(might), tier,
     difficulty: TIER_DIFFICULTY[tier.tier],
     difficultyLabel: DIFFICULTY_GRADES.find(g => g.key === TIER_DIFFICULTY[tier.tier])?.label ?? "Standard",
-    lines, effects: effectLines, utilities,
+    lines, effects: effectLines, utilities, flow, share,
     errors: validity.errors, warnings: validity.warnings,
     valid: validity.errors.length === 0
   };
@@ -811,3 +803,92 @@ export function absorbByBarrier(damage, percent) {
   const stopped = Math.min(d, Math.round(d * (Number(percent) || 0) / 100));
   return { stopped, through: d - stopped };
 }
+
+/* ===================================================================
+ * Flow control — what the Utility nodes do at the table. HOUSE RULES:
+ * the Node Catalogue gives each node a one-line function and its
+ * costs; these are the table procedures built from those lines.
+ *
+ *   Split ×N   N+1 branches, each carrying Might ÷ (N+1), each rolled
+ *   Combiner   Effect nodes stop sharing Might: each gets all of it
+ *   Sync       damage effects land as one roll, at one hit location
+ *   Mirror     a second chain at half Might
+ *   Delay ×N   the effects release 3 s × N after casting
+ *   Echo       the effects repeat a Melee Round later at half Might
+ *   Gate       primed, not released: waits for the caster's trigger,
+ *              fading as e^(−kt) while it waits
+ *   Orbit      a lasting spell strikes its target again every round
+ *   Link ×N    one lasting Shield/Barrier pool shared by N+1 allies
+ *   Field      everyone within the spell's area
+ *   Anchor     a lasting spell holds a place, not a person
+ *   Collapse   ending it releases everything still pending at once,
+ *              and a standing structure bursts for Force damage from
+ *              the ξ it still holds
+ *   Amplifier, Adaptive   raise ξ, and so Might (Might = ξ)
+ * =================================================================== */
+export const MIRROR_SCALE = 0.5;
+export const ECHO_SCALE = 0.5;
+export const DELAY_SECONDS = 3;
+
+/** Area radius in metres for each Size tier (the catalogue's feet, at 0.3 m). */
+export const SIZE_RADIUS_M = { 1: 1.5, 2: 3, 3: 6, 4: 10.5, 5: 15 };
+
+/** What a build's Utility nodes do. */
+export function flowOf(build) {
+  const has = (n) => (build?.utilities ?? []).find(u => u.node === n) ?? null;
+  const count = (u) => Math.max(1, Math.floor(Number(u?.count) || 1));
+  const split = has("Split"), delay = has("Delay"), link = has("Link");
+  return {
+    branches: split ? count(split) + 1 : 1,
+    combined: Boolean(has("Combiner")),
+    synced: Boolean(has("Sync")),
+    mirror: Boolean(has("Mirror")),
+    delaySeconds: delay ? DELAY_SECONDS * count(delay) : 0,
+    echo: Boolean(has("Echo")),
+    gated: Boolean(has("Gate")),
+    orbit: Boolean(has("Orbit")),
+    linked: link ? count(link) : 0,
+    field: Boolean(has("Field")),
+    anchored: Boolean(has("Anchor")),
+    collapse: Boolean(has("Collapse"))
+  };
+}
+
+/** The fraction of the spell's Might each effect gets, on each branch. */
+export const mightShare = (effectCount, flow) =>
+  (flow?.combined || !effectCount ? 1 : 1 / effectCount) / Math.max(1, flow?.branches ?? 1);
+
+/**
+ * Effect lines at a given total Might. `effects` are evaluated effect
+ * entries ({ effect, def, label, element, compound }); the result is
+ * what the card and the bench show.
+ */
+export function effectsAtMight(effects, might, { combined = false, branches = 1, xiPerDamage = 2 } = {}) {
+  const each = (Number(might) || 0) * mightShare(effects.length, { combined, branches });
+  return effects.map(e => {
+    const dmg = e.def.damage ? damageFormula(each / Math.max(0.1, xiPerDamage)) : null;
+    let text;
+    try { text = e.def.magnitude(each, { damageFormula: dmg, element: e.element }); }
+    catch { text = e.effect; }
+    return {
+      effect: e.effect, label: e.label, element: e.element ?? null, category: e.def.category,
+      damage: Boolean(e.def.damage), formula: dmg, compound: e.compound,
+      might: round1(each), text
+    };
+  });
+}
+
+/** Re-derive a build's effect lines at a scaled Might (Mirror, Echo, a fading Gate). */
+export function effectsScaled(build, caster, scale = 1) {
+  const ev = evaluateSpell(build, caster);
+  const b = normalizeBuild(build);
+  const entries = b.effects.map(e => {
+    const def = EFFECTS[e.effect];
+    const compound = e.element && DAMAGE_TYPES[e.element]?.compound ? COMPOUND_COMPLEXITY_BONUS : 0;
+    return { ...e, def, label: def.label ?? e.effect, compound: Boolean(compound) };
+  });
+  return effectsAtMight(entries, ev.might * scale, { combined: ev.flow.combined, branches: ev.flow.branches, xiPerDamage: ev.caster.xiPerDamage });
+}
+
+/** Sync: several damage rolls become one. */
+export const syncFormula = (formulas) => formulas.filter(Boolean).join(" + ") || null;

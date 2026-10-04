@@ -50,8 +50,9 @@
       {{#each sustain.held as |s|}}
       <li class="mm-active-row {{#if s.held}}is-held{{/if}}" data-effect-uuid="{{s.uuid}}">
         <span class="mm-grow"><strong>{{s.name}}</strong>{{#if s.target}} <small>on {{s.target}}</small>{{/if}}
-          <small>{{s.kind}} · ξ {{s.xi}}{{#if s.held}} · +{{s.heat}} Heat/rd{{/if}}{{#if s.shield}} · Shield {{s.shield}}{{/if}}{{#if s.barrier}} · Barrier {{s.barrier}}{{/if}}</small></span>
+          <small>{{s.kind}}{{#unless s.pending}} · ξ {{s.xi}}{{/unless}}{{#if s.held}} · +{{s.heat}} Heat/rd{{/if}}{{#if s.shield}} · Shield {{s.shield}}{{/if}}{{#if s.barrier}} · Barrier {{s.barrier}}{{/if}}{{#if s.orbit}} · orbits{{/if}}{{#if s.collapse}} · collapses{{/if}}</small></span>
         {{#if s.isOwner}}
+        {{#if s.canTrigger}}<button type="button" class="mm-mini" data-action="triggerActive" data-tooltip="Open the Gate: release it now"><i class="fas fa-bolt"></i></button>{{/if}}
         {{#if s.canRelease}}<button type="button" class="mm-mini" data-action="releaseActive" data-tooltip="Release it: it stands on its own and fades, and stops costing Heat"><i class="fas fa-dove"></i></button>{{/if}}
         <button type="button" class="mm-row-x" data-action="endActive" data-tooltip="Let it go" aria-label="End {{s.name}}">&times;</button>
         {{/if}}

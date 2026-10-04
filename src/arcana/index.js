@@ -23,12 +23,13 @@ import { buildRulesJournal, rulesPages } from "./rules-pages.js";
 import { sigilSVG, glyphSVG } from "./sigil.js";
 import { registerSocket, playLocal, exportSpellWav } from "./sound.js";
 import { migrateWorld, onPreCreateItem } from "./legacy.js";
-import { tickSpells, listenForDamage, takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, isActiveSpell } from "./sustain.js";
+import { tickSpells, listenForDamage, takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, isActiveSpell, triggerGate } from "./sustain.js";
+import { bindApplyButtons, releasePending } from "./flow.js";
 
 export { arcaneSheetContext } from "./sheets.js";
 export { openArcanum } from "./arcanum.js";
 export { heatCapacity } from "./heat.js";
-export { takeDamageDialog, letGo } from "./sustain.js";
+export { takeDamageDialog, letGo, triggerGate } from "./sustain.js";
 
 const PARTIALS = [`${TEMPLATES}/actor-arcana.hbs`, `${TEMPLATES}/item-catalyst.hbs`];
 
@@ -72,6 +73,7 @@ export function registerArcana() {
     applyTheme();
     registerSocket();
     listenForDamage();
+    bindApplyButtons();
     try { await migrateWorld(); } catch (err) { LOG("migration failed:", err.message); }
     try { await refreshEffects({ reason: "ready" }); } catch (err) { LOG("effect scan failed:", err.message); }
 
@@ -82,7 +84,7 @@ export function registerArcana() {
       rulesPages, buildRulesJournal,
       sigilSVG, glyphSVG, playSpellSound: playLocal, exportSpellWav,
       setting, SETTINGS,
-      takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, tickSpells
+      takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, tickSpells, triggerGate, releasePending
     };
     tickSpells();
   });

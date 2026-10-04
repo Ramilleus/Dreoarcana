@@ -49,7 +49,7 @@
       <tbody>
         {{#each arcana.sustain.held as |s|}}
         <tr data-effect-uuid="{{s.uuid}}"><td>{{s.name}}{{#if s.target}} <small>on {{s.target}}</small>{{/if}}</td><td>{{s.kind}}</td><td>{{s.xi}}</td><td>{{#if s.held}}{{s.heat}}{{else}}—{{/if}}</td><td>{{#if s.shield}}{{s.shield}}{{else}}—{{/if}}</td><td>{{#if s.barrier}}{{s.barrier}}{{else}}—{{/if}}</td>
-          <td>{{#if s.isOwner}}<a class="arcana-let-go delete-column" title="Let it go"><i class="fas fa-times"></i></a>{{/if}}</td></tr>
+          <td>{{#if s.canTrigger}}<a class="arcana-trigger" title="Open the Gate: release it now"><i class="fas fa-bolt"></i></a>{{/if}}{{#if s.isOwner}}<a class="arcana-let-go delete-column" title="Let it go"><i class="fas fa-times"></i></a>{{/if}}</td></tr>
         {{/each}}
         {{#each arcana.sustain.guarded as |s|}}
         <tr><td>{{s.name}} <small>from {{s.caster}}</small></td><td>{{s.kind}}</td><td>{{s.xi}}</td><td>—</td><td>{{#if s.shield}}{{s.shield}}{{else}}—{{/if}}</td><td>{{#if s.barrier}}{{s.barrier}}{{else}}—{{/if}}</td><td></td></tr>

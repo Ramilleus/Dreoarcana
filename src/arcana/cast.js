@@ -23,7 +23,9 @@ import { buildOf, baselineCaster } from "./spells.js";
 import { e } from "./html.js";
 import { sigilSVG } from "./sigil.js";
 import { broadcastCast } from "./sound.js";
-import { startSpell, heatPerRound, lastingTarget } from "./sustain.js";
+import { startSpell, heatPerRound } from "./sustain.js";
+import { branchTargets, rollBranches, branchesHTML, flowNotes, createPending } from "./flow.js";
+import { ECHO_SCALE } from "./rules.js";
 import { PERSISTENCE } from "./rules.js";
 
 /* Chat content is sanitised and inline <svg> is stripped, so the card
@@ -108,26 +110,37 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
     : null;
 
   /* ---- the effect ----------------------------------------------- */
-  // Damage is rolled here and shown as a clickable inline roll; every
-  // roll rides on the message so dice animations see them.
+  // Every roll rides on the message so dice animations see them. The
+  // Utility nodes decide the shape of it (flow.js): branches and their
+  // targets, a Sync'd or Mirrored roll, or a release held back by a
+  // Delay or a Gate.
   const rolls = [roll, ...(extraRoll ? [extraRoll] : [])];
-  const effectRows = [];
-  for (const fx of ev.effects) {
-    let anchor = "";
-    if (outcome.effect && fx.damage && fx.formula) {
-      const dmg = await new Roll(fx.formula).evaluate();
-      rolls.push(dmg);
-      anchor = dmg.toAnchor?.()?.outerHTML ?? `<strong>${dmg.total}</strong>`;
-    }
-    effectRows.push({ ...fx, anchor });
+  const flow = ev.flow;
+  const roundSeconds = num(SETTINGS.roundSeconds, 5);
+  const targets = outcome.effect ? branchTargets(actor, build, flow) : [];
+  const heldBack = outcome.effect && (flow.gated || flow.delaySeconds > 0);
+  const lasting = PERSISTENCE[build.persistence] && build.persistence !== "instant" ? build.persistence : null;
+  let fxHTML = "";
+  if (!outcome.effect) {
+    fxHTML = ev.effects.length ? `<ul class="mm-chat-effects">${ev.effects.map(x => `<li><strong>${e(x.element ?? x.label ?? x.effect)}</strong> — <em>does not manifest</em></li>`).join("")}</ul>` : "";
+  } else if (heldBack) {
+    const whom = targets.filter(Boolean).map(x => e(x.name)).join(", ");
+    fxHTML = `<p class="mm-chat-note"><strong>${flow.gated ? "Primed." : `Delayed ${flow.delaySeconds} s.`}</strong> ${flow.gated
+      ? `It waits for ${e(actor.name)} to trigger it, fading while it waits`
+      : `It releases in ${flow.delaySeconds} s (${fmt(flow.delaySeconds / roundSeconds)} rd)`}${whom ? `, aimed at ${whom}` : ""}.</p>`;
+  } else {
+    const out = await rollBranches({ build, caster: params, targets, flow });
+    rolls.push(...out.rolls);
+    fxHTML = branchesHTML(out);
   }
+  const notes = outcome.effect ? flowNotes(flow).filter(n => !heldBack || !/echo/i.test(n)) : [];
+  const notesHTML = notes.map(n => `<p class="mm-hint">${e(n)}</p>`).join("");
 
   /* ---- how long it lasts ---------------------------------------- */
-  const lasting = PERSISTENCE[build.persistence] && build.persistence !== "instant" ? build.persistence : null;
   let lastingHTML = "";
   if (lasting) {
-    const target = lastingTarget(actor, build);
-    const onWhom = target !== actor ? ` on ${e(target.name)}` : "";
+    const covered = flow.anchored ? [] : targets.filter(Boolean);
+    const onWhom = flow.anchored ? ", anchored in place" : covered.length && !(covered.length === 1 && covered[0].uuid === actor.uuid) ? ` on ${covered.map(x => e(x.name)).join(", ")}` : "";
     const perRound = heatPerRound(build, params);
     lastingHTML = outcome.effect
       ? `<p class="mm-chat-note"><strong>${PERSISTENCE[lasting].label}${onWhom}.</strong> ${lasting === "sustaining"
@@ -137,10 +150,6 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
   }
 
   /* ---- the card ------------------------------------------------- */
-  const roundSeconds = num(SETTINGS.roundSeconds, 5);
-  const fxHTML = effectRows.length ? `<ul class="mm-chat-effects">${effectRows.map(x => `
-      <li><strong>${e(x.element ?? x.label ?? x.effect)}</strong>
-        ${outcome.effect ? `${x.anchor ? `${x.anchor} · ` : "— "}${e(x.text)}` : "— <em>does not manifest</em>"}</li>`).join("")}</ul>` : "";
 
   const costs = [
     `Might <b>${fmt(ev.xi)}</b>`,
@@ -168,7 +177,8 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
       </div>
       ${outcome.note ? `<p class="mm-chat-note">${e(outcome.note)}</p>` : ""}
       ${fxHTML}
-      ${lastingHTML}
+      ${notesHTML}
+      ${heldBack ? "" : lastingHTML}
       <p class="mm-chat-costs">${costs}</p>
       ${outcomeKey === "fumble" ? `<p class="mm-error"><strong>Flux.</strong> The conversion runs undirected: colours drift, the air sings, and the GM decides what the loose ξ does.</p>` : ""}
     </div>`;
@@ -183,8 +193,18 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
   // The burn, if any, after the spell that caused it.
   await announceOverheat(actor, heatResult);
 
-  // A spell that outlasts its casting goes on holding.
-  if (lasting && outcome.effect) await startSpell({ actor, item, build, ev, caster: params }).catch(err => console.warn("Dreoarcana | Arcana: active spell", err));
+  // Held back (Delay, Gate): the release comes later, and anything lasting with it.
+  // Otherwise an Echo follows next Round, and anything lasting starts now.
+  try {
+    if (heldBack) {
+      await createPending({ actor, item, build, caster: params, targets,
+        releaseAt: flow.gated ? null : (Number(game.time?.worldTime) || 0) + flow.delaySeconds, gated: flow.gated });
+    } else if (outcome.effect) {
+      if (flow.echo) await createPending({ actor, item, build, caster: params, targets,
+        releaseAt: (Number(game.time?.worldTime) || 0) + roundSeconds, scale: ECHO_SCALE, echo: true, startsLasting: false });
+      if (lasting) await startSpell({ actor, item, build, ev, caster: params, targets });
+    }
+  } catch (err) { console.warn("Dreoarcana | Arcana: flow", err); }
 
   // The sound of it, for everyone at the table.
   broadcastCast(build, { outcome: outcomeKey, overheat: Boolean(heatResult?.over) }).catch(() => {});

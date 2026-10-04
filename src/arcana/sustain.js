@@ -24,7 +24,8 @@
 
 import { SYSTEM_ID, fmt, hitLocations, randomHitLocation } from "./core.js";
 import { PERSISTENCE, FADED_XI, decayedXi, shieldPoints, barrierPercent, absorbByShield, absorbByBarrier,
-         evaluateSpell, round1 } from "./rules.js";
+         evaluateSpell, round1, flowOf, normalizeBuild } from "./rules.js";
+import { branchTargets, rollBranches, branchesHTML, releasePending, collapseBurst, releaseSubChains, isPending } from "./flow.js";
 import { setting, num, SETTINGS } from "./settings.js";
 import { heatState, addHeat } from "./heat.js";
 import { formDialog } from "./ui.js";
@@ -44,17 +45,35 @@ export const activeSpells = (actor) => actor?.effects?.filter(isActiveSpell) ?? 
 /** Is it being held open by the caster right now, or standing on its own? */
 export const heldOpen = (d) => d.kind === "maintained" || (d.kind === "transitional" && !d.released);
 
-/** Every Shield and Barrier protecting an actor, from any caster. */
-export function protections(actor) {
+/** Who a lasting spell covers: its targets (Link: several), or its caster. Anchored spells cover a place. */
+export const coveredBy = (d, caster) => d.anchored ? []
+  : (Array.isArray(d.targetUuids) && d.targetUuids.length ? d.targetUuids : [d.targetUuid || caster.uuid]);
+
+/**
+ * Every Shield and Barrier protecting an actor, from any caster.
+ * `inside` lists anchored spells (by effect uuid) the actor stands within.
+ */
+export function protections(actor, { inside = [] } = {}) {
   if (!actor) return [];
   const out = [];
   const casters = new Set([...game.actors, actor]);
   for (const caster of casters) {
     for (const ef of activeSpells(caster)) {
       const d = spellState(ef);
-      if ((d.targetUuid || caster.uuid) !== actor.uuid) continue;
-      if (d.shield?.hp > 0 || d.barrier) out.push({ ef, caster, d });
+      if (isPending(d)) continue;
+      const covers = d.anchored ? inside.includes(ef.uuid) : coveredBy(d, caster).includes(actor.uuid);
+      if (covers && (d.shield?.hp > 0 || d.barrier)) out.push({ ef, caster, d });
     }
+  }
+  return out;
+}
+
+/** Anchored Shields and Barriers anywhere: places someone might be standing in. */
+export function anchoredWards() {
+  const out = [];
+  for (const caster of game.actors) for (const ef of activeSpells(caster)) {
+    const d = spellState(ef);
+    if (d.anchored && !isPending(d) && (d.shield?.hp > 0 || d.barrier)) out.push({ ef, caster, d });
   }
   return out;
 }
@@ -66,35 +85,45 @@ export function protections(actor) {
 /** Heat a maintained spell costs each round: its Heat with nothing drawn from Stored Orie. */
 export const heatPerRound = (build, caster) => round1(evaluateSpell(build, { ...caster, stored: 0 }).heat);
 
-/** Who a lasting spell is for: the one token targeted, for a Defensive or Support spell; else the caster. */
-export function lastingTarget(actor, build) {
-  if (!["Defensive", "Support"].includes(build.intent)) return actor;
-  const targets = [...(game.user?.targets ?? [])];
-  return targets.length === 1 && targets[0].actor ? targets[0].actor : actor;
-}
-
-export async function startSpell({ actor, item, build, ev, caster }) {
-  const kind = build.persistence;
+/**
+ * Start what a spell leaves standing. One structure per branch target;
+ * with Link, one structure (one pool) across them all; with Anchor, one
+ * structure in a place rather than on anyone.
+ */
+export async function startSpell({ actor, item, build, ev, caster, targets = null }) {
+  const b = normalizeBuild(build);
+  const kind = b.persistence;
   if (!PERSISTENCE[kind] || kind === "instant") return null;
-  const share = ev.effects.length ? 1 / ev.effects.length : 1;
-  const each = ev.xi * share;
-  const has = (name) => build.effects.some(x => x.effect === name);
-  const target = lastingTarget(actor, build);
-  const t = now();
-  const state = {
-    kind, released: false, spellName: item.name, spellUuid: item.uuid,
-    xi0: ev.xi, xi: ev.xi, share, k: num(SETTINGS.decayRate, 0.2),
-    heatPerRound: heatPerRound(build, caster), start: t, lastTick: t,
-    shield: has("Shield") ? { hp: shieldPoints(each), max: shieldPoints(each) } : null,
-    barrier: has("Barrier") ? { pct: barrierPercent(each) } : null,
-    targetUuid: target.uuid, targetName: target.name
+  const flow = ev.flow ?? flowOf(b);
+  const tgs = targets ?? branchTargets(actor, b, flow);
+  const has = (name) => b.effects.some(x => x.effect === name);
+  const t0 = now();
+  const whole = flow.combined || !b.effects.length ? 1 : 1 / b.effects.length;   // one structure: no branch split
+  const make = (share, list) => {
+    const each = ev.xi * share;
+    const real = list.filter(Boolean);
+    return {
+      kind, released: false, spellName: item.name, spellUuid: item.uuid,
+      xi0: ev.xi, xi: ev.xi, share, k: num(SETTINGS.decayRate, 0.2),
+      heatPerRound: heatPerRound(b, caster), start: t0, lastTick: t0,
+      shield: has("Shield") ? { hp: shieldPoints(each), max: shieldPoints(each) } : null,
+      barrier: has("Barrier") ? { pct: barrierPercent(each) } : null,
+      targetUuid: real[0]?.uuid ?? null, targetName: real[0]?.name ?? "",
+      targetUuids: real.map(x => x.uuid), targetNames: real.map(x => x.name),
+      anchored: flow.anchored, linked: flow.linked > 0, orbit: flow.orbit, collapse: flow.collapse,
+      build: b, caster
+    };
   };
-  const [ef] = await actor.createEmbeddedDocuments("ActiveEffect", [{
-    name: `${item.name} (${PERSISTENCE[kind].label})`, img: item.img, origin: item.uuid,
-    description: PERSISTENCE[kind].desc, transfer: false,
+  const states = flow.anchored ? [make(whole, [])]
+    : flow.linked ? [make(whole, tgs.filter(Boolean).length ? tgs : [{ uuid: actor.uuid, name: actor.name }])]
+    : tgs.map(x => make(ev.share ?? whole, [x]));
+  const suffix = (s) => s.anchored ? ", anchored" : s.targetUuids.length > 1 ? `, linked ×${s.targetUuids.length}`
+    : s.targetName && s.targetUuid !== actor.uuid ? `, on ${s.targetName}` : "";
+  return actor.createEmbeddedDocuments("ActiveEffect", states.map(state => ({
+    name: `${item.name} (${PERSISTENCE[kind].label}${suffix(state)})`,
+    img: item.img, origin: item.uuid, description: PERSISTENCE[kind].desc, transfer: false,
     flags: { [SYSTEM_ID]: { [FLAG]: state } }
-  }]);
-  return ef ?? null;
+  })));
 }
 
 /* -------------------------------------------------------------------
@@ -110,13 +139,30 @@ export async function endSpell(ef, reason = null) {
   const actor = ef.parent;
   await ef.delete();
   if (reason && actor) await announce(actor, `<p>${reason}</p>`);
+  // Collapse: it ends violently — what is pending goes off, what stands bursts.
+  if (d?.collapse && actor && !isPending(d)) {
+    await releaseSubChains(actor, d.spellUuid);
+    await collapseBurst(actor, d);
+  }
 }
 
-/** The caster lets go of it. */
+/** The caster lets go of it. A held-back release dissipates — or, with Collapse, goes off now. */
 export async function letGo(ef) {
   const d = spellState(ef);
   if (!ef?.isOwner || !d) return;
+  if (isPending(d)) {
+    if (d.collapse) return releasePending(ef, { reason: "Collapse: let go, it goes off at once." });
+    await ef.delete();
+    return announce(ef.parent, `<p><strong>${e(ef.parent.name)}</strong> lets <strong>${e(d.spellName)}</strong> dissipate before it is released.</p>`);
+  }
   await endSpell(ef, `<strong>${e(ef.parent.name)}</strong> lets <strong>${e(d.spellName)}</strong> go.`);
+}
+
+/** Gate: the caster opens it. */
+export async function triggerGate(ef) {
+  const d = spellState(ef);
+  if (!ef?.isOwner || !isPending(d) || !d.gated) return null;
+  return releasePending(ef);
 }
 
 /** A transitional spell is released: it stands on its own from here, and fades. */
@@ -147,6 +193,10 @@ export async function tickSpells() {
 
 async function tickOne(actor, ef, t, rs) {
   const d = spellState(ef);
+  if (isPending(d)) {
+    if (!d.gated && d.releaseAt !== null && t >= d.releaseAt) return releasePending(ef);
+    return;
+  }
   if (t < d.lastTick) return ef.update({ [`${flagPath}.lastTick`]: t });     // time was turned back
   const rounds = Math.floor((t - d.lastTick) / rs);
   if (rounds < 1) return;
@@ -163,7 +213,8 @@ async function tickOne(actor, ef, t, rs) {
     if (res.after > res.capacity) {
       return endSpell(ef, `<strong>${e(actor.name)}</strong> can't hold <strong>${e(d.spellName)}</strong> open any longer: the Heat overflows (${fmt(res.after)}/${res.capacity}) and it collapses.`);
     }
-    return ef.update({ [`${flagPath}.lastTick`]: lastTick });
+    await ef.update({ [`${flagPath}.lastTick`]: lastTick });
+    return orbitStrikes(actor, d, rounds, 1);
   }
 
   // Self-sustaining: ξ(t) = ξ₀ × e^(−kt), t in Melee Rounds.
@@ -173,7 +224,26 @@ async function tickOne(actor, ef, t, rs) {
   const next = { ...d, xi: round1(xi), lastTick };
   if (d.shield) { const max = shieldPoints(each); next.shield = { max, hp: Math.min(d.shield.hp, max) }; }
   if (d.barrier) next.barrier = { pct: barrierPercent(each) };
-  return ef.update({ [flagPath]: next });
+  await ef.update({ [flagPath]: next });
+  return orbitStrikes(actor, d, rounds, xi / (d.xi0 || 1));
+}
+
+/** Orbit: the spell circles its target and strikes it again each round (at most ten at once). */
+async function orbitStrikes(actor, d, rounds, scale) {
+  if (!d.orbit || !d.build || !d.build.effects?.length) return;
+  const targets = (d.targetUuids ?? []).map((uuid, i) => ({ uuid, name: d.targetNames?.[i] ?? "" }));
+  if (!targets.length) return;
+  const n = Math.min(rounds, 10);
+  const all = [], rolls = [];
+  for (let i = 0; i < n; i++) {
+    const out = await rollBranches({ build: d.build, caster: d.caster, scale, targets, flow: { ...flowOf(d.build), branches: targets.length, mirror: false, field: false } });
+    all.push(...out.rows); rolls.push(...out.rolls);
+  }
+  if (!all.some(r => r.parts.some(p => p.total))) return;
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }), rolls,
+    content: `<div class="mm-chat"><h3>${e(d.spellName)} orbits and strikes${n > 1 ? ` ×${n}` : ""}</h3>${branchesHTML({ rows: all }, { many: false })}${rounds > n ? `<p class="mm-hint">${rounds - n} more strikes passed unrolled.</p>` : ""}</div>`
+  });
 }
 
 /* -------------------------------------------------------------------
@@ -187,16 +257,16 @@ async function tickOne(actor, ef, t, rs) {
  * @param {Actor} actor
  * @param {object} opts { amount, kind: "physical"|"magical", locationId, ignoreArmour, bypass }
  */
-export async function takeDamage(actor, { amount = 0, kind = "physical", locationId = "", ignoreArmour = false, bypass = false } = {}) {
+export async function takeDamage(actor, { amount = 0, kind = "physical", locationId = "", ignoreArmour = false, bypass = false, inside = [] } = {}) {
   const dmg = Math.max(0, Math.floor(Number(amount) || 0));
   if (!actor || !dmg) return null;
-  const prot = bypass ? [] : protections(actor);
+  const prot = bypass ? [] : protections(actor, { inside });
 
   // Everything touched must be writable here; if not, the GM does it.
   const touched = [actor, ...prot.map(p => p.caster)];
   if (!game.user.isGM && touched.some(a => !a.isOwner)) {
     if (!game.users.activeGM) { ui.notifications.warn("That needs the GM: a Shield or Barrier from another caster is involved."); return null; }
-    game.socket?.emit(SOCKET, { type: TAKE_DAMAGE, actorUuid: actor.uuid, opts: { amount: dmg, kind, locationId, ignoreArmour, bypass } });
+    game.socket?.emit(SOCKET, { type: TAKE_DAMAGE, actorUuid: actor.uuid, opts: { amount: dmg, kind, locationId, ignoreArmour, bypass, inside } });
     ui.notifications.info("Sent to the GM to resolve.");
     return null;
   }
@@ -262,6 +332,8 @@ export async function takeDamageDialog(actor) {
   if (!actor) return null;
   const prot = protections(actor);
   const locs = hitLocations(actor);
+  const anchored = anchoredWards();
+  const places = anchored.map(p => `<label><input type="checkbox" name="inside" value="${e(p.ef.uuid)}"> Inside ${e(p.d.spellName)} <small>(${e(p.caster.name)}'s, anchored${p.d.shield?.hp > 0 ? ` · Shield ${p.d.shield.hp}/${p.d.shield.max}` : ""}${p.d.barrier ? ` · Barrier ${p.d.barrier.pct}%` : ""})</small></label>`).join("");
   const guards = prot.map(p => `<li>${e(p.d.spellName)} <small>(${e(p.caster.name)})</small>${p.d.shield?.hp > 0 ? ` · Shield ${p.d.shield.hp}/${p.d.shield.max}` : ""}${p.d.barrier ? ` · Barrier ${p.d.barrier.pct}%` : ""}</li>`).join("");
   const opts = await formDialog({
     title: `Damage to ${actor.name}`,
@@ -277,13 +349,15 @@ export async function takeDamageDialog(actor) {
       <label><input type="checkbox" name="ignoreArmour"> Ignores armour</label>
       <label><input type="checkbox" name="bypass"> Bypasses Shields and Barriers <small>(lightning spears, Cutting Force…)</small></label>
       ${guards ? `<p class="mm-hint">Protecting ${e(actor.name)}:</p><ul>${guards}</ul>` : `<p class="mm-hint">Nothing is protecting ${e(actor.name)}.</p>`}
+      ${places ? `<fieldset><legend>Anchored wards</legend>${places}</fieldset>` : ""}
     </div>`,
     parse: (form) => ({
       amount: Number(form.querySelector('[name="amount"]')?.value) || 0,
       kind: form.querySelector('[name="kind"]:checked')?.value ?? "physical",
       locationId: form.querySelector('[name="locationId"]')?.value ?? "",
       ignoreArmour: Boolean(form.querySelector('[name="ignoreArmour"]')?.checked),
-      bypass: Boolean(form.querySelector('[name="bypass"]')?.checked)
+      bypass: Boolean(form.querySelector('[name="bypass"]')?.checked),
+      inside: [...form.querySelectorAll('[name="inside"]:checked')].map(x => x.value)
     })
   });
   if (!opts?.amount) return null;
@@ -305,14 +379,26 @@ export function listenForDamage() {
 
 export function spellView(ef, holder) {
   const d = spellState(ef);
+  if (isPending(d)) {
+    const left = d.releaseAt !== null ? Math.max(0, d.releaseAt - now()) : null;
+    return {
+      id: ef.id, uuid: ef.uuid, name: d.spellName, pending: true, gated: Boolean(d.gated),
+      kind: d.gated ? "Primed: waiting for its trigger" : d.echo ? `Echo in ${fmt(left)} s` : `Releases in ${fmt(left)} s`,
+      held: false, xi: "", heat: "", shield: null, barrier: null,
+      target: (d.targets ?? []).filter(Boolean).map(x => x.name).join(", ") || null,
+      canRelease: false, canTrigger: Boolean(d.gated) && Boolean(ef.isOwner), isOwner: Boolean(ef.isOwner)
+    };
+  }
   const held = heldOpen(d);
+  const names = (d.targetNames ?? []).filter(Boolean);
   return {
     id: ef.id, uuid: ef.uuid, name: d.spellName,
     kind: d.kind === "transitional" ? (d.released ? "Released" : "Held, until released") : PERSISTENCE[d.kind]?.label ?? d.kind,
     held, xi: fmt(d.xi), heat: fmt(d.heatPerRound),
     shield: d.shield?.hp > 0 ? `${d.shield.hp}/${d.shield.max}` : null,
     barrier: d.barrier ? `${d.barrier.pct}%` : null,
-    target: d.targetUuid && d.targetUuid !== holder?.uuid ? d.targetName : null,
+    target: d.anchored ? "anchored in place" : names.length > 1 ? names.join(", ") : d.targetUuid && d.targetUuid !== holder?.uuid ? d.targetName : null,
+    orbit: Boolean(d.orbit), collapse: Boolean(d.collapse),
     canRelease: d.kind === "transitional" && !d.released,
     isOwner: Boolean(ef.isOwner)
   };
