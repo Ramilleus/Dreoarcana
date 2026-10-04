@@ -48,6 +48,10 @@ export async function setStat(actor, key, value) {
 /** Stored Orie: the caster's reservoir (Mythras' Magic Points, relabelled). */
 export const currentOrie = (actor) => statValue(actor, "magicPoints");
 
+/** The spell classes a character is aligned with: disciplines or elements (Spell Builder, Resonance Rule). */
+export const actorAffinity = (actor) => (Array.isArray(actor?.system?.arcanaAffinity) ? actor.system.arcanaAffinity.filter(Boolean) : []);
+export const setAffinity = (actor, list) => actor.update({ "system.arcanaAffinity": [...new Set((list ?? []).filter(Boolean))] });
+
 export function maxOrie(actor) {
   const derived = Number(actor?.maxMagicPoints);
   return Number.isFinite(derived) ? derived : currentOrie(actor);

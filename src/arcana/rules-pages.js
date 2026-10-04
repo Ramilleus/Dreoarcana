@@ -11,7 +11,7 @@
 import { SYSTEM_ID } from "./core.js";
 import { INTENTS, CONVERSIONS, FORMS, RANGES, SIZES, EFFECTS, DISCIPLINES, UTILITY_NODES,
          DAMAGE_TYPES, TIERS, TIER_DIFFICULTY, DIFFICULTY_GRADES, OUTCOMES, FOCUS_PRESETS,
-         CATALYST_PRESETS, COMPOUND_COMPLEXITY_BONUS, CIRCUMSTANCES } from "./rules.js";
+         CATALYST_PRESETS, COMPOUND_COMPLEXITY_BONUS, CIRCUMSTANCES, STABILITY_LOAD, SURROUNDINGS } from "./rules.js";
 import { setting, SETTINGS } from "./settings.js";
 import { e } from "./html.js";
 
@@ -169,6 +169,35 @@ function pageCasting() {
     <p>Any piece of gear can be flagged as a catalyst from its item sheet, with its own Γ and Worth; carried catalysts appear first on the Caster node.</p>`;
 }
 
+function pageStability() {
+  const limit = setting(SETTINGS.affinityLimit) ?? 1;
+  const cats = Object.entries(STABILITY_LOAD.category).map(([k, v]) => `${e(k)} ${v}`).join(", ");
+  return `
+    <p>From the Spell Builder's Node Anatomy: every node carries a <strong>Stability Load</strong>, how sensitive it is to Flux, terrain resonance and Melfyrium saturation.</p>
+    <ul>
+      <li><strong>Bottleneck Rule</strong>: the node with the highest Load sets the spell's Stability.</li>
+      <li><strong>Resonance Rule</strong>: nodes aligned with the caster's <strong>Affinity</strong> make less Heat and stabilise more easily.</li>
+    </ul>
+    <h3>Loads (house rule)</h3>
+    ${table(["Node", "Stability Load"], [
+      ["Intent", "1; Creation 3"],
+      ["Conversion", "1; Overdrive 3"],
+      ["Form, Range, Size", "their tier, 1–5"],
+      ["Effect", `by discipline: ${cats}; others ${STABILITY_LOAD.categoryDefault}; +1 for a compound element`],
+      ["Utility", "its ΔC, at most 5; Amplifier and Adaptive rise with their level"]
+    ])}
+    <h3>Surroundings</h3>
+    <p>Choose them on the bench. Each point the spell's Stability is past what the place bears makes the cast one grade harder.</p>
+    ${table(["Surroundings", "Bears", "Like"], SURROUNDINGS.map(s => [`<strong>${e(s.label)}</strong>`, s.bears, e(s.desc)]))}
+    <h3>Affinity</h3>
+    <p>${limit > 0 ? `A caster is aligned with up to ${limit} spell class${limit === 1 ? "" : "es"}` : "Affinity is off at this table"}: a discipline (Evocation, Protection…) or an element (Fire, Frost…). Set it in the Arcanum's rail.</p>
+    <ul>
+      <li>An Effect node in the Affinity is <strong>one point steadier</strong>.</li>
+      <li>A spell whose <strong>every</strong> Effect node is in it needs <strong>×0.85 Orie</strong> and makes <strong>−20% Heat</strong>: the numbers the Pact rules give for an aligned spell.</li>
+    </ul>
+    <p class="mm-hint">House rules: the canon names Stability Load and Affinity but gives no per-node values; these are built from the Discipline table's risk profiles and the node tiers.</p>`;
+}
+
 function pageLasting() {
   const k = setting(SETTINGS.decayRate) ?? 0.2;
   const toHeat = setting(SETTINGS.barrierHeat) !== false;
@@ -220,7 +249,8 @@ export function rulesPages() {
     { name: "8. Power Tiers", html: pageTiers() },
     { name: "9. Casting (house procedure)", html: pageCasting() },
     { name: "10. Heat and Reservoirs (house procedure)", html: pageHeat() },
-    { name: "11. Lasting Spells, Shields and Barriers", html: pageLasting() }
+    { name: "11. Lasting Spells, Shields and Barriers", html: pageLasting() },
+    { name: "12. Stability and Affinity", html: pageStability() }
   ];
 }
 

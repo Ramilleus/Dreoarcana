@@ -15,6 +15,7 @@
       <div>
         <strong>{{actor.name}}</strong>
         {{#if actor.skill}}<small>Casts with {{actor.skill}}</small>{{/if}}
+        {{#if affinity}}<small class="mm-affinity-line">Affinity: {{affinity.list}}{{#if affinity.canEdit}} <a data-action="editAffinity" data-tooltip="Choose the spell classes this caster is aligned with"><i class="fas fa-pen"></i></a>{{/if}}</small>{{/if}}
       </div>
     </div>
 

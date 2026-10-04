@@ -9,7 +9,7 @@
  * templates/arcana/actor-arcana.hbs); arcaneSheetContext feeds it.
  * =================================================================== */
 
-import { SPELL_TYPE, isArcaneSpell, fmt } from "./core.js";
+import { SPELL_TYPE, isArcaneSpell, fmt, actorAffinity } from "./core.js";
 import { evaluateSpell } from "./rules.js";
 import { num, SETTINGS } from "./settings.js";
 import { sigilSVG } from "./sigil.js";
@@ -56,7 +56,8 @@ export function arcaneSheetContext(actor) {
         sigil: sigilSVG(build, { size: 28, cls: "mm-sigil-svg" })
       };
     });
-  return { spells, has: spells.length > 0, sustain: sustainContext(actor) };
+  const affinity = num(SETTINGS.affinityLimit, 1) > 0 ? actorAffinity(actor).join(", ") : "";
+  return { spells, has: spells.length > 0, sustain: sustainContext(actor), affinity };
 }
 
 export { isArcaneSpell };

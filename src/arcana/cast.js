@@ -48,7 +48,7 @@ export function gradeFor(tier, steps = 0) {
 /** Can this spell be cast as built, in these circumstances? Returns a reason, or "". */
 export function cannotCast(actor, ev, steps = 0) {
   if (!ev.valid) return ev.errors.join(" ");
-  if (!gradeFor(ev.tier.tier, steps)) return "Hopeless: past Herculean, no attempt can be made.";
+  if (!gradeFor(ev.tier.tier, steps + (ev.strain || 0))) return "Hopeless: past Herculean, no attempt can be made.";
   return "";
 }
 
@@ -85,7 +85,7 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
   if (why) return ui.notifications.warn(`${why} Nothing has been spent.`);
 
   /* ---- the roll ------------------------------------------------- */
-  const grade = gradeFor(ev.tier.tier, steps);
+  const grade = gradeFor(ev.tier.tier, steps + (ev.strain || 0));
   const target = gradedTarget(ev.caster.skill, grade);
   const roll = await new Roll("1d100").evaluate();
   const outcomeKey = outcomeFor(roll.total, target);
@@ -134,6 +134,8 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
     fxHTML = branchesHTML(out);
   }
   const notes = outcome.effect ? flowNotes(flow).filter(n => !heldBack || !/echo/i.test(n)) : [];
+  if (ev.strain > 0) notes.unshift(`${ev.surroundings.label}: Stability ${ev.stability.value} (${ev.stability.bottleneck}) is past the ${ev.surroundings.bears} the place bears, ${ev.strain} grade${ev.strain === 1 ? "" : "s"} harder.`);
+  if (ev.stability?.aligned) notes.unshift(`In ${actor.name}'s Affinity: ×0.85 Orie, −20% Heat.`);
   const notesHTML = notes.map(n => `<p class="mm-hint">${e(n)}</p>`).join("");
 
   /* ---- how long it lasts ---------------------------------------- */

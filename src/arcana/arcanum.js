@@ -20,11 +20,12 @@
  * =================================================================== */
 
 import { TEMPLATES, isArcaneSpell, isEffectItem, castingSkills, defaultCastingSkill, carriedCatalysts,
-         castableActors, currentActor, currentOrie, maxOrie, fmt } from "./core.js";
+         castableActors, currentActor, currentOrie, maxOrie, fmt, actorAffinity, setAffinity } from "./core.js";
 import { INTENTS, CONVERSIONS, FORMS, RANGES, SIZES, EFFECTS, DAMAGE_TYPES, UTILITY_NODES,
          FOCUS_PRESETS, CATALYST_PRESETS, TIERS, blankBuild, normalizeBuild, evaluateSpell,
          utilityNodeValues, castTimeLabel, clamp, customEffectRecords, formatMagnitude, damageFormula,
-         validateEffectDefinition, effectCategories, CIRCUMSTANCES, gradedTarget, PERSISTENCE } from "./rules.js";
+         validateEffectDefinition, effectCategories, CIRCUMSTANCES, gradedTarget, PERSISTENCE,
+         SURROUNDINGS, affinityChoices } from "./rules.js";
 import { sustainContext, letGo, releaseSpell, takeDamageDialog, heatPerRound, triggerGate } from "./sustain.js";
 import { setting, num, SETTINGS } from "./settings.js";
 import { heatState, ventHeat, clearHeat } from "./heat.js";
@@ -32,7 +33,7 @@ import { saveSpell, buildOf, spellbook } from "./spells.js";
 import { castSpell, gradeFor, cannotCast, orieSpent } from "./cast.js";
 import { createEffectItem, refreshEffects, sendEffectToPack, spellsUsingEffect, getEffectsPack, PACK_LABEL } from "./effects.js";
 import { rulesPages, buildRulesJournal } from "./rules-pages.js";
-import { confirmDialog } from "./ui.js";
+import { confirmDialog, formDialog } from "./ui.js";
 import { e } from "./html.js";
 import { sigilSVG, glyphSVG } from "./sigil.js";
 import { playLocal, exportSpellWav, describeSound } from "./sound.js";
@@ -109,6 +110,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       endActive: Arcanum.#onEndActive,
       releaseActive: Arcanum.#onReleaseActive,
       triggerActive: Arcanum.#onTriggerActive,
+      editAffinity: Arcanum.#onEditAffinity,
       takeDamage: Arcanum.#onTakeDamage,
       openSheet: Arcanum.#onOpenSheet,
       removeUtility: Arcanum.#onRemoveUtility,
@@ -176,7 +178,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     const skill = defaultCastingSkill(this.actor);
     // stored: Orie to draw from Stored Orie; "" draws as much as the spell can use.
     // steps: circumstances, in difficulty grades (Mythras p.38/p.120).
-    this.caster = { skillId: skill?.id ?? "", skill: skill?.value ?? 50, focus: 1, catalyst: 1, stored: "", steps: 0 };
+    this.caster = { skillId: skill?.id ?? "", skill: skill?.value ?? 50, focus: 1, catalyst: 1, stored: "", steps: 0, surroundings: "calm" };
     this._mmLoadSpell(null);
   }
 
@@ -228,7 +230,9 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       skill: this.caster.skill,
       skillDivisor: num(SETTINGS.skillDivisor, 50),
       xiPerDamage: num(SETTINGS.xiPerDamage, 2),
-      focus: this.caster.focus, catalyst: this.caster.catalyst, stored: this._mmDraw()
+      focus: this.caster.focus, catalyst: this.caster.catalyst, stored: this._mmDraw(),
+      affinity: this.actor && num(SETTINGS.affinityLimit, 1) > 0 ? actorAffinity(this.actor) : [],
+      surroundings: this.caster.surroundings ?? "calm"
     };
   }
 
@@ -251,7 +255,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
   _mmBudget(ev) {
     const heat = this.actor && setting(SETTINGS.trackHeat) !== false ? heatState(this.actor) : null;
     const orie = this.actor ? currentOrie(this.actor) : null;
-    const grade = gradeFor(ev.tier.tier, this.caster.steps);
+    const grade = gradeFor(ev.tier.tier, this.caster.steps + (ev.strain || 0));
     return {
       heat, orie, grade,
       drawn: ev.caster.stored, spent: orieSpent(ev.caster.stored),
@@ -278,7 +282,11 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       chip(`Heat +${fmt(ev.heat)}${b.heat ? ` <small>→ ${fmt(b.heat.heat + ev.heat)} / ${b.heat.capacity}</small>` : ""}`,
            b.over ? "This cast would push Heat past capacity — it will burn" : "Heat = Œ^1.3 × Complexity ÷ 6", b.over ? "is-bad" : ""),
       chip(`${fmt(ev.castTime)} s <small>${fmt(rounds)} rd</small>`, castTimeLabel(ev.castTime, roundSeconds)),
-      chip(`C ${fmt(ev.complexity)}`, `Complexity: ${fmt(ev.complexityRaw)} from the nodes × ${CONVERSIONS[ev.build.conversion].complexityFactor} for ${ev.build.conversion}`)
+      chip(`C ${fmt(ev.complexity)}`, `Complexity: ${fmt(ev.complexityRaw)} from the nodes × ${CONVERSIONS[ev.build.conversion].complexityFactor} for ${ev.build.conversion}`),
+      chip(`Stability ${ev.stability.value}${ev.strain ? ` <small>+${ev.strain} grade${ev.strain === 1 ? "" : "s"}</small>` : ""}`,
+           `Bottleneck: ${ev.stability.bottleneck} (${ev.stability.value}). ${ev.surroundings.label} surroundings bear ${ev.surroundings.bears}${ev.strain ? `, so the cast is ${ev.strain} grade${ev.strain === 1 ? "" : "s"} harder` : ""}. Loads: ${ev.stability.nodes.map(n => `${n.label} ${n.sl}${n.aligned ? "*" : ""}`).join(", ")}`,
+           ev.strain ? "is-bad" : ""),
+      ...(ev.stability.aligned ? [chip("Affinity", "Every Effect node is in the caster's Affinity: ×0.85 Orie, −20% Heat, and a point steadier", "is-tier")] : [])
     ].join("");
   }
 
@@ -377,6 +385,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       actor, heat, orie, spells, sustain: sustainContext(a),
       actorChoices: choices.map(c => ({ uuid: c.uuid, name: c.name, selected: c === a })),
       showChoices: game.user.isGM || choices.length > 1 || (!a && choices.length > 0),
+      affinity: a && num(SETTINGS.affinityLimit, 1) > 0 ? { list: actorAffinity(a).join(", ") || "none chosen", canEdit: a.isOwner } : null,
       canEdit: canBuild() && (!a || a.isOwner),
       isOwner: !a || a.isOwner,
       newIsCurrent: !this.item
@@ -444,6 +453,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       skills, hasSkills: skills.length > 0, skillPct: this.caster.skill, manualSkill: !this.caster.skillId,
       focus, catalysts,
       circumstances: CIRCUMSTANCES.map(c => ({ ...c, selected: c.steps === Number(this.caster.steps) })),
+      surroundings: SURROUNDINGS.map(s => ({ ...s, selected: s.key === (this.caster.surroundings ?? "calm") })),
       stored: this.caster.stored, orieHave: this.actor ? currentOrie(this.actor) : 0, hasActor: Boolean(this.actor),
       xi: fmt(ev.xi), orieFinal: fmt(ev.orieFinal),
       heatLabel: `+${fmt(ev.heat)} Heat`,
@@ -953,6 +963,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     this.caster.focus = Number(val('[name="focus"]')) || 1;
     this.caster.catalyst = Number(val('[name="catalyst"]')) || 1;
     this.caster.steps = Number(val('[name="steps"]')) || 0;
+    this.caster.surroundings = val('[name="surroundings"]') ?? this.caster.surroundings ?? "calm";
     const draw = String(val('[name="stored"]') ?? "").trim();
     this.caster.stored = draw === "" ? "" : Math.max(0, Number(draw) || 0);
   }
@@ -1024,6 +1035,28 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     const ef = await fromUuid(target.closest("[data-effect-uuid]")?.dataset.effectUuid).catch(() => null);
     if (ef) await releaseSpell(ef);
     this.render({ parts: ["rail"] });
+  }
+
+  static async #onEditAffinity(event) {
+    event.preventDefault();
+    const actor = this.actor;
+    const limit = num(SETTINGS.affinityLimit, 1);
+    if (!actor?.isOwner || limit < 1) return;
+    const have = new Set(actorAffinity(actor));
+    const { disciplines, elements } = affinityChoices();
+    const box = (v) => `<label class="mm-aff-opt"><input type="checkbox" name="aff" value="${e(v)}" ${have.has(v) ? "checked" : ""}> ${e(v)}</label>`;
+    const picked = await formDialog({
+      title: `${actor.name}'s Affinity`, label: "Save", width: 460,
+      content: `<div class="mm-dialog mm-affinity">
+        <p class="mm-hint">Up to ${limit}. An Effect node in the caster's Affinity is a point steadier; a spell whose every Effect node is in it needs ×0.85 Orie and makes −20% Heat.</p>
+        <fieldset><legend>Disciplines</legend>${disciplines.map(box).join("")}</fieldset>
+        <fieldset><legend>Elements</legend>${elements.map(box).join("")}</fieldset></div>`,
+      parse: (form) => [...form.querySelectorAll('[name="aff"]:checked')].map(x => x.value)
+    });
+    if (!picked) return;
+    if (picked.length > limit) return ui.notifications.warn(`At most ${limit} at this table.`);
+    await setAffinity(actor, picked);
+    this.render({ parts: ["rail", "bench", "foot"] });
   }
 
   static async #onTriggerActive(event, target) {
@@ -1176,7 +1209,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     const skillName = castingSkills(this.actor).find(s => s.id === this.caster.skillId)?.name ?? "Casting";
     await castSpell(item, {
       actor: this.actor, steps: this.caster.steps, skillName,
-      caster: { skill: this.caster.skill, focus: this.caster.focus, catalyst: this.caster.catalyst, stored: this._mmDraw() }
+      caster: { skill: this.caster.skill, focus: this.caster.focus, catalyst: this.caster.catalyst, stored: this._mmDraw(), surroundings: this.caster.surroundings ?? "calm" }
     });
   }
 

@@ -8,7 +8,7 @@
  * the plain item views and compendium browsers say something useful.
  * =================================================================== */
 
-import { SPELL_TYPE, SPELL_IMG, isArcaneSpell, defaultCastingSkill, fmt, FilePickerImpl, LOG } from "./core.js";
+import { SPELL_TYPE, SPELL_IMG, isArcaneSpell, defaultCastingSkill, fmt, FilePickerImpl, LOG, actorAffinity } from "./core.js";
 import { evaluateSpell, normalizeBuild, castTimeLabel, describeBuild, buildShapeKey } from "./rules.js";
 import { setting, num, SETTINGS } from "./settings.js";
 import { e } from "./html.js";
@@ -36,7 +36,8 @@ export function baselineCaster(actor, skillPercent) {
     skill,
     skillDivisor: num(SETTINGS.skillDivisor, 50),
     xiPerDamage: num(SETTINGS.xiPerDamage, 2),
-    focus: 1, catalyst: 1, stored: 0
+    focus: 1, catalyst: 1, stored: 0,
+    affinity: num(SETTINGS.affinityLimit, 1) > 0 ? actorAffinity(actor) : [], surroundings: "calm"
   };
 }
 

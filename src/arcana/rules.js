@@ -678,13 +678,15 @@ export function evaluateSpell(build, caster = {}) {
   const F = clamp(Number(c.focus) || 1, 0.1, 2);
   const S = skillToS(c.skill, c.skillDivisor);
   const G = clamp(Number(c.catalyst) || 1, 0.1, 2);
-  const orieBase = xi * (1 / (F * S)) * conv.orie;
+  // Affinity (Resonance Rule) and Stability (Bottleneck Rule).
+  const stability = stabilityOf(b, c.affinity);
+  const orieBase = xi * (1 / (F * S)) * conv.orie * (stability.aligned ? AFFINITY_ORIE : 1);
   const orieFinal = orieBase * G;
   const stored = clamp(Number(c.stored) || 0, 0, orieFinal);
   const orieConverted = Math.max(0, orieFinal - stored);
 
   // --- Heat, time, might ---
-  const heat = Math.pow(orieConverted, 1.3) * (complexity / 6);
+  const heat = Math.pow(orieConverted, 1.3) * (complexity / 6) * (stability.aligned ? AFFINITY_HEAT : 1);
   const castTime = 4 + complexity * G;
   const might = xi;
   const tier = tierFor(xi);
@@ -712,6 +714,7 @@ export function evaluateSpell(build, caster = {}) {
     difficulty: TIER_DIFFICULTY[tier.tier],
     difficultyLabel: DIFFICULTY_GRADES.find(g => g.key === TIER_DIFFICULTY[tier.tier])?.label ?? "Standard",
     lines, effects: effectLines, utilities, flow, share,
+    stability, surroundings: surroundingsOf(c.surroundings), strain: strainSteps(stability.value, c.surroundings),
     errors: validity.errors, warnings: validity.warnings,
     valid: validity.errors.length === 0
   };
@@ -892,3 +895,112 @@ export function effectsScaled(build, caster, scale = 1) {
 
 /** Sync: several damage rolls become one. */
 export const syncFormula = (formulas) => formulas.filter(Boolean).join(" + ") || null;
+
+
+/* ===================================================================
+ * Stability Load and Affinity (Spell Builder: Node Anatomy)
+ *
+ * "Stability Load — how sensitive the node is to Flux, terrain
+ * resonance, or Melfyrium saturation. Nodes with high Stability Load are
+ * the first to fail when ξ flow falters. The node with the highest
+ * Stability Load in a spell sets that spell's overall stability
+ * threshold (the 'Bottleneck Rule') — and nodes aligned with the
+ * caster's Affinity generate less Heat and stabilize more easily (the
+ * 'Resonance Rule')."
+ *
+ * Affinity is "a character's alignment with certain spell classes". The
+ * Pact rules give the numbers for an aligned spell: ×0.85 cost, −20%
+ * Heat, +1 Stability.
+ *
+ * HOUSE RULES (the canon gives no per-node values):
+ *   - Stability Loads 1–5: Intent 1 (Creation 3); Conversion 1
+ *     (Overdrive 3); Form, Range and Size their tier; Effect nodes by the
+ *     Discipline table's risk (Sensory 1 … Construct 4, Summoning 5), +1
+ *     for a compound element; Utility nodes their ΔC, capped at 5.
+ *   - Affinity is a discipline or an element. An Effect node in it is
+ *     one point steadier; a spell whose every Effect node is in it costs
+ *     ×0.85 Orie and makes −20% Heat.
+ *   - The place bears a Stability (Surroundings, Calm 5 … Flux 1). Each
+ *     point the spell's bottleneck exceeds it makes the cast a grade
+ *     harder.
+ * =================================================================== */
+export const AFFINITY_ORIE = 0.85;
+export const AFFINITY_HEAT = 0.8;
+export const MAX_STABILITY = 5;
+
+export const STABILITY_LOAD = {
+  intent: { Offensive: 1, Defensive: 1, Utility: 1, Support: 1, Creation: 3 },
+  conversion: { Base: 1, Ritual: 1, Overdrive: 3 },
+  category: { "Sensory": 1, "Detection": 1, "Illusion": 2, "Protection": 2, "Evocation": 3, "Necromancy": 3,
+              "Construct Magic": 4, "Conjuration": 4, "Summoning": 5 },
+  categoryDefault: 2
+};
+
+export const SURROUNDINGS = [
+  { key: "calm",      label: "Calm",          bears: 5, desc: "Settled ground, steady resonance" },
+  { key: "restless",  label: "Restless",      bears: 4, desc: "Weather, crowds, a little Melfyrium in the soil" },
+  { key: "unsettled", label: "Unsettled",     bears: 3, desc: "Strong resonance, a battlefield, a saturated place" },
+  { key: "turbulent", label: "Turbulent",     bears: 2, desc: "Resonance weather, a corrupted zone, raw Melfyrium near" },
+  { key: "flux",      label: "Flux zone",     bears: 1, desc: "Physics fraying: the air sings" }
+];
+export const surroundingsOf = (key) => SURROUNDINGS.find(s => s.key === key) ?? SURROUNDINGS[0];
+
+/** Grades harder from a spell's bottleneck in a place. */
+export const strainSteps = (stability, key) => Math.max(0, (Number(stability) || 0) - surroundingsOf(key).bears);
+
+/** What an Affinity can be: a discipline (Effect category) or an element. */
+export function affinityChoices() {
+  return {
+    disciplines: effectCategories().sort(),
+    elements: Object.entries(DAMAGE_TYPES).filter(([, d]) => !d.compound).map(([k]) => k)
+  };
+}
+
+/** Is an Effect node within an Affinity? Its category, its element, or a compound's parts. */
+export function nodeAligned(effect, affinity = []) {
+  if (!affinity?.length) return false;
+  const def = EFFECTS[effect.effect];
+  if (def && affinity.includes(def.category)) return true;
+  if (effect.element) {
+    if (affinity.includes(effect.element)) return true;
+    const parts = DAMAGE_TYPES[effect.element]?.compound ?? [];
+    if (parts.some(x => affinity.includes(x))) return true;
+  }
+  return false;
+}
+
+const capSL = (n) => Math.max(1, Math.min(MAX_STABILITY, Math.round(Number(n) || 1)));
+
+/** Every node's Stability Load, the bottleneck, and the Affinity alignment. */
+export function stabilityOf(build, affinity = []) {
+  const b = normalizeBuild(build);
+  const aff = Array.isArray(affinity) ? affinity.filter(Boolean) : [];
+  const nodes = [
+    { label: `${b.intent} intent`, kind: "intent", sl: STABILITY_LOAD.intent[b.intent] ?? 1 },
+    { label: `${b.conversion} conversion`, kind: "conversion", sl: STABILITY_LOAD.conversion[b.conversion] ?? 1 },
+    { label: `${b.form} form`, kind: "form", sl: FORMS[b.form]?.tier ?? 1 },
+    { label: `${RANGES[b.range]?.label ?? "Close"} range`, kind: "range", sl: Number(b.range) || 1 },
+    { label: `${SIZES[b.size]?.label ?? "Focused"} size`, kind: "size", sl: Number(b.size) || 1 }
+  ];
+  let alignedCount = 0;
+  for (const fx of b.effects) {
+    const def = EFFECTS[fx.effect];
+    const compound = fx.element && DAMAGE_TYPES[fx.element]?.compound ? 1 : 0;
+    const base = (STABILITY_LOAD.category[def?.category] ?? STABILITY_LOAD.categoryDefault) + compound;
+    const aligned = nodeAligned(fx, aff);
+    if (aligned) alignedCount++;
+    nodes.push({ label: fx.element ?? def?.label ?? fx.effect, kind: "effect", sl: capSL(aligned ? base - 1 : base), aligned });
+  }
+  for (const u of b.utilities) {
+    const v = utilityNodeValues(u);
+    const def = UTILITY_NODES[u.node];
+    nodes.push({ label: v.label, kind: "utility", sl: capSL(def.levels ? def.dc + (v.level - 1) : v.dc) });
+  }
+  for (const n of nodes) n.sl = capSL(n.sl);
+  const top = nodes.reduce((a, n) => (n.sl > a.sl ? n : a), nodes[0]);
+  return {
+    nodes, value: top.sl, bottleneck: top.label,
+    aligned: b.effects.length > 0 && alignedCount === b.effects.length,
+    alignedCount, affinity: aff
+  };
+}

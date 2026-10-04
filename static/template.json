@@ -181,6 +181,7 @@
           "time": 0
         },
         "recipes": [],
+        "arcanaAffinity": [],
         "spellFilterOption": "All",        
         "equipmentFilterOption": "All"
       },

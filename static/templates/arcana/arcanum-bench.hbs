@@ -49,6 +49,9 @@
               <input type="number" name="stored" value="{{stored}}" min="0" max="{{orieHave}}" step="1" placeholder="All it needs" data-tooltip="Orie drawn from Stored Orie is not converted now, so it makes no Heat. Leave blank to draw as much as the spell needs; 0 converts it all and saves your Stored Orie.">
             </label>
             {{else}}<input type="hidden" name="stored" value="">{{/if}}
+            <label>Surroundings
+              <select name="surroundings" data-tooltip="How much instability the place bears. Each point the spell's Stability (its highest node Load) is past it makes the cast a grade harder">{{#each surroundings as |s|}}<option value="{{s.key}}" {{#if s.selected}}selected{{/if}} title="{{s.desc}}">{{s.label}} · bears {{s.bears}}</option>{{/each}}</select>
+            </label>
             <label>Circumstances
               <select name="steps" data-tooltip="Mythras moves the difficulty grade for circumstances: one grade harder for each casting requirement denied, easier for preparation">{{#each circumstances as |c|}}<option value="{{c.steps}}" {{#if c.selected}}selected{{/if}}>{{c.label}}</option>{{/each}}</select>
             </label>

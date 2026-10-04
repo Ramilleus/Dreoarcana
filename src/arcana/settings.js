@@ -23,6 +23,7 @@ export const SETTINGS = {
   ventPerRound:       "arcana.ventPerRound",
   radiators:          "arcana.radiators",
   decayRate:          "arcana.decayRate",
+  affinityLimit:      "arcana.affinityLimit",
   barrierHeat:        "arcana.barrierHeat",
   theme:              "arcana.theme",
   animations:         "arcana.animations",
@@ -172,6 +173,13 @@ export function registerSettings() {
     hint: "ξ(t) = ξ₀ × e^(−kt), with t in Melee Rounds; canon gives k as 0.1–0.3. A spell has faded when its ξ falls below 1. At 0.2 it halves in about 3½ rounds.",
     scope: "world", config: true, type: Number, default: 0.2,
     range: { min: 0.05, max: 0.5, step: 0.05 }
+  });
+
+  S(SETTINGS.affinityLimit, {
+    name: "Arcana: spell classes a caster can be aligned with (Affinity)",
+    hint: "Each a discipline (Evocation, Protection…) or an element (Fire, Frost…). An Effect node in it is a point steadier; a spell whose every Effect node is in it needs ×0.85 Orie and makes −20% Heat (the Pact numbers). 0 turns Affinity off.",
+    scope: "world", config: true, type: Number, default: 1,
+    range: { min: 0, max: 4, step: 1 }
   });
 
   S(SETTINGS.barrierHeat, {
