@@ -22,6 +22,7 @@ import { createEffectItem, refreshEffects, refreshEffectsSoon, sendEffectToPack,
 import { buildRulesJournal, rulesPages } from "./rules-pages.js";
 import { sigilSVG, glyphSVG } from "./sigil.js";
 import { registerSocket, playLocal, exportSpellWav } from "./sound.js";
+import { renderSpellWav } from "./audio.js";
 import { migrateWorld, onPreCreateItem } from "./legacy.js";
 import { tickSpells, listenForDamage, takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, isActiveSpell, triggerGate } from "./sustain.js";
 import { bindApplyButtons, releasePending } from "./flow.js";
@@ -83,7 +84,7 @@ export function registerArcana() {
       heatState, addHeat, ventHeat, clearHeat,
       createEffectItem, refreshEffects, sendEffectToPack,
       rulesPages, buildRulesJournal,
-      sigilSVG, glyphSVG, playSpellSound: playLocal, exportSpellWav,
+      sigilSVG, glyphSVG, playSpellSound: playLocal, exportSpellWav, renderSpellWav,
       setting, SETTINGS,
       takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, tickSpells, triggerGate, releasePending,
       fluxAt, createFlux, fluxZones, ageFlux
