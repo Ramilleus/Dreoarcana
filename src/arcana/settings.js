@@ -24,6 +24,8 @@ export const SETTINGS = {
   radiators:          "arcana.radiators",
   decayRate:          "arcana.decayRate",
   affinityLimit:      "arcana.affinityLimit",
+  fluxEnabled:        "arcana.fluxEnabled",
+  fluxHours:          "arcana.fluxHours",
   barrierHeat:        "arcana.barrierHeat",
   theme:              "arcana.theme",
   animations:         "arcana.animations",
@@ -180,6 +182,19 @@ export function registerSettings() {
     hint: "Each a discipline (Evocation, Protection…) or an element (Fire, Frost…). An Effect node in it is a point steadier; a spell whose every Effect node is in it needs ×0.85 Orie and makes −20% Heat (the Pact numbers). 0 turns Affinity off.",
     scope: "world", config: true, type: Number, default: 1,
     range: { min: 0, max: 4, step: 1 }
+  });
+
+  S(SETTINGS.fluxEnabled, {
+    name: "Arcana: large conversions leave Flux",
+    hint: "A Tier III spell leaves a Flux zone of intensity 1 where it was cast, Tier IV 2, Tier V 3; a fumble adds 1. Spells cast inside one count it as their Surroundings and roll a d10: amplified (×1.5 Might) or misfired at the ends. Structures in Flux fade faster.",
+    scope: "world", config: true, type: Boolean, default: true
+  });
+
+  S(SETTINGS.fluxHours, {
+    name: "Arcana: hours of game time for Flux to weaken one step",
+    hint: "A zone loses one intensity each this many hours, and is gone at none.",
+    scope: "world", config: true, type: Number, default: 1,
+    range: { min: 0.5, max: 24, step: 0.5 }
   });
 
   S(SETTINGS.barrierHeat, {

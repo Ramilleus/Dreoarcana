@@ -27,6 +27,8 @@ import { INTENTS, CONVERSIONS, FORMS, RANGES, SIZES, EFFECTS, DAMAGE_TYPES, UTIL
          validateEffectDefinition, effectCategories, CIRCUMSTANCES, gradedTarget, PERSISTENCE,
          SURROUNDINGS, affinityChoices } from "./rules.js";
 import { sustainContext, letGo, releaseSpell, takeDamageDialog, heatPerRound, triggerGate } from "./sustain.js";
+import { fluxAt } from "./flux.js";
+import { fluxSurroundings, harsherSurroundings } from "./rules.js";
 import { setting, num, SETTINGS } from "./settings.js";
 import { heatState, ventHeat, clearHeat } from "./heat.js";
 import { saveSpell, buildOf, spellbook } from "./spells.js";
@@ -232,7 +234,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       xiPerDamage: num(SETTINGS.xiPerDamage, 2),
       focus: this.caster.focus, catalyst: this.caster.catalyst, stored: this._mmDraw(),
       affinity: this.actor && num(SETTINGS.affinityLimit, 1) > 0 ? actorAffinity(this.actor) : [],
-      surroundings: this.caster.surroundings ?? "calm"
+      surroundings: (() => { const f = fluxSurroundings(fluxAt(this.actor)); const s = this.caster.surroundings ?? "calm"; return f ? harsherSurroundings(s, f) : s; })()
     };
   }
 
@@ -286,6 +288,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       chip(`Stability ${ev.stability.value}${ev.strain ? ` <small>+${ev.strain} grade${ev.strain === 1 ? "" : "s"}</small>` : ""}`,
            `Bottleneck: ${ev.stability.bottleneck} (${ev.stability.value}). ${ev.surroundings.label} surroundings bear ${ev.surroundings.bears}${ev.strain ? `, so the cast is ${ev.strain} grade${ev.strain === 1 ? "" : "s"} harder` : ""}. Loads: ${ev.stability.nodes.map(n => `${n.label} ${n.sl}${n.aligned ? "*" : ""}`).join(", ")}`,
            ev.strain ? "is-bad" : ""),
+      ...((() => { const f = fluxAt(this.actor); return f ? [chip(`Flux ${f} here`, `${this.actor.name} stands in Flux ${f}: the place counts as ${ev.surroundings.label} at least, and a d10 decides whether the spell is amplified or misfires`, "is-bad")] : []; })()),
       ...(ev.stability.aligned ? [chip("Affinity", "Every Effect node is in the caster's Affinity: ×0.85 Orie, −20% Heat, and a point steadier", "is-tier")] : [])
     ].join("");
   }

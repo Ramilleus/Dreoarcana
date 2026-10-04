@@ -26,6 +26,8 @@ import { SYSTEM_ID, fmt, hitLocations, randomHitLocation } from "./core.js";
 import { PERSISTENCE, FADED_XI, decayedXi, shieldPoints, barrierPercent, absorbByShield, absorbByBarrier,
          evaluateSpell, round1, flowOf, normalizeBuild } from "./rules.js";
 import { branchTargets, rollBranches, branchesHTML, releasePending, collapseBurst, releaseSubChains, isPending } from "./flow.js";
+import { fluxAt } from "./flux.js";
+import { fluxDecayFactor } from "./rules.js";
 import { setting, num, SETTINGS } from "./settings.js";
 import { heatState, addHeat } from "./heat.js";
 import { formDialog } from "./ui.js";
@@ -217,11 +219,12 @@ async function tickOne(actor, ef, t, rs) {
     return orbitStrikes(actor, d, rounds, 1);
   }
 
-  // Self-sustaining: ξ(t) = ξ₀ × e^(−kt), t in Melee Rounds.
-  const xi = decayedXi(d.xi0, d.k, (t - d.start) / rs);
+  // Self-sustaining: ξ(t) = ξ₀ × e^(−kt), t in Melee Rounds — faster in Flux.
+  const flux = Math.max(0, ...coveredBy(d, actor).map(uuid => fluxAt(fromUuidSync(uuid))));
+  const xi = decayedXi(d.xiExact ?? d.xi, d.k * fluxDecayFactor(flux), rounds);
   if (xi < FADED_XI) return endSpell(ef, `<strong>${e(d.spellName)}</strong> has faded: the world has pushed back to equilibrium.`);
   const each = xi * d.share;
-  const next = { ...d, xi: round1(xi), lastTick };
+  const next = { ...d, xi: round1(xi), xiExact: xi, lastTick, flux };
   if (d.shield) { const max = shieldPoints(each); next.shield = { max, hp: Math.min(d.shield.hp, max) }; }
   if (d.barrier) next.barrier = { pct: barrierPercent(each) };
   await ef.update({ [flagPath]: next });

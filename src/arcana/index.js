@@ -25,6 +25,7 @@ import { registerSocket, playLocal, exportSpellWav } from "./sound.js";
 import { migrateWorld, onPreCreateItem } from "./legacy.js";
 import { tickSpells, listenForDamage, takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, isActiveSpell, triggerGate } from "./sustain.js";
 import { bindApplyButtons, releasePending } from "./flow.js";
+import { ageFlux, fluxAt, createFlux, fluxZones } from "./flux.js";
 
 export { arcaneSheetContext } from "./sheets.js";
 export { openArcanum } from "./arcanum.js";
@@ -84,13 +85,15 @@ export function registerArcana() {
       rulesPages, buildRulesJournal,
       sigilSVG, glyphSVG, playSpellSound: playLocal, exportSpellWav,
       setting, SETTINGS,
-      takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, tickSpells, triggerGate, releasePending
+      takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, tickSpells, triggerGate, releasePending,
+      fluxAt, createFlux, fluxZones, ageFlux
     };
     tickSpells();
+    ageFlux();
   });
 
   /* ---- Spells that outlast their casting ------------------------ */
-  Hooks.on("updateWorldTime", () => { tickSpells(); });
+  Hooks.on("updateWorldTime", () => { tickSpells(); ageFlux(); });
   const followActive = (ef) => {
     if (!isActiveSpell(ef)) return;
     const app = arcanum();

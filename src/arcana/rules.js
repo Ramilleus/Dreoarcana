@@ -1004,3 +1004,66 @@ export function stabilityOf(build, affinity = []) {
     alignedCount, affinity: aff
   };
 }
+
+/* ===================================================================
+ * Flux (Mechanical Casting: "Flux (Instability)")
+ *
+ * "Converting large amounts of Xi produces a cascade of dimensional
+ * entropy — this is Flux. Melfyrium converting itself into undirected
+ * energy is also Flux." "Near Flux, magical constructs flicker or
+ * misbehave, and spells cast nearby become amplified or misfire."
+ *
+ * HOUSE RULES for the numbers:
+ *   - A Tier III spell leaves Flux of intensity 1, Tier IV 2, Tier V 3;
+ *     a fumble (undirected conversion) adds 1, and always leaves some.
+ *   - A zone reaches the spell's Size radius plus 3 m per intensity, and
+ *     loses one intensity per hour of game time (a setting).
+ *   - Casting inside Flux: the place counts as Unsettled (1), Turbulent
+ *     (2) or a Flux zone (3), and a d10 decides: the lowest `intensity`
+ *     faces amplify the spell (×1.5 Might), the highest misfire it.
+ *   - A self-sustaining structure standing in Flux fades faster:
+ *     k × (1 + intensity ÷ 2).
+ * =================================================================== */
+export const FLUX_MAX = 3;
+export const FLUX_AMPLIFY = 1.5;
+export const FLUX_SURROUNDINGS = { 1: "unsettled", 2: "turbulent", 3: "flux" };
+
+/** Flux a cast leaves behind, 0–3. */
+export function fluxFromCast(tier, outcomeKey) {
+  let n = Math.max(0, (Number(tier) || 0) - 2);
+  if (outcomeKey === "fumble") n += 1;
+  return Math.min(FLUX_MAX, n);
+}
+
+/** Radius of a Flux zone in metres. */
+export const fluxRadius = (intensity, sizeTier = 1) => (SIZE_RADIUS_M[sizeTier] ?? 1.5) + 3 * (Number(intensity) || 0);
+
+/** The harsher of two Surroundings. */
+export const harsherSurroundings = (a, b) => (surroundingsOf(a).bears <= surroundingsOf(b).bears ? surroundingsOf(a).key : surroundingsOf(b).key);
+
+/** Surroundings key for a Flux intensity (none: null). */
+export const fluxSurroundings = (intensity) => FLUX_SURROUNDINGS[Math.min(FLUX_MAX, Number(intensity) || 0)] ?? null;
+
+/** The Flux roll for a spell cast inside a zone. */
+export function fluxRoll(d10, intensity) {
+  const i = Math.min(FLUX_MAX, Math.max(0, Number(intensity) || 0));
+  if (!i) return "steady";
+  if (d10 <= i) return "amplified";
+  if (d10 >= 11 - i) return "misfire";
+  return "steady";
+}
+
+/** How much faster a structure fades in Flux. */
+export const fluxDecayFactor = (intensity) => 1 + (Number(intensity) || 0) / 2;
+
+/** What Flux is like to stand in — the canon's own signs. */
+export const FLUX_SIGNS = [
+  "Colours drain away, or burn too bright.",
+  "A sudden cold, or a heat with no source.",
+  "Things fall a little too fast, or a little too slow.",
+  "Metal pales and oxidises as you watch.",
+  "The air glows with the colour of the caster's soul.",
+  "Nosebleeds, and a migraine behind the eyes.",
+  "The air sings.",
+  "Time slips: nobody is sure how long it took."
+];

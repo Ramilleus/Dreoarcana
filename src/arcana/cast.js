@@ -25,7 +25,8 @@ import { sigilSVG } from "./sigil.js";
 import { broadcastCast } from "./sound.js";
 import { startSpell, heatPerRound } from "./sustain.js";
 import { branchTargets, rollBranches, branchesHTML, flowNotes, createPending } from "./flow.js";
-import { ECHO_SCALE } from "./rules.js";
+import { ECHO_SCALE, fluxFromCast, fluxRoll, fluxSurroundings, harsherSurroundings, FLUX_AMPLIFY } from "./rules.js";
+import { fluxAt, fluxOn, createFlux, fluxLeftHTML } from "./flux.js";
 import { PERSISTENCE } from "./rules.js";
 
 /* Chat content is sanitised and inline <svg> is stripped, so the card
@@ -80,6 +81,10 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
   };
   const want = caster && caster.stored !== undefined && caster.stored !== null && caster.stored !== "" ? Number(caster.stored) : Infinity;
   params.stored = Math.max(0, Math.min(Number.isNaN(want) ? 0 : want, currentOrie(actor)));
+  // Flux where the caster stands: it is their Surroundings, at least.
+  const fluxHere = fluxAt(actor);
+  const fluxKey = fluxSurroundings(fluxHere);
+  if (fluxKey) params.surroundings = harsherSurroundings(params.surroundings ?? "calm", fluxKey);
   const ev = evaluateSpell(build, params);
   const why = cannotCast(actor, ev, steps);
   if (why) return ui.notifications.warn(`${why} Nothing has been spent.`);
@@ -129,9 +134,19 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
       ? `It waits for ${e(actor.name)} to trigger it, fading while it waits`
       : `It releases in ${flow.delaySeconds} s (${fmt(flow.delaySeconds / roundSeconds)} rd)`}${whom ? `, aimed at ${whom}` : ""}.</p>`;
   } else {
-    const out = await rollBranches({ build, caster: params, targets, flow });
+    // Cast inside Flux: amplified or misfired at the ends of a d10.
+    let scale = 1, aim = targets, fluxLine = "";
+    if (fluxHere > 0) {
+      const fr = await new Roll("1d10").evaluate();
+      rolls.push(fr);
+      const res = fluxRoll(fr.total, fluxHere);
+      if (res === "amplified") { scale = FLUX_AMPLIFY; fluxLine = `<p class="mm-chat-note"><strong>Flux ${fluxHere} amplifies it</strong> (d10: ${fr.total}): ×${FLUX_AMPLIFY} Might.</p>`; }
+      else if (res === "misfire") { aim = targets.map(() => null); fluxLine = `<p class="mm-error"><strong>Flux ${fluxHere}: it misfires</strong> (d10: ${fr.total}). It goes off, but not where it was aimed: the GM decides where it lands.</p>`; }
+      else fluxLine = `<p class="mm-hint">Cast in Flux ${fluxHere} (d10: ${fr.total}): it holds.</p>`;
+    }
+    const out = await rollBranches({ build, caster: params, targets: aim, flow, scale });
     rolls.push(...out.rolls);
-    fxHTML = branchesHTML(out);
+    fxHTML = fluxLine + branchesHTML(out);
   }
   const notes = outcome.effect ? flowNotes(flow).filter(n => !heldBack || !/echo/i.test(n)) : [];
   if (ev.strain > 0) notes.unshift(`${ev.surroundings.label}: Stability ${ev.stability.value} (${ev.stability.bottleneck}) is past the ${ev.surroundings.bears} the place bears, ${ev.strain} grade${ev.strain === 1 ? "" : "s"} harder.`);
@@ -150,6 +165,11 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
           : `Held open: <b>+${fmt(perRound)}</b> Heat every Melee Round until ${e(actor.name)} lets go${lasting === "transitional" ? " or releases it" : ""}, or the Heat overflows.`}</p>`
       : "";
   }
+
+  /* ---- the Flux it leaves -------------------------------------- */
+  const fluxMade = fluxOn() ? fluxFromCast(ev.tier.tier, outcomeKey) : 0;
+  const fluxZone = fluxMade ? await createFlux(actor, fluxMade, { sizeTier: build.size, source: item.name }) : null;
+  const fluxHTML = fluxMade ? fluxLeftHTML(fluxMade, Boolean(fluxZone)) : "";
 
   /* ---- the card ------------------------------------------------- */
 
@@ -182,7 +202,8 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
       ${notesHTML}
       ${heldBack ? "" : lastingHTML}
       <p class="mm-chat-costs">${costs}</p>
-      ${outcomeKey === "fumble" ? `<p class="mm-error"><strong>Flux.</strong> The conversion runs undirected: colours drift, the air sings, and the GM decides what the loose ξ does.</p>` : ""}
+      ${outcomeKey === "fumble" ? `<p class="mm-error"><strong>Undirected.</strong> The conversion runs loose: the GM decides what the loose ξ does.</p>` : ""}
+      ${fluxHTML}
     </div>`;
 
   await ChatMessage.create({

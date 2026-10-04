@@ -169,6 +169,25 @@ function pageCasting() {
     <p>Any piece of gear can be flagged as a catalyst from its item sheet, with its own Γ and Worth; carried catalysts appear first on the Caster node.</p>`;
 }
 
+function pageFlux() {
+  const on = setting(SETTINGS.fluxEnabled) !== false;
+  const hours = setting(SETTINGS.fluxHours) ?? 1;
+  return `
+    <p>From <em>Mechanical Casting</em>: "Converting large amounts of Xi produces a cascade of dimensional entropy — this is Flux. Melfyrium converting itself into undirected energy is also Flux." "Near Flux, magical constructs flicker or misbehave, and spells cast nearby become amplified or misfire."${on ? "" : " <strong>Flux is off at this table.</strong>"}</p>
+    <h3>Where it comes from</h3>
+    <ul>
+      <li>A <strong>Tier III</strong> spell leaves Flux of intensity 1, <strong>Tier IV</strong> 2, <strong>Tier V</strong> 3. A <strong>fumble</strong> adds 1, so even a small spell can leave some.</li>
+      <li>The zone opens where the caster stands: a circle on the map, the spell's Size radius plus 3 m per intensity.</li>
+      <li>It weakens one step every ${hours} hour${Number(hours) === 1 ? "" : "s"} of game time, and is gone at none. The GM can delete it like any template.</li>
+    </ul>
+    <h3>What it does</h3>
+    <ul>
+      <li><strong>Casting inside it</strong>: the place counts as Unsettled (Flux 1), Turbulent (2) or a Flux zone (3), so Stability strains against it. Then a d10: the lowest faces, as many as the intensity, <strong>amplify</strong> the spell (×1.5 Might); the highest <strong>misfire</strong> it — it goes off, but where the GM says.</li>
+      <li><strong>Structures standing in it</strong> flicker: a self-sustaining spell fades faster, k × (1 + intensity ÷ 2).</li>
+    </ul>
+    <p class="mm-hint">House rules: the canon says what Flux does but gives no numbers; these are the table's.</p>`;
+}
+
 function pageStability() {
   const limit = setting(SETTINGS.affinityLimit) ?? 1;
   const cats = Object.entries(STABILITY_LOAD.category).map(([k, v]) => `${e(k)} ${v}`).join(", ");
@@ -250,7 +269,8 @@ export function rulesPages() {
     { name: "9. Casting (house procedure)", html: pageCasting() },
     { name: "10. Heat and Reservoirs (house procedure)", html: pageHeat() },
     { name: "11. Lasting Spells, Shields and Barriers", html: pageLasting() },
-    { name: "12. Stability and Affinity", html: pageStability() }
+    { name: "12. Stability and Affinity", html: pageStability() },
+    { name: "13. Flux", html: pageFlux() }
   ];
 }
 
