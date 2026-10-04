@@ -20,7 +20,7 @@
  * =================================================================== */
 
 import { SYSTEM_ID } from "../arcana/core.js";
-import { catalogue, isIngredient, isMother, skillValue } from "./core.js";
+import { catalogue, isIngredient, isMother, skillValue, gmCard } from "./core.js";
 import { asetting, ASETTINGS } from "./settings.js";
 import { DIFFICULTY, RARITY_DIFFICULTY, FORAGE_FINDS, SLOT_NAMES, gradedTarget, alchemyResult, pickByRarity, categoryOf } from "./rules.js";
 import { e } from "../arcana/html.js";
@@ -165,7 +165,7 @@ export async function forageDay(actor, groundId, { mod = 0 } = {}) {
       ${finds.length ? `<p>A day's foraging turns up ${finds.length} thing${finds.length === 1 ? "" : "s"}:</p><ul>${lines}</ul>` : ""}</div>`
   });
   if (gmTruth.length) {
-    await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: `<p><strong>[GM]</strong> Unidentified finds were: ${gmTruth.join(", ")}.</p>` });
+    await gmCard(`<p><strong>[GM]</strong> ${e(actor.name)}'s unidentified finds were: ${gmTruth.join(", ")}.</p>`);
   }
   return { result, finds, created };
 }

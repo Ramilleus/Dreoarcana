@@ -34,7 +34,7 @@ export function record(doc) {
   const slots = Array.from({ length: 4 }, (_, i) => s.slots?.[i] || null);
   return {
     id: doc.id ?? doc._id, uuid: doc.uuid ?? null, doc,
-    name: doc.name, img: doc.img,
+    name: doc.name, img: doc.img, trueName: s.trueName || doc.name,
     description: s.description ?? "",
     quantity: Number(s.quantity ?? 1),
     weight: Number(s.encumbrance ?? 0),
@@ -48,6 +48,34 @@ export function record(doc) {
 }
 
 export const isMother = (doc) => isIngredient(doc) && isMotherRec({ mother: doc.system?.mother, name: doc.name });
+
+/* -------------------------------------------------------------------
+ * GM-only chat cards
+ *
+ * Foundry always shows a whisper to its author, so a card a player's
+ * client creates for the GM's eyes would be read by that player. A
+ * player's client hands the card to the active GM's client over the
+ * system socket instead, and the GM posts it. With no GM online it is
+ * dropped: the Laboratory shows the GM the same truth.
+ * ----------------------------------------------------------------- */
+const SOCKET = `system.${SYSTEM_ID}`;
+const GM_CARD = "alchemy.gm-card";
+
+export async function gmCard(content, speaker = undefined) {
+  const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
+  if (game.user.isGM) return ChatMessage.create({ speaker, content, whisper: gmIds });
+  if (!game.users.activeGM) return null;
+  game.socket?.emit(SOCKET, { type: GM_CARD, content, speaker });
+  return null;
+}
+
+/** The active GM posts cards players' clients send. Call once at ready. */
+export function listenForGMCards() {
+  game.socket?.on(SOCKET, (msg) => {
+    if (msg?.type !== GM_CARD || !game.user.isGM || game.users.activeGM !== game.user) return;
+    ChatMessage.create({ speaker: msg.speaker, content: msg.content, whisper: game.users.filter(u => u.isGM).map(u => u.id) });
+  });
+}
 
 /* -------------------------------------------------------------------
  * Skills — read off the character's own sheet

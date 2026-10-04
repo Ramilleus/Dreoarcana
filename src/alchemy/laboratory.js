@@ -22,7 +22,7 @@ import { asetting, ASETTINGS } from "./settings.js";
 import { planBrew, commitBrew, decantOptions, decant, revealPotion } from "./brew.js";
 import { describeKnown, knownSlots, tasteIngredient, studyIngredient } from "./discovery.js";
 import { drinkPotion, eatIngredient } from "./consume.js";
-import { blastProfile, throwPotion, breakPotion, carriedVolatiles } from "./volatility.js";
+import { blastProfile, throwPotion, breakPotion, carriedVolatiles, concealedFromUser } from "./volatility.js";
 import { alchemyPages } from "./rules-text.js";
 import { castableActors, currentActor, currentOrie, maxOrie, fmt, FilePickerImpl } from "../arcana/core.js";
 import { heatState, ventHeat } from "../arcana/heat.js";
@@ -316,7 +316,9 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       count: reagents.length,
       filter: this.filter,
       skill, mod: this.mod, xi: this.xi,
-      canBrew: canBrew() && Boolean(mother) && reagents.length >= 2 && reagents.length <= max && (!this.actor || this.actor.isOwner),
+      canBrew: canBrew() && Boolean(mother) && reagents.length >= 2 && reagents.length <= max && (!this.actor || this.actor.isOwner)
+        && new Set([mother, ...reagents].map(r => r.trueName || r.name)).size === reagents.length + 1,
+      duplicate: new Set(reagents.map(r => r.trueName || r.name)).size < reagents.length,
       brewAllowed: canBrew(),
       noShelf: !shelf.length,
       shelfSource: this.actor ? `${this.actor.name}'s stock` : "the catalogue"
@@ -333,8 +335,9 @@ export class Laboratory extends HandlebarsApplicationMixin(ApplicationV2) {
       return {
         uuid: d.uuid, name: d.name, img: d.img, selected: d.uuid === this.selectedUuid,
         meta: pot ? `${known ? `${d.system.quality} · P${p} · ` : ""}${d.system.quantity} dose${d.system.quantity === 1 ? "" : "s"}`
+                  : concealedFromUser(d) ? `unidentified${this.source === "actor" ? ` · ×${d.system.quantity}` : ""}`
                   : `${d.system.class} · G${d.system.grade ?? "?"}${this.source === "actor" ? ` · ×${d.system.quantity}` : ""}`,
-        volatile: Boolean(blastProfile(d))
+        volatile: !concealedFromUser(d) && Boolean(blastProfile(d))
       };
     };
     const potions = docs.filter(isPotion).sort((a, b) => a.name.localeCompare(b.name)).map(row);

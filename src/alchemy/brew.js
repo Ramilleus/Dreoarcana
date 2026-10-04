@@ -14,7 +14,7 @@
  * the spot and the brewer takes the Heat.
  * =================================================================== */
 
-import { record, POTION_TYPE, POTION_IMG, isIngredient } from "./core.js";
+import { record, POTION_TYPE, POTION_IMG, isIngredient, gmCard } from "./core.js";
 import { QUALITY, SIZES, VOLATILITY, ABSORPTION, DIFFICULTY, MAX_POTENCY, SUPERCRITICAL, SLOT_NAMES,
          effectivePotency, oriePool, potencyPerDose, minimumDoses, describeEffect, overlapWithSlots,
          bestSlot, slotPotency, motherDoses, motherDosesPerUnit, motherUnitsSpent, resolveClass,
@@ -81,6 +81,8 @@ export async function commitBrew({ actor = null, mother, reagents, xi = 0, skill
   const max = Number(asetting(ASETTINGS.maxIngredients)) || 3;
   if (!mother) { ui.notifications.warn("Choose a Mother: the liquid you brew into (§3b)."); return null; }
   if (reagents.length < 2 || reagents.length > max) { ui.notifications.warn(`Choose between 2 and ${max} reagents.`); return null; }
+  const kinds = new Set([mother, ...reagents].map(r => r.trueName || r.name));
+  if (kinds.size < reagents.length + 1) { ui.notifications.warn("Two stacks of the same ingredient are one ingredient: choose different reagents (§4)."); return null; }
   const plan = planBrew({ mother, reagents, xi, actor, skill, mod });
 
   const spent = await spend(reagents, actor);
@@ -246,14 +248,14 @@ export async function decant(batch, containerName) {
   }
 
   const learned = await discoverFromBrew(batch.chosen, manifest);
-  const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
   const speaker = batch.actor ? ChatMessage.getSpeaker({ actor: batch.actor }) : undefined;
   const vesselHint = vesselLine ? `<p class="mm-hint">${e(vesselLine)}</p>` : "";
   const full = `<div class="mm-chat al-chat"><h3>${e(trueName)}</h3>${description}${vesselHint}${concealed ? "<p class=\"mm-hint\">Made unidentified; reveal it in the Laboratory.</p>" : ""}</div>`;
-  if (game.user.isGM || !concealed) await ChatMessage.create({ speaker, content: full, whisper: concealed ? gmIds : [] });
+  if (!concealed) await ChatMessage.create({ speaker, content: full });
+  else if (game.user.isGM) await gmCard(full, speaker);
   else {
     await ChatMessage.create({ speaker, content: `<div class="mm-chat al-chat"><h3>${e(batch.actor?.name ?? game.user.name)} decants a potion</h3><p>${doses} dose${doses > 1 ? "s" : ""} of something, from ${[batch.mother.name, ...reagentNames].map(e).join(" + ")}.</p>${vesselHint}</div>` });
-    await ChatMessage.create({ speaker, whisper: gmIds, content: full });
+    await gmCard(full, speaker);
   }
   if (learned.length) {
     await ChatMessage.create({ speaker, content: `<div class="mm-chat al-chat"><p><strong>Learned by brewing:</strong></p><ul>${

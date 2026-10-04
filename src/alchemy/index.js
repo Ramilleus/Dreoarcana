@@ -17,7 +17,7 @@ import { commitBrew, decant, planBrew, revealPotion } from "./brew.js";
 import { drinkPotion, eatIngredient, saturationCheck } from "./consume.js";
 import { throwPotion, breakPotion, blastProfile } from "./volatility.js";
 import { tasteIngredient, studyIngredient } from "./discovery.js";
-import { upsertIngredients, recordsFromCSV, catalogue } from "./core.js";
+import { upsertIngredients, recordsFromCSV, catalogue, listenForGMCards } from "./core.js";
 import { migrateAlchemy, onPreCreateAlchemy } from "./legacy.js";
 import { applyLastingEffects, expirePotionEffects, isPotionEffect, potionSkillBonus } from "./effects.js";
 import { currentLoad, addLoad, clearLoad } from "./saturation.js";
@@ -45,6 +45,7 @@ export function registerAlchemy() {
   });
 
   Hooks.once("ready", async () => {
+    listenForGMCards();
     try { await migrateAlchemy(); } catch (err) { console.warn("Dreoarcana | Alchemy: migration", err); }
     game.mythras.alchemy = {
       rules, openLaboratory, Laboratory, planBrew, commitBrew, decant, revealPotion,

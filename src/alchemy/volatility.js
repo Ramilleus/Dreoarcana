@@ -13,6 +13,9 @@ import { VOLATILITY, SUPERCRITICAL, effectivePotency, paddedDamage } from "./rul
 import { confirmDialog } from "../arcana/ui.js";
 import { e } from "../arcana/html.js";
 
+/** Is what this item is hidden from the current user? (an unknown brew or find, to a player) */
+export const concealedFromUser = (item) => !game.user?.isGM && (isPotion(item) ? !item.system.identified : item.system?.identified === false);
+
 /**
  * What happens if this item goes off, or null if it can't.
  * A padded case takes one step off the damage of a carried potion (§7);
@@ -106,5 +109,5 @@ export async function breakPotion(item, actor = item?.actor) {
 
 /** Everything volatile a character carries (§7: a hit there may set it off). */
 export function carriedVolatiles(actor) {
-  return (actor?.items ?? []).map(i => ({ item: i, blast: blastProfile(i) })).filter(x => x.blast);
+  return (actor?.items ?? []).filter(i => !concealedFromUser(i)).map(i => ({ item: i, blast: blastProfile(i) })).filter(x => x.blast);
 }

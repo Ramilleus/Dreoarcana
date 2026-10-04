@@ -286,10 +286,16 @@ export function resolveClass({ mother, reagents = [], channelledXi = 0 }) {
   return "Mundane";
 }
 
+/** One record per kind of ingredient: two stacks of the same thing are one ingredient (§4). */
+export const distinctIngredients = (ingredients) => {
+  const seen = new Set();
+  return ingredients.filter(i => { const k = i.trueName || i.name; if (seen.has(k)) return false; seen.add(k); return true; });
+};
+
 /** §4 Effects shared by 2+ ingredients (Skyrim-style overlap). */
 export function overlappingEffects(ingredients) {
   const count = {};
-  for (const ing of ingredients) {
+  for (const ing of distinctIngredients(ingredients)) {
     for (const e of new Set(ing.effects ?? [])) count[e] = (count[e] ?? 0) + 1;
   }
   return Object.entries(count).filter(([, n]) => n >= 2).map(([e]) => e);
@@ -338,7 +344,7 @@ export function bestSlot(ingredients, effect) {
 /** Which effects appear on 2+ ingredients, with their best slot. */
 export function overlapWithSlots(ingredients) {
   const count = {};
-  for (const ing of ingredients) {
+  for (const ing of distinctIngredients(ingredients)) {
     const slots = (ing.slots ?? ing.effects ?? []).filter(Boolean);
     for (const e of new Set(slots)) count[e] = (count[e] ?? 0) + 1;
   }
