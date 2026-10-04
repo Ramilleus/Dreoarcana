@@ -12,7 +12,7 @@ import { SheetPostRender } from '@module/sheet-common/sheet-post-render'
 import { ActorAttributes } from "@actor/attribute";
 import { ActorCharacteristic, ActorCharacteristics } from "@actor/characteristic";
 import { EquipmentTypes } from '@item/equipment'
-import { arcaneSheetContext, openArcanum } from '../../arcana/index.js'
+import { arcaneSheetContext, openArcanum, takeDamageDialog, letGo } from '../../arcana/index.js'
 import { openLaboratory } from '../../alchemy/index.js'
 
 export abstract class ActorSheetBase<TActor extends ActorMythras>
@@ -386,6 +386,18 @@ export abstract class ActorSheetBase<TActor extends ActorMythras>
     html.find('.arcanum-open').on('click', (ev: any) => {
       ev.preventDefault()
       openArcanum({ actor: this.actor })
+    })
+
+    // Arcana: damage through Shields and Barriers, and letting a held spell go
+    html.find('.arcana-take-damage').on('click', (ev: any) => {
+      ev.preventDefault()
+      takeDamageDialog(this.actor)
+    })
+    html.find('.arcana-let-go').on('click', async (ev: any) => {
+      ev.preventDefault()
+      const uuid = ev.currentTarget.closest('[data-effect-uuid]')?.dataset.effectUuid
+      const effect = uuid ? await fromUuid(uuid) : null
+      if (effect) letGo(effect)
     })
 
     // Alchemy: brewing, tasting, drinking and the rest live in the Laboratory

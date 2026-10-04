@@ -39,6 +39,33 @@
     {{/if}}
   </section>
 
+  {{#if actor}}
+  <section class="mm-active">
+    <header class="mm-spellbook-head">
+      <h3>Holding</h3>
+      <button type="button" class="mm-mini" data-action="takeDamage" data-tooltip="Damage to {{actor.name}}: through Shields and Barriers, armour, then a hit location"><i class="fas fa-heart-crack"></i> Damage</button>
+    </header>
+    {{#if sustain.any}}
+    <ul class="mm-active-list">
+      {{#each sustain.held as |s|}}
+      <li class="mm-active-row {{#if s.held}}is-held{{/if}}" data-effect-uuid="{{s.uuid}}">
+        <span class="mm-grow"><strong>{{s.name}}</strong>{{#if s.target}} <small>on {{s.target}}</small>{{/if}}
+          <small>{{s.kind}} · ξ {{s.xi}}{{#if s.held}} · +{{s.heat}} Heat/rd{{/if}}{{#if s.shield}} · Shield {{s.shield}}{{/if}}{{#if s.barrier}} · Barrier {{s.barrier}}{{/if}}</small></span>
+        {{#if s.isOwner}}
+        {{#if s.canRelease}}<button type="button" class="mm-mini" data-action="releaseActive" data-tooltip="Release it: it stands on its own and fades, and stops costing Heat"><i class="fas fa-dove"></i></button>{{/if}}
+        <button type="button" class="mm-row-x" data-action="endActive" data-tooltip="Let it go" aria-label="End {{s.name}}">&times;</button>
+        {{/if}}
+      </li>
+      {{/each}}
+      {{#each sustain.guarded as |s|}}
+      <li class="mm-active-row is-guard"><span class="mm-grow"><strong>{{s.name}}</strong> <small>from {{s.caster}}</small>
+        <small>{{#if s.shield}}Shield {{s.shield}}{{/if}}{{#if s.barrier}} Barrier {{s.barrier}}{{/if}}</small></span></li>
+      {{/each}}
+    </ul>
+    {{else}}<p class="mm-hint">No spells held. A spell set to last (on the bench, under Might) stays here after it is cast.</p>{{/if}}
+  </section>
+  {{/if}}
+
   <section class="mm-spellbook">
     <header class="mm-spellbook-head">
       <h3>{{#if actor}}Spellbook{{else}}World spells{{/if}}</h3>

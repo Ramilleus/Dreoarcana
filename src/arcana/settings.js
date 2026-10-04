@@ -22,6 +22,8 @@ export const SETTINGS = {
   heatPerWound:       "arcana.heatPerWound",
   ventPerRound:       "arcana.ventPerRound",
   radiators:          "arcana.radiators",
+  decayRate:          "arcana.decayRate",
+  barrierHeat:        "arcana.barrierHeat",
   theme:              "arcana.theme",
   animations:         "arcana.animations",
   sigilImages:        "arcana.sigilImages",
@@ -163,6 +165,19 @@ export function registerSettings() {
     hint: "How fast Heat dissipates while the caster does nothing else.",
     scope: "world", config: true, type: Number, default: 2,
     range: { min: 1, max: 20, step: 1 }
+  });
+
+  S(SETTINGS.decayRate, {
+    name: "Arcana: how fast self-sustaining spells fade (k)",
+    hint: "ξ(t) = ξ₀ × e^(−kt), with t in Melee Rounds; canon gives k as 0.1–0.3. A spell has faded when its ξ falls below 1. At 0.2 it halves in about 3½ rounds.",
+    scope: "world", config: true, type: Number, default: 0.2,
+    range: { min: 0.05, max: 0.5, step: 0.05 }
+  });
+
+  S(SETTINGS.barrierHeat, {
+    name: "Arcana: a Barrier turns the magic it stops into Heat",
+    hint: "Mechanical Casting: a Barrier \"converts incoming magical damage directly into Heat for the barrier's caster\", and collapses when that Heat passes capacity. Off, it only reduces magical damage by its percentage, as the Node Catalogue puts it.",
+    scope: "world", config: true, type: Boolean, default: true
   });
 
   S(SETTINGS.radiators, {

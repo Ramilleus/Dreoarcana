@@ -15,6 +15,7 @@ import { num, SETTINGS } from "./settings.js";
 import { sigilSVG } from "./sigil.js";
 import { buildOf, baselineCaster } from "./spells.js";
 import { openArcanum } from "./arcanum.js";
+import { sustainContext } from "./sustain.js";
 
 const { DocumentSheetV2 } = foundry.applications.api;
 
@@ -55,7 +56,7 @@ export function arcaneSheetContext(actor) {
         sigil: sigilSVG(build, { size: 28, cls: "mm-sigil-svg" })
       };
     });
-  return { spells, has: spells.length > 0 };
+  return { spells, has: spells.length > 0, sustain: sustainContext(actor) };
 }
 
 export { isArcaneSpell };

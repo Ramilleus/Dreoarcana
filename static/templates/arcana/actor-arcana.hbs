@@ -38,4 +38,24 @@
       </tbody>
     </table>
   </div>
+  <div class="basic-table arcana-held-table">
+    <h3 class="table-header-flex">
+      <span class="title">Held Spells, Shields and Barriers</span>
+      <a class="arcana-take-damage" title="Damage through Shields and Barriers, then armour and a hit location"><i class="fas fa-heart-crack"></i> Take damage</a>
+    </h3>
+    {{#if arcana.sustain.any}}
+    <table>
+      <thead><th>Spell</th><th>Lasts</th><th>ξ</th><th title="Heat each Melee Round while held">Heat/rd</th><th>Shield</th><th>Barrier</th><th class="delete-column"></th></thead>
+      <tbody>
+        {{#each arcana.sustain.held as |s|}}
+        <tr data-effect-uuid="{{s.uuid}}"><td>{{s.name}}{{#if s.target}} <small>on {{s.target}}</small>{{/if}}</td><td>{{s.kind}}</td><td>{{s.xi}}</td><td>{{#if s.held}}{{s.heat}}{{else}}—{{/if}}</td><td>{{#if s.shield}}{{s.shield}}{{else}}—{{/if}}</td><td>{{#if s.barrier}}{{s.barrier}}{{else}}—{{/if}}</td>
+          <td>{{#if s.isOwner}}<a class="arcana-let-go delete-column" title="Let it go"><i class="fas fa-times"></i></a>{{/if}}</td></tr>
+        {{/each}}
+        {{#each arcana.sustain.guarded as |s|}}
+        <tr><td>{{s.name}} <small>from {{s.caster}}</small></td><td>{{s.kind}}</td><td>{{s.xi}}</td><td>—</td><td>{{#if s.shield}}{{s.shield}}{{else}}—{{/if}}</td><td>{{#if s.barrier}}{{s.barrier}}{{else}}—{{/if}}</td><td></td></tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{else}}<p class="arcane-empty">Nothing held. A spell set to last in the Arcanum appears here once cast; damage still goes through armour and a hit location.</p>{{/if}}
+  </div>
 </div>

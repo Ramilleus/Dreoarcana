@@ -607,3 +607,14 @@ body[data-mm-theme="ink"] .mm-surface {
 body[data-mm-theme="melfyric"] .mm-chat, body[data-mm-theme="flux"] .mm-chat {
   --mm-tier-1: #ff9f57; --mm-tier-2: #ffd966; --mm-tier-3: #62b8ff; --mm-tier-4: #c692ff; --mm-tier-5: #ff6472;
 }
+
+/* Held spells (rail) */
+.mm-active { display: flex; flex-direction: column; gap: 4px; }
+.mm-active-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
+.mm-active-row { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border: 1px solid var(--edge); border-radius: 6px; background: var(--mm-fill, transparent); }
+.mm-active-row small { display: block; opacity: 0.75; }
+.mm-active-row.is-held { border-left: 3px solid var(--mm-accent, currentColor); }
+.mm-active-row.is-guard { opacity: 0.85; font-style: italic; }
+.mm-persist { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 0.85em; }
+.mm-persist select { flex: 1 1 auto; }
+.arcana-damage label { display: block; margin: 4px 0; }

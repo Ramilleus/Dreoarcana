@@ -147,6 +147,26 @@ function pageCasting() {
     <p>Any piece of gear can be flagged as a catalyst from its item sheet, with its own Γ and Worth; carried catalysts appear first on the Caster node.</p>`;
 }
 
+function pageLasting() {
+  const k = setting(SETTINGS.decayRate) ?? 0.2;
+  const toHeat = setting(SETTINGS.barrierHeat) !== false;
+  return `
+    <p>From <em>Mechanical Casting</em>, "Spell Persistence & Decay". Every spell that outlasts its casting is one of these; choose it on the bench, under Might.</p>
+    <ul>
+      <li><strong>Self-sustaining</strong>: "You build it, and the world carries it." Heat is paid once, at casting. Its ξ then fades: <strong>ξ(t) = ξ₀ × e^(−kt)</strong>, with t in Melee Rounds and k = ${k}. It has faded when ξ falls below 1. Shields and Barriers weaken with it.</li>
+      <li><strong>Maintained</strong>: "You keep the wound open by will alone." Its ξ holds, but <strong>Heat_maintained = Heat_base × rounds</strong>: the spell's full Heat (nothing drawn from Stored Orie) comes again every Melee Round. It ends when the caster lets go, or collapses when the Heat overflows capacity.</li>
+      <li><strong>Transitional</strong>: maintained until released, then self-sustaining from the ξ it had.</li>
+    </ul>
+    <p>A lasting Defensive or Support spell goes on the one token you target when you cast; otherwise on the caster. Held spells show in the Arcanum's rail and on the character sheet, where the caster can let them go. Game time drives them: each Melee Round of combat, or time advanced by the GM.</p>
+    <h3>Shields and Barriers</h3>
+    <ul>
+      <li><strong>Shield</strong>: a pool of temporary HP equal to its Might. Physical damage hits it first; when it reaches zero, the shield breaks. Some effects bypass it.</li>
+      <li><strong>Barrier</strong>: stops Might × 2% of magical damage (5–90%)${toHeat ? ", and what it stops becomes the caster's Heat; past capacity the Barrier collapses" : ""}. It is permeable to martial fighters.</li>
+    </ul>
+    <p>Mythras damage is applied by hand, so use <strong>Damage</strong> (Arcanum rail) or <strong>Take damage</strong> (character sheet): Shields and Barriers act first, then armour, then a hit location you choose or roll.</p>
+    <p class="mm-hint">House rules, both settings: t is counted in Melee Rounds (the canon gives no unit), and the two Barrier texts are read together, percentage and Heat.</p>`;
+}
+
 function pageHeat() {
   return `<p class="mm-hint"><em>House procedure, from two sentences of design intent: Heat "has to be dissipated or it can cause permanent damage to a wielder", and reservoirs let casters "build up Melfyrium for use in battle without creating heat".</em></p>
     <h3>Heat</h3>
@@ -177,7 +197,8 @@ export function rulesPages() {
     { name: "7. Damage Types and Attack Spells", html: pageDamage() },
     { name: "8. Power Tiers", html: pageTiers() },
     { name: "9. Casting (house procedure)", html: pageCasting() },
-    { name: "10. Heat and Reservoirs (house procedure)", html: pageHeat() }
+    { name: "10. Heat and Reservoirs (house procedure)", html: pageHeat() },
+    { name: "11. Lasting Spells, Shields and Barriers", html: pageLasting() }
   ];
 }
 

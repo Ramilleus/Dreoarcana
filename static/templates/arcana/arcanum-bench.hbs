@@ -165,6 +165,10 @@
             <div><label>Might</label><strong data-out="xi">{{xi}}</strong></div>
             <div><label>Œ</label><strong data-out="orie">{{orieFinal}}</strong></div>
           </div>
+          <label class="mm-persist" data-tooltip="{{persistence.desc}}">Lasts
+            <select name="persistence" {{lock}}>{{#each persistences as |p|}}<option value="{{p.key}}" {{#if p.selected}}selected{{/if}} title="{{p.desc}}">{{p.label}}</option>{{/each}}</select>
+          </label>
+          <div class="mm-fnode-meta mm-persist-heat" data-out="persist">{{maintainHeat}}</div>
         </div>
       </div>
     </div>

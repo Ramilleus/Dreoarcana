@@ -133,12 +133,12 @@ export const EFFECTS = {
   "Barrier": {
     category: "Protection", intents: ["Defensive", "Support"], complexity: 1,
     desc: "Reduces magic damage based on percentage",
-    magnitude: (M) => `Reduces magical damage by ${Math.min(90, Math.max(5, Math.round(M * 2)))}% while it lasts`
+    magnitude: (M) => `Stops ${barrierPercent(M)}% of magical damage while it lasts; what it stops becomes the caster's Heat`
   },
   "Shield": {
     category: "Protection", intents: ["Defensive", "Support"], complexity: 1,
     desc: "Blocks damage until durability is zero",
-    magnitude: (M) => `Absorbs ${Math.max(1, Math.round(M))} points of damage before it fails`
+    magnitude: (M) => `Absorbs ${shieldPoints(M)} points of physical damage before it breaks`
   },
   "Timed Reanimation": {
     category: "Necromancy", intents: ["Utility"], complexity: 1,
@@ -498,7 +498,7 @@ export const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 export const hashString = (s) => Array.from(String(s)).reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 
 /** The part of a build that decides its sigil and sound — everything but the name and notes. */
-export const buildShapeKey = (build) => { const { name: _n, notes: _t, ...shape } = build ?? {}; return hashString(JSON.stringify(shape)).toString(36); };
+export const buildShapeKey = (build) => { const { name: _n, notes: _t, persistence: _p, ...shape } = build ?? {}; return hashString(JSON.stringify(shape)).toString(36); };
 export const round1 = (n) => Math.round(n * 10) / 10;
 
 /** Skill S from a Mythras percentage. HOUSE RULING: 50% is S = 1. */
@@ -536,7 +536,8 @@ export function blankBuild() {
     effects: [{ effect: "Elemental", element: "Fire" }],
     utilities: [],
     power: 5,
-    notes: ""
+    notes: "",
+    persistence: "instant"
   };
 }
 
@@ -552,6 +553,7 @@ export function normalizeBuild(raw = {}) {
   b.size = SIZES[Number(src.size)] ? Number(src.size) : 1;
   b.power = clamp(Number(src.power) || 1, 1, 1000);
   b.notes = String(src.notes ?? "");
+  b.persistence = PERSISTENCE[src.persistence] ? src.persistence : "instant";
 
   const effects = Array.isArray(src.effects) ? src.effects : [];
   b.effects = effects
@@ -756,3 +758,56 @@ export const RADIATOR_MATERIALS = {
   Rhod: 150, Ruth: 150, Tinn: 66, Titane: 22, Zinkor: 116
 };
 export const radiatorVent = (material) => Math.floor((RADIATOR_MATERIALS[material] ?? 0) / 100);
+
+/* ===================================================================
+ * Spell persistence (Mechanical Casting: "Spell Persistence & Decay")
+ *
+ * Every spell that outlasts its casting is one of these:
+ *   Self-sustaining  "You build it, and the world carries it." Heat once,
+ *                    at casting; ξ(t) = ξ₀ × e^(−kt).
+ *   Maintained       "You keep the wound open by will alone." ξ holds,
+ *                    but Heat_maintained = Heat_base × (t / Δt_unit): the
+ *                    spell's Heat again every Melee Round. It collapses
+ *                    when the caster lets go — or when the Heat overflows.
+ *   Transitional     Maintained until released; then self-sustaining.
+ *
+ * HOUSE RULES, both settings: t is counted in Melee Rounds (the canon
+ * gives no unit), with k = 0.2; a self-sustaining spell has faded when
+ * its ξ falls below 1.
+ * =================================================================== */
+export const PERSISTENCE = {
+  instant:      { label: "Instant",         desc: "Done when it is cast." },
+  sustaining:   { label: "Self-sustaining", desc: "You build it, and the world carries it: Heat once, at casting; then its ξ fades, ξ₀ × e^(−kt)." },
+  maintained:   { label: "Maintained",      desc: "You keep the wound open by will alone: its ξ holds, but its Heat comes again every Melee Round until you let go or it overflows." },
+  transitional: { label: "Transitional",    desc: "Maintained until you release it; then it stands on its own and fades like a self-sustaining spell." }
+};
+export const DECAY_K = 0.2;
+export const FADED_XI = 1;
+
+/** ξ left in a self-sustaining structure after `rounds` Melee Rounds. */
+export const decayedXi = (xi0, k, rounds) => (Number(xi0) || 0) * Math.exp(-(Number(k) || 0) * Math.max(0, Number(rounds) || 0));
+
+/* --- Shield and Barrier, from the Effect node magnitudes ---------------
+ * Shield: "a pool of temporary HP. Physical damage hits this pool
+ *   first; when it hits zero, the shield breaks." Some effects bypass it.
+ * Barrier: the Node Catalogue says it "reduces magic damage by
+ *   percentage"; Mechanical Casting says it "converts incoming magical
+ *   damage directly into Heat for the barrier's caster", and collapses
+ *   when that Heat passes the caster's tolerance. Read together: it stops
+ *   its percentage of magical damage, and what it stops becomes Heat. */
+export const shieldPoints = (might) => Math.max(1, Math.round(Number(might) || 0));
+export const barrierPercent = (might) => Math.min(90, Math.max(5, Math.round((Number(might) || 0) * 2)));
+
+/** Physical damage against a shield pool. */
+export function absorbByShield(damage, pool) {
+  const d = Math.max(0, Math.floor(Number(damage) || 0)), p = Math.max(0, Math.floor(Number(pool) || 0));
+  const absorbed = Math.min(d, p);
+  return { absorbed, through: d - absorbed, pool: p - absorbed, broken: p > 0 && p - absorbed <= 0 };
+}
+
+/** Magical damage against a barrier. */
+export function absorbByBarrier(damage, percent) {
+  const d = Math.max(0, Math.floor(Number(damage) || 0));
+  const stopped = Math.min(d, Math.round(d * (Number(percent) || 0) / 100));
+  return { stopped, through: d - stopped };
+}

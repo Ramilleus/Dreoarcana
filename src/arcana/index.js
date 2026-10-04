@@ -23,10 +23,12 @@ import { buildRulesJournal, rulesPages } from "./rules-pages.js";
 import { sigilSVG, glyphSVG } from "./sigil.js";
 import { registerSocket, playLocal, exportSpellWav } from "./sound.js";
 import { migrateWorld, onPreCreateItem } from "./legacy.js";
+import { tickSpells, listenForDamage, takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, isActiveSpell } from "./sustain.js";
 
 export { arcaneSheetContext } from "./sheets.js";
 export { openArcanum } from "./arcanum.js";
 export { heatCapacity } from "./heat.js";
+export { takeDamageDialog, letGo } from "./sustain.js";
 
 const PARTIALS = [`${TEMPLATES}/actor-arcana.hbs`, `${TEMPLATES}/item-catalyst.hbs`];
 
@@ -69,6 +71,7 @@ export function registerArcana() {
   Hooks.once("ready", async () => {
     applyTheme();
     registerSocket();
+    listenForDamage();
     try { await migrateWorld(); } catch (err) { LOG("migration failed:", err.message); }
     try { await refreshEffects({ reason: "ready" }); } catch (err) { LOG("effect scan failed:", err.message); }
 
@@ -78,9 +81,22 @@ export function registerArcana() {
       createEffectItem, refreshEffects, sendEffectToPack,
       rulesPages, buildRulesJournal,
       sigilSVG, glyphSVG, playSpellSound: playLocal, exportSpellWav,
-      setting, SETTINGS
+      setting, SETTINGS,
+      takeDamage, takeDamageDialog, activeSpells, protections, letGo, releaseSpell, tickSpells
     };
+    tickSpells();
   });
+
+  /* ---- Spells that outlast their casting ------------------------ */
+  Hooks.on("updateWorldTime", () => { tickSpells(); });
+  const followActive = (ef) => {
+    if (!isActiveSpell(ef)) return;
+    const app = arcanum();
+    if (app?.rendered) app.render({ parts: ["rail"] });
+  };
+  Hooks.on("createActiveEffect", followActive);
+  Hooks.on("updateActiveEffect", followActive);
+  Hooks.on("deleteActiveEffect", followActive);
 
   Hooks.on(SETTINGS_HOOK, (key) => {
     if (key === SETTINGS.theme || key === SETTINGS.animations) {

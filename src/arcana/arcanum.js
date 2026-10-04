@@ -24,7 +24,8 @@ import { TEMPLATES, isArcaneSpell, isEffectItem, castingSkills, defaultCastingSk
 import { INTENTS, CONVERSIONS, FORMS, RANGES, SIZES, EFFECTS, DAMAGE_TYPES, UTILITY_NODES,
          FOCUS_PRESETS, CATALYST_PRESETS, TIERS, blankBuild, normalizeBuild, evaluateSpell,
          utilityNodeValues, castTimeLabel, clamp, customEffectRecords, formatMagnitude, damageFormula,
-         validateEffectDefinition, effectCategories, CIRCUMSTANCES, gradedTarget } from "./rules.js";
+         validateEffectDefinition, effectCategories, CIRCUMSTANCES, gradedTarget, PERSISTENCE } from "./rules.js";
+import { sustainContext, letGo, releaseSpell, takeDamageDialog, heatPerRound } from "./sustain.js";
 import { setting, num, SETTINGS } from "./settings.js";
 import { heatState, ventHeat, clearHeat } from "./heat.js";
 import { saveSpell, buildOf, spellbook } from "./spells.js";
@@ -105,6 +106,9 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       selectSpell: Arcanum.#onSelectSpell,
       deleteSpell: Arcanum.#onDeleteSpell,
       vent: Arcanum.#onVent,
+      endActive: Arcanum.#onEndActive,
+      releaseActive: Arcanum.#onReleaseActive,
+      takeDamage: Arcanum.#onTakeDamage,
       openSheet: Arcanum.#onOpenSheet,
       removeUtility: Arcanum.#onRemoveUtility,
       removeEffect: Arcanum.#onRemoveEffect,
@@ -369,7 +373,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     });
 
     return {
-      actor, heat, orie, spells,
+      actor, heat, orie, spells, sustain: sustainContext(a),
       actorChoices: choices.map(c => ({ uuid: c.uuid, name: c.name, selected: c === a })),
       showChoices: game.user.isGM || choices.length > 1 || (!a && choices.length > 0),
       canEdit: canBuild() && (!a || a.isOwner),
@@ -428,6 +432,9 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
       build: b, tier: ev.tier, lock: locked ? "disabled" : "", locked,
       intents: pick(INTENTS, b.intent), intent: INTENTS[b.intent],
       conversions: pick(CONVERSIONS, b.conversion), conversion: CONVERSIONS[b.conversion],
+      persistences: Object.entries(PERSISTENCE).map(([key, p]) => ({ key, label: p.label, desc: p.desc, selected: key === (b.persistence ?? "instant") })),
+      persistence: PERSISTENCE[b.persistence ?? "instant"],
+      maintainHeat: ["maintained", "transitional"].includes(b.persistence) ? `+${fmt(heatPerRound(b, this._mmCasterParams()))} Heat / round held` : "",
       formsByTier, form: { ...formDef, tierNumeral: TIERS[formDef.tier - 1].numeral },
       ranges: pick(RANGES, b.range), range: RANGES[b.range],
       sizes: pick(SIZES, b.size), size: SIZES[b.size],
@@ -735,6 +742,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     set('[data-out="orie"]', fmt(ev.orieFinal));
     set("[data-tier-name]", ev.tier.name);
     set("[data-heat-value]", `+${fmt(ev.heat)} Heat`);
+    set('[data-out="persist"]', ["maintained", "transitional"].includes(this.build.persistence) ? `+${fmt(heatPerRound(this.build, this._mmCasterParams()))} Heat / round held` : "");
     ev.effects.forEach((x, i) => set(`[data-effect-text="${i}"]`, x.text));
     const pct = bench.querySelector(".mm-skill-pct");
     if (pct) pct.hidden = Boolean(this.caster.skillId);
@@ -922,6 +930,7 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     b.power = clamp(Number(val('[name="power"]')) || 1, 1, 1000);
     b.intent = val('[name="intent"]') ?? b.intent;
     b.conversion = val('[name="conversion"]') ?? b.conversion;
+    b.persistence = PERSISTENCE[val('[name="persistence"]')] ? val('[name="persistence"]') : (b.persistence ?? "instant");
     b.form = val('[name="form"]') ?? b.form;
     b.range = Number(val('[name="range"]')) || 1;
     b.size = Number(val('[name="size"]')) || 1;
@@ -1000,6 +1009,26 @@ export class Arcanum extends HandlebarsApplicationMixin(ApplicationV2) {
     await item.delete();
     if (current) this._mmLoadSpell(null);
     this.render({ parts: ["rail", "bench", "foot"] });
+  }
+
+  static async #onEndActive(event, target) {
+    event.preventDefault();
+    const ef = await fromUuid(target.closest("[data-effect-uuid]")?.dataset.effectUuid).catch(() => null);
+    if (ef) await letGo(ef);
+    this.render({ parts: ["rail"] });
+  }
+
+  static async #onReleaseActive(event, target) {
+    event.preventDefault();
+    const ef = await fromUuid(target.closest("[data-effect-uuid]")?.dataset.effectUuid).catch(() => null);
+    if (ef) await releaseSpell(ef);
+    this.render({ parts: ["rail"] });
+  }
+
+  static async #onTakeDamage(event) {
+    event.preventDefault();
+    if (this.actor) await takeDamageDialog(this.actor);
+    this.render({ parts: ["rail"] });
   }
 
   static async #onVent(event) {

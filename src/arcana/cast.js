@@ -23,6 +23,8 @@ import { buildOf, baselineCaster } from "./spells.js";
 import { e } from "./html.js";
 import { sigilSVG } from "./sigil.js";
 import { broadcastCast } from "./sound.js";
+import { startSpell, heatPerRound, lastingTarget } from "./sustain.js";
+import { PERSISTENCE } from "./rules.js";
 
 /* Chat content is sanitised and inline <svg> is stripped, so the card
    carries the sigil as an image with a data URI, which the sanitiser
@@ -120,6 +122,20 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
     effectRows.push({ ...fx, anchor });
   }
 
+  /* ---- how long it lasts ---------------------------------------- */
+  const lasting = PERSISTENCE[build.persistence] && build.persistence !== "instant" ? build.persistence : null;
+  let lastingHTML = "";
+  if (lasting) {
+    const target = lastingTarget(actor, build);
+    const onWhom = target !== actor ? ` on ${e(target.name)}` : "";
+    const perRound = heatPerRound(build, params);
+    lastingHTML = outcome.effect
+      ? `<p class="mm-chat-note"><strong>${PERSISTENCE[lasting].label}${onWhom}.</strong> ${lasting === "sustaining"
+          ? "It stands on its own and fades as the world pushes back."
+          : `Held open: <b>+${fmt(perRound)}</b> Heat every Melee Round until ${e(actor.name)} lets go${lasting === "transitional" ? " or releases it" : ""}, or the Heat overflows.`}</p>`
+      : "";
+  }
+
   /* ---- the card ------------------------------------------------- */
   const roundSeconds = num(SETTINGS.roundSeconds, 5);
   const fxHTML = effectRows.length ? `<ul class="mm-chat-effects">${effectRows.map(x => `
@@ -152,6 +168,7 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
       </div>
       ${outcome.note ? `<p class="mm-chat-note">${e(outcome.note)}</p>` : ""}
       ${fxHTML}
+      ${lastingHTML}
       <p class="mm-chat-costs">${costs}</p>
       ${outcomeKey === "fumble" ? `<p class="mm-error"><strong>Flux.</strong> The conversion runs undirected: colours drift, the air sings, and the GM decides what the loose ξ does.</p>` : ""}
     </div>`;
@@ -165,6 +182,9 @@ export async function castSpell(item, { actor = item?.actor ?? null, caster = nu
 
   // The burn, if any, after the spell that caused it.
   await announceOverheat(actor, heatResult);
+
+  // A spell that outlasts its casting goes on holding.
+  if (lasting && outcome.effect) await startSpell({ actor, item, build, ev, caster: params }).catch(err => console.warn("Dreoarcana | Arcana: active spell", err));
 
   // The sound of it, for everyone at the table.
   broadcastCast(build, { outcome: outcomeKey, overheat: Boolean(heatResult?.over) }).catch(() => {});
